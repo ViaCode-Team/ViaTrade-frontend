@@ -1,8 +1,8 @@
 import antfu from '@antfu/eslint-config';
-import nextPlugin from '@next/eslint-plugin-next';
 
 export default antfu(
 	{
+		react: true,
 		nextjs: true,
 
 		stylistic: false,
@@ -11,16 +11,6 @@ export default antfu(
 		toml: false,
 		markdown: false,
 		imports: false,
-	},
-	{
-		name: 'nextPlugin',
-		plugins: {
-			'@next/next': nextPlugin,
-		},
-		rules: {
-			...nextPlugin.configs.recommended.rules,
-			...nextPlugin.configs['core-web-vitals'].rules,
-		},
 	},
 	{
 		rules: {

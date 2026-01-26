@@ -1,18 +1,36 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import antfu from '@antfu/eslint-config';
+import nextPlugin from '@next/eslint-plugin-next';
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
-]);
+export default antfu(
+	{
+		nextjs: true,
 
-export default eslintConfig;
+		stylistic: false,
+		jsonc: false,
+		yaml: false,
+		toml: false,
+		markdown: false,
+		imports: false,
+	},
+	{
+		name: 'nextPlugin',
+		plugins: {
+			'@next/next': nextPlugin,
+		},
+		rules: {
+			...nextPlugin.configs.recommended.rules,
+			...nextPlugin.configs['core-web-vitals'].rules,
+		},
+	},
+	{
+		rules: {
+			eqeqeq: 'warn',
+			'perfectionist/sort-named-imports': 'warn',
+			'perfectionist/sort-named-exports': 'warn',
+			'perfectionist/sort-imports': 'warn',
+			'perfectionist/sort-exports': 'warn',
+			'antfu/no-top-level-await': 'off',
+			'ts/consistent-type-definitions': ['error', 'type'],
+		},
+	},
+);

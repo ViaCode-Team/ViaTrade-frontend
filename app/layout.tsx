@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, InitColorSchemeScript } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '@/shared/model/theme';
@@ -12,12 +12,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
-		<html lang='ru'>
+		<html lang='ru' suppressHydrationWarning>
+			<head>
+				<meta name='viewport' content='initial-scale=1, width=device-width' />
+				<InitColorSchemeScript attribute='class' />
+			</head>
 			<body>
 				<AppRouterCacheProvider>
 					<ThemeProvider theme={theme}>
-						<CssBaseline />
-						{children}
+						<CssBaseline enableColorScheme />
+
+						<main>{children}</main>
 					</ThemeProvider>
 				</AppRouterCacheProvider>
 			</body>

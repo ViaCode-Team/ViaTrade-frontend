@@ -21,6 +21,7 @@ export default antfu(
 			'perfectionist/sort-exports': 'warn',
 			'antfu/no-top-level-await': 'off',
 			'ts/consistent-type-definitions': ['error', 'type'],
+			'no-console': 'warn',
 		},
 	},
 );

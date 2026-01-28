@@ -14,7 +14,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang='ru' suppressHydrationWarning>
 			<head>
-				<meta name='viewport' content='initial-scale=1, width=device-width' />
 				<InitColorSchemeScript attribute='class' />
 			</head>
 			<body>

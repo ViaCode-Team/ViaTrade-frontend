@@ -8,6 +8,10 @@
 			"type": "stdio",
 			"command": "npx",
 			"args": ["-y", "@mui/mcp@latest"]
+		},
+		"zod-mcp": {
+			"command": "npx",
+			"args": ["-y", "mcp-remote", "https://mcp.inkeep.com/zod/mcp"]
 		}
 	}
 }

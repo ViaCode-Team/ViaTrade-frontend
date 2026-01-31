@@ -30,6 +30,7 @@
 		"@mui/material": "^7.3.7",
 		"@mui/material-nextjs": "^7.3.7",
 		"next": "^16.1.6",
+		"next-pwa-pack": "^2.0.0",
 		"react": "^19.2.4",
 		"react-dom": "^19.2.4",
 		"zod": "^4.3.6"

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { CssBaseline, InitColorSchemeScript } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
+import { PWAProvider } from 'next-pwa-pack';
 import { theme } from '@/shared/model/theme';
 
 export const metadata: Metadata = {
@@ -17,13 +18,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 				<InitColorSchemeScript attribute='class' />
 			</head>
 			<body>
-				<AppRouterCacheProvider>
-					<ThemeProvider theme={theme}>
-						<CssBaseline enableColorScheme />
+				<PWAProvider>
+					<AppRouterCacheProvider>
+						<ThemeProvider theme={theme}>
+							<CssBaseline enableColorScheme />
 
-						<main>{children}</main>
-					</ThemeProvider>
-				</AppRouterCacheProvider>
+							<main>{children}</main>
+						</ThemeProvider>
+					</AppRouterCacheProvider>
+				</PWAProvider>
 			</body>
 		</html>
 	);

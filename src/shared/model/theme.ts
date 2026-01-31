@@ -1,11 +1,12 @@
-'use client';
 import type { ThemeOptions } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 
 export const themeOptions: ThemeOptions = {
 	cssVariables: {
+		cssVarPrefix: '',
 		colorSchemeSelector: 'class',
 	},
+
 	colorSchemes: {
 		light: {
 			palette: {
@@ -25,6 +26,13 @@ export const themeOptions: ThemeOptions = {
 				secondary: {
 					main: '#ffb752',
 				},
+			},
+		},
+	},
+	components: {
+		MuiButton: {
+			defaultProps: {
+				variant: 'contained',
 			},
 		},
 	},

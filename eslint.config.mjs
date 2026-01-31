@@ -3,7 +3,6 @@ import antfu from '@antfu/eslint-config';
 export default antfu(
 	{
 		react: true,
-		nextjs: true,
 
 		stylistic: false,
 		jsonc: false,
@@ -19,7 +18,6 @@ export default antfu(
 			'perfectionist/sort-named-exports': 'warn',
 			'perfectionist/sort-imports': 'warn',
 			'perfectionist/sort-exports': 'warn',
-			'antfu/no-top-level-await': 'off',
 			'ts/consistent-type-definitions': ['error', 'type'],
 			'no-console': 'warn',
 		},

@@ -1,13 +1,6 @@
 import { Button, Stack, TextField, Typography } from '@mui/material';
 import { type SyntheticEvent, useState } from 'react';
-import * as v from 'valibot';
-import 'valibot-i18n-better-ru';
-// const loginSchema = z.object({
-// 	login: z.string().max(128),
-// 	password: z.string().max(32),
-// });
-
-v.setGlobalConfig({ lang: 'better-ru' });
+import { v } from '@/shared/model/validate';
 
 const loginSchema = v.object({
 	login: v.pipe(v.string(), v.nonEmpty(), v.maxLength(128)),
@@ -16,7 +9,7 @@ const loginSchema = v.object({
 
 type TLoginData = { login: string; password: string };
 
-export const LoginForm = () => {
+export const LoginPage = () => {
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
 	const [errors, setErrors] = useState<Partial<TLoginData>>({});
@@ -27,11 +20,13 @@ export const LoginForm = () => {
 		const result = v.safeParse(loginSchema, { login, password });
 
 		if (!result.success) {
-			const s = v.flatten(result.issues);
+			const { nested } = v.flatten(result.issues);
+
 			setErrors({
-				login: s.nested?.login?.[0],
-				password: s.nested?.password?.[0],
+				login: nested?.login?.[0],
+				password: nested?.password?.[0],
 			});
+
 			return;
 		}
 
@@ -89,4 +84,4 @@ export const LoginForm = () => {
 	);
 };
 
-export default LoginForm;
+export default LoginPage;

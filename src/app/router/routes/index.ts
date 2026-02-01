@@ -1,2 +1,2 @@
-export { AuthorizedRoutes } from './authorizedRoutes';
-export { UnAuthorizedRoutes } from './unAuthorizedRoutes';
+export { AuthorizedRoutes } from './authorized';
+export { UnAuthorizedRoutes } from './un-authorized';

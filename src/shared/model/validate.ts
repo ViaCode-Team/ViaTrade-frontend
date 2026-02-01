@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { betterRuLocale } from 'zod-i18n-better-ru';
+import * as v from 'valibot';
+import 'valibot-i18n-better-ru';
 
-z.config(betterRuLocale());
+v.setGlobalConfig({ lang: 'better-ru' });
 
-export { z };
+export { v };

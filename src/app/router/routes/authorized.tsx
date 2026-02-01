@@ -12,7 +12,7 @@ export const AuthorizedRoutes: RouteObject[] = [
 		children: [
 			{
 				path: ROUTES.HOME,
-				element: <div>HOME</div>,
+				element: <div>DASHBOARD</div>,
 			},
 		],
 	},

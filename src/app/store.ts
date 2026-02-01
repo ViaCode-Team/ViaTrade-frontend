@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
 import { authApi } from '@/entities/user';
 
 export const rootReducer = combineReducers({

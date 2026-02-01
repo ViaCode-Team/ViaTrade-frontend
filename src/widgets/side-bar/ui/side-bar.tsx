@@ -1,22 +1,20 @@
 import type { ReactNode } from 'react';
-import {
-	AutoGraph as AutoGraphIcon,
-	BarChart as BarChartIcon,
-	ChevronLeft as ChevronLeftIcon,
-	ChevronRight as ChevronRightIcon,
-	Home as HomeIcon,
-	Notifications as NotificationsIcon,
-	SignalCellularAlt as SignalCellularAltIcon,
-	TrendingUp as TrendingUpIcon,
-} from '@mui/icons-material';
-import {
-	Divider,
-	Drawer,
-	IconButton,
-	List,
-	Stack,
-	Typography,
-} from '@mui/material';
+
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import HomeIcon from '@mui/icons-material/Home';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
 import { SideBarItem } from './side-bar-item';
 
 type SideBarProps = {
@@ -45,8 +43,8 @@ const LogoIcon = () => (
 				y2='232.5'
 				gradientUnits='userSpaceOnUse'
 			>
-				<stop stop-color='#F4B349' />
-				<stop offset='1' stop-color='#FFC362' stop-opacity='0.5' />
+				<stop stopColor='#F4B349' />
+				<stop offset='1' stopColor='#FFC362' stopOpacity='0.5' />
 			</linearGradient>
 		</defs>
 	</svg>
@@ -65,7 +63,7 @@ const menuItems: TMenuItem[] = [
 	{ icon: <TrendingUpIcon />, text: 'Акции', path: '/stocks' },
 	{ icon: <AutoGraphIcon />, text: 'Стратегии', path: '/strategies' },
 	{ icon: <NotificationsIcon />, text: 'Напоминания', path: '/reminders' },
-];
+] as const;
 
 export const SideBar = ({
 	isCollapsed = false,
@@ -102,10 +100,7 @@ export const SideBar = ({
 
 			<Divider />
 
-			<List
-				disablePadding
-				// sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}
-			>
+			<List disablePadding>
 				{menuItems.map((item) => (
 					<SideBarItem
 						key={item.text}

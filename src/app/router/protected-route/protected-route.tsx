@@ -1,5 +1,6 @@
-import { CircularProgress } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Navigate, Outlet, type To, useLocation } from 'react-router';
+
 import { ROUTES } from '@/shared/model/routes';
 
 export type ProtectedRouteProps = {

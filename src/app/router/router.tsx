@@ -1,6 +1,8 @@
-import { CircularProgress } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import { createBrowserRouter } from 'react-router';
+
 import { ErrorPageLazy } from '@/pages/error-page';
+
 import { MainLayout } from '../layouts/main-layout';
 import { ProtectedRoute } from './protected-route';
 import { AuthorizedRoutes, UnAuthorizedRoutes } from './routes';

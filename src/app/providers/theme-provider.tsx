@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
+
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+
 import { IS_DEV } from '@/shared/model/mode';
 import { theme } from '@/shared/model/theme';
 

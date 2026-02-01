@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react';
-import {
-	ListItem,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-} from '@mui/material';
+
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router';
 
 type SideBarItemProps = {

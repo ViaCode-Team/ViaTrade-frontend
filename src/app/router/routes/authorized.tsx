@@ -1,4 +1,5 @@
 import { Outlet, type RouteObject } from 'react-router';
+
 import { ROUTES } from '@/shared/model/routes';
 
 export const AuthorizedRoutes: RouteObject[] = [

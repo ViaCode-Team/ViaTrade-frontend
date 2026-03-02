@@ -43,7 +43,6 @@ export const LoginPage = () => {
 			sx={{
 				alignItems: 'center',
 				justifyContent: 'center',
-				minHeight: '100vh',
 			}}
 		>
 			<Typography variant='h3' component='h1'>

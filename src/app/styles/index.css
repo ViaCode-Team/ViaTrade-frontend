@@ -1,0 +1,15 @@
+:where(img, svg, picture) {
+	max-width: 100%;
+	height: auto;
+}
+
+:where(a, a:link, a:visited, a:hover) {
+	color: inherit;
+	font: inherit;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+:where(button) {
+	-webkit-tap-highlight-color: transparent;
+}

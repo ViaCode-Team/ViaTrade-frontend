@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 // import { VitePWA } from 'vite-plugin-pwa';
 import { analyzer } from 'vite-bundle-analyzer';
+import svgr from 'vite-plugin-svgr';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,6 +14,24 @@ export default defineConfig({
 			},
 		}),
 		// VitePWA(),
+		svgr({
+			svgrOptions: {
+				plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
+				svgoConfig: {
+					floatPrecision: 2,
+					plugins: [
+						{
+							name: 'preset-default',
+							params: {
+								overrides: {
+									removeViewBox: false,
+								},
+							},
+						},
+					],
+				},
+			},
+		}),
 		analyzer(),
 	],
 

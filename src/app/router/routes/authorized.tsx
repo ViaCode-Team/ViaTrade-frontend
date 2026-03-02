@@ -1,19 +1,15 @@
-import { Outlet, type RouteObject } from 'react-router';
+import type { RouteObject } from 'react-router';
 
+import { DashboardLayout } from '@/app/layouts/dashboard-layout';
 import { ROUTES } from '@/shared/model/routes';
 
 export const AuthorizedRoutes: RouteObject[] = [
 	{
-		element: (
-			<div>
-				AuthorizedRoutes
-				<Outlet />
-			</div>
-		),
+		element: <DashboardLayout />,
 		children: [
 			{
 				path: ROUTES.HOME,
-				element: <div>DASHBOARD</div>,
+				element: <div>Home</div>,
 			},
 		],
 	},

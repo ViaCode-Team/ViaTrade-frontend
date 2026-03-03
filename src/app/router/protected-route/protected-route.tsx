@@ -1,7 +1,7 @@
-import CircularProgress from '@mui/material/CircularProgress';
 import { Navigate, Outlet, type To, useLocation } from 'react-router';
 
 import { ROUTES } from '@/shared/model/routes';
+import { Loader } from '@/shared/ui/loader';
 
 export type ProtectedRouteProps = {
 	isPrivate?: boolean;
@@ -17,11 +17,11 @@ export const ProtectedRoute = ({
 	const location = useLocation();
 
 	const isAuthChecked = true;
-	const user = {};
+	const user = null;
 	const isExistUser = Boolean(user);
 
 	// Пока идёт чекаут пользователя, показываем прелоадер
-	if (!isAuthChecked) return <CircularProgress />;
+	if (!isAuthChecked) return <Loader />;
 
 	// Если маршрут для авторизованного пользователя(приватный), но пользователь неавторизован, то делаем редирект
 	if (isPrivate && !isExistUser)

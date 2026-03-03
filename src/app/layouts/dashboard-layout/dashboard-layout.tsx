@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import { type ReactNode, useState } from 'react';
 import { Outlet } from 'react-router';
 
-import { AppHeader } from '@/widgets/app-header/app-header';
+import { AppHeader } from '@/widgets/header/ui/header';
 import { SideBar } from '@/widgets/side-bar';
 
 type DashboardLayoutProps = { children?: ReactNode };

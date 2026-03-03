@@ -7,8 +7,8 @@ import { type SyntheticEvent, useState } from 'react';
 import { v } from '@/shared/model/validate';
 
 const loginSchema = v.object({
-	login: v.pipe(v.string(), v.nonEmpty(), v.maxLength(128)),
-	password: v.pipe(v.string(), v.nonEmpty(), v.maxLength(32)),
+	login: v.pipe(v.string(), v.nonEmpty(), v.maxLength(128), v.minLength(3)),
+	password: v.pipe(v.string(), v.nonEmpty(), v.maxLength(32), v.minLength(8)),
 });
 
 type TLoginData = { login: string; password: string };
@@ -38,25 +38,11 @@ export const LoginPage = () => {
 	};
 
 	return (
-		<Stack
-			gap={6}
-			sx={{
-				alignItems: 'center',
-				justifyContent: 'center',
-			}}
-		>
-			<Typography variant='h3' component='h1'>
+		<Stack gap={6}>
+			<Typography align='center' variant='h3' component='h1'>
 				Авторизация
 			</Typography>
-			<Stack
-				component='form'
-				onSubmit={handleSubmit}
-				gap={4}
-				sx={{
-					width: '100%',
-					maxWidth: 460,
-				}}
-			>
+			<Stack component='form' onSubmit={handleSubmit} gap={4}>
 				<Stack gap={2}>
 					<TextField
 						label='Логин'

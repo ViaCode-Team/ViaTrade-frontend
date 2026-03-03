@@ -1,7 +1,7 @@
-import CircularProgress from '@mui/material/CircularProgress';
 import { createBrowserRouter } from 'react-router';
 
 import { ErrorPageLazy } from '@/pages/error-page';
+import { Loader } from '@/shared/ui/loader';
 
 import { MainLayout } from '../layouts/main-layout';
 import { ProtectedRoute } from './protected-route';
@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
 			</MainLayout>
 		),
 
-		hydrateFallbackElement: <CircularProgress />,
+		hydrateFallbackElement: <Loader />,
 
 		children: [
 			//* Защищённые пути

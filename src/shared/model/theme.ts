@@ -35,6 +35,15 @@ export const themeOptions: ThemeOptions = {
 			defaultProps: {
 				variant: 'contained',
 			},
+
+			// variants: [
+			// 	{
+			// 		props: { variant: 'dashed', color: 'secondary' },
+			// 		style: {
+			// 			border: `4px dashed ${red[500]}`,
+			// 		},
+			// 	},
+			// ],
 		},
 	},
 };

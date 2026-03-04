@@ -9,10 +9,12 @@ type AuthLayoutProps = { children?: ReactNode };
 
 export const AuthLayout = ({ children }: AuthLayoutProps) => {
 	return (
-		<>
+		<Stack height={1}>
 			<PureHeader />
 
-			<Stack>{children ?? <Outlet />}</Stack>
-		</>
+			<Stack alignItems='center' justifyContent='center' flex={1}>
+				{children ?? <Outlet />}
+			</Stack>
+		</Stack>
 	);
 };

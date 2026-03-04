@@ -13,9 +13,24 @@ const loginSchema = v.object({
 
 type TLoginData = { login: string; password: string };
 
+// Todo: Variant for button
+// export const GlassBtn = styled(Button)(() => ({
+// 	background: 'rgba(255,255,255,0.06)',
+// 	backdropFilter: 'blur(6px)',
+// 	border: '1px solid rgba(255,255,255,0.08)',
+// 	color: '#fff',
+// 	textTransform: 'none',
+// 	padding: '8px 18px',
+// 	borderRadius: 10,
+// 	'&:hover': {
+// 		background: 'rgba(255,255,255,0.1)',
+// 	},
+// }));
+
 export const LoginPage = () => {
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
+
 	const [errors, setErrors] = useState<Partial<TLoginData>>({});
 
 	const handleSubmit = (e: SyntheticEvent) => {
@@ -38,11 +53,18 @@ export const LoginPage = () => {
 	};
 
 	return (
-		<Stack gap={6}>
-			<Typography align='center' variant='h3' component='h1'>
+		<Stack alignItems='center' width={1} gap={6}>
+			<Typography variant='h2' component='h1'>
 				Авторизация
 			</Typography>
-			<Stack component='form' onSubmit={handleSubmit} gap={4}>
+
+			<Stack
+				component='form'
+				maxWidth={460}
+				width={1}
+				onSubmit={handleSubmit}
+				gap={4}
+			>
 				<Stack gap={2}>
 					<TextField
 						label='Логин'
@@ -65,6 +87,7 @@ export const LoginPage = () => {
 					variant='contained'
 					size='large'
 					type='submit'
+					sx={{ fontSize: 16 }}
 				>
 					Войти
 				</Button>

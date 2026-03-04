@@ -1,5 +1,7 @@
+import Box from '@mui/material/Box';
+
 export const DashboardPage = () => {
-	return <div>Dashboard</div>;
+	return <Box>Dashboard</Box>;
 };
 
 export default DashboardPage;

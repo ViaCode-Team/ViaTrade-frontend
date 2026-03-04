@@ -1,6 +1,7 @@
 import type { RouteObject } from 'react-router';
 
 import { DashboardLayout } from '@/app/layouts/dashboard-layout';
+import { DashboardPageLazy } from '@/pages/dashboard-page';
 import { ROUTES } from '@/shared/model/routes';
 
 export const AuthorizedRoutes: RouteObject[] = [
@@ -9,7 +10,7 @@ export const AuthorizedRoutes: RouteObject[] = [
 		children: [
 			{
 				path: ROUTES.HOME,
-				element: <div>Home</div>,
+				element: <DashboardPageLazy />,
 			},
 		],
 	},

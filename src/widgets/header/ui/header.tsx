@@ -3,11 +3,10 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 
 import { Logo } from '@/shared/ui/logo/logo';
+import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';
 import { MenuButton } from './menu-button';
-
-// import ThemeSwitcher from './ThemeSwitcher';
 
 type AppHeaderProps = {
 	title?: string;
@@ -26,6 +25,8 @@ export const AppHeader = ({
 
 	return (
 		<AppBar
+			position='sticky'
+			color='inherit'
 			sx={{
 				'& .MuiToolbar-root': { px: 1 },
 			}}
@@ -47,7 +48,9 @@ export const AppHeader = ({
 							</Box>
 						</Stack>
 
-						<Logo logoWidth={32} logoHeight={32} />
+						<Stack alignItems='center' justifyContent='center'>
+							<Logo logoWidth={32} logoHeight={32} />
+						</Stack>
 					</Stack>
 
 					{title ?? <Box component='h1'>{title}</Box>}
@@ -59,7 +62,7 @@ export const AppHeader = ({
 						sx={{ marginLeft: 'auto' }}
 					>
 						<Stack direction='row' alignItems='center'>
-							{/* <ThemeSwitcher /> */}
+							<ThemeSwitcher />
 						</Stack>
 					</Stack>
 				</Stack>

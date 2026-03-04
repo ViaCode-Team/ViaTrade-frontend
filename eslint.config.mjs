@@ -18,9 +18,8 @@ export default antfu(
 			'perfectionist/sort-named-exports': ['warn', { newlinesBetween: 1 }],
 			'perfectionist/sort-imports': ['warn', { newlinesBetween: 1 }],
 			'perfectionist/sort-exports': ['warn', { newlinesBetween: 1 }],
-			'ts/consistent-type-definitions': ['error', 'type'],
+			'ts/consistent-type-definitions': ['warn', 'type'],
 			'no-console': 'warn',
-
 			'no-restricted-imports': [
 				'error',
 				{

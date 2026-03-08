@@ -7,5 +7,6 @@ export const AppBar = styled(MuiAppBar)(({ theme }) => ({
 	borderBottomWidth: 1,
 	borderStyle: 'solid',
 	boxShadow: 'none',
-	displayPrint: 'none',
+	position: 'sticky',
+	color: 'inherit',
 }));

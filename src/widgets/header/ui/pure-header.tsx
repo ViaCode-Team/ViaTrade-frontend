@@ -1,12 +1,11 @@
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { Logo } from '@/shared/ui/logo/logo';
+import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';
-
-// import ThemeSwitcher from './ThemeSwitcher';
 
 type PureHeaderProps = {
 	title?: string;
@@ -14,23 +13,26 @@ type PureHeaderProps = {
 
 export const PureHeader = ({ title }: PureHeaderProps) => {
 	return (
-		<AppBar position='static'>
-			<Toolbar sx={{ backgroundColor: 'inherit' }}>
-				<Stack
-					direction='row'
-					alignItems='center'
-					justifyContent='space-between'
-					width={1}
-					flexWrap='wrap'
-				>
-					<Stack direction='row'>
+		<AppBar>
+			<Toolbar>
+				<Stack direction='row' alignItems='center' width={1} flexWrap='wrap'>
+					<Stack direction='row' flex={1}>
 						<Logo logoWidth={32} logoHeight={32} />
 					</Stack>
 
-					{title ?? <Box component='h1'>{title}</Box>}
-					<Stack direction='row' alignItems='center' spacing={1}>
+					<Typography variant='h6' component='h2'>
+						{title}
+					</Typography>
+
+					<Stack
+						direction='row'
+						alignItems='center'
+						spacing={1}
+						flex={1}
+						justifyContent='flex-end'
+					>
 						<Stack direction='row' alignItems='center'>
-							{/* <ThemeSwitcher /> */}
+							<ThemeSwitcher />
 						</Stack>
 					</Stack>
 				</Stack>

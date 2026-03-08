@@ -1,7 +1,8 @@
-// import '@mui/material/Button';
+/* eslint-disable ts/consistent-type-definitions */
+import '@mui/material/Button';
 
-// declare module '@mui/material/Button' {
-// 	interface ButtonPropsVariantOverrides {
-// 		dashed: true;
-// 	}
-// }
+declare module '@mui/material/Button' {
+	interface ButtonPropsVariantOverrides {
+		glass: true;
+	}
+}

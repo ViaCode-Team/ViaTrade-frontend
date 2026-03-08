@@ -17,7 +17,7 @@ export const ProtectedRoute = ({
 	const location = useLocation();
 
 	const isAuthChecked = true;
-	const user = false;
+	const user = null;
 	const isExistUser = Boolean(user);
 
 	// Пока идёт чекаут пользователя, показываем прелоадер

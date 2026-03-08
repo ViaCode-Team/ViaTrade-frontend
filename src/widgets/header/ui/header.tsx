@@ -25,13 +25,11 @@ export const AppHeader = ({
 
 	return (
 		<AppBar
-			position='sticky'
-			color='inherit'
 			sx={{
 				'& .MuiToolbar-root': { px: 1 },
 			}}
 		>
-			<Toolbar sx={{ backgroundColor: 'inherit' }}>
+			<Toolbar>
 				<Stack
 					direction='row'
 					alignItems='center'

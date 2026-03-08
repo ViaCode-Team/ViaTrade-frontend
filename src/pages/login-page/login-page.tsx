@@ -3,7 +3,9 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { type SyntheticEvent, useState } from 'react';
+import { Link } from 'react-router';
 
+import { ROUTES } from '@/shared/model/routes';
 import { v } from '@/shared/model/validate';
 
 const loginSchema = v.object({
@@ -12,20 +14,6 @@ const loginSchema = v.object({
 });
 
 type TLoginData = { login: string; password: string };
-
-// Todo: Variant for button
-// export const GlassBtn = styled(Button)(() => ({
-// 	background: 'rgba(255,255,255,0.06)',
-// 	backdropFilter: 'blur(6px)',
-// 	border: '1px solid rgba(255,255,255,0.08)',
-// 	color: '#fff',
-// 	textTransform: 'none',
-// 	padding: '8px 18px',
-// 	borderRadius: 10,
-// 	'&:hover': {
-// 		background: 'rgba(255,255,255,0.1)',
-// 	},
-// }));
 
 export const LoginPage = () => {
 	const [login, setLogin] = useState('');
@@ -53,7 +41,7 @@ export const LoginPage = () => {
 	};
 
 	return (
-		<Stack alignItems='center' width={1} gap={6}>
+		<Stack width={1} alignItems='center' gap={6}>
 			<Typography variant='h2' component='h1'>
 				Авторизация
 			</Typography>
@@ -91,6 +79,23 @@ export const LoginPage = () => {
 				>
 					Войти
 				</Button>
+				<Stack direction='row' justifyContent='center' gap={1}>
+					<Typography variant='body2' color='text.secondary'>
+						Нет аккаунта?
+					</Typography>
+					<Typography
+						component={Link}
+						to={ROUTES.REGISTER}
+						variant='body2'
+						color='secondary.main'
+						sx={{
+							textDecoration: 'none',
+							'&:hover': { textDecoration: 'underline' },
+						}}
+					>
+						Зарегистрироваться
+					</Typography>
+				</Stack>
 			</Stack>
 		</Stack>
 	);

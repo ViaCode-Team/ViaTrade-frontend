@@ -1,2 +1,2 @@
-export { StoreProvider } from './store-provider';
+export { QueryProvider } from './query-provider';
 export { ThemeProvider } from './theme-provider';

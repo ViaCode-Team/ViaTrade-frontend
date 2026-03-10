@@ -22,15 +22,27 @@ type TMenuItem = {
 };
 
 const menuItems: TMenuItem[] = [
-	{ icon: <HomeIcon />, text: 'Главная', path: '/' },
-	{ icon: <SignalCellularAltIcon />, text: 'Сигналы', path: '/signals' },
-	{ icon: <BarChartIcon />, text: 'Статистика', path: '/statistics' },
+	{
+		icon: <HomeIcon />,
+		text: 'Главная',
+		path: '/',
+	},
+	{
+		icon: <SignalCellularAltIcon />,
+		text: 'Сигналы',
+		path: '/signals',
+	},
+	{
+		icon: <BarChartIcon />,
+		text: 'Статистика',
+		path: '/statistics',
+	},
 	{ icon: <TrendingUpIcon />, text: 'Акции', path: '/stocks' },
 	{ icon: <AutoGraphIcon />, text: 'Стратегии', path: '/strategies' },
 	{ icon: <NotificationsIcon />, text: 'Напоминания', path: '/reminders' },
 ] as const;
 
-export const SideBar = ({ isCollapsed = false }: SideBarProps) => {
+export function SideBar({ isCollapsed = false }: SideBarProps) {
 	return (
 		<Drawer
 			variant='permanent'
@@ -56,4 +68,4 @@ export const SideBar = ({ isCollapsed = false }: SideBarProps) => {
 			</List>
 		</Drawer>
 	);
-};
+}

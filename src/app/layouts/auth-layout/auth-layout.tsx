@@ -8,22 +8,22 @@ import { PureHeader } from '@/widgets/header';
 
 type AuthLayoutProps = { children?: ReactNode };
 
-export const AuthLayout = ({ children }: AuthLayoutProps) => {
+export function AuthLayout({ children }: AuthLayoutProps) {
 	return (
 		<Stack height={1}>
 			<PureHeader title='Платформа инвестиционного анализа' />
 
 			<Container
 				maxWidth='xl'
-				component={'main'}
+				component='main'
 				sx={{
 					display: 'flex',
 					alignItems: 'center',
-					height: 1,
+					flex: 1,
 				}}
 			>
 				{children ?? <Outlet />}
 			</Container>
 		</Stack>
 	);
-};
+}

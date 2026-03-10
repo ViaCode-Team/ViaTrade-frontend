@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { type SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router';
 
+import { useLogin } from '@/entities/auth';
 import { ROUTES } from '@/shared/model/routes';
 import { v } from '@/shared/model/validate';
 
@@ -15,7 +16,9 @@ const loginSchema = v.object({
 
 type TLoginData = { login: string; password: string };
 
-export const LoginPage = () => {
+export function LoginPage() {
+	const { mutate } = useLogin();
+
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -37,6 +40,7 @@ export const LoginPage = () => {
 			return;
 		}
 
+		mutate({ data: { login, password } });
 		setErrors({});
 	};
 
@@ -99,6 +103,6 @@ export const LoginPage = () => {
 			</Stack>
 		</Stack>
 	);
-};
+}
 
 export default LoginPage;

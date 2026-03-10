@@ -40,4 +40,13 @@ export default defineConfig({
 			'@': resolve(__dirname, './src'),
 		},
 	},
+
+	server: {
+		proxy: {
+			'/api': {
+				target: 'https://localhost:7249',
+				secure: false,
+			},
+		},
+	},
 });

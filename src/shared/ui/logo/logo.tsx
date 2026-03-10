@@ -10,26 +10,28 @@ type LogoProps = {
 	variantText?: 'h6' | 'h5';
 };
 
-export const Logo = ({
+export function Logo({
 	logoWidth,
 	logoHeight,
 	variantText = 'h6',
-}: LogoProps) => (
-	<Link to='/'>
-		<Stack direction='row' alignItems='center' gap='5px'>
-			<LogoIcon width={logoWidth} height={logoHeight} />
+}: LogoProps) {
+	return (
+		<Link to='/'>
+			<Stack direction='row' alignItems='center' gap='5px'>
+				<LogoIcon width={logoWidth} height={logoHeight} />
 
-			<Typography
-				variant={variantText}
-				component='h2'
-				fontWeight='bold'
-				sx={{
-					whiteSpace: 'nowrap',
-					lineHeight: 1,
-				}}
-			>
-				ViaTrade
-			</Typography>
-		</Stack>
-	</Link>
-);
+				<Typography
+					variant={variantText}
+					component='h2'
+					fontWeight='bold'
+					sx={{
+						whiteSpace: 'nowrap',
+						lineHeight: 1,
+					}}
+				>
+					ViaTrade
+				</Typography>
+			</Stack>
+		</Link>
+	);
+}

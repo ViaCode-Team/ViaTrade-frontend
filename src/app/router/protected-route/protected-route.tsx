@@ -1,5 +1,11 @@
-import { Navigate, Outlet, type To, useLocation } from 'react-router';
+import {
+	Navigate,
+	Outlet,
+	type To,
+	useLocation,
+} from 'react-router';
 
+import { useGetMe } from '@/entities/user';
 import { ROUTES } from '@/shared/model/routes';
 import { Loader } from '@/shared/ui/loader';
 
@@ -9,19 +15,21 @@ export type ProtectedRouteProps = {
 	authRedirectTo?: To;
 };
 
-export const ProtectedRoute = ({
+export function ProtectedRoute({
 	isPrivate = false,
 	guestRedirectTo = ROUTES.LOGIN,
 	authRedirectTo = ROUTES.HOME,
-}: ProtectedRouteProps) => {
+}: ProtectedRouteProps) {
 	const location = useLocation();
+	const { data, isLoading } = useGetMe();
 
-	const isAuthChecked = true;
-	const user = null;
+	const isAuthChecked = !isLoading;
+	const user = data?.data;
 	const isExistUser = Boolean(user);
 
 	// Пока идёт чекаут пользователя, показываем прелоадер
-	if (!isAuthChecked) return <Loader />;
+	if (!isAuthChecked)
+		return <Loader />;
 
 	// Если маршрут для авторизованного пользователя(приватный), но пользователь неавторизован, то делаем редирект
 	if (isPrivate && !isExistUser)
@@ -41,4 +49,4 @@ export const ProtectedRoute = ({
 	}
 
 	return <Outlet />;
-};
+}

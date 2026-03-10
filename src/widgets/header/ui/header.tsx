@@ -14,11 +14,11 @@ type AppHeaderProps = {
 	onToggleMenu: (open: boolean) => void;
 };
 
-export const AppHeader = ({
+export function AppHeader({
 	title,
 	isMenuOpen,
 	onToggleMenu,
-}: AppHeaderProps) => {
+}: AppHeaderProps) {
 	const toggleMenuHandle = () => {
 		onToggleMenu(!isMenuOpen);
 	};
@@ -67,4 +67,4 @@ export const AppHeader = ({
 			</Toolbar>
 		</AppBar>
 	);
-};
+}

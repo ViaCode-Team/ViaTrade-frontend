@@ -8,7 +8,7 @@ import { SideBar } from '@/widgets/side-bar';
 
 type DashboardLayoutProps = { children?: ReactNode };
 
-export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+export function DashboardLayout({ children }: DashboardLayoutProps) {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 
 	const toggleCollapse = (isExpanded: boolean) => {
@@ -28,4 +28,4 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 			</Stack>
 		</Stack>
 	);
-};
+}

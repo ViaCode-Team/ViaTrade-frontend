@@ -8,7 +8,7 @@ type MenuButtonProps = {
 	onToggle: () => void;
 };
 
-export const MenuButton = ({ isExpanded, onToggle }: MenuButtonProps) => {
+export function MenuButton({ isExpanded, onToggle }: MenuButtonProps) {
 	const actionText = isExpanded ? 'Свернуть' : 'Расширить';
 
 	return (
@@ -24,4 +24,4 @@ export const MenuButton = ({ isExpanded, onToggle }: MenuButtonProps) => {
 			</div>
 		</Tooltip>
 	);
-};
+}

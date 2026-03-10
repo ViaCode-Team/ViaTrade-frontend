@@ -13,12 +13,12 @@ type SideBarItemProps = {
 	onClick?: () => void;
 };
 
-export const SideBarItem = ({
+export function SideBarItem({
 	icon,
 	text,
 	isCollapsed,
 	onClick,
-}: SideBarItemProps) => {
+}: SideBarItemProps) {
 	return (
 		<ListItem disablePadding>
 			<ListItemButton
@@ -31,4 +31,4 @@ export const SideBarItem = ({
 			</ListItemButton>
 		</ListItem>
 	);
-};
+}

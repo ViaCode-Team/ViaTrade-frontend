@@ -5,7 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { getThemeState } from '../lib/theme';
 
-export const ThemeSwitcher = () => {
+export function ThemeSwitcher() {
 	const { mode, setMode } = useColorScheme();
 	const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -20,4 +20,4 @@ export const ThemeSwitcher = () => {
 			</IconButton>
 		</Tooltip>
 	);
-};
+}

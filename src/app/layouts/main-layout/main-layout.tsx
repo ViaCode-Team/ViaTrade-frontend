@@ -4,6 +4,6 @@ import { Outlet } from 'react-router';
 
 type MainLayoutProps = { children?: ReactNode };
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export function MainLayout({ children }: MainLayoutProps) {
 	return <>{children ?? <Outlet />}</>;
-};
+}

@@ -40,12 +40,12 @@ export const themeOptions: ThemeOptions = {
 					props: { variant: 'glass' },
 					style: ({ theme }) => [
 						{
-							background: alpha(theme.palette.common.black, 0.01),
+							'background': alpha(theme.palette.common.black, 0.01),
 
-							backdropFilter: 'blur(6px)',
-							border: `1px solid ${alpha(theme.palette.common.black, 0.08)}`,
+							'backdropFilter': 'blur(6px)',
+							'border': `1px solid ${alpha(theme.palette.common.black, 0.08)}`,
 
-							boxShadow: `0 1px 2px ${alpha(theme.palette.common.black, 0.04)}`,
+							'boxShadow': `0 1px 2px ${alpha(theme.palette.common.black, 0.04)}`,
 
 							'&:hover': {
 								background: alpha(theme.palette.common.black, 0.06),
@@ -58,10 +58,10 @@ export const themeOptions: ThemeOptions = {
 						},
 
 						theme.applyStyles('dark', {
-							background: alpha(theme.palette.common.white, 0.03),
-							border: `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
+							'background': alpha(theme.palette.common.white, 0.03),
+							'border': `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
 
-							boxShadow: `0 1px 2px ${alpha(theme.palette.common.white, 0.04)}`,
+							'boxShadow': `0 1px 2px ${alpha(theme.palette.common.white, 0.04)}`,
 
 							'&:hover': {
 								background: alpha(theme.palette.common.white, 0.1),

@@ -11,7 +11,7 @@ type PureHeaderProps = {
 	title?: string;
 };
 
-export const PureHeader = ({ title }: PureHeaderProps) => {
+export function PureHeader({ title }: PureHeaderProps) {
 	return (
 		<AppBar>
 			<Toolbar>
@@ -39,4 +39,4 @@ export const PureHeader = ({ title }: PureHeaderProps) => {
 			</Toolbar>
 		</AppBar>
 	);
-};
+}

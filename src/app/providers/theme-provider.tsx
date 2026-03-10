@@ -8,16 +8,16 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { IS_DEV } from '@/shared/model/mode';
 import { theme } from '@/shared/model/theme';
 
-type ThemeProviderProps = {
-	children: ReactNode;
-};
-
 const cache = createCache({
 	key: 's',
 	...(IS_DEV ? { stylisPlugins: [] } : {}),
 });
 
-export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+type ThemeProviderProps = {
+	children: ReactNode;
+};
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
 	return (
 		<CacheProvider value={cache}>
 			<MuiThemeProvider theme={theme}>
@@ -26,4 +26,4 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 			</MuiThemeProvider>
 		</CacheProvider>
 	);
-};
+}

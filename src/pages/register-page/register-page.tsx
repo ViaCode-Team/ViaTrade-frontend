@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { type SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router';
 
+import { useRegister } from '@/entities/auth';
 import { ROUTES } from '@/shared/model/routes';
 import { v } from '@/shared/model/validate';
 
@@ -22,7 +23,8 @@ type TRegisterData = {
 	confirmPassword: string;
 };
 
-export const RegisterPage = () => {
+export function RegisterPage() {
+	const { mutate } = useRegister();
 	const [email, setEmail] = useState('');
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
@@ -62,6 +64,7 @@ export const RegisterPage = () => {
 			return;
 		}
 
+		mutate({ data: { login, password } });
 		setErrors({});
 	};
 

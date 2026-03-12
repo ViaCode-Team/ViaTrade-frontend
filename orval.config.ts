@@ -18,8 +18,7 @@ const defaultInput: InputOptions = {
 
 const defaultOutput: Partial<OutputOptions> = {
 	mode: 'split',
-	// Todo: create custom fetch
-	httpClient: 'axios',
+	httpClient: 'fetch',
 	client: 'react-query',
 	schemas: SCHEMAS_PATH,
 	mock: true,
@@ -28,6 +27,15 @@ const defaultOutput: Partial<OutputOptions> = {
 		useTypeOverInterfaces: true,
 		useDates: true,
 		useBigInt: true,
+		formData: true,
+
+		contentType: {
+			include: ['application/json', 'application/problem+json'],
+		},
+
+		fetch: {
+			forceSuccessResponse: true,
+		},
 
 		query: {
 			useQuery: true,
@@ -37,6 +45,16 @@ const defaultOutput: Partial<OutputOptions> = {
 			useInvalidate: true,
 			useOperationIdAsQueryKey: true,
 			signal: true,
+		},
+
+		// mutator: {
+		// 	path: './src/shared/api/client/custom-instance-axios.ts',
+		// 	name: 'customInstanceAxios',
+		// },
+
+		mutator: {
+			path: './src/shared/api/client/custom-instance-fetch.ts',
+			name: 'customInstance',
 		},
 	},
 } as const;

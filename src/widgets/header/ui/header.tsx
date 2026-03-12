@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 
-import { Logo } from '@/shared/ui/logo/logo';
+import { Logo } from '@/shared/ui/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';

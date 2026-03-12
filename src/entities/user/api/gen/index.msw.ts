@@ -23,25 +23,13 @@ import type {
 
 
 export function getGetMeResponseMock(overrideResponse: Partial<Extract<MeDto, object>> = {}): MeDto {
-	return faker.helpers.arrayElement([{
+	return {
 		id: faker.number.int(),
 		login: faker.string.alpha({ length: { min: 10, max: 20 } }),
 		lastLoginDate: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
 		tgId: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), null]), undefined]),
 		...overrideResponse,
-	}, {
-		id: faker.number.int(),
-		login: faker.string.alpha({ length: { min: 10, max: 20 } }),
-		lastLoginDate: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
-		tgId: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), null]), undefined]),
-		...overrideResponse,
-	}, {
-		id: faker.number.int(),
-		login: faker.string.alpha({ length: { min: 10, max: 20 } }),
-		lastLoginDate: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
-		tgId: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), null]), undefined]),
-		...overrideResponse,
-	}]);
+	};
 }
 
 

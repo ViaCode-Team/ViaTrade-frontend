@@ -15,6 +15,7 @@ export type ProtectedRouteProps = {
 	authRedirectTo?: To;
 };
 
+
 export function ProtectedRoute({
 	isPrivate = false,
 	guestRedirectTo = ROUTES.LOGIN,

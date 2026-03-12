@@ -21,24 +21,66 @@ import type {
 	UseQueryResult,
 } from '@tanstack/react-query';
 
-import * as axios from 'axios';
-import type {
-	AxiosError,
-	AxiosRequestConfig,
-	AxiosResponse,
-} from 'axios';
-
 import type {
 	MeDto,
 	ProblemDetails,
 } from '../../../../shared/api/gen/types';
 
+import { customInstance } from '../../../../shared/api/client/custom-instance-fetch';
+import type { ErrorType } from '../../../../shared/api/client/custom-instance-fetch';
 
-export function getMe(options?: AxiosRequestConfig): Promise<AxiosResponse<MeDto>> {
-	return axios.default.get(
-		`/api/User/me`,
-		options,
-	);
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+export type getMeResponse200 = {
+	data: MeDto;
+	status: 200;
+};
+
+export type getMeResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getMeResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getMeResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getMeResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getMeResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getMeResponseSuccess = (getMeResponse200) & {
+	headers: Headers;
+};
+export type getMeResponseError = (getMeResponse400 | getMeResponse401 | getMeResponse403 | getMeResponse404 | getMeResponse500) & {
+	headers: Headers;
+};
+
+export function getGetMeUrl() {
+	return `/api/User/me`;
+}
+
+export async function getMe(options?: RequestInit): Promise<getMeResponseSuccess> {
+	return customInstance<getMeResponseSuccess>(getGetMeUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
 }
 
 
@@ -49,23 +91,23 @@ export function getGetMeQueryKey() {
 }
 
 
-export function getGetMeQueryOptions<TData = Awaited<ReturnType<typeof getMe>>, TError = AxiosError<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; axios?: AxiosRequestConfig }) {
-	const { query: queryOptions, axios: axiosOptions } = options ?? {};
+export function getGetMeQueryOptions<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
 	const queryKey = queryOptions?.queryKey ?? getGetMeQueryKey();
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getMe>>> = ({ signal }) => getMe({ signal, ...axiosOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getMe>>> = ({ signal }) => getMe({ signal, ...requestOptions });
 
 
 	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
 export type GetMeQueryResult = NonNullable<Awaited<ReturnType<typeof getMe>>>;
-export type GetMeQueryError = AxiosError<ProblemDetails>;
+export type GetMeQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = AxiosError<ProblemDetails>>(
+export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
 	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>> & Pick<
 		DefinedInitialDataOptions<
 			Awaited<ReturnType<typeof getMe>>,
@@ -73,10 +115,10 @@ export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = Axi
 			Awaited<ReturnType<typeof getMe>>
 		>,
 		'initialData'
-	>; axios?: AxiosRequestConfig; },
+	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = AxiosError<ProblemDetails>>(
+export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>> & Pick<
 		UndefinedInitialDataOptions<
 			Awaited<ReturnType<typeof getMe>>,
@@ -84,16 +126,16 @@ export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = Axi
 			Awaited<ReturnType<typeof getMe>>
 		>,
 		'initialData'
-	>; axios?: AxiosRequestConfig; },
+	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = AxiosError<ProblemDetails>>(
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; axios?: AxiosRequestConfig },
+export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = AxiosError<ProblemDetails>>(
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; axios?: AxiosRequestConfig },
+export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 	const queryOptions = getGetMeQueryOptions(options);
@@ -109,4 +151,3 @@ export async function invalidateGetMe(queryClient: QueryClient, options?: Invali
 
 	return queryClient;
 }
-

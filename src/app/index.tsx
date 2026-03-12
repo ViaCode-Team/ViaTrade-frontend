@@ -4,7 +4,9 @@ import { RouterProvider } from 'react-router';
 
 import { QueryProvider, ThemeProvider } from './providers';
 import { router } from './router';
+import './interceptors';
 import './styles/index.css';
+
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>

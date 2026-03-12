@@ -23,25 +23,13 @@ import type {
 
 
 export function getGetSessionsResponseMock(overrideResponse: Partial<Extract<UserSessionDto, object>> = {}): UserSessionDto {
-	return faker.helpers.arrayElement([{
+	return {
 		id: faker.string.alpha({ length: { min: 10, max: 20 } }),
 		userAgent: faker.string.alpha({ length: { min: 10, max: 20 } }),
 		createdAt: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
 		lastSeen: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
 		...overrideResponse,
-	}, {
-		id: faker.string.alpha({ length: { min: 10, max: 20 } }),
-		userAgent: faker.string.alpha({ length: { min: 10, max: 20 } }),
-		createdAt: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
-		lastSeen: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
-		...overrideResponse,
-	}, {
-		id: faker.string.alpha({ length: { min: 10, max: 20 } }),
-		userAgent: faker.string.alpha({ length: { min: 10, max: 20 } }),
-		createdAt: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
-		lastSeen: new Date(`${faker.date.past().toISOString().slice(0, 19)}Z`),
-		...overrideResponse,
-	}]);
+	};
 }
 
 

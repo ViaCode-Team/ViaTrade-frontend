@@ -6,10 +6,6 @@
  * OpenAPI spec version: v1
  */
 import {
-	getGetMeQueryKey,
-} from '@/entities/user';
-
-import {
 	useInfiniteQuery,
 	useMutation,
 	useQuery,
@@ -36,13 +32,6 @@ import type {
 	UseQueryResult,
 } from '@tanstack/react-query';
 
-import * as axios from 'axios';
-import type {
-	AxiosError,
-	AxiosRequestConfig,
-	AxiosResponse,
-} from 'axios';
-
 import type {
 	LoginRequest,
 	ProblemDetails,
@@ -50,29 +39,83 @@ import type {
 	UserSessionDto,
 } from '../../../../shared/api/gen/types';
 
+import {
+	getGetMeQueryKey,
+} from '@/entities/user';
 
-export function login(loginRequest: LoginRequest, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-	return axios.default.post(
-		`/api/Auth/login`,
-		loginRequest,
-		options,
-	);
+import { customInstance } from '../../../../shared/api/client/custom-instance-fetch';
+import type { ErrorType } from '../../../../shared/api/client/custom-instance-fetch';
+
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+export type loginResponse200 = {
+	data: void;
+	status: 200;
+};
+
+export type loginResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type loginResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type loginResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type loginResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type loginResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type loginResponseSuccess = (loginResponse200) & {
+	headers: Headers;
+};
+export type loginResponseError = (loginResponse400 | loginResponse401 | loginResponse403 | loginResponse404 | loginResponse500) & {
+	headers: Headers;
+};
+
+export function getLoginUrl() {
+	return `/api/Auth/login`;
+}
+
+export async function login(loginRequest: LoginRequest, options?: RequestInit): Promise<loginResponseSuccess> {
+	return customInstance<loginResponseSuccess>(getLoginUrl(), {
+		...options,
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', ...options?.headers },
+		body: JSON.stringify(
+			loginRequest,
+		),
+	});
 }
 
 
-export function getLoginMutationOptions<TError = AxiosError<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: LoginRequest }, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: LoginRequest }, TContext> {
+export function getLoginMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: LoginRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: LoginRequest }, TContext> {
 	const mutationKey = ['login'];
-	const { mutation: mutationOptions, axios: axiosOptions } = options
+	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
 			: { ...options, mutation: { ...options.mutation, mutationKey } }
-		: { mutation: { mutationKey }, axios: undefined };
+		: { mutation: { mutationKey }, request: undefined };
 
 
 	const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, { data: LoginRequest }> = (props) => {
 		const { data } = props ?? {};
 
-		return login(data, axiosOptions);
+		return login(data, requestOptions);
 	};
 
 	const onSuccess = (data: Awaited<ReturnType<typeof login>>, variables: { data: LoginRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
@@ -90,9 +133,9 @@ export function getLoginMutationOptions<TError = AxiosError<ProblemDetails>, TCo
 
 export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>;
 export type LoginMutationBody = LoginRequest;
-export type LoginMutationError = AxiosError<ProblemDetails>;
+export type LoginMutationError = ErrorType<ProblemDetails>;
 
-export function useLogin<TError = AxiosError<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: LoginRequest }, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }, queryClient?: QueryClient): UseMutationResult<
+export function useLogin<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: LoginRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof login>>,
 	TError,
 	{ data: LoginRequest },
@@ -102,28 +145,72 @@ export function useLogin<TError = AxiosError<ProblemDetails>, TContext = unknown
 	return useMutation(getLoginMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
-export function register(registerRequest: RegisterRequest, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-	return axios.default.post(
-		`/api/Auth/register`,
-		registerRequest,
-		options,
-	);
+export type registerResponse201 = {
+	data: void;
+	status: 201;
+};
+
+export type registerResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type registerResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type registerResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type registerResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type registerResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type registerResponseSuccess = (registerResponse201) & {
+	headers: Headers;
+};
+export type registerResponseError = (registerResponse400 | registerResponse401 | registerResponse403 | registerResponse404 | registerResponse500) & {
+	headers: Headers;
+};
+
+export function getRegisterUrl() {
+	return `/api/Auth/register`;
+}
+
+export async function register(registerRequest: RegisterRequest, options?: RequestInit): Promise<registerResponseSuccess> {
+	return customInstance<registerResponseSuccess>(getRegisterUrl(), {
+		...options,
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', ...options?.headers },
+		body: JSON.stringify(
+			registerRequest,
+		),
+	});
 }
 
 
-export function getRegisterMutationOptions<TError = AxiosError<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: RegisterRequest }, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: RegisterRequest }, TContext> {
+export function getRegisterMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: RegisterRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: RegisterRequest }, TContext> {
 	const mutationKey = ['register'];
-	const { mutation: mutationOptions, axios: axiosOptions } = options
+	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
 			: { ...options, mutation: { ...options.mutation, mutationKey } }
-		: { mutation: { mutationKey }, axios: undefined };
+		: { mutation: { mutationKey }, request: undefined };
 
 
 	const mutationFn: MutationFunction<Awaited<ReturnType<typeof register>>, { data: RegisterRequest }> = (props) => {
 		const { data } = props ?? {};
 
-		return register(data, axiosOptions);
+		return register(data, requestOptions);
 	};
 
 	const onSuccess = (data: Awaited<ReturnType<typeof register>>, variables: { data: RegisterRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
@@ -141,9 +228,9 @@ export function getRegisterMutationOptions<TError = AxiosError<ProblemDetails>, 
 
 export type RegisterMutationResult = NonNullable<Awaited<ReturnType<typeof register>>>;
 export type RegisterMutationBody = RegisterRequest;
-export type RegisterMutationError = AxiosError<ProblemDetails>;
+export type RegisterMutationError = ErrorType<ProblemDetails>;
 
-export function useRegister<TError = AxiosError<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: RegisterRequest }, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }, queryClient?: QueryClient): UseMutationResult<
+export function useRegister<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: RegisterRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof register>>,
 	TError,
 	{ data: RegisterRequest },
@@ -153,26 +240,68 @@ export function useRegister<TError = AxiosError<ProblemDetails>, TContext = unkn
 	return useMutation(getRegisterMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
-export function refresh(options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-	return axios.default.post(
-		`/api/Auth/refresh`,
-		undefined,
-		options,
-	);
+export type refreshResponse200 = {
+	data: void;
+	status: 200;
+};
+
+export type refreshResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type refreshResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type refreshResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type refreshResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type refreshResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type refreshResponseSuccess = (refreshResponse200) & {
+	headers: Headers;
+};
+export type refreshResponseError = (refreshResponse400 | refreshResponse401 | refreshResponse403 | refreshResponse404 | refreshResponse500) & {
+	headers: Headers;
+};
+
+export function getRefreshUrl() {
+	return `/api/Auth/refresh`;
+}
+
+export async function refresh(options?: RequestInit): Promise<refreshResponseSuccess> {
+	return customInstance<refreshResponseSuccess>(getRefreshUrl(), {
+		...options,
+		method: 'POST',
+
+
+	});
 }
 
 
-export function getRefreshMutationOptions<TError = AxiosError<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof refresh>>, TError, void, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }): UseMutationOptions<Awaited<ReturnType<typeof refresh>>, TError, void, TContext> {
+export function getRefreshMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof refresh>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof refresh>>, TError, void, TContext> {
 	const mutationKey = ['refresh'];
-	const { mutation: mutationOptions, axios: axiosOptions } = options
+	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
 			: { ...options, mutation: { ...options.mutation, mutationKey } }
-		: { mutation: { mutationKey }, axios: undefined };
+		: { mutation: { mutationKey }, request: undefined };
 
 
 	const mutationFn: MutationFunction<Awaited<ReturnType<typeof refresh>>, void> = () => {
-		return refresh(axiosOptions);
+		return refresh(requestOptions);
 	};
 
 	const onSuccess = (data: Awaited<ReturnType<typeof refresh>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
@@ -189,9 +318,9 @@ export function getRefreshMutationOptions<TError = AxiosError<ProblemDetails>, T
 
 export type RefreshMutationResult = NonNullable<Awaited<ReturnType<typeof refresh>>>;
 
-export type RefreshMutationError = AxiosError<ProblemDetails>;
+export type RefreshMutationError = ErrorType<ProblemDetails>;
 
-export function useRefresh<TError = AxiosError<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof refresh>>, TError, void, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }, queryClient?: QueryClient): UseMutationResult<
+export function useRefresh<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof refresh>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof refresh>>,
 	TError,
 	void,
@@ -201,26 +330,68 @@ export function useRefresh<TError = AxiosError<ProblemDetails>, TContext = unkno
 	return useMutation(getRefreshMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
-export function logout(options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-	return axios.default.post(
-		`/api/Auth/logout`,
-		undefined,
-		options,
-	);
+export type logoutResponse200 = {
+	data: void;
+	status: 200;
+};
+
+export type logoutResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type logoutResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type logoutResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type logoutResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type logoutResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type logoutResponseSuccess = (logoutResponse200) & {
+	headers: Headers;
+};
+export type logoutResponseError = (logoutResponse400 | logoutResponse401 | logoutResponse403 | logoutResponse404 | logoutResponse500) & {
+	headers: Headers;
+};
+
+export function getLogoutUrl() {
+	return `/api/Auth/logout`;
+}
+
+export async function logout(options?: RequestInit): Promise<logoutResponseSuccess> {
+	return customInstance<logoutResponseSuccess>(getLogoutUrl(), {
+		...options,
+		method: 'POST',
+
+
+	});
 }
 
 
-export function getLogoutMutationOptions<TError = AxiosError<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext> {
+export function getLogoutMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext> {
 	const mutationKey = ['logout'];
-	const { mutation: mutationOptions, axios: axiosOptions } = options
+	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
 			: { ...options, mutation: { ...options.mutation, mutationKey } }
-		: { mutation: { mutationKey }, axios: undefined };
+		: { mutation: { mutationKey }, request: undefined };
 
 
 	const mutationFn: MutationFunction<Awaited<ReturnType<typeof logout>>, void> = () => {
-		return logout(axiosOptions);
+		return logout(requestOptions);
 	};
 
 	const onSuccess = (data: Awaited<ReturnType<typeof logout>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
@@ -238,9 +409,9 @@ export function getLogoutMutationOptions<TError = AxiosError<ProblemDetails>, TC
 
 export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>;
 
-export type LogoutMutationError = AxiosError<ProblemDetails>;
+export type LogoutMutationError = ErrorType<ProblemDetails>;
 
-export function useLogout<TError = AxiosError<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }, queryClient?: QueryClient): UseMutationResult<
+export function useLogout<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof logout>>,
 	TError,
 	void,
@@ -250,26 +421,68 @@ export function useLogout<TError = AxiosError<ProblemDetails>, TContext = unknow
 	return useMutation(getLogoutMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
-export function logoutAll(options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-	return axios.default.post(
-		`/api/Auth/logout-all`,
-		undefined,
-		options,
-	);
+export type logoutAllResponse200 = {
+	data: void;
+	status: 200;
+};
+
+export type logoutAllResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type logoutAllResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type logoutAllResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type logoutAllResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type logoutAllResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type logoutAllResponseSuccess = (logoutAllResponse200) & {
+	headers: Headers;
+};
+export type logoutAllResponseError = (logoutAllResponse400 | logoutAllResponse401 | logoutAllResponse403 | logoutAllResponse404 | logoutAllResponse500) & {
+	headers: Headers;
+};
+
+export function getLogoutAllUrl() {
+	return `/api/Auth/logout-all`;
+}
+
+export async function logoutAll(options?: RequestInit): Promise<logoutAllResponseSuccess> {
+	return customInstance<logoutAllResponseSuccess>(getLogoutAllUrl(), {
+		...options,
+		method: 'POST',
+
+
+	});
 }
 
 
-export function getLogoutAllMutationOptions<TError = AxiosError<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logoutAll>>, TError, void, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }): UseMutationOptions<Awaited<ReturnType<typeof logoutAll>>, TError, void, TContext> {
+export function getLogoutAllMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logoutAll>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof logoutAll>>, TError, void, TContext> {
 	const mutationKey = ['logoutAll'];
-	const { mutation: mutationOptions, axios: axiosOptions } = options
+	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
 			: { ...options, mutation: { ...options.mutation, mutationKey } }
-		: { mutation: { mutationKey }, axios: undefined };
+		: { mutation: { mutationKey }, request: undefined };
 
 
 	const mutationFn: MutationFunction<Awaited<ReturnType<typeof logoutAll>>, void> = () => {
-		return logoutAll(axiosOptions);
+		return logoutAll(requestOptions);
 	};
 
 	const onSuccess = (data: Awaited<ReturnType<typeof logoutAll>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
@@ -287,9 +500,9 @@ export function getLogoutAllMutationOptions<TError = AxiosError<ProblemDetails>,
 
 export type LogoutAllMutationResult = NonNullable<Awaited<ReturnType<typeof logoutAll>>>;
 
-export type LogoutAllMutationError = AxiosError<ProblemDetails>;
+export type LogoutAllMutationError = ErrorType<ProblemDetails>;
 
-export function useLogoutAll<TError = AxiosError<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logoutAll>>, TError, void, TContext>; skipInvalidation?: boolean; axios?: AxiosRequestConfig }, queryClient?: QueryClient): UseMutationResult<
+export function useLogoutAll<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logoutAll>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof logoutAll>>,
 	TError,
 	void,
@@ -299,11 +512,54 @@ export function useLogoutAll<TError = AxiosError<ProblemDetails>, TContext = unk
 	return useMutation(getLogoutAllMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
-export function getSessions(options?: AxiosRequestConfig): Promise<AxiosResponse<UserSessionDto>> {
-	return axios.default.get(
-		`/api/Auth/sessions`,
-		options,
-	);
+export type getSessionsResponse200 = {
+	data: UserSessionDto;
+	status: 200;
+};
+
+export type getSessionsResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getSessionsResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getSessionsResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getSessionsResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getSessionsResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getSessionsResponseSuccess = (getSessionsResponse200) & {
+	headers: Headers;
+};
+export type getSessionsResponseError = (getSessionsResponse400 | getSessionsResponse401 | getSessionsResponse403 | getSessionsResponse404 | getSessionsResponse500) & {
+	headers: Headers;
+};
+
+export function getGetSessionsUrl() {
+	return `/api/Auth/sessions`;
+}
+
+export async function getSessions(options?: RequestInit): Promise<getSessionsResponseSuccess> {
+	return customInstance<getSessionsResponseSuccess>(getGetSessionsUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
 }
 
 
@@ -321,23 +577,23 @@ export function getGetSessionsQueryKey() {
 }
 
 
-export function getGetSessionsInfiniteQueryOptions<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = AxiosError<ProblemDetails>>(options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; axios?: AxiosRequestConfig }) {
-	const { query: queryOptions, axios: axiosOptions } = options ?? {};
+export function getGetSessionsInfiniteQueryOptions<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
 	const queryKey = queryOptions?.queryKey ?? getGetSessionsInfiniteQueryKey();
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSessions>>> = ({ signal }) => getSessions({ signal, ...axiosOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSessions>>> = ({ signal }) => getSessions({ signal, ...requestOptions });
 
 
 	return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
 export type GetSessionsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getSessions>>>;
-export type GetSessionsInfiniteQueryError = AxiosError<ProblemDetails>;
+export type GetSessionsInfiniteQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = AxiosError<ProblemDetails>>(
+export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
 	options: { query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>> & Pick<
 		DefinedInitialDataOptions<
 			Awaited<ReturnType<typeof getSessions>>,
@@ -345,10 +601,10 @@ export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<t
 			Awaited<ReturnType<typeof getSessions>>
 		>,
 		'initialData'
-	>; axios?: AxiosRequestConfig; },
+	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = AxiosError<ProblemDetails>>(
+export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
 	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>> & Pick<
 		UndefinedInitialDataOptions<
 			Awaited<ReturnType<typeof getSessions>>,
@@ -356,16 +612,16 @@ export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<t
 			Awaited<ReturnType<typeof getSessions>>
 		>,
 		'initialData'
-	>; axios?: AxiosRequestConfig; },
+	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = AxiosError<ProblemDetails>>(
-	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; axios?: AxiosRequestConfig },
+export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = AxiosError<ProblemDetails>>(
-	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; axios?: AxiosRequestConfig },
+export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 	const queryOptions = getGetSessionsInfiniteQueryOptions(options);
@@ -383,23 +639,23 @@ export async function invalidateGetSessionsInfinite(queryClient: QueryClient, op
 }
 
 
-export function getGetSessionsQueryOptions<TData = Awaited<ReturnType<typeof getSessions>>, TError = AxiosError<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; axios?: AxiosRequestConfig }) {
-	const { query: queryOptions, axios: axiosOptions } = options ?? {};
+export function getGetSessionsQueryOptions<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
 	const queryKey = queryOptions?.queryKey ?? getGetSessionsQueryKey();
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSessions>>> = ({ signal }) => getSessions({ signal, ...axiosOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSessions>>> = ({ signal }) => getSessions({ signal, ...requestOptions });
 
 
 	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
 export type GetSessionsQueryResult = NonNullable<Awaited<ReturnType<typeof getSessions>>>;
-export type GetSessionsQueryError = AxiosError<ProblemDetails>;
+export type GetSessionsQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = AxiosError<ProblemDetails>>(
+export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
 	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>> & Pick<
 		DefinedInitialDataOptions<
 			Awaited<ReturnType<typeof getSessions>>,
@@ -407,10 +663,10 @@ export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, 
 			Awaited<ReturnType<typeof getSessions>>
 		>,
 		'initialData'
-	>; axios?: AxiosRequestConfig; },
+	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = AxiosError<ProblemDetails>>(
+export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>> & Pick<
 		UndefinedInitialDataOptions<
 			Awaited<ReturnType<typeof getSessions>>,
@@ -418,16 +674,16 @@ export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, 
 			Awaited<ReturnType<typeof getSessions>>
 		>,
 		'initialData'
-	>; axios?: AxiosRequestConfig; },
+	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = AxiosError<ProblemDetails>>(
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; axios?: AxiosRequestConfig },
+export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = AxiosError<ProblemDetails>>(
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; axios?: AxiosRequestConfig },
+export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 	const queryOptions = getGetSessionsQueryOptions(options);
@@ -443,4 +699,3 @@ export async function invalidateGetSessions(queryClient: QueryClient, options?: 
 
 	return queryClient;
 }
-

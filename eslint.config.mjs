@@ -46,8 +46,8 @@ export default antfu(
 			'style/jsx-quotes': ['warn', 'prefer-single'],
 			'style/no-multiple-empty-lines': ['warn', {
 				max: 2,
-				maxBOF: 1,
-				maxEOF: 1,
+				maxBOF: 0,
+				maxEOF: 0,
 			}],
 			'style/quote-props': 'off',
 			'style/arrow-parens': ['warn', 'always'],

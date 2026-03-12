@@ -5,7 +5,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
-		queries: { retry: false },
+		queries: {
+			retry: false,
+			refetchOnWindowFocus: false,
+			refetchOnMount: false,
+			refetchInterval: false,
+		},
 	},
 });
 

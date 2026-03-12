@@ -1,5 +1,7 @@
 import { handleError, interceptors } from '@/shared/api';
 
+// todo: Запрос идёт на рефреш даже без рефреш и аксесс(он для этого запроса не нужен, но если он есть то зачем делать запрос? response.status !== 401 точно всегда поможет?) токена. Исправить
+
 interceptors.response.use(async (response, url, options) => {
 	if (response.status !== 401)
 		return response;

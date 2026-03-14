@@ -38,18 +38,19 @@ export function RegisterPage() {
 	const { mutate, isPending } = useRegister({
 		mutation: {
 			onError: (error: RegisterMutationError) => {
-				setApiError(error.details?.detail ?? 'Ошибка регистрации');
-			},
-			onSuccess: () => {
-				setApiError(null);
+				const status = error.details?.status;
+				if (status === 409 || status === 400) {
+					setApiError('Логин или email занят');
+				}
+				else {
+					setApiError('Неизвестная ошибка');
+				}
 			},
 		},
 	});
 
 	const handleSubmit = (e: SyntheticEvent) => {
 		e.preventDefault();
-
-		setApiError(null);
 
 		const result = v.safeParse(registerSchema, {
 			email,
@@ -98,7 +99,9 @@ export function RegisterPage() {
 				gap={4}
 			>
 				{apiError && (
-					<Alert severity='error'>{apiError}</Alert>
+					<Alert severity='error'>
+						{apiError}
+					</Alert>
 				)}
 
 				<Stack gap={2}>
@@ -140,7 +143,7 @@ export function RegisterPage() {
 					size='large'
 					type='submit'
 					sx={{ fontSize: 16 }}
-					disabled={isPending}
+					loading={isPending}
 				>
 					Зарегистрироваться
 				</Button>

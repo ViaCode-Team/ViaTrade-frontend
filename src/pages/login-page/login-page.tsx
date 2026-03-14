@@ -28,19 +28,19 @@ export function LoginPage() {
 	const { mutate, isPending } = useLogin({
 		mutation: {
 			onError: (error: LoginMutationError) => {
-				setApiError(error.details?.detail ?? 'Ошибка авторизации');
-			},
-			onSuccess: () => {
-				setApiError(null);
+				const status = error.details?.status;
+				if (status === 401 || status === 400) {
+					setApiError('Неправильный логин или пароль');
+				}
+				else {
+					setApiError('Неизвестная ошибка');
+				}
 			},
 		},
 	});
 
-
 	const handleSubmit = (e: SyntheticEvent) => {
 		e.preventDefault();
-
-		setApiError(null);
 
 		const result = v.safeParse(loginSchema, { login, password });
 
@@ -74,7 +74,9 @@ export function LoginPage() {
 				gap={4}
 			>
 				{apiError && (
-					<Alert severity='error'>{apiError}</Alert>
+					<Alert severity='error'>
+						{apiError}
+					</Alert>
 				)}
 
 				<Stack gap={2}>
@@ -100,7 +102,7 @@ export function LoginPage() {
 					size='large'
 					type='submit'
 					sx={{ fontSize: 16 }}
-					disabled={isPending}
+					loading={isPending}
 				>
 					Войти
 				</Button>

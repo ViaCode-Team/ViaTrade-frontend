@@ -1,9 +1,12 @@
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { type SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router';
+
+import type { RegisterMutationError } from '@/entities/auth';
 
 import { useRegister } from '@/entities/auth';
 import { ROUTES } from '@/shared/model/routes';
@@ -24,16 +27,29 @@ type TRegisterData = {
 };
 
 export function RegisterPage() {
-	const { mutate } = useRegister();
 	const [email, setEmail] = useState('');
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const [errors, setErrors] = useState<Partial<TRegisterData>>({});
+	const [apiError, setApiError] = useState<string | null>(null);
+
+	const { mutate, isPending } = useRegister({
+		mutation: {
+			onError: (error: RegisterMutationError) => {
+				setApiError(error.details?.detail ?? 'Ошибка регистрации');
+			},
+			onSuccess: () => {
+				setApiError(null);
+			},
+		},
+	});
 
 	const handleSubmit = (e: SyntheticEvent) => {
 		e.preventDefault();
+
+		setApiError(null);
 
 		const result = v.safeParse(registerSchema, {
 			email,
@@ -81,6 +97,10 @@ export function RegisterPage() {
 				onSubmit={handleSubmit}
 				gap={4}
 			>
+				{apiError && (
+					<Alert severity='error'>{apiError}</Alert>
+				)}
+
 				<Stack gap={2}>
 					<TextField
 						label='Email'
@@ -120,6 +140,7 @@ export function RegisterPage() {
 					size='large'
 					type='submit'
 					sx={{ fontSize: 16 }}
+					disabled={isPending}
 				>
 					Зарегистрироваться
 				</Button>

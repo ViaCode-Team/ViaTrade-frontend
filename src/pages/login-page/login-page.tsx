@@ -1,9 +1,12 @@
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { type SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router';
+
+import type { LoginMutationError } from '@/entities/auth';
 
 import { useLogin } from '@/entities/auth';
 import { ROUTES } from '@/shared/model/routes';
@@ -17,15 +20,27 @@ const loginSchema = v.object({
 type TLoginData = { login: string; password: string };
 
 export function LoginPage() {
-	const { mutate } = useLogin();
-
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
-
 	const [errors, setErrors] = useState<Partial<TLoginData>>({});
+	const [apiError, setApiError] = useState<string | null>(null);
+
+	const { mutate, isPending } = useLogin({
+		mutation: {
+			onError: (error: LoginMutationError) => {
+				setApiError(error.details?.detail ?? 'Ошибка авторизации');
+			},
+			onSuccess: () => {
+				setApiError(null);
+			},
+		},
+	});
+
 
 	const handleSubmit = (e: SyntheticEvent) => {
 		e.preventDefault();
+
+		setApiError(null);
 
 		const result = v.safeParse(loginSchema, { login, password });
 
@@ -41,6 +56,7 @@ export function LoginPage() {
 		}
 
 		mutate({ data: { login, password } });
+
 		setErrors({});
 	};
 
@@ -57,6 +73,10 @@ export function LoginPage() {
 				onSubmit={handleSubmit}
 				gap={4}
 			>
+				{apiError && (
+					<Alert severity='error'>{apiError}</Alert>
+				)}
+
 				<Stack gap={2}>
 					<TextField
 						label='Логин'
@@ -80,6 +100,7 @@ export function LoginPage() {
 					size='large'
 					type='submit'
 					sx={{ fontSize: 16 }}
+					disabled={isPending}
 				>
 					Войти
 				</Button>

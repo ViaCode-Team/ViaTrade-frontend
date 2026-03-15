@@ -37,7 +37,7 @@ dist-ssr
 /coverage
 
 # Env files
-.env*
+.env
 
 # Misc
 .DS_Store

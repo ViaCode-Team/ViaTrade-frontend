@@ -1,3 +1,5 @@
+import { buildApiUrl } from '@/shared/lib/config';
+
 import { handleError, parseBody } from './body';
 import { runRequestInterceptors, runResponseInterceptors } from './interceptor';
 
@@ -7,7 +9,7 @@ export async function customInstance<T>(
 	url: string,
 	options: RequestInit,
 ): Promise<T> {
-	[url, options] = await runRequestInterceptors(url, options);
+	[url, options] = await runRequestInterceptors(buildApiUrl(url), options);
 
 	let response = await fetch(url, options);
 

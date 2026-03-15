@@ -3,7 +3,8 @@ import { useColorScheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { getThemeState } from '../lib/theme';
+import { getThemeState } from '@/shared/lib/theme-mode';
+
 
 export function ThemeSwitcher() {
 	const { mode, setMode } = useColorScheme();

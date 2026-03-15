@@ -3,7 +3,7 @@ import { styled, useColorScheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCallback, useMemo } from 'react';
 
-import { getThemeState } from '../lib/theme';
+import { getThemeState } from '@/shared/lib/theme-mode';
 
 const STARS = [
 	{ left: '2.5em', top: '0.5em' },

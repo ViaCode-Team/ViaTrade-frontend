@@ -22,7 +22,7 @@ export function QueryProvider({ children }: StoreProviderProps) {
 	return (
 		<QueryClientProvider client={queryClient}>
 			{children}
-			<ReactQueryDevtools initialIsOpen={false} />
+			<ReactQueryDevtools buttonPosition='bottom-left' initialIsOpen={false} />
 		</QueryClientProvider>
 	);
 }

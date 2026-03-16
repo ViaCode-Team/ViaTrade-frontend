@@ -19,10 +19,11 @@ A modern web application for investment analysis.
 | **State Management** | TanStack Query 5.90+   |
 | **Routing**          | React Router 7.1+      |
 | **Validation**       | Valibot                |
+| **Icons**            | MUI Icons              |
 
 ## 📐 Architecture
 
-The project follows [**Feature-Sliced Design (FSD)**](https://feature-sliced.design/) architecture
+The project follows [**Feature-Sliced Design (FSD)**](https://fsd.how/) architecture
 
 ## 📦 Getting Started
 
@@ -40,22 +41,37 @@ npm install
 ### Development
 
 ```bash
-npm run dev
+npm run dev          # Start Vite development server
 ```
 
 ### Production Build
 
 ```bash
-npm run build
-npm run preview
+npm run build        # Type-check and build for production
+npm run preview      # Preview production build locally
 ```
 
 ## 🛠 Code Quality
 
 ```bash
-npm run lint         # Run ESLint
-npm run lint:fix     # Auto-fix ESLint issues
-npm run format       # Check Prettier formatting
-npm run format:fix   # Fix Prettier formatting
-npm run tsc          # Type-check
+npm run lint         # Run ESLint with timing information
+npm run lint:fix     # Run ESLint and auto-fix issues
+npm run format       # Check formatting with Prettier
+npm run format:fix   # Fix formatting with Prettier
+npm run tsc          # Type-check the project
+npm run check        # Run all checks: tsc + lint + format
+npm run check:fix    # Run all checks with auto-fix: tsc + lint:fix + format:fix
+```
+
+## 🔧 API Generation
+
+```bash
+npm run api:gen      # Generate API types from OpenAPI spec using Orval
+```
+
+## 📜 Other Commands
+
+```bash
+npm run prepare      # Install Husky git hooks (runs automatically after install)
+npm run types        # Type-check TypeScript files
 ```

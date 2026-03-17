@@ -15,6 +15,13 @@ export type ProtectedRouteProps = {
 	authRedirectTo?: To;
 };
 
+// async function mock() {
+// 	return {
+// 		data: getGetMeResponseMock(),
+// 		status: 200,
+// 		headers: new Headers(),
+// 	} as const;
+// }
 
 export function ProtectedRoute({
 	isPrivate = false,

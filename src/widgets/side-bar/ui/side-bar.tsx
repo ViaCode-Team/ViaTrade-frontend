@@ -62,6 +62,7 @@ export function SideBar({ isCollapsed = false }: SideBarProps) {
 						key={item.text}
 						icon={item.icon}
 						text={item.text}
+						path={item.path}
 						isCollapsed={isCollapsed}
 					/>
 				))}

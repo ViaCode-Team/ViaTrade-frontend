@@ -4,7 +4,6 @@ export const BASE_URL = IS_DEV
 	? import.meta.env.VITE_API_BASE_URL_DEV
 	: import.meta.env.VITE_API_BASE_URL_PROD;
 
-
 /**
  * Joins base URL with endpoint path, handling slashes correctly
  * @param endpoint - API endpoint path (e.g., '/users' or 'users')
@@ -13,7 +12,6 @@ export const BASE_URL = IS_DEV
 export function buildApiUrl(endpoint: string): string {
 	const base = BASE_URL?.replace(/\/$/, '') || '';
 	const path = endpoint.replace(/^\//, '');
-
 
 	return `${base}/${path}`;
 }

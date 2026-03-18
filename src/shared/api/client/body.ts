@@ -34,7 +34,7 @@ export async function parseBody<T = unknown>(response: Response | Request): Prom
 	return response.text();
 }
 
-export async function handleError(response: Response) {
+export async function createApiError(response: Response): Promise<ApiError<ProblemDetails>> {
 	let errorBody: ProblemDetails | undefined;
 
 	if (response.body) {
@@ -46,8 +46,9 @@ export async function handleError(response: Response) {
 		}
 	}
 
-	if (errorBody)
-		throw new ApiError(errorBody);
+	if (errorBody) {
+		return new ApiError(errorBody);
+	}
 
 	const details: ProblemDetails = {
 		type: `https://httpstatuses.com/${response.status}`,
@@ -56,5 +57,5 @@ export async function handleError(response: Response) {
 		detail: 'Custom HTTP Error',
 	};
 
-	throw new ApiError(details);
+	return new ApiError(details);
 }

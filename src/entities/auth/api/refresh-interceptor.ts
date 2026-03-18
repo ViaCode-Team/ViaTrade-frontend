@@ -1,23 +1,39 @@
-import { handleError, interceptors } from '@/shared/api';
+import { createApiError, interceptors } from '@/shared/api';
 import { buildApiUrl } from '@/shared/lib/config';
 
-import { getRefreshUrl } from './gen';
+import { getLoginUrl, getRefreshUrl, getRegisterUrl } from './gen';
 
-// todo: Запрос идёт на рефреш даже без рефреш и аксесс(он для этого запроса не нужен, но если он есть то зачем делать запрос? response.status !== 401 точно всегда поможет?) токена. Исправить
+const AUTH_URLS = [getRegisterUrl(), getLoginUrl()];
 
-// Костыль: делаем запрос на refresh только если предыдущий запрос на refresh был успешный
-let refreshFailed = false;
+function isAuthRequest(url: string) {
+	return AUTH_URLS.some((path) => url.includes(path));
+}
 
-interceptors.response.use(async (response, url, options) => {
-	if (response.status !== 401 || refreshFailed)
-		return response;
-
-	const responseRefresh =	await fetch(buildApiUrl(getRefreshUrl()), { method: 'POST' });
+async function refreshToken(): Promise<void> {
+	const responseRefresh = await fetch(
+		buildApiUrl(getRefreshUrl()),
+		{ method: 'POST' },
+	);
 
 	if (!responseRefresh.ok) {
-		refreshFailed = true;
-		await handleError(responseRefresh);
+		throw await createApiError(responseRefresh);
 	}
+}
 
+let refreshPromise: Promise<void> | null = null;
+
+interceptors.response.use(async (response, url, options): Promise<Response> => {
+	if (response.status !== 401 || isAuthRequest(url))
+		return response;
+
+	// Deduplicate refresh requests
+	refreshPromise ??= refreshToken()
+		.finally(() => {
+			refreshPromise = null;
+		});
+
+	await refreshPromise;
+
+	// Retry
 	return fetch(url, options);
 });

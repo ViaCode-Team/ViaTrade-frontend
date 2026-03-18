@@ -1,4 +1,4 @@
-import { type SyntheticEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 
 import type { LoginMutationError } from '@/entities/auth';
 
@@ -21,7 +21,7 @@ type UseLoginFormReturn = {
 	apiError: string | null;
 	isPending: boolean;
 	setField: (field: keyof TLoginData, value: string) => void;
-	submit: (e: SyntheticEvent) => void;
+	submit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export function useLoginForm(options?: UseLoginFormOptions): UseLoginFormReturn {
@@ -45,7 +45,7 @@ export function useLoginForm(options?: UseLoginFormOptions): UseLoginFormReturn 
 		setFormData((prev) => ({ ...prev, [field]: value }));
 	};
 
-	const submit = (e: SyntheticEvent) => {
+	const submit = (e: SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const result = validateLoginForm(formData);

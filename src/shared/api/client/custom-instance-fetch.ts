@@ -1,6 +1,6 @@
 import { buildApiUrl } from '@/shared/lib/config';
 
-import { handleError, parseBody } from './body';
+import { createApiError, parseBody } from './body';
 import { runRequestInterceptors, runResponseInterceptors } from './interceptor';
 
 export type ErrorType<Error> = ApiError<Error>;
@@ -16,7 +16,7 @@ export async function customInstance<T>(
 	response = await runResponseInterceptors(response, url, options);
 
 	if (!response.ok) {
-		await handleError(response);
+		throw await createApiError(response);
 	}
 
 	const body = await parseBody<T>(response);

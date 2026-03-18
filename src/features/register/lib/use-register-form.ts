@@ -1,4 +1,4 @@
-import { type SyntheticEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 
 import type { RegisterMutationError } from '@/entities/auth';
 
@@ -24,7 +24,7 @@ type UseRegisterFormReturn = {
 	apiError: string | null;
 	isPending: boolean;
 	setField: (field: keyof TRegisterData, value: string) => void;
-	submit: (e: SyntheticEvent) => void;
+	submit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export function useRegisterForm(options?: UseRegisterFormOptions): UseRegisterFormReturn {
@@ -50,7 +50,7 @@ export function useRegisterForm(options?: UseRegisterFormOptions): UseRegisterFo
 		setFormData((prev) => ({ ...prev, [field]: value }));
 	};
 
-	const submit = (e: SyntheticEvent) => {
+	const submit = (e: SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const result = validateRegisterForm(formData);

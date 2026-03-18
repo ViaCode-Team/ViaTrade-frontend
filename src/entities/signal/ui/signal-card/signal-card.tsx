@@ -69,7 +69,6 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 			<Box sx={{
 				display: 'flex',
 				justifyContent: 'space-between',
-				mb: 2,
 				gap: 1,
 			}}
 			>

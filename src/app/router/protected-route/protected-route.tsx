@@ -7,7 +7,7 @@ import {
 
 import { useGetMe } from '@/entities/user';
 import { ROUTES } from '@/shared/model/routes';
-import { Loader } from '@/shared/ui/loader';
+import { GlobalLoader } from '@/shared/ui/global-loader';
 
 export type ProtectedRouteProps = {
 	isPrivate?: boolean;
@@ -37,7 +37,7 @@ export function ProtectedRoute({
 
 	// Пока идёт чекаут пользователя, показываем прелоадер
 	if (!isAuthChecked)
-		return <Loader />;
+		return <GlobalLoader />;
 
 	// Если маршрут для авторизованного пользователя(приватный), но пользователь неавторизован, то делаем редирект
 	if (isPrivate && !isExistUser)

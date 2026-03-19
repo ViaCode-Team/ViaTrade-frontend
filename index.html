@@ -52,10 +52,276 @@
 			html.light {
 				background-color: #fff;
 			}
+
+			html.dark .container-loader {
+				background-color: #121212;
+			}
+			html.light .container-loader {
+				background-color: #fff;
+			}
+		</style>
+
+		<style>
+			body,
+			html {
+				margin: 0;
+			}
+
+			.loader {
+				width: 160px;
+				height: 160px;
+			}
+
+			.part {
+				transform-box: fill-box;
+				opacity: 0;
+			}
+
+			/* полоски */
+			.v {
+				transform-origin: bottom;
+				clip-path: inset(100% 0 0 0);
+				animation: rise 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+			}
+
+			/* стрелка */
+			.arrow {
+				transform-origin: left;
+				clip-path: inset(0 100% 0 0);
+				animation: slide 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+			}
+
+			.p1 {
+				animation-delay: 0s;
+			}
+			.p2 {
+				animation-delay: 0.18s;
+			}
+			.p3 {
+				animation-delay: 0.36s;
+			}
+			.arrow {
+				animation-delay: 0.6s;
+			}
+
+			/* @keyframes rise {
+				0% {
+					opacity: 0;
+					clip-path: inset(100% 0 0 0);
+					transform: translateY(18px);
+				}
+
+				20% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateY(0);
+				}
+
+				70% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateY(0);
+				}
+
+				100% {
+					opacity: 0;
+					clip-path: inset(0 0 0 0);
+					transform: translateY(0);
+				}
+			}
+
+			@keyframes slide {
+				0% {
+					opacity: 0;
+					clip-path: inset(0 100% 0 0);
+					transform: translateX(-18px);
+				}
+
+				20% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateX(0);
+				}
+
+				70% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateX(0);
+				}
+
+				100% {
+					opacity: 0;
+					clip-path: inset(0 0 0 0);
+					transform: translateX(0);
+				}
+			} */
+
+			@keyframes rise {
+				0% {
+					opacity: 0;
+					clip-path: inset(100% 0 0 0);
+					transform: translateY(18px);
+				}
+				25% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateY(0);
+				}
+				70% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateY(0);
+				}
+				88% {
+					opacity: 0;
+					clip-path: inset(0 0 0 0);
+					transform: translateY(0);
+				}
+				100% {
+					opacity: 0;
+					clip-path: inset(0 0 0 0);
+					transform: translateY(0);
+				}
+			}
+
+			@keyframes slide {
+				0% {
+					opacity: 0;
+					clip-path: inset(0 100% 0 0);
+					transform: translateX(-18px);
+				}
+				25% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateX(0);
+				}
+				70% {
+					opacity: 1;
+					clip-path: inset(0 0 0 0);
+					transform: translateX(0);
+				}
+				88% {
+					opacity: 0;
+					clip-path: inset(0 0 0 0);
+					transform: translateX(0);
+				}
+				100% {
+					opacity: 0;
+					clip-path: inset(0 0 0 0);
+					transform: translateX(0);
+				}
+			}
+
+			.container-loader {
+				position: fixed;
+				inset: 0;
+				z-index: 100000;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				opacity: 0;
+				visibility: hidden;
+				pointer-events: none;
+
+				transition: opacity 0.5s ease;
+			}
+
+			.container-loader.show {
+				opacity: 1;
+				visibility: visible;
+				pointer-events: all;
+			}
 		</style>
 	</head>
 	<body>
+		<div id="global-loader" class="container-loader">
+			<svg class="loader" id="loader" viewBox="0 0 160 160" fill="none">
+				<path
+					class="part v p1"
+					d="M25.25 113.625L0 138.37V67.3333H25.25"
+					fill="#F4B349"
+				/>
+				<path
+					class="part v p2"
+					d="M67.3333 98.1383L54.1192 86.86L42.0833 97.97V33.6667H67.3333"
+					fill="#F4B349"
+				/>
+				<path
+					class="part v p3"
+					d="M109.417 84.1667L84.1667 109.417V0H109.417"
+					fill="#F4B349"
+				/>
+				<path
+					class="part arrow"
+					d="M133.067 82.5675L117.833 67.3333H159.917V109.417L144.851 94.3508L84.1667 154.53L54.9608 129.112L23.1458 159.917H0L54.4558 106.555L84.1667 131.637"
+					fill="#F4B349"
+				/>
+			</svg>
+		</div>
+
 		<div id="root"></div>
-		<script type="module" src="/src/app/index.tsx"></script>
+		<script type="module" src="/src/app/entry.tsx"></script>
+		<script>
+			(function () {
+				const loader = document.getElementById('global-loader');
+				const activeTokens = new Set();
+				const bootMinShowAt = performance.now() + 500;
+
+				let showTimer = null;
+				let plannedShowAt = null;
+
+				const showNow = () => {
+					if (!loader) return;
+					loader.classList.add('show');
+				};
+
+				const hideNow = () => {
+					if (!loader) return;
+					loader.classList.remove('show');
+				};
+
+				const scheduleShowAt = (targetAt) => {
+					if (loader?.classList.contains('show')) return;
+					if (plannedShowAt !== null && plannedShowAt <= targetAt) return;
+
+					plannedShowAt = targetAt;
+					clearTimeout(showTimer);
+
+					const waitMs = Math.max(0, targetAt - performance.now());
+					showTimer = setTimeout(() => {
+						plannedShowAt = null;
+						showNow();
+					}, waitMs);
+				};
+
+				const api = {
+					acquire({ delayMs = 0 } = {}) {
+						const token = Symbol('vt-loader-token');
+						activeTokens.add(token);
+
+						const showAt = Math.max(
+							bootMinShowAt,
+							performance.now() + Math.max(0, delayMs),
+						);
+						scheduleShowAt(showAt);
+
+						return token;
+					},
+					release(token) {
+						if (!activeTokens.has(token)) return;
+						activeTokens.delete(token);
+						if (activeTokens.size > 0) return;
+
+						clearTimeout(showTimer);
+						plannedShowAt = null;
+						hideNow();
+					},
+				};
+
+				window.__VT_LOADER__ = api;
+				window.__VT_BOOT_LOADER_TOKEN__ = api.acquire({ delayMs: 500 });
+			})();
+		</script>
 	</body>
 </html>

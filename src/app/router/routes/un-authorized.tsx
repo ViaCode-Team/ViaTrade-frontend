@@ -1,8 +1,6 @@
 import type { RouteObject } from 'react-router';
 
 import { AuthLayout } from '@/app/layouts/auth-layout';
-import { LoginPageLazy } from '@/pages/login-page';
-import { RegisterPageLazy } from '@/pages/register-page';
 import { ROUTES } from '@/shared/model/routes';
 
 export const UnAuthorizedRoutes: RouteObject[] = [
@@ -11,11 +9,22 @@ export const UnAuthorizedRoutes: RouteObject[] = [
 		children: [
 			{
 				path: ROUTES.LOGIN,
-				element: <LoginPageLazy />,
+				lazy: async () => {
+					const module = await import('@/pages/login-page/login-page');
+					return {
+						Component: module.default,
+					};
+				},
 			},
 			{
 				path: ROUTES.REGISTER,
-				element: <RegisterPageLazy />,
+
+				lazy: async () => {
+					const module = await import('@/pages/register-page/register-page');
+					return {
+						Component: module.default,
+					};
+				},
 			},
 		],
 	},

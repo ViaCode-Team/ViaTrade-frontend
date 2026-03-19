@@ -108,7 +108,7 @@ function getDirectionLabel(direction: Signal['direction']) {
 	}
 }
 
-function StatCard({
+export function StatCard({
 	icon,
 	title,
 	value,

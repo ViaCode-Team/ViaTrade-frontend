@@ -9,3 +9,4 @@ gen
 *.js
 *.ts
 *.mjs
+*.min*

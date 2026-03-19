@@ -32,7 +32,10 @@ export default defineConfig({
 				},
 			},
 		}),
-		analyzer(),
+		analyzer({
+			analyzerPort: 8889,
+			openAnalyzer: false,
+		}),
 	],
 
 	resolve: {

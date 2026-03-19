@@ -1,0 +1,125 @@
+html.dark .container-loader {
+	background-color: var(--palette-background-default);
+}
+
+html.light .container-loader {
+	background-color: var(--palette-background-default);
+}
+
+body,
+html {
+	margin: 0;
+}
+
+.loader {
+	width: 160px;
+	height: 160px;
+}
+
+.part {
+	transform-box: fill-box;
+	opacity: 0;
+}
+
+.v {
+	transform-origin: bottom;
+	clip-path: inset(100% 0 0 0);
+	animation: rise 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.arrow {
+	transform-origin: left;
+	clip-path: inset(0 100% 0 0);
+	animation: slide 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.p1 {
+	animation-delay: 0s;
+}
+
+.p2 {
+	animation-delay: 0.18s;
+}
+
+.p3 {
+	animation-delay: 0.36s;
+}
+
+.arrow {
+	animation-delay: 0.6s;
+}
+
+@keyframes rise {
+	0% {
+		opacity: 0;
+		clip-path: inset(100% 0 0 0);
+		transform: translateY(18px);
+	}
+	25% {
+		opacity: 1;
+		clip-path: inset(0 0 0 0);
+		transform: translateY(0);
+	}
+	70% {
+		opacity: 1;
+		clip-path: inset(0 0 0 0);
+		transform: translateY(0);
+	}
+	88% {
+		opacity: 0;
+		clip-path: inset(0 0 0 0);
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		clip-path: inset(0 0 0 0);
+		transform: translateY(0);
+	}
+}
+
+@keyframes slide {
+	0% {
+		opacity: 0;
+		clip-path: inset(0 100% 0 0);
+		transform: translateX(-18px);
+	}
+	25% {
+		opacity: 1;
+		clip-path: inset(0 0 0 0);
+		transform: translateX(0);
+	}
+	70% {
+		opacity: 1;
+		clip-path: inset(0 0 0 0);
+		transform: translateX(0);
+	}
+	88% {
+		opacity: 0;
+		clip-path: inset(0 0 0 0);
+		transform: translateX(0);
+	}
+	100% {
+		opacity: 0;
+		clip-path: inset(0 0 0 0);
+		transform: translateX(0);
+	}
+}
+
+.container-loader {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 0.5s ease;
+}
+
+.container-loader.show {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: all;
+}

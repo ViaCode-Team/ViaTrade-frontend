@@ -1,18 +1,7 @@
-import { useLayoutEffect } from 'react';
-
-import {
-	acquireGlobalLoader,
-	releaseGlobalLoader,
-} from '@/shared/lib/global-loader';
+import { useGlobalLoaderEffect } from '../../lib/use-global-loader-effect';
 
 export function GlobalLoader() {
-	useLayoutEffect(() => {
-		const token = acquireGlobalLoader();
-
-		return () => {
-			releaseGlobalLoader(token);
-		};
-	}, []);
+	useGlobalLoaderEffect();
 
 	return null;
 }

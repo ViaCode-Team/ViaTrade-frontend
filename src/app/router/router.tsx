@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 
-import { ErrorPageLazy } from '@/pages/error-page';
+import { ErrorPage } from '@/pages/error-page';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import { MainLayout } from '../layouts/main-layout';
@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
 		// Глобальные ошибки, НЕ роута (500)
 		errorElement: (
 			<MainLayout>
-				<ErrorPageLazy statusCode={500} />
+				<ErrorPage statusCode={500} />
 			</MainLayout>
 		),
 
@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
 			// Ошибки роута (404)
 			{
 				path: '*',
-				element: <ErrorPageLazy />,
+				lazy: () => import('@/pages/error-page'),
 			},
 		],
 	},

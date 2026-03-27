@@ -1,3 +1,2 @@
-import { lazy } from 'react';
-
-export const ErrorPageLazy = lazy(() => import('./error-page'));
+export { ErrorPage } from './error-page';
+export { ErrorPage as Component } from './error-page';

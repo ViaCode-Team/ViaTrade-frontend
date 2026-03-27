@@ -1,3 +1,2 @@
-import { lazy } from 'react';
-
-export const DashboardPageLazy = lazy(() => import('./dashboard-page'));
+export { DashboardPage } from './dashboard-page';
+export { DashboardPage as Component } from './dashboard-page';

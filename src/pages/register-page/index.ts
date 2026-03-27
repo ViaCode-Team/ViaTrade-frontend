@@ -1,3 +1,2 @@
-import { lazy } from 'react';
-
-export const RegisterPageLazy = lazy(() => import('./register-page'));
+export { RegisterPage } from './register-page';
+export { RegisterPage as Component } from './register-page';

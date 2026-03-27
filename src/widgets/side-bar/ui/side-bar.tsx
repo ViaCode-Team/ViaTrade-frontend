@@ -4,10 +4,13 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import HomeIcon from '@mui/icons-material/Home';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonIcon from '@mui/icons-material/Person';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
+
+import { ROUTES } from '@/shared/model/routes';
 
 import { SideBarItem } from './side-bar-item';
 
@@ -52,6 +55,7 @@ export function SideBar({ isCollapsed = false }: SideBarProps) {
 				'& .MuiDrawer-paper': {
 					width: isCollapsed ? 56 : 200,
 					transition: 'width 0.2s ease',
+					height: { sm: `calc(100vh - ${65}px)`, xs: `calc(100vh - ${49}px)` },
 					top: 'auto',
 				},
 			}}
@@ -66,6 +70,15 @@ export function SideBar({ isCollapsed = false }: SideBarProps) {
 						isCollapsed={isCollapsed}
 					/>
 				))}
+			</List>
+
+			<List disablePadding sx={{ mt: 'auto' }}>
+				<SideBarItem
+					icon={<PersonIcon />}
+					text='Профиль'
+					path={ROUTES.PROFILE}
+					isCollapsed={isCollapsed}
+				/>
 			</List>
 		</Drawer>
 	);

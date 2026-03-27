@@ -1,3 +1,2 @@
-import { lazy } from 'react';
-
-export const SignalsPageLazy = lazy(() => import('./signals-page'));
+export { SignalsPage } from './signals-page';
+export { SignalsPage as Component } from './signals-page';

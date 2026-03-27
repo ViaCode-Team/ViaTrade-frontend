@@ -9,22 +9,11 @@ export const UnAuthorizedRoutes: RouteObject[] = [
 		children: [
 			{
 				path: ROUTES.LOGIN,
-				lazy: async () => {
-					const module = await import('@/pages/login-page/login-page');
-					return {
-						Component: module.default,
-					};
-				},
+				lazy: () => import('@/pages/login-page'),
 			},
 			{
 				path: ROUTES.REGISTER,
-
-				lazy: async () => {
-					const module = await import('@/pages/register-page/register-page');
-					return {
-						Component: module.default,
-					};
-				},
+				lazy: () => import('@/pages/register-page'),
 			},
 		],
 	},

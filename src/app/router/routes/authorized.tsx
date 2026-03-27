@@ -9,17 +9,15 @@ export const AuthorizedRoutes: RouteObject[] = [
 		children: [
 			{
 				path: ROUTES.HOME,
-				lazy: () => import('@/pages/dashboard-page/dashboard-page')
-					.then((module) => ({
-						Component: module.default,
-					})),
+				lazy: () => import('@/pages/dashboard-page'),
 			},
 			{
 				path: ROUTES.SIGNALS,
-				lazy: () => import('@/pages/signals-page/signals-page')
-					.then((module) => ({
-						Component: module.default,
-					})),
+				lazy: () => import('@/pages/signals-page'),
+			},
+			{
+				path: ROUTES.PROFILE,
+				lazy: () => import('@/pages/profile-page'),
 			},
 		],
 	},

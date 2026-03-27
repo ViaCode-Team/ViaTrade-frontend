@@ -238,5 +238,3 @@ export function SignalsPage() {
 		</Box>
 	);
 }
-
-export default SignalsPage;

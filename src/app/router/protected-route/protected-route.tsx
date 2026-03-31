@@ -5,7 +5,7 @@ import {
 	useLocation,
 } from 'react-router';
 
-import { getGetMeResponseMock, useGetMe } from '@/entities/user';
+import { useGetMe } from '@/entities/user';
 import { ROUTES } from '@/shared/model/routes';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
@@ -15,13 +15,13 @@ export type ProtectedRouteProps = {
 	authRedirectTo?: To;
 };
 
-async function mock() {
-	return {
-		data: getGetMeResponseMock(),
-		status: 200,
-		headers: new Headers(),
-	} as const;
-}
+// async function mock() {
+// 	return {
+// 		data: getGetMeResponseMock(),
+// 		status: 200,
+// 		headers: new Headers(),
+// 	} as const;
+// }
 
 export function ProtectedRoute({
 	isPrivate = false,
@@ -29,7 +29,7 @@ export function ProtectedRoute({
 	authRedirectTo = ROUTES.HOME,
 }: ProtectedRouteProps) {
 	const location = useLocation();
-	const { data, isLoading } = useGetMe({ query: { queryFn: mock } });
+	const { data, isLoading } = useGetMe();
 
 	const isAuthChecked = !isLoading;
 	const user = data?.data;

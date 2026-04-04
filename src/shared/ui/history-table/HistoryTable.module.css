@@ -1,0 +1,11 @@
+.tableWrapper {
+	overflow-x: auto;
+}
+
+.alignRight {
+	text-align: right;
+}
+
+.alignCenter {
+	text-align: center;
+}

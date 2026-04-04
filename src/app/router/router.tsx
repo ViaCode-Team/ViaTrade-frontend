@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 
-import { ErrorPage } from '@/pages/error-page';
+import { ErrorPage } from '@/pages/error-page/error-page';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import { MainLayout } from '../layouts/main-layout';

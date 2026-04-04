@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Stack, Title } from '@mantine/core';
+
+import classes from './AuthLayout.module.css';
 
 type AuthLayoutProps = {
 	title: string;
@@ -10,23 +11,12 @@ type AuthLayoutProps = {
 
 export function AuthLayout({ title, children }: AuthLayoutProps) {
 	return (
-		<Stack width={1} alignItems='center' gap={6}>
-			<Typography
-				variant='h2'
-				component='h1'
-				sx={{
-					'@media (max-width: 425px)': {
-						fontSize: 46,
-					},
-					'@media (max-width: 320px)': {
-						fontSize: 36,
-					},
-				}}
-			>
+		<Stack w='100%' maw={420} align='center' gap='xl' mx='auto'>
+			<Title order={1} className={classes.title}>
 				{title}
-			</Typography>
+			</Title>
 
-			<Stack width={1} maxWidth={460} gap={3}>
+			<Stack w='100%' gap='md'>
 				{children}
 			</Stack>
 		</Stack>

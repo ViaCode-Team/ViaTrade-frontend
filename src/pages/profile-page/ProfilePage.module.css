@@ -1,0 +1,16 @@
+.root {
+	padding: var(--mantine-spacing-sm);
+	max-width: 860px;
+	margin-inline: auto;
+
+	@media (min-width: 48em) {
+		padding: var(--mantine-spacing-md);
+	}
+}
+
+.loader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 300px;
+}

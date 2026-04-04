@@ -1,0 +1,8 @@
+.toolbar {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	flex-wrap: wrap;
+	padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+	min-height: 56px;
+}

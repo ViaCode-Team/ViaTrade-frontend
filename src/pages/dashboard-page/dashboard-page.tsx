@@ -1,16 +1,23 @@
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import PercentIcon from '@mui/icons-material/Percent';
-import RemoveIcon from '@mui/icons-material/Remove';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import TimerIcon from '@mui/icons-material/Timer';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import {
+	Badge,
+	Group,
+	Paper,
+	SimpleGrid,
+	Text,
+	Title,
+} from '@mantine/core';
+import {
+	IconBuildingBank,
+	IconChartLine,
+	IconClock,
+	IconCurrencyDollar,
+	IconMinus,
+	IconPercentage,
+	IconTrendingDown,
+	IconTrendingUp,
+} from '@tabler/icons-react';
+
+import classes from './DashboardPage.module.css';
 
 type Signal = {
 	id: string;
@@ -86,25 +93,14 @@ const mockStats: TradeStats = {
 	averageHoldTime: '4h 32m',
 };
 
-function getDirectionColor(direction: Signal['direction']) {
+function getDirectionProps(direction: Signal['direction']) {
 	switch (direction) {
 		case 'buy':
-			return { bg: 'success.light', text: 'success.contrastText', icon: <TrendingUpIcon /> };
+			return { color: 'green' as const, icon: <IconTrendingUp size={14} />, label: 'Покупка' };
 		case 'sell':
-			return { bg: 'error.light', text: 'error.contrastText', icon: <TrendingDownIcon /> };
+			return { color: 'red' as const, icon: <IconTrendingDown size={14} />, label: 'Продажа' };
 		case 'hold':
-			return { bg: 'grey.400', text: 'grey.50', icon: <RemoveIcon /> };
-	}
-}
-
-function getDirectionLabel(direction: Signal['direction']) {
-	switch (direction) {
-		case 'buy':
-			return 'Покупка';
-		case 'sell':
-			return 'Продажа';
-		case 'hold':
-			return 'Держать';
+			return { color: 'gray' as const, icon: <IconMinus size={14} />, label: 'Держать' };
 	}
 }
 
@@ -113,7 +109,6 @@ export function StatCard({
 	title,
 	value,
 	subtitle,
-	color,
 }: {
 	icon: React.ReactNode;
 	title: string;
@@ -122,194 +117,130 @@ export function StatCard({
 	color: string;
 }) {
 	return (
-		<Paper
-			sx={{
-				p: 3,
-				height: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-between',
-				transition: 'transform 0.2s, box-shadow 0.2s',
-				'&:hover': {
-					transform: 'translateY(-4px)',
-					boxShadow: 6,
-				},
-			}}
-		>
-			<Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-				<Box
-					sx={{
-						p: 1,
-						borderRadius: 2,
-						bgcolor: `${color}.lighter`,
-						color: `${color}.main`,
-						display: 'flex',
-					}}
-				>
+		<Paper className={classes.statCard} withBorder p='lg'>
+			<Group gap='sm' mb='sm'>
+				<div className={classes.iconWrapper}>
 					{icon}
-				</Box>
-				<Typography variant='subtitle2' color='text.secondary'>
+				</div>
+				<Text size='sm' c='dimmed'>
 					{title}
-				</Typography>
-			</Box>
-			<Box>
-				<Typography variant='h4' fontWeight='bold'>
+				</Text>
+			</Group>
+			<div>
+				<Title order={3} fw='bold'>
 					{value}
-				</Typography>
+				</Title>
 				{subtitle && (
-					<Typography variant='caption' color='text.secondary'>
+					<Text size='xs' c='dimmed'>
 						{subtitle}
-					</Typography>
+					</Text>
 				)}
-			</Box>
+			</div>
 		</Paper>
 	);
 }
 
-function SignalCard({ signal }: { signal: Signal }) {
-	const colors = getDirectionColor(signal.direction);
+function DashboardSignalCard({ signal }: { signal: Signal }) {
+	const dir = getDirectionProps(signal.direction);
 
 	return (
-		<Paper
-			sx={{
-				p: 2,
-				transition: 'transform 0.2s, box-shadow 0.2s',
-				'&:hover': {
-					transform: 'translateX(4px)',
-					boxShadow: 4,
-				},
-			}}
-		>
-			<Grid container spacing={2} alignItems='center'>
-				<Grid size={12}>
-					<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-						<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-							<Chip
-								icon={colors.icon}
-								label={getDirectionLabel(signal.direction)}
-								sx={{
-									bgcolor: colors.bg,
-									color: colors.text,
-									'& .MuiChip-icon': { color: 'inherit' },
-									fontWeight: 600,
-								}}
-								size='small'
-							/>
-							<Typography variant='subtitle1' fontWeight='bold'>
-								{signal.asset}
-							</Typography>
-						</Box>
-						<Typography variant='caption' color='text.secondary'>
-							{signal.timestamp}
-						</Typography>
-					</Box>
-				</Grid>
-				<Grid size={12}>
-					<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<Typography variant='body2' color='text.secondary'>
-							{signal.strategy}
-						</Typography>
-						<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-							<Typography variant='caption' color='text.secondary'>
-								Сила:
-							</Typography>
-							<Box
-								sx={{
-									width: 60,
-									height: 6,
-									bgcolor: 'grey.200',
-									borderRadius: 3,
-									overflow: 'hidden',
-								}}
-							>
-								<Box
-									sx={{
-										width: `${signal.strength}%`,
-										height: '100%',
-										bgcolor: signal.strength >= 70 ? 'success.main' : signal.strength >= 50 ? 'warning.main' : 'grey.400',
-										borderRadius: 3,
-										transition: 'width 0.3s',
-									}}
-								/>
-							</Box>
-							<Typography variant='caption' fontWeight='bold' sx={{ minWidth: 30 }}>
-								{signal.strength}
-								%
-							</Typography>
-						</Box>
-					</Box>
-				</Grid>
-			</Grid>
+		<Paper className={classes.signalCard} withBorder p='sm'>
+			<div className={classes.signalHeader}>
+				<Group gap='xs'>
+					<Badge
+						color={dir.color}
+						size='sm'
+						leftSection={dir.icon}
+						fw={600}
+					>
+						{dir.label}
+					</Badge>
+					<Text fw='bold'>{signal.asset}</Text>
+				</Group>
+				<Text size='xs' c='dimmed'>{signal.timestamp}</Text>
+			</div>
+
+			<div className={classes.signalFooter}>
+				<Text size='sm' c='dimmed'>{signal.strategy}</Text>
+				<Group gap='xs'>
+					<Text size='xs' c='dimmed'>Сила:</Text>
+					<div className={classes.strengthTrack}>
+						<div
+							className={classes.strengthBar}
+							style={{
+								width: `${signal.strength}%`,
+								backgroundColor: signal.strength >= 70
+									? 'var(--mantine-color-green-6)'
+									: signal.strength >= 50
+										? 'var(--mantine-color-yellow-6)'
+										: 'var(--mantine-color-gray-5)',
+							}}
+						/>
+					</div>
+					<Text size='xs' fw='bold' style={{ minWidth: 30 }}>
+						{signal.strength}
+						%
+					</Text>
+				</Group>
+			</div>
 		</Paper>
 	);
 }
 
 export function DashboardPage() {
 	return (
-		<Box sx={{ p: 3 }}>
-			<Typography variant='h4' fontWeight='bold' gutterBottom>
+		<div className={classes.root}>
+			<Title order={2} fw='bold' mb='sm'>
 				Панель управления
-			</Typography>
+			</Title>
 
-			{/* Trade Statistics */}
-			<Typography variant='h6' gutterBottom sx={{ mt: 3, mb: 2 }}>
+			<Title order={4} mt='lg' mb='sm'>
 				Статистика сделок
-			</Typography>
-			<Grid container spacing={3} sx={{ mb: 4 }}>
-				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
-					<StatCard
-						icon={<AccountBalanceIcon />}
-						title='Всего сделок'
-						value={mockStats.totalTrades}
-						subtitle={`Прибыльных: ${mockStats.profitableTrades} | Убыточных: ${mockStats.losingTrades}`}
-						color='primary'
-					/>
-				</Grid>
-				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
-					<StatCard
-						icon={<AttachMoneyIcon />}
-						title='Общая прибыль'
-						value={`$${mockStats.totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
-						subtitle={`Средняя: $${mockStats.averageProfit.toFixed(2)}`}
-						color='success'
-					/>
-				</Grid>
-				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
-					<StatCard
-						icon={<PercentIcon />}
-						title='Win Rate'
-						value={`${mockStats.winRate.toFixed(1)}%`}
-						subtitle={`Profit Factor: ${mockStats.profitFactor}`}
-						color='warning'
-					/>
-				</Grid>
-				<Grid size={{ xs: 12, sm: 6, md: 3 }}>
-					<StatCard
-						icon={<TimerIcon />}
-						title='Среднее время'
-						value={mockStats.averageHoldTime}
-						subtitle='на сделку'
-						color='info'
-					/>
-				</Grid>
-			</Grid>
+			</Title>
+			<SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing='lg' mb='xl'>
+				<StatCard
+					icon={<IconBuildingBank size={22} />}
+					title='Всего сделок'
+					value={mockStats.totalTrades}
+					subtitle={`Прибыльных: ${mockStats.profitableTrades} | Убыточных: ${mockStats.losingTrades}`}
+					color='primary'
+				/>
+				<StatCard
+					icon={<IconCurrencyDollar size={22} />}
+					title='Общая прибыль'
+					value={`$${mockStats.totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
+					subtitle={`Средняя: $${mockStats.averageProfit.toFixed(2)}`}
+					color='success'
+				/>
+				<StatCard
+					icon={<IconPercentage size={22} />}
+					title='Win Rate'
+					value={`${mockStats.winRate.toFixed(1)}%`}
+					subtitle={`Profit Factor: ${mockStats.profitFactor}`}
+					color='warning'
+				/>
+				<StatCard
+					icon={<IconClock size={22} />}
+					title='Среднее время'
+					value={mockStats.averageHoldTime}
+					subtitle='на сделку'
+					color='info'
+				/>
+			</SimpleGrid>
 
-			{/* Strategy Signals */}
-			<Typography variant='h6' gutterBottom sx={{ mb: 2 }}>
-				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-					<ShowChartIcon color='primary' />
+			<Title order={4} mb='sm'>
+				<Group gap='xs'>
+					<IconChartLine size={20} />
 					Сигналы от стратегий
-				</Box>
-			</Typography>
-			<Paper sx={{ p: 2 }}>
-				<Grid container spacing={2}>
+				</Group>
+			</Title>
+			<Paper p='sm' withBorder>
+				<SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing='sm'>
 					{mockSignals.map((signal) => (
-						<Grid size={{ xs: 12, sm: 6, md: 4 }} key={signal.id}>
-							<SignalCard signal={signal} />
-						</Grid>
+						<DashboardSignalCard key={signal.id} signal={signal} />
 					))}
-				</Grid>
+				</SimpleGrid>
 			</Paper>
-		</Box>
+		</div>
 	);
 }

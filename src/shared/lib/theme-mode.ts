@@ -1,15 +1,14 @@
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import { IconMoon, IconSun } from '@tabler/icons-react';
 
-export function getCurrentThemeMode(mode: 'light' | 'dark' | 'system' | undefined,	prefersDark: boolean): 'light' | 'dark' {
-	if (!mode || mode === 'system') {
+export function getCurrentThemeMode(mode: 'light' | 'dark' | 'auto' | undefined, prefersDark: boolean): 'light' | 'dark' {
+	if (!mode || mode === 'auto') {
 		return prefersDark ? 'dark' : 'light';
 	}
 
 	return mode;
 }
 
-export function getThemeState(mode: 'light' | 'dark' | 'system' | undefined, prefersDark: boolean) {
+export function getThemeState(mode: 'light' | 'dark' | 'auto' | undefined, prefersDark: boolean) {
 	const current = getCurrentThemeMode(mode, prefersDark);
 
 	const label = getThemeLabel(current);
@@ -24,5 +23,5 @@ export function getThemeLabel(current: 'light' | 'dark'): string {
 }
 
 export function getThemeIcon(current: 'light' | 'dark') {
-	return current === 'dark' ? LightModeIcon : DarkModeIcon;
+	return current === 'dark' ? IconSun : IconMoon;
 }

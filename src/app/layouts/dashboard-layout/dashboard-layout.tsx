@@ -1,5 +1,4 @@
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
+import { Container, Group, Stack } from '@mantine/core';
 import { type ReactNode, useState } from 'react';
 import { Outlet } from 'react-router';
 
@@ -16,16 +15,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 	};
 
 	return (
-		<Stack>
+		<Stack gap={0}>
 			<AppHeader isMenuOpen={isCollapsed} onToggleMenu={toggleCollapse} />
 
-			<Stack direction='row'>
+			<Group gap={0} align='flex-start' wrap='nowrap'>
 				<SideBar isCollapsed={isCollapsed} />
 
-				<Container maxWidth='xl' component='main'>
+				<Container size='xl' component='main' style={{ flex: 1 }}>
 					{children ?? <Outlet />}
 				</Container>
-			</Stack>
+			</Group>
 		</Stack>
 	);
 }

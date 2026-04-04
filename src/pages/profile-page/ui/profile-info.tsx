@@ -1,107 +1,31 @@
-import type { SxProps, Theme } from '@mui/material/styles';
-
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import EventIcon from '@mui/icons-material/Event';
-import LinkIcon from '@mui/icons-material/Link';
-import PersonIcon from '@mui/icons-material/Person';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import {
+	ActionIcon,
+	Avatar,
+	Badge,
+	Button,
+	Divider,
+	Group,
+	Stack,
+	Text,
+	TextInput,
+	Tooltip,
+} from '@mantine/core';
+import {
+	IconBrandTelegram,
+	IconCalendar,
+	IconCheck,
+	IconEdit,
+	IconLink,
+	IconMail,
+	IconUser,
+	IconX,
+} from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import type { MeDto } from '@/shared/api';
 
-const styles: Record<string, SxProps<Theme>> = {
-	avatarWrapper: {
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		gap: 1.5,
-		mb: 1,
-	},
-	avatar: {
-		width: { xs: 72, sm: 96 },
-		height: { xs: 72, sm: 96 },
-		background: 'linear-gradient(135deg, #ffb752 0%, #e09530 100%)',
-		'& .MuiSvgIcon-root': {
-			fontSize: { xs: 36, sm: 48 },
-		},
-	},
-	loginRow: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		gap: 0.5,
-	},
-	infoRow: {
-		display: 'flex',
-		flexDirection: { xs: 'column', sm: 'row' },
-		alignItems: { xs: 'flex-start', sm: 'center' },
-		gap: { xs: 0.25, sm: 1.5 },
-		minHeight: { xs: 'auto', sm: 40 },
-		py: { xs: 0.5, sm: 0 },
-	},
-	infoIcon: {
-		color: 'text.secondary',
-		fontSize: 20,
-		flexShrink: 0,
-		display: { xs: 'none', sm: 'block' },
-	},
-	label: {
-		color: 'text.secondary',
-		width: { xs: 'auto', sm: 130 },
-		flexShrink: 0,
-		fontWeight: { xs: 500, sm: 400 },
-	},
-	value: {
-		flex: 1,
-		minWidth: 0,
-	},
-	sectionTitle: {
-		mb: 1.5,
-		mt: 0.5,
-	},
-	bindingRow: {
-		display: 'flex',
-		flexDirection: { xs: 'column', sm: 'row' },
-		alignItems: { xs: 'flex-start', sm: 'center' },
-		justifyContent: 'space-between',
-		gap: { xs: 1, sm: 2 },
-		py: { xs: 1.5, sm: 1 },
-		px: 1.5,
-		borderRadius: 1,
-		bgcolor: 'action.hover',
-	},
-	linkedChip: {
-		bgcolor: 'success.main',
-		color: 'success.contrastText',
-		fontWeight: 600,
-		'& .MuiChip-icon': {
-			color: 'inherit',
-		},
-	},
-	editField: {
-		width: '100%',
-		maxWidth: { xs: '100%', sm: 260 },
-		'& .MuiInputBase-input': {
-			py: 0.5,
-			textAlign: 'center',
-		},
-	},
-};
+import classes from './ProfileInfo.module.css';
 
 type ProfileInfoProps = {
 	user: MeDto;
@@ -140,34 +64,31 @@ export function ProfileInfo({ user }: ProfileInfoProps) {
 	const loginEdit = useLoginEdit(user.login);
 
 	return (
-		<Stack spacing={3}>
+		<Stack gap='lg'>
 			{/* Avatar + login centered */}
-			<Box sx={styles.avatarWrapper}>
-				<Avatar sx={styles.avatar}>
-					<PersonIcon />
+			<div className={classes.avatarWrapper}>
+				<Avatar size='xl' className={classes.avatar}>
+					<IconUser size={48} />
 				</Avatar>
 
 				{loginEdit.isEditing
 					? (
-							<TextField
-								size='small'
+							<TextInput
+								size='sm'
 								value={loginEdit.value}
-								onChange={(e) => loginEdit.setValue(e.target.value)}
-								sx={styles.editField}
-								slotProps={{
-									input: {
-										endAdornment: (
-											<InputAdornment position='end'>
-												<IconButton size='small' onClick={loginEdit.save} color='success'>
-													<CheckIcon fontSize='small' />
-												</IconButton>
-												<IconButton size='small' onClick={loginEdit.cancel} color='error'>
-													<CloseIcon fontSize='small' />
-												</IconButton>
-											</InputAdornment>
-										),
-									},
-								}}
+								onChange={(e) => loginEdit.setValue(e.currentTarget.value)}
+								className={classes.editField}
+								rightSection={(
+									<Group gap={2}>
+										<ActionIcon size='sm' variant='subtle' color='green' onClick={loginEdit.save}>
+											<IconCheck size={14} />
+										</ActionIcon>
+										<ActionIcon size='sm' variant='subtle' color='red' onClick={loginEdit.cancel}>
+											<IconX size={14} />
+										</ActionIcon>
+									</Group>
+								)}
+								rightSectionWidth={60}
 								autoFocus
 								onKeyDown={(e) => {
 									if (e.key === 'Enter')
@@ -178,98 +99,100 @@ export function ProfileInfo({ user }: ProfileInfoProps) {
 							/>
 						)
 					: (
-							<Box sx={styles.loginRow}>
-								<Typography variant='h6' fontWeight={600}>
+							<Group gap='xs' justify='center'>
+								<Text size='lg' fw={600}>
 									{user.login}
-								</Typography>
-								<Tooltip title='Изменить логин'>
-									<IconButton size='small' onClick={loginEdit.start}>
-										<EditIcon sx={{ fontSize: 16 }} />
-									</IconButton>
+								</Text>
+								<Tooltip label='Изменить логин'>
+									<ActionIcon size='sm' variant='subtle' onClick={loginEdit.start}>
+										<IconEdit size={16} />
+									</ActionIcon>
 								</Tooltip>
-							</Box>
+							</Group>
 						)}
-			</Box>
+			</div>
 
 			{/* Personal info */}
-			<Stack spacing={1}>
-				<Typography variant='subtitle2' color='text.secondary' sx={styles.sectionTitle}>
+			<Stack gap='xs'>
+				<Text size='sm' c='dimmed' fw={500} mb='xs'>
 					Личная информация
-				</Typography>
+				</Text>
 
 				{/* Email */}
-				<Box sx={styles.infoRow}>
-					<EmailOutlinedIcon sx={styles.infoIcon} />
-					<Typography variant='body2' sx={styles.label}>
+				<div className={classes.infoRow}>
+					<IconMail size={20} className={classes.infoIcon} />
+					<Text size='sm' className={classes.label}>
 						Почта
-					</Typography>
-					<Typography variant='body2' color='text.secondary' fontStyle='italic' sx={styles.value}>
+					</Text>
+					<Text size='sm' c='dimmed' fs='italic' className={classes.value}>
 						Скоро будет доступно
-					</Typography>
-				</Box>
+					</Text>
+				</div>
 
 				{/* Last login date */}
-				<Box sx={styles.infoRow}>
-					<EventIcon sx={styles.infoIcon} />
-					<Typography variant='body2' sx={styles.label}>
+				<div className={classes.infoRow}>
+					<IconCalendar size={20} className={classes.infoIcon} />
+					<Text size='sm' className={classes.label}>
 						Последний вход
-					</Typography>
-					<Typography variant='body1' sx={styles.value}>
+					</Text>
+					<Text className={classes.value}>
 						{dayjs(user.lastLoginDate).format('DD.MM.YYYY, HH:mm')}
-					</Typography>
-				</Box>
+					</Text>
+				</div>
 			</Stack>
 
 			<Divider />
 
 			{/* Bindings section */}
-			<Stack spacing={1}>
-				<Typography variant='subtitle2' color='text.secondary' sx={styles.sectionTitle}>
+			<Stack gap='xs'>
+				<Text size='sm' c='dimmed' fw={500} mb='xs'>
 					Привязки
-				</Typography>
+				</Text>
 
-				<Box sx={styles.bindingRow}>
-					<Stack direction='row' alignItems='center' spacing={1.5}>
-						<TelegramIcon sx={{ color: '#229ED9', fontSize: 24 }} />
-						<Box>
-							<Typography variant='body2' fontWeight={500}>
+				<div className={classes.bindingRow}>
+					<Group gap='sm'>
+						<IconBrandTelegram size={24} color='#229ED9' />
+						<div>
+							<Text size='sm' fw={500}>
 								Telegram
-							</Typography>
+							</Text>
 							{user.tgId
 								? (
-										<Typography variant='caption' color='text.secondary'>
+										<Text size='xs' c='dimmed'>
 											ID:
 											{' '}
 											{user.tgId}
-										</Typography>
+										</Text>
 									)
 								: (
-										<Typography variant='caption' color='text.secondary'>
+										<Text size='xs' c='dimmed'>
 											Не привязан
-										</Typography>
+										</Text>
 									)}
-						</Box>
-					</Stack>
+						</div>
+					</Group>
 
 					{user.tgId
 						? (
-								<Chip
-									icon={<LinkIcon />}
-									label='Привязан'
-									size='small'
-									sx={styles.linkedChip}
-								/>
+								<Badge
+									leftSection={<IconLink size={12} />}
+									color='green'
+									variant='filled'
+									size='md'
+								>
+									Привязан
+								</Badge>
 							)
 						: (
 								<Button
-									size='small'
-									variant='outlined'
-									startIcon={<LinkIcon />}
+									size='xs'
+									variant='outline'
+									leftSection={<IconLink size={14} />}
 								>
 									Привязать
 								</Button>
 							)}
-				</Box>
+				</div>
 			</Stack>
 		</Stack>
 	);

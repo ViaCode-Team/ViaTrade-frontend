@@ -1,5 +1,4 @@
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
+import { Anchor, Text } from '@mantine/core';
 import { Link as RouterLink, type To } from 'react-router';
 
 type AuthFooterProps = {
@@ -10,18 +9,18 @@ type AuthFooterProps = {
 
 export function AuthFooter({ text, linkText, to }: AuthFooterProps) {
 	return (
-		<Typography textAlign='center' variant='body2' color='text.secondary'>
+		<Text ta='center' size='sm' c='dimmed'>
 			{text}
 
 			{' '}
 
-			<Link
+			<Anchor
 				component={RouterLink}
 				to={to}
-				color='secondary.main'
+				c='#ffb752'
 			>
 				{linkText}
-			</Link>
-		</Typography>
+			</Anchor>
+		</Text>
 	);
 }

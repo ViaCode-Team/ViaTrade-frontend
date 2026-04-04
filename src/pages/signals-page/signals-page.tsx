@@ -1,17 +1,13 @@
-import FilterListIcon from '@mui/icons-material/FilterList';
-import SearchIcon from '@mui/icons-material/Search';
-import SortIcon from '@mui/icons-material/Sort';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import Grid from '@mui/material/Grid';
-import InputAdornment from '@mui/material/InputAdornment';
-import MenuItem from '@mui/material/MenuItem';
-import Paper from '@mui/material/Paper';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import {
+	Group,
+	NativeSelect,
+	Paper,
+	SimpleGrid,
+	Text,
+	TextInput,
+	Title,
+} from '@mantine/core';
+import { IconFilter, IconSearch, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 
 import type { Signal } from '@/entities/signal';
@@ -20,9 +16,31 @@ import { mockSignals } from '@/entities/signal';
 import { SignalCard } from '@/entities/signal/ui/signal-card';
 import { HistoryTable } from '@/shared/ui/history-table';
 
+import classes from './SignalsPage.module.css';
+
 type SortOption = 'date-desc' | 'date-asc' | 'confidence-desc' | 'confidence-asc' | 'asset-asc';
 type DirectionFilter = 'all' | 'buy' | 'sell';
 type TypeFilter = 'all' | 'stock' | 'futures';
+
+const sortData = [
+	{ value: 'date-desc', label: 'Сначала новые' },
+	{ value: 'date-asc', label: 'Сначала старые' },
+	{ value: 'confidence-desc', label: 'По надёжности (убывание)' },
+	{ value: 'confidence-asc', label: 'По надёжности (возрастание)' },
+	{ value: 'asset-asc', label: 'По алфавиту' },
+];
+
+const directionData = [
+	{ value: 'all', label: 'Все сигналы' },
+	{ value: 'buy', label: 'Покупка' },
+	{ value: 'sell', label: 'Продажа' },
+];
+
+const typeData = [
+	{ value: 'all', label: 'Все типы' },
+	{ value: 'stock', label: 'Акции' },
+	{ value: 'futures', label: 'Фьючерсы' },
+];
 
 export function SignalsPage() {
 	const [selectedSignal, setSelectedSignal] = useState<Signal | null>(null);
@@ -34,17 +52,14 @@ export function SignalsPage() {
 	const filteredAndSortedSignals = useMemo(() => {
 		let result = [...mockSignals];
 
-		// Фильтрация по направлению
 		if (directionFilter !== 'all') {
 			result = result.filter((s) => s.direction === directionFilter);
 		}
 
-		// Фильтрация по типу
 		if (typeFilter !== 'all') {
 			result = result.filter((s) => s.type === typeFilter);
 		}
 
-		// Поиск по названию актива или стратегии
 		if (searchQuery.trim()) {
 			const query = searchQuery.toLowerCase();
 			result = result.filter(
@@ -54,7 +69,6 @@ export function SignalsPage() {
 			);
 		}
 
-		// Сортировка
 		result.sort((a, b) => {
 			switch (sortOption) {
 				case 'date-desc':
@@ -79,162 +93,106 @@ export function SignalsPage() {
 	const sellSignals = filteredAndSortedSignals.filter((s) => s.direction === 'sell');
 
 	return (
-		<Box sx={{ p: 3 }}>
-			<Typography variant='h4' fontWeight='bold' gutterBottom>
+		<div className={classes.root}>
+			<Title order={2} fw='bold' mb='sm'>
 				Сигналы
-			</Typography>
+			</Title>
 
-			{/* Filters and Search */}
-			<Paper sx={{ p: 2, mb: 3 }}>
-				<Grid container spacing={2} alignItems='center'>
-					<Grid size={{ xs: 12, sm: 6, md: 4 }}>
-						<TextField
-							fullWidth
-							size='small'
-							placeholder='Поиск по активу или стратегии...'
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position='start'>
-										<SearchIcon color='action' />
-									</InputAdornment>
-								),
-							}}
-						/>
-					</Grid>
-					<Grid size={{ xs: 12, sm: 6, md: 3 }}>
-						<FormControl fullWidth size='small'>
-							<Select
-								value={sortOption}
-								onChange={(e) => setSortOption(e.target.value as SortOption)}
-								displayEmpty
-								IconComponent={SortIcon}
-							>
-								<MenuItem value='date-desc'>Сначала новые</MenuItem>
-								<MenuItem value='date-asc'>Сначала старые</MenuItem>
-								<MenuItem value='confidence-desc'>По надёжности (убывание)</MenuItem>
-								<MenuItem value='confidence-asc'>По надёжности (возрастание)</MenuItem>
-								<MenuItem value='asset-asc'>По алфавиту</MenuItem>
-							</Select>
-						</FormControl>
-					</Grid>
-					<Grid size={{ xs: 12, sm: 6, md: 2.5 }}>
-						<FormControl fullWidth size='small'>
-							<Select
-								value={directionFilter}
-								onChange={(e) => setDirectionFilter(e.target.value as DirectionFilter)}
-								displayEmpty
-								IconComponent={FilterListIcon}
-							>
-								<MenuItem value='all'>Все сигналы</MenuItem>
-								<MenuItem value='buy'>Покупка</MenuItem>
-								<MenuItem value='sell'>Продажа</MenuItem>
-							</Select>
-						</FormControl>
-					</Grid>
-					<Grid size={{ xs: 12, sm: 6, md: 2.5 }}>
-						<FormControl fullWidth size='small'>
-							<Select
-								value={typeFilter}
-								onChange={(e) => setTypeFilter(e.target.value as TypeFilter)}
-								displayEmpty
-							>
-								<MenuItem value='all'>Все типы</MenuItem>
-								<MenuItem value='stock'>Акции</MenuItem>
-								<MenuItem value='futures'>Фьючерсы</MenuItem>
-							</Select>
-						</FormControl>
-					</Grid>
-				</Grid>
+			<Paper mb='lg'>
+				<SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing='sm'>
+					<TextInput
+						size='sm'
+						placeholder='Поиск по активу или стратегии...'
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.currentTarget.value)}
+						leftSection={<IconSearch size={16} />}
+					/>
+					<NativeSelect
+						data={sortData}
+						value={sortOption}
+						onChange={(e) => setSortOption(e.currentTarget.value as SortOption)}
+						size='sm'
+					/>
+					<NativeSelect
+						data={directionData}
+						value={directionFilter}
+						onChange={(e) => setDirectionFilter(e.currentTarget.value as DirectionFilter)}
+						size='sm'
+						leftSection={<IconFilter size={16} />}
+					/>
+					<NativeSelect
+						data={typeData}
+						value={typeFilter}
+						onChange={(e) => setTypeFilter(e.currentTarget.value as TypeFilter)}
+						size='sm'
+					/>
+				</SimpleGrid>
 			</Paper>
 
-			{/* Results count */}
-			<Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
+			<Text size='sm' c='dimmed' mb='sm'>
 				Найдено сигналов:
-				<Box component='span' fontWeight='bold' color='text.primary'>
+				<Text component='span' fw='bold' c='var(--mantine-color-text)'>
 					{' '}
 					{filteredAndSortedSignals.length}
-				</Box>
-			</Typography>
+				</Text>
+			</Text>
 
-			{/* Buy Signals */}
 			{buySignals.length > 0 && (
 				<>
-					<Typography
-						variant='h6'
-						sx={{
-							mt: 3,
-							mb: 2,
-							display: 'flex',
-							alignItems: 'center',
-							gap: 1,
-						}}
-					>
-						<TrendingUpIcon color='success' />
-						Сигналы на покупку
-						<Typography variant='caption' color='text.secondary' sx={{ ml: 1 }}>
-							(
-							{buySignals.length}
-							)
-						</Typography>
-					</Typography>
-					<Grid container spacing={3}>
+					<Title order={4} mt='lg' mb='sm'>
+						<Group gap='xs'>
+							<IconTrendingUp size={20} color='var(--mantine-color-green-6)' />
+							Сигналы на покупку
+							<Text size='xs' c='dimmed' ml='xs'>
+								(
+								{buySignals.length}
+								)
+							</Text>
+						</Group>
+					</Title>
+					<SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing='lg'>
 						{buySignals.map((signal) => (
-							<Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={signal.id}>
-								<SignalCard signal={signal} onClick={setSelectedSignal} />
-							</Grid>
+							<SignalCard key={signal.id} signal={signal} onClick={setSelectedSignal} />
 						))}
-					</Grid>
+					</SimpleGrid>
 				</>
 			)}
 
-			{/* Sell Signals */}
 			{sellSignals.length > 0 && (
 				<>
-					<Typography
-						variant='h6'
-						sx={{
-							mt: 4,
-							mb: 2,
-							display: 'flex',
-							alignItems: 'center',
-							gap: 1,
-						}}
-					>
-						<TrendingDownIcon color='error' />
-						Сигналы на продажу
-						<Typography variant='caption' color='text.secondary' sx={{ ml: 1 }}>
-							(
-							{sellSignals.length}
-							)
-						</Typography>
-					</Typography>
-					<Grid container spacing={3}>
+					<Title order={4} mt='xl' mb='sm'>
+						<Group gap='xs'>
+							<IconTrendingDown size={20} color='var(--mantine-color-red-6)' />
+							Сигналы на продажу
+							<Text size='xs' c='dimmed' ml='xs'>
+								(
+								{sellSignals.length}
+								)
+							</Text>
+						</Group>
+					</Title>
+					<SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing='lg'>
 						{sellSignals.map((signal) => (
-							<Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={signal.id}>
-								<SignalCard signal={signal} onClick={setSelectedSignal} />
-							</Grid>
+							<SignalCard key={signal.id} signal={signal} onClick={setSelectedSignal} />
 						))}
-					</Grid>
+					</SimpleGrid>
 				</>
 			)}
 
-			{/* No results */}
 			{filteredAndSortedSignals.length === 0 && (
-				<Box sx={{ textAlign: 'center', py: 8 }}>
-					<Typography variant='h6' color='text.secondary'>
+				<div className={classes.emptyState}>
+					<Title order={4} c='dimmed'>
 						Сигналы не найдены
-					</Typography>
-					<Typography variant='body2' color='text.secondary'>
+					</Title>
+					<Text size='sm' c='dimmed'>
 						Попробуйте изменить параметры поиска или фильтры
-					</Typography>
-				</Box>
+					</Text>
+				</div>
 			)}
 
 			{selectedSignal && (
 				<HistoryTable asset={selectedSignal.asset} onClose={() => setSelectedSignal(null)} />
 			)}
-		</Box>
+		</div>
 	);
 }

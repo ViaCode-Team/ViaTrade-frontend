@@ -1,26 +1,23 @@
 import type { ReactNode } from 'react';
 
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
+import { Container, Stack } from '@mantine/core';
 import { Outlet } from 'react-router';
 
 import { PureHeader } from '@/widgets/header';
+
+import classes from './AuthLayout.module.css';
 
 type AuthLayoutProps = { children?: ReactNode };
 
 export function AuthLayout({ children }: AuthLayoutProps) {
 	return (
-		<Stack height={1}>
+		<Stack h='100vh' gap={0}>
 			<PureHeader title='Платформа инвестиционного анализа' />
 
 			<Container
-				maxWidth='xl'
+				size='xl'
 				component='main'
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					flex: 1,
-				}}
+				className={classes.main}
 			>
 				{children ?? <Outlet />}
 			</Container>

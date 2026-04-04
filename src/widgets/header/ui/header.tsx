@@ -1,11 +1,10 @@
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Toolbar from '@mui/material/Toolbar';
+import { Group } from '@mantine/core';
 
 import { Logo } from '@/shared/ui/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';
+import classes from './Header.module.css';
 import { MenuButton } from './menu-button';
 
 type AppHeaderProps = {
@@ -24,48 +23,25 @@ export function AppHeader({
 	};
 
 	return (
-		<AppBar
-			sx={{
-				'& .MuiToolbar-root': { px: 1 },
-			}}
-			position='sticky'
-		>
-			<Toolbar>
-				<Stack
-					direction='row'
-					alignItems='center'
-					justifyContent='space-between'
-					sx={{ width: '100%', flexWrap: 'wrap' }}
-				>
-					<Stack direction='row' gap={1}>
-						<Stack direction='row' alignItems='center'>
-							<Box>
-								<MenuButton
-									isExpanded={isMenuOpen}
-									onToggle={toggleMenuHandle}
-								/>
-							</Box>
-						</Stack>
+		<AppBar>
+			<div className={classes.toolbar}>
+				<Group gap='sm'>
+					<Group gap='xs'>
+						<MenuButton
+							isExpanded={isMenuOpen}
+							onToggle={toggleMenuHandle}
+						/>
+					</Group>
 
-						<Stack alignItems='center' justifyContent='center'>
-							<Logo logoWidth={32} logoHeight={32} />
-						</Stack>
-					</Stack>
+					<Logo logoWidth={32} logoHeight={32} />
+				</Group>
 
-					{title ?? <Box component='h1'>{title}</Box>}
+				{title && <h1 className={classes.title}>{title}</h1>}
 
-					<Stack
-						direction='row'
-						alignItems='center'
-						spacing={1}
-						sx={{ marginLeft: 'auto' }}
-					>
-						<Stack direction='row' alignItems='center'>
-							<ThemeSwitcher />
-						</Stack>
-					</Stack>
-				</Stack>
-			</Toolbar>
+				<Group gap='sm' ml='auto'>
+					<ThemeSwitcher />
+				</Group>
+			</div>
 		</AppBar>
 	);
 }

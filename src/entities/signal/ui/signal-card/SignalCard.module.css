@@ -1,0 +1,78 @@
+.root {
+	padding: var(--mantine-spacing-md);
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	border-left: 4px solid;
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	&:hover {
+		transform: translateY(-6px);
+		box-shadow: var(--mantine-shadow-lg);
+	}
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: var(--mantine-spacing-sm);
+	gap: var(--mantine-spacing-xs);
+}
+
+.assetInfo {
+	display: flex;
+	align-items: center;
+	gap: var(--mantine-spacing-sm);
+	min-width: 0;
+	flex: 1;
+}
+
+.priceRow {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--mantine-spacing-xs);
+}
+
+.dateCol {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.confidenceSection {
+	margin-bottom: var(--mantine-spacing-sm);
+	margin-top: auto;
+}
+
+.confidenceHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 4px;
+}
+
+.progressTrack {
+	width: 100%;
+	height: 8px;
+	background-color: var(--mantine-color-gray-2);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.progressBar {
+	height: 100%;
+	border-radius: 4px;
+	transition: width 0.5s ease;
+}
+
+.footer {
+	display: flex;
+	align-items: center;
+	gap: var(--mantine-spacing-xs);
+	padding-top: var(--mantine-spacing-sm);
+	border-top: 1px solid var(--mantine-color-default-border);
+}

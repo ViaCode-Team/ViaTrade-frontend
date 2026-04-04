@@ -1,7 +1,6 @@
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+import { Alert, Button, Stack, TextInput } from '@mantine/core';
+
+import { brandGradient } from '@/shared/model/theme';
 
 import { useRegisterForm } from '../lib/use-register-form';
 
@@ -16,61 +15,56 @@ export function RegisterForm() {
 	} = useRegisterForm();
 
 	return (
-		<Stack component='form' onSubmit={submit} gap={4}>
-			{apiError && (
-				<Alert severity='error' variant='outlined'>
-					{apiError}
-				</Alert>
-			)}
+		<form onSubmit={submit}>
+			<Stack gap='lg'>
+				{apiError && (
+					<Alert color='red' variant='outline'>
+						{apiError}
+					</Alert>
+				)}
 
-			<Stack gap={2}>
-				<TextField
-					label='Email'
-					type='email'
-					value={formData.email}
-					onChange={(e) => setField('email', e.target.value)}
-					error={!!errors.email}
-					helperText={errors.email}
-					fullWidth
-				/>
-				<TextField
-					label='Логин'
-					value={formData.login}
-					onChange={(e) => setField('login', e.target.value)}
-					error={!!errors.login}
-					helperText={errors.login}
-					fullWidth
-				/>
-				<TextField
-					label='Пароль'
-					type='password'
-					value={formData.password}
-					onChange={(e) => setField('password', e.target.value)}
-					error={!!errors.password}
-					helperText={errors.password}
-					fullWidth
-				/>
-				<TextField
-					label='Подтверждение пароля'
-					type='password'
-					value={formData.confirmPassword}
-					onChange={(e) => setField('confirmPassword', e.target.value)}
-					error={!!errors.confirmPassword}
-					helperText={errors.confirmPassword}
-					fullWidth
-				/>
+				<Stack gap='sm'>
+					<TextInput
+						label='Email'
+						type='email'
+						value={formData.email}
+						onChange={(e) => setField('email', e.currentTarget.value)}
+						error={errors.email}
+					/>
+					<TextInput
+						label='Логин'
+						value={formData.login}
+						onChange={(e) => setField('login', e.currentTarget.value)}
+						error={errors.login}
+					/>
+					<TextInput
+						label='Пароль'
+						type='password'
+						value={formData.password}
+						onChange={(e) => setField('password', e.currentTarget.value)}
+						error={errors.password}
+					/>
+					<TextInput
+						label='Подтверждение пароля'
+						type='password'
+						value={formData.confirmPassword}
+						onChange={(e) => setField('confirmPassword', e.currentTarget.value)}
+						error={errors.confirmPassword}
+					/>
+				</Stack>
+
+				<Button
+					variant='gradient'
+					gradient={brandGradient}
+					size='lg'
+					type='submit'
+					fz={16}
+					fw={600}
+					loading={isPending}
+				>
+					Зарегистрироваться
+				</Button>
 			</Stack>
-
-			<Button
-				color='secondary'
-				variant='contained'
-				size='large'
-				type='submit'
-				sx={{ fontSize: 16 }}
-				loading={isPending}
-			>
-				Зарегистрироваться
-			</Button>
-		</Stack>
+		</form>
 	);
 }

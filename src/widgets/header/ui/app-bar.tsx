@@ -1,11 +1,13 @@
-import MuiAppBar from '@mui/material/AppBar';
-import { styled } from '@mui/material/styles';
+import type { ComponentPropsWithoutRef } from 'react';
 
-export const AppBar = styled(MuiAppBar)(({ theme }) => ({
-	borderColor: (theme.vars ?? theme).palette.divider,
-	borderWidth: 0,
-	borderBottomWidth: 1,
-	borderStyle: 'solid',
-	boxShadow: 'none',
-	color: 'inherit',
-}));
+import classes from './AppBar.module.css';
+
+type AppBarProps = ComponentPropsWithoutRef<'header'>;
+
+export function AppBar({ children, className, ...props }: AppBarProps) {
+	return (
+		<header className={`${classes.root} ${className ?? ''}`} {...props}>
+			{children}
+		</header>
+	);
+}

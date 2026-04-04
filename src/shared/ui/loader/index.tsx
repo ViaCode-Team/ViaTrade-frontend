@@ -1,14 +1,11 @@
-import CircularProgress from '@mui/material/CircularProgress';
-import Stack from '@mui/material/Stack';
+import { Loader as MantineLoader } from '@mantine/core';
+
+import classes from './Loader.module.css';
 
 export function Loader() {
 	return (
-		<Stack
-			height={1}
-			justifyContent='center'
-			alignItems='center'
-		>
-			<CircularProgress />
-		</Stack>
+		<div className={classes.root}>
+			<MantineLoader />
+		</div>
 	);
 }

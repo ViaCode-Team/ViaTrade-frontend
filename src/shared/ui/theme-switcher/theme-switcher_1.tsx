@@ -1,24 +1,21 @@
-import IconButton from '@mui/material/IconButton';
-import { useColorScheme } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { ActionIcon, Tooltip, useMantineColorScheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
 import { getThemeState } from '@/shared/lib/theme-mode';
 
+export function ThemeSwitcher1() {
+	const { colorScheme, setColorScheme } = useMantineColorScheme();
+	const prefersDark = useMediaQuery('(prefers-color-scheme: dark)') ?? false;
 
-export function ThemeSwitcher() {
-	const { mode, setMode } = useColorScheme();
-	const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+	const { current, label, ThemeIcon } = getThemeState(colorScheme, prefersDark);
 
-	const { current, label, ThemeIcon } = getThemeState(mode, prefersDark);
-
-	const toggleTheme = () => setMode(current === 'dark' ? 'light' : 'dark');
+	const toggleTheme = () => setColorScheme(current === 'dark' ? 'light' : 'dark');
 
 	return (
-		<Tooltip title={label} enterDelay={1000}>
-			<IconButton size='small' aria-label={label} onClick={toggleTheme}>
-				<ThemeIcon />
-			</IconButton>
+		<Tooltip label={label} openDelay={1000}>
+			<ActionIcon size='sm' aria-label={label} onClick={toggleTheme} variant='subtle'>
+				<ThemeIcon size={18} />
+			</ActionIcon>
 		</Tooltip>
 	);
 }

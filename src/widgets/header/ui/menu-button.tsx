@@ -1,7 +1,5 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import { ActionIcon, Tooltip } from '@mantine/core';
+import { IconLayoutSidebarLeftCollapse, IconMenu2 } from '@tabler/icons-react';
 
 type MenuButtonProps = {
 	isExpanded: boolean;
@@ -12,16 +10,15 @@ export function MenuButton({ isExpanded, onToggle }: MenuButtonProps) {
 	const actionText = isExpanded ? 'Свернуть' : 'Расширить';
 
 	return (
-		<Tooltip title={`${actionText} меню`} enterDelay={1000}>
-			<div>
-				<IconButton
-					size='medium'
-					aria-label={`${actionText} навигационное меню`}
-					onClick={onToggle}
-				>
-					{isExpanded ? <MenuOpenIcon /> : <MenuIcon />}
-				</IconButton>
-			</div>
+		<Tooltip label={`${actionText} меню`} openDelay={1000}>
+			<ActionIcon
+				size='lg'
+				variant='subtle'
+				aria-label={`${actionText} навигационное меню`}
+				onClick={onToggle}
+			>
+				{isExpanded ? <IconLayoutSidebarLeftCollapse size={22} /> : <IconMenu2 size={22} />}
+			</ActionIcon>
 		</Tooltip>
 	);
 }

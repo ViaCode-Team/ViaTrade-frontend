@@ -1,19 +1,16 @@
-import type { SxProps, Theme } from '@mui/material/styles';
-
-import ComputerIcon from '@mui/icons-material/Computer';
-import LogoutIcon from '@mui/icons-material/Logout';
-import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
-import TabletIcon from '@mui/icons-material/Tablet';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import {
+	ActionIcon,
+	Anchor,
+	Badge,
+	Button,
+	Divider,
+	Group,
+	Pagination,
+	Stack,
+	Text,
+	Tooltip,
+} from '@mantine/core';
+import { IconDeviceDesktop, IconDeviceMobile, IconDeviceTablet, IconLogout } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router';
@@ -21,69 +18,9 @@ import { Link as RouterLink } from 'react-router';
 import type { UserSessionDto } from '@/shared/api';
 
 import { parseUserAgent } from '../lib/parse-user-agent';
+import classes from './SessionsList.module.css';
 
 const SESSIONS_PER_PAGE = 5;
-
-const styles: Record<string, SxProps<Theme>> = {
-	header: {
-		display: 'flex',
-		flexDirection: { xs: 'column', sm: 'row' },
-		justifyContent: 'space-between',
-		alignItems: { xs: 'flex-start', sm: 'center' },
-		gap: 1.5,
-		mb: 2,
-	},
-	headerActions: {
-		display: 'flex',
-		alignItems: 'center',
-		gap: 1.5,
-		flexWrap: 'wrap',
-	},
-	sessionRow: {
-		display: 'flex',
-		alignItems: 'center',
-		gap: { xs: 1, sm: 2 },
-		py: 1.5,
-		px: { xs: 0.5, sm: 1 },
-		borderRadius: 1,
-		transition: 'background-color 0.15s',
-		'&:hover': {
-			bgcolor: 'action.hover',
-		},
-	},
-	currentSession: {
-		bgcolor: 'success.main',
-		color: 'success.contrastText',
-		'&:hover': {
-			bgcolor: 'success.dark',
-		},
-	},
-	deviceIcon: {
-		color: 'text.secondary',
-		fontSize: { xs: 22, sm: 28 },
-		flexShrink: 0,
-	},
-	sessionInfo: {
-		flex: 1,
-		minWidth: 0,
-	},
-	userAgent: {
-		overflow: 'hidden',
-		textOverflow: 'ellipsis',
-		whiteSpace: 'nowrap',
-	},
-	pagination: {
-		display: 'flex',
-		justifyContent: 'center',
-		mt: 2,
-	},
-	currentChip: {
-		bgcolor: 'success.main',
-		color: 'success.contrastText',
-		fontWeight: 600,
-		fontSize: '0.7rem',
-	},
-};
 
 type SessionsListProps = {
 	sessions: UserSessionDto[];
@@ -100,11 +37,11 @@ function getDeviceIcon(userAgent: string) {
 	const ua = userAgent.toLowerCase();
 
 	if (MOBILE_RE.test(ua))
-		return <PhoneAndroidIcon sx={styles.deviceIcon} />;
+		return <IconDeviceMobile size={24} className={classes.deviceIcon} />;
 	if (TABLET_RE.test(ua))
-		return <TabletIcon sx={styles.deviceIcon} />;
+		return <IconDeviceTablet size={24} className={classes.deviceIcon} />;
 
-	return <ComputerIcon sx={styles.deviceIcon} />;
+	return <IconDeviceDesktop size={24} className={classes.deviceIcon} />;
 }
 
 export function SessionsList({
@@ -135,106 +72,106 @@ export function SessionsList({
 
 	return (
 		<Stack>
-			<Box sx={styles.header}>
-				<Typography variant='h6' fontWeight={600}>
+			<div className={classes.header}>
+				<Text size='lg' fw={600}>
 					Активные сессии
-					<Typography component='span' variant='body2' color='text.secondary' sx={{ ml: 1 }}>
+					<Text component='span' size='sm' c='dimmed' ml='xs'>
 						(
 						{sessions.length}
 						)
-					</Typography>
-				</Typography>
+					</Text>
+				</Text>
 
-				<Box sx={styles.headerActions}>
-					<Link
+				<Group gap='sm'>
+					<Anchor
 						component={RouterLink}
 						to='/reset-password'
-						variant='body2'
-						color='secondary.main'
-						underline='hover'
-						fontWeight={500}
+						size='sm'
+						c='#ffb752'
+						fw={500}
 					>
 						Сбросить пароль
-					</Link>
+					</Anchor>
 
 					<Button
-						variant='outlined'
-						color='error'
-						size='small'
-						startIcon={<LogoutIcon />}
+						variant='outline'
+						color='red'
+						size='xs'
+						leftSection={<IconLogout size={16} />}
 						onClick={onLogoutAll}
 						disabled={isLoggingOutAll}
 					>
 						Выйти из всех
 					</Button>
-				</Box>
-			</Box>
+				</Group>
+			</div>
 
-			<Stack divider={<Divider />}>
-				{paginatedSessions.map((session) => {
+			<Stack gap={0}>
+				{paginatedSessions.map((session, idx) => {
 					const isCurrent = session.id === currentSessionId;
 
 					return (
-						<Box key={session.id} sx={styles.sessionRow}>
-							{getDeviceIcon(session.userAgent)}
+						<div key={session.id}>
+							{idx > 0 && <Divider />}
+							<div className={classes.sessionRow}>
+								{getDeviceIcon(session.userAgent)}
 
-							<Box sx={styles.sessionInfo}>
-								<Stack direction='row' alignItems='center' spacing={1}>
-									<Typography variant='body2' fontWeight={500} sx={styles.userAgent}>
-										{parseUserAgent(session.userAgent)}
-									</Typography>
+								<div className={classes.sessionInfo}>
+									<Group gap='xs'>
+										<Text size='sm' fw={500} className={classes.userAgent}>
+											{parseUserAgent(session.userAgent)}
+										</Text>
 
-									{isCurrent && (
-										<Chip
-											label='Текущая'
-											size='small'
-											sx={styles.currentChip}
-										/>
-									)}
-								</Stack>
+										{isCurrent && (
+											<Badge
+												color='green'
+												variant='filled'
+												size='xs'
+											>
+												Текущая
+											</Badge>
+										)}
+									</Group>
 
-								<Stack
-									direction={{ xs: 'column', sm: 'row' }}
-									spacing={{ xs: 0, sm: 2 }}
-									mt={0.25}
-								>
-									<Typography variant='caption' color='text.secondary'>
-										Создана:
-										{' '}
-										{dayjs(session.createdAt).format('DD.MM.YYYY, HH:mm')}
-									</Typography>
-									<Typography variant='caption' color='text.secondary'>
-										Активность:
-										{' '}
-										{dayjs(session.lastSeen).format('DD.MM.YYYY, HH:mm')}
-									</Typography>
-								</Stack>
-							</Box>
+									<Group gap='md' mt={2} className={classes.sessionDates}>
+										<Text size='xs' c='dimmed'>
+											Создана:
+											{' '}
+											{dayjs(session.createdAt).format('DD.MM.YYYY, HH:mm')}
+										</Text>
+										<Text size='xs' c='dimmed'>
+											Активность:
+											{' '}
+											{dayjs(session.lastSeen).format('DD.MM.YYYY, HH:mm')}
+										</Text>
+									</Group>
+								</div>
 
-							<Tooltip title={isCurrent ? 'Выйти' : 'Завершить сессию'}>
-								<IconButton
-									size='small'
-									color='error'
-									onClick={() => onLogoutSession(session.id)}
-								>
-									<LogoutIcon fontSize='small' />
-								</IconButton>
-							</Tooltip>
-						</Box>
+								<Tooltip label={isCurrent ? 'Выйти' : 'Завершить сессию'}>
+									<ActionIcon
+										size='sm'
+										variant='subtle'
+										color='red'
+										onClick={() => onLogoutSession(session.id)}
+									>
+										<IconLogout size={16} />
+									</ActionIcon>
+								</Tooltip>
+							</div>
+						</div>
 					);
 				})}
 			</Stack>
 
 			{totalPages > 1 && (
-				<Box sx={styles.pagination}>
+				<Group justify='center' mt='sm'>
 					<Pagination
-						count={totalPages}
-						page={page}
-						onChange={(_, value) => setPage(value)}
-						color='standard'
-						size='small'
+						total={totalPages}
+						value={page}
+						onChange={setPage}
+						size='sm'
 					/>
-				</Box>
+				</Group>
 			)}
 		</Stack>
 	);

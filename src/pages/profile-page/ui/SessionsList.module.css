@@ -1,0 +1,55 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--mantine-spacing-sm);
+	margin-bottom: var(--mantine-spacing-md);
+
+	@media (max-width: 48em) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+.sessionRow {
+	display: flex;
+	align-items: center;
+	gap: var(--mantine-spacing-md);
+	padding: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
+	border-radius: var(--mantine-radius-sm);
+	transition: background-color 0.15s;
+
+	&:hover {
+		background-color: light-dark(
+			var(--mantine-color-gray-1),
+			var(--mantine-color-dark-6)
+		);
+	}
+
+	@media (max-width: 48em) {
+		gap: var(--mantine-spacing-xs);
+	}
+}
+
+.deviceIcon {
+	color: var(--mantine-color-dimmed);
+	flex-shrink: 0;
+}
+
+.sessionInfo {
+	flex: 1;
+	min-width: 0;
+}
+
+.userAgent {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.sessionDates {
+	@media (max-width: 48em) {
+		flex-direction: column;
+		gap: 0;
+	}
+}

@@ -1,89 +1,48 @@
-import type { ThemeOptions } from '@mui/material/styles';
+import type { MantineGradient } from '@mantine/core';
 
-import { alpha, createTheme } from '@mui/material/styles';
+import { createTheme } from '@mantine/core';
 
-export const themeOptions: ThemeOptions = {
-	cssVariables: {
-		cssVarPrefix: '',
-		colorSchemeSelector: 'class',
+export const brandGradient: MantineGradient = { from: '#ffb752', to: '#e09530', deg: 135 };
+
+export const theme = createTheme({
+	primaryColor: 'dark',
+	colors: {
+		brand: [
+			'#fff8e1',
+			'#ffecb3',
+			'#ffe082',
+			'#ffd54f',
+			'#ffca28',
+			'#ffb752',
+			'#ffa726',
+			'#ff9800',
+			'#e09530',
+			'#c68400',
+		],
+		dark: [
+			'#d5d7da',
+			'#acaeb2',
+			'#8b8d91',
+			'#5c5f66',
+			'#3a3a3a',
+			'#2a2a2a',
+			'#1e1e1e',
+			'#121212',
+			'#0e0e0e',
+			'#080808',
+		],
 	},
-
-	colorSchemes: {
-		light: {
-			palette: {
-				primary: {
-					main: '#fff',
-				},
-				secondary: {
-					main: '#ffb752',
-				},
-			},
-		},
-		dark: {
-			palette: {
-				primary: {
-					main: '#fff',
-				},
-				secondary: {
-					main: '#ffb752',
-				},
-			},
-		},
+	defaultRadius: 'md',
+	fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+	fontFamilyMonospace: '"JetBrains Mono", ui-monospace, monospace',
+	headings: {
+		fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
 	},
 	components: {
-		MuiButton: {
+		Button: {
 			defaultProps: {
-				variant: 'contained',
-			},
-			variants: [
-				{
-					props: { variant: 'glass' },
-					style: ({ theme }) => [
-						{
-							'background': alpha(theme.palette.common.black, 0.01),
-
-							'backdropFilter': 'blur(6px)',
-							'border': `1px solid ${alpha(theme.palette.common.black, 0.08)}`,
-
-							'boxShadow': `0 1px 2px ${alpha(theme.palette.common.black, 0.04)}`,
-
-							'&:hover': {
-								background: alpha(theme.palette.common.black, 0.06),
-								boxShadow: `0 6px 14px ${alpha(theme.palette.common.black, 0.06)}`,
-							},
-
-							'&.Mui-disabled': {
-								borderColor: alpha(theme.palette.common.black, 0.03),
-							},
-						},
-
-						theme.applyStyles('dark', {
-							'background': alpha(theme.palette.common.white, 0.03),
-							'border': `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
-
-							'boxShadow': `0 1px 2px ${alpha(theme.palette.common.white, 0.04)}`,
-
-							'&:hover': {
-								background: alpha(theme.palette.common.white, 0.1),
-								boxShadow: `0 6px 14px ${alpha(theme.palette.common.white, 0.02)}`,
-							},
-
-							'&.Mui-disabled': {
-								borderColor: alpha(theme.palette.common.white, 0.03),
-							},
-						}),
-					],
-				},
-			],
-		},
-		MuiToolbar: {
-			defaultProps: {
-				sx: {
-					backgroundColor: 'inherit',
-				},
+				variant: 'filled',
 			},
 		},
 	},
-};
-
-export const theme = createTheme(themeOptions);
+});

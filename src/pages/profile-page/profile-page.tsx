@@ -1,10 +1,4 @@
-import type { SxProps, Theme } from '@mui/material/styles';
-
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Loader, Paper, Stack, Title } from '@mantine/core';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -12,29 +6,9 @@ import { useGetSessions, useLogout, useLogoutAll } from '@/entities/auth';
 import { useGetMe } from '@/entities/user';
 import { ROUTES } from '@/shared/model/routes';
 
+import classes from './ProfilePage.module.css';
 import { ProfileInfo } from './ui/profile-info';
 import { SessionsList } from './ui/sessions-list';
-
-const styles: Record<string, SxProps<Theme>> = {
-	root: {
-		p: { xs: 2, sm: 3 },
-		maxWidth: 860,
-		mx: 'auto',
-	},
-	section: {
-		p: { xs: 2, sm: 3 },
-	},
-	infoSection: {
-		bgcolor: 'transparent',
-		boxShadow: 'none',
-	},
-	loader: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		minHeight: 300,
-	},
-};
 
 export function ProfilePage() {
 	const navigate = useNavigate();
@@ -77,9 +51,9 @@ export function ProfilePage() {
 
 	if (isMeLoading || isSessionsLoading) {
 		return (
-			<Box sx={styles.loader}>
-				<CircularProgress />
-			</Box>
+			<div className={classes.loader}>
+				<Loader />
+			</div>
 		);
 	}
 
@@ -87,17 +61,15 @@ export function ProfilePage() {
 		return null;
 
 	return (
-		<Box sx={styles.root}>
-			<Typography variant='h4' component='h1' fontWeight='bold' gutterBottom>
+		<div className={classes.root}>
+			<Title order={2} fw='bold' mb='sm'>
 				Профиль
-			</Typography>
+			</Title>
 
-			<Stack spacing={3}>
-				<Paper sx={styles.infoSection} elevation={0}>
-					<ProfileInfo user={user} />
-				</Paper>
+			<Stack gap='lg'>
+				<ProfileInfo user={user} />
 
-				<Paper sx={styles.section}>
+				<Paper p={{ base: 'sm', sm: 'md' }}>
 					<SessionsList
 						sessions={sessions}
 						currentSessionId={currentSessionId}
@@ -107,6 +79,6 @@ export function ProfilePage() {
 					/>
 				</Paper>
 			</Stack>
-		</Box>
+		</div>
 	);
 }

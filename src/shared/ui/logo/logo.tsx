@@ -1,5 +1,4 @@
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Group, Text } from '@mantine/core';
 import { Link } from 'react-router';
 
 import LogoIcon from '@/shared/assets/icons/logo-default.svg?react';
@@ -17,21 +16,19 @@ export function Logo({
 }: LogoProps) {
 	return (
 		<Link to='/'>
-			<Stack direction='row' alignItems='center' gap='5px'>
+			<Group gap={5} align='center' wrap='nowrap'>
 				<LogoIcon width={logoWidth} height={logoHeight} />
 
-				<Typography
-					variant={variantText}
+				<Text
 					component='h2'
-					fontWeight='bold'
-					sx={{
-						whiteSpace: 'nowrap',
-						lineHeight: 1,
-					}}
+					fw='bold'
+					fz={variantText === 'h5' ? 'xl' : 'lg'}
+					lh={1}
+					style={{ whiteSpace: 'nowrap', margin: 0 }}
 				>
 					ViaTrade
-				</Typography>
-			</Stack>
+				</Text>
+			</Group>
 		</Link>
 	);
 }

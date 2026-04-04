@@ -1,0 +1,23 @@
+.root {
+	flex-shrink: 0;
+	transition: width 0.2s ease;
+	border-right: 1px solid var(--mantine-color-default-border);
+	height: calc(100vh - 57px);
+	position: sticky;
+	top: 57px;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+}
+
+.bottom {
+	margin-top: auto;
+	display: flex;
+	flex-direction: column;
+}

@@ -1,0 +1,8 @@
+.root {
+	padding: var(--mantine-spacing-lg);
+}
+
+.emptyState {
+	text-align: center;
+	padding: calc(var(--mantine-spacing-xl) * 2) 0;
+}

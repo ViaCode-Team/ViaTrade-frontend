@@ -28,6 +28,7 @@ export function AppHeader({
 			sx={{
 				'& .MuiToolbar-root': { px: 1 },
 			}}
+			position='sticky'
 		>
 			<Toolbar>
 				<Stack

@@ -1,80 +1,74 @@
-.avatarWrapper {
+.card {
+	overflow: visible;
+	background-color: light-dark(
+		var(--mantine-color-white),
+		var(--mantine-color-dark-7)
+	);
+}
+
+.banner {
+	min-height: 100px;
+	max-height: 170px;
+	background: linear-gradient(135deg, #ffb752 0%, #e09530 50%, #db8c0d 100%);
+	border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
+	position: relative;
+	overflow: hidden;
+}
+
+.header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: var(--mantine-spacing-sm);
-	margin-bottom: var(--mantine-spacing-xs);
+	margin-top: -48px;
+	padding-bottom: var(--mantine-spacing-xs);
 }
 
-.avatar {
-	background: linear-gradient(135deg, #ffb752 0%, #e09530 100%);
+.avatarRing {
+	padding: 4px;
+	border-radius: 50%;
+	background: light-dark(
+		var(--mantine-color-white),
+		var(--mantine-color-dark-6)
+	);
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+	z-index: 1;
 }
 
 .editField {
-	width: 100%;
-	max-width: 260px;
-
 	& input {
 		text-align: center;
 	}
 }
 
-.infoRow {
-	display: flex;
+.loginRow {
+	display: inline-flex;
 	align-items: center;
+	position: relative;
+}
+
+.editButton {
+	position: absolute;
+	right: 0;
+	transform: translateX(calc(100% + 4px));
+	opacity: 0;
+	transition: opacity 150ms ease;
+}
+
+.loginRow:hover .editButton {
+	opacity: 1;
+}
+
+.body {
+	padding: 0 var(--mantine-spacing-lg);
+	padding-top: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--mantine-spacing-lg);
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
 	gap: var(--mantine-spacing-sm);
-	min-height: 40px;
-
-	@container (max-width: 48em) {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 2px;
-		min-height: auto;
-		padding-block: 4px;
-	}
-}
-
-.infoIcon {
-	color: var(--mantine-color-dimmed);
-	flex-shrink: 0;
-
-	@container (max-width: 48em) {
-		display: none;
-	}
-}
-
-.label {
-	color: var(--mantine-color-dimmed);
-	width: 130px;
-	flex-shrink: 0;
-
-	@container (max-width: 48em) {
-		width: auto;
-		font-weight: 500;
-	}
-}
-
-.value {
-	flex: 1;
-	min-width: 0;
-}
-
-.bindingRow {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--mantine-spacing-md);
-	padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
-	border-radius: var(--mantine-radius-sm);
-	background-color: light-dark(
-		var(--mantine-color-gray-1),
-		var(--mantine-color-dark-6)
-	);
-
-	@container (max-width: 48em) {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: var(--mantine-spacing-xs);
-		padding: var(--mantine-spacing-sm);
-	}
 }

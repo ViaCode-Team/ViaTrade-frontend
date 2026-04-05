@@ -56,10 +56,8 @@ export function RegisterForm() {
 				<Button
 					variant='gradient'
 					gradient={brandGradient}
-					size='lg'
+					size='md'
 					type='submit'
-					fz={16}
-					fw={600}
 					loading={isPending}
 				>
 					Зарегистрироваться

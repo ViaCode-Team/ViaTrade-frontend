@@ -5,7 +5,7 @@ import { Outlet } from 'react-router';
 
 import { PureHeader } from '@/widgets/header';
 
-import classes from './AuthLayout.module.css';
+import classes from './auth-layout.module.css';
 
 type AuthLayoutProps = { children?: ReactNode };
 

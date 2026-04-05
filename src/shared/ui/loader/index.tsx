@@ -1,6 +1,6 @@
 import { Loader as MantineLoader } from '@mantine/core';
 
-import classes from './Loader.module.css';
+import classes from './loader.module.css';
 
 export function Loader() {
 	return (

@@ -3,7 +3,7 @@ import { IconTimeline } from '@tabler/icons-react';
 
 import type { Signal } from '@/entities/signal';
 
-import classes from './SignalCard.module.css';
+import classes from './signal-card.module.css';
 
 type SignalCardProps = {
 	signal: Signal;

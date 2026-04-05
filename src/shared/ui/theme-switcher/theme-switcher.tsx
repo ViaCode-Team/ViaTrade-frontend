@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 
 import { getThemeState } from '@/shared/lib/theme-mode';
 
-import classes from './ThemeSwitcher.module.css';
+import classes from './theme-switcher.module.css';
 
 const STARS = [
 	{ left: '2.5em', top: '0.5em' },

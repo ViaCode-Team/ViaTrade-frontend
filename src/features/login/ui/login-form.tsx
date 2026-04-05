@@ -29,6 +29,7 @@ export function LoginForm() {
 						value={formData.login}
 						onChange={(e) => setField('login', e.currentTarget.value)}
 						error={errors.login}
+						autoFocus
 					/>
 					<TextInput
 						label='Пароль'
@@ -42,10 +43,8 @@ export function LoginForm() {
 				<Button
 					variant='gradient'
 					gradient={brandGradient}
-					size='lg'
+					size='md'
 					type='submit'
-					fz={16}
-					fw={600}
 					loading={isPending}
 				>
 					Войти

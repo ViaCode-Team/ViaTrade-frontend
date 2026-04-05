@@ -13,7 +13,7 @@ import {
 import { ROUTES } from '@/shared/model/routes';
 
 import { SideBarItem } from './side-bar-item';
-import classes from './SideBar.module.css';
+import classes from './side-bar.module.css';
 
 type SideBarProps = {
 	isCollapsed?: boolean;

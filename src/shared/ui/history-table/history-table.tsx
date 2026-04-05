@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 import { generateMockHistory } from '@/entities/signal';
 
-import classes from './HistoryTable.module.css';
+import classes from './history-table.module.css';
 
 type HistoryTableProps = {
 	asset: string;

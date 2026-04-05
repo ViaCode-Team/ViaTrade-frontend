@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Link } from 'react-router';
 
-import classes from './SideBarItem.module.css';
+import classes from './side-bar-item.module.css';
 
 type SideBarItemProps = {
 	icon: ReactNode;

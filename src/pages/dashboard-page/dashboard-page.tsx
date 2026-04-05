@@ -17,7 +17,7 @@ import {
 	IconTrendingUp,
 } from '@tabler/icons-react';
 
-import classes from './DashboardPage.module.css';
+import classes from './dashboard-page.module.css';
 
 type Signal = {
 	id: string;

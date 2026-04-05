@@ -4,7 +4,7 @@ import { Logo } from '@/shared/ui/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';
-import classes from './Header.module.css';
+import classes from './header.module.css';
 import { MenuButton } from './menu-button';
 
 type AppHeaderProps = {

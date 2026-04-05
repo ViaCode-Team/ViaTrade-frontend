@@ -18,7 +18,7 @@ import { Link as RouterLink } from 'react-router';
 import type { UserSessionDto } from '@/shared/api';
 
 import { parseUserAgent } from '../lib/parse-user-agent';
-import classes from './SessionsList.module.css';
+import classes from './sessions-list.module.css';
 
 const SESSIONS_PER_PAGE = 5;
 

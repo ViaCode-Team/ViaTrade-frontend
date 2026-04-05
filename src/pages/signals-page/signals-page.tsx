@@ -16,7 +16,7 @@ import { mockSignals } from '@/entities/signal';
 import { SignalCard } from '@/entities/signal/ui/signal-card';
 import { HistoryTable } from '@/shared/ui/history-table';
 
-import classes from './SignalsPage.module.css';
+import classes from './signals-page.module.css';
 
 type SortOption = 'date-desc' | 'date-asc' | 'confidence-desc' | 'confidence-asc' | 'asset-asc';
 type DirectionFilter = 'all' | 'buy' | 'sell';

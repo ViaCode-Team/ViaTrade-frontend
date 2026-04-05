@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 
-import classes from './AppBar.module.css';
+import classes from './app-bar.module.css';
 
 type AppBarProps = ComponentPropsWithoutRef<'header'>;
 

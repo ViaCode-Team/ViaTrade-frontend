@@ -1,4 +1,4 @@
-import { Loader, Paper, Stack, Title } from '@mantine/core';
+import { Loader, Stack, Title } from '@mantine/core';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -6,7 +6,7 @@ import { useGetSessions, useLogout, useLogoutAll } from '@/entities/auth';
 import { useGetMe } from '@/entities/user';
 import { ROUTES } from '@/shared/model/routes';
 
-import classes from './ProfilePage.module.css';
+import classes from './profile-page.module.css';
 import { ProfileInfo } from './ui/profile-info';
 import { SessionsList } from './ui/sessions-list';
 
@@ -69,15 +69,13 @@ export function ProfilePage() {
 			<Stack gap='lg'>
 				<ProfileInfo user={user} />
 
-				<Paper p={{ base: 'sm', sm: 'md' }}>
-					<SessionsList
-						sessions={sessions}
-						currentSessionId={currentSessionId}
-						onLogoutAll={() => logoutAll()}
-						onLogoutSession={handleLogoutSession}
-						isLoggingOutAll={isLoggingOutAll}
-					/>
-				</Paper>
+				<SessionsList
+					sessions={sessions}
+					currentSessionId={currentSessionId}
+					onLogoutAll={() => logoutAll()}
+					onLogoutSession={handleLogoutSession}
+					isLoggingOutAll={isLoggingOutAll}
+				/>
 			</Stack>
 		</div>
 	);

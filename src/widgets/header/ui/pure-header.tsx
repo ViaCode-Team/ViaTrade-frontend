@@ -4,7 +4,7 @@ import { Logo } from '@/shared/ui/logo/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';
-import classes from './PureHeader.module.css';
+import classes from './pure-header.module.css';
 
 type PureHeaderProps = {
 	title?: string;

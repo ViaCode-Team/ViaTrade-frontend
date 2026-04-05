@@ -25,7 +25,7 @@ import { useState } from 'react';
 
 import type { MeDto } from '@/shared/api';
 
-import classes from './ProfileInfo.module.css';
+import classes from './profile-info.module.css';
 
 type ProfileInfoProps = {
 	user: MeDto;

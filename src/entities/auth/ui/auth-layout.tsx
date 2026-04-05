@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Stack, Title } from '@mantine/core';
 
-import classes from './AuthLayout.module.css';
+import classes from './auth-layout.module.css';
 
 type AuthLayoutProps = {
 	title: string;

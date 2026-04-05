@@ -33,7 +33,6 @@ export default defineConfig({
 			},
 		}),
 		analyzer({
-			analyzerPort: 'auto',
 			openAnalyzer: false,
 		}),
 	],

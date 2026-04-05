@@ -1,43 +1,23 @@
-import { type ReactNode, useEffect, useRef } from 'react';
+import { NavigationProgress, nprogress } from '@mantine/nprogress';
+import { type ReactNode, useEffect } from 'react';
 import {
 	Outlet,
 	useNavigation,
 } from 'react-router';
 
-import {
-	acquireGlobalLoader,
-	type GlobalLoaderToken,
-	releaseGlobalLoader,
-} from '@/shared/lib/global-loader';
-
 type MainLayoutProps = { children?: ReactNode };
 
-const NAVIGATION_LOADER_DELAY_MS = 0;
-
-function NavigationLoaderBridge() {
+function NavigationProgressBridge() {
 	const navigation = useNavigation();
-	const tokenRef = useRef<GlobalLoaderToken | null>(null);
 
 	useEffect(() => {
 		if (navigation.state !== 'idle') {
-			if (!tokenRef.current) {
-				tokenRef.current = acquireGlobalLoader({
-					delayMs: NAVIGATION_LOADER_DELAY_MS,
-				});
-			}
-			return;
+			nprogress.start();
 		}
-
-		releaseGlobalLoader(tokenRef.current);
-		tokenRef.current = null;
+		else {
+			nprogress.complete();
+		}
 	}, [navigation.state]);
-
-	useEffect(() => {
-		return () => {
-			releaseGlobalLoader(tokenRef.current);
-			tokenRef.current = null;
-		};
-	}, []);
 
 	return null;
 }
@@ -45,7 +25,8 @@ function NavigationLoaderBridge() {
 export function MainLayout({ children }: MainLayoutProps) {
 	return (
 		<>
-			<NavigationLoaderBridge />
+			<NavigationProgress color='brand' />
+			<NavigationProgressBridge />
 			{children ?? <Outlet />}
 		</>
 	);

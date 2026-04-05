@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
+import '@mantine/nprogress/styles.css';
 
 import { theme } from '@/shared/model/theme';
 

@@ -1,9 +1,9 @@
-html.dark .container-loader {
-	background-color: var(--palette-background-default);
+[data-mantine-color-scheme='dark'] .container-loader {
+	background-color: #121212;
 }
 
-html.light .container-loader {
-	background-color: var(--palette-background-default);
+[data-mantine-color-scheme='light'] .container-loader {
+	background-color: #ffffff;
 }
 
 body,

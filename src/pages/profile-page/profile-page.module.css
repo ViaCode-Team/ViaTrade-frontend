@@ -2,8 +2,9 @@
 	padding: var(--mantine-spacing-sm);
 	max-width: 860px;
 	margin-inline: auto;
+	container-type: inline-size;
 
-	@media (min-width: 48em) {
+	@container (min-width: 48em) {
 		padding: var(--mantine-spacing-md);
 	}
 }

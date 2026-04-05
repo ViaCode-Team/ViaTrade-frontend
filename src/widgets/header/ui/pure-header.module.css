@@ -6,3 +6,9 @@
 	padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
 	min-height: 56px;
 }
+
+.title {
+	@media (max-width: 36em) {
+		display: none;
+	}
+}

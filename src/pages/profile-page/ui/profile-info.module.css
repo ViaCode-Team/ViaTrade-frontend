@@ -25,7 +25,7 @@
 	gap: var(--mantine-spacing-sm);
 	min-height: 40px;
 
-	@media (max-width: 48em) {
+	@container (max-width: 48em) {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 2px;
@@ -38,7 +38,7 @@
 	color: var(--mantine-color-dimmed);
 	flex-shrink: 0;
 
-	@media (max-width: 48em) {
+	@container (max-width: 48em) {
 		display: none;
 	}
 }
@@ -48,7 +48,7 @@
 	width: 130px;
 	flex-shrink: 0;
 
-	@media (max-width: 48em) {
+	@container (max-width: 48em) {
 		width: auto;
 		font-weight: 500;
 	}
@@ -71,7 +71,7 @@
 		var(--mantine-color-dark-6)
 	);
 
-	@media (max-width: 48em) {
+	@container (max-width: 48em) {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--mantine-spacing-xs);

@@ -18,7 +18,7 @@ export function PureHeader({ title }: PureHeaderProps) {
 					<Logo logoWidth={32} logoHeight={32} />
 				</Group>
 
-				<Text size='lg' component='h2'>
+				<Text size='lg' component='h2' className={classes.title}>
 					{title}
 				</Text>
 

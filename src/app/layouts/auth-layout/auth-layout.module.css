@@ -5,4 +5,5 @@
 	flex: 1;
 	width: 100%;
 	padding-inline: var(--mantine-spacing-md);
+	container-type: inline-size;
 }

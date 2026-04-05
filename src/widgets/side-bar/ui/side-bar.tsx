@@ -17,6 +17,8 @@ import classes from './side-bar.module.css';
 
 type SideBarProps = {
 	isCollapsed?: boolean;
+	mobileOpen?: boolean;
+	onClose?: () => void;
 };
 
 type TMenuItem = {
@@ -46,32 +48,41 @@ const menuItems: TMenuItem[] = [
 	{ icon: <IconBell size={22} />, text: 'Напоминания', path: '/reminders' },
 ] as const;
 
-export function SideBar({ isCollapsed = false }: SideBarProps) {
+export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarProps) {
 	return (
-		<nav
-			className={classes.root}
-			style={{ width: isCollapsed ? 56 : 200 }}
-		>
-			<div className={classes.list}>
-				{menuItems.map((item) => (
+		<>
+			{mobileOpen && (
+				<div
+					className={classes.backdrop}
+					onClick={onClose}
+				/>
+			)}
+			<nav
+				className={classes.root}
+				data-mobile-open={mobileOpen || undefined}
+				style={{ width: isCollapsed ? 56 : 200 }}
+			>
+				<div className={classes.list}>
+					{menuItems.map((item) => (
+						<SideBarItem
+							key={item.text}
+							icon={item.icon}
+							text={item.text}
+							path={item.path}
+							isCollapsed={isCollapsed}
+						/>
+					))}
+				</div>
+
+				<div className={classes.bottom}>
 					<SideBarItem
-						key={item.text}
-						icon={item.icon}
-						text={item.text}
-						path={item.path}
+						icon={<IconUser size={22} />}
+						text='Профиль'
+						path={ROUTES.PROFILE}
 						isCollapsed={isCollapsed}
 					/>
-				))}
-			</div>
-
-			<div className={classes.bottom}>
-				<SideBarItem
-					icon={<IconUser size={22} />}
-					text='Профиль'
-					path={ROUTES.PROFILE}
-					isCollapsed={isCollapsed}
-				/>
-			</div>
-		</nav>
+				</div>
+			</nav>
+		</>
 	);
 }

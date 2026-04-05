@@ -5,7 +5,7 @@
 	gap: var(--mantine-spacing-sm);
 	margin-bottom: var(--mantine-spacing-md);
 
-	@media (max-width: 48em) {
+	@container (max-width: 48em) {
 		flex-direction: column;
 		align-items: flex-start;
 	}
@@ -26,7 +26,7 @@
 		);
 	}
 
-	@media (max-width: 48em) {
+	@container (max-width: 48em) {
 		gap: var(--mantine-spacing-xs);
 	}
 }
@@ -48,7 +48,7 @@
 }
 
 .sessionDates {
-	@media (max-width: 48em) {
+	@container (max-width: 48em) {
 		flex-direction: column;
 		gap: 0;
 	}

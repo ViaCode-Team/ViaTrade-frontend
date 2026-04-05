@@ -119,7 +119,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 				</Table>
 			</div>
 
-			<Group justify='space-between' mt='md'>
+			<Group justify='space-between' mt='md' wrap='wrap' gap='sm'>
 				<Group gap='xs'>
 					<Text size='sm' c='dimmed'>Строк на странице:</Text>
 					<NativeSelect

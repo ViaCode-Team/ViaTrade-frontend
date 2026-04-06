@@ -93,7 +93,7 @@ export function SignalsPage() {
 	const sellSignals = filteredAndSortedSignals.filter((s) => s.direction === 'sell');
 
 	return (
-		<div className={classes.root}>
+		<>
 			<Title order={2} fw='bold' mb='sm'>
 				Сигналы
 			</Title>
@@ -128,7 +128,6 @@ export function SignalsPage() {
 					/>
 				</SimpleGrid>
 			</Paper>
-
 			<Text size='sm' c='dimmed' mb='sm'>
 				Найдено сигналов:
 				<Text component='span' fw='bold' c='var(--mantine-color-text)'>
@@ -193,6 +192,6 @@ export function SignalsPage() {
 			{selectedSignal && (
 				<HistoryTable asset={selectedSignal.asset} onClose={() => setSelectedSignal(null)} />
 			)}
-		</div>
+		</>
 	);
 }

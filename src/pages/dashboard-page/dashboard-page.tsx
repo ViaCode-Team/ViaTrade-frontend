@@ -189,11 +189,10 @@ function DashboardSignalCard({ signal }: { signal: Signal }) {
 
 export function DashboardPage() {
 	return (
-		<div className={classes.root}>
+		<>
 			<Title order={2} fw='bold' mb='sm'>
 				Панель управления
 			</Title>
-
 			<Title order={4} mt='lg' mb='sm'>
 				Статистика сделок
 			</Title>
@@ -227,7 +226,6 @@ export function DashboardPage() {
 					color='info'
 				/>
 			</SimpleGrid>
-
 			<Title order={4} mb='sm'>
 				<Group gap='xs'>
 					<IconChartLine size={20} />
@@ -241,6 +239,6 @@ export function DashboardPage() {
 					))}
 				</SimpleGrid>
 			</Paper>
-		</div>
+		</>
 	);
 }

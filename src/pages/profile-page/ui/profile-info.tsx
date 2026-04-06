@@ -176,27 +176,25 @@ export function ProfileInfo({ user }: ProfileInfoProps) {
 
 			{/* Content */}
 			<div className={classes.body}>
-				<div className={classes.grid}>
-					<InfoRow
-						icon={<IconMail size={22} />}
-						title='Почта'
-						description='Перейти к подтверждению'
-						onClick={() => navigate(ROUTES.EMAIL_CONFIRMATION)}
-					/>
-
-					<InfoRow
-						icon={<IconCalendarClock size={22} />}
-						title='Дата регистрации'
-						description='10.03.2026'
-					/>
-				</div>
+				<InfoRow
+					icon={<IconCalendarClock size={22} />}
+					title='Дата регистрации'
+					description='10.03.2026'
+				/>
 
 				<div>
 					<Text size='xs' c='dimmed' fw={600} tt='uppercase' mb='xs'>
-						Привязки
+						Сторонние сервисы
 					</Text>
 
 					<div className={classes.grid}>
+						<InfoRow
+							icon={<IconMail size={22} color='#cc8b4a' />}
+							title='Электронная почта'
+							description='Не подтверждена'
+							onClick={() => navigate(ROUTES.EMAIL_CONFIRMATION)}
+						/>
+
 						<InfoRow
 							icon={<IconBrandTelegram size={22} color='#229ED9' />}
 							title='Telegram'

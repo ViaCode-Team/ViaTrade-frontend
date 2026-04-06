@@ -51,18 +51,13 @@ export function ProfilePage() {
 
 	if (isMeLoading || isSessionsLoading) {
 		return (
-			<div className={classes.loader}>
-				<Loader />
-			</div>
+			<Loader />
 		);
 	}
 
-	if (!user)
-		return null;
-
 	return (
 		<Stack gap='xl' className={classes.root}>
-			<ProfileInfo user={user} />
+			<ProfileInfo user={user!} />
 
 			<SessionsList
 				sessions={sessions}

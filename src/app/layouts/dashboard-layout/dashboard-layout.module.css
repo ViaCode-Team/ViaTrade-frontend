@@ -6,5 +6,6 @@
 
 	@media (max-width: 48em) {
 		padding-top: var(--mantine-spacing-lg);
+		padding-inline: var(--mantine-spacing-sm);
 	}
 }

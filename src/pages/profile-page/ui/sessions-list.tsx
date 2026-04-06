@@ -120,7 +120,7 @@ export function SessionsList({
 							icon={getDeviceIcon(session.userAgent)}
 							title={(
 								<Group gap='xs' wrap='nowrap'>
-									<Text size='sm' fw={600} className={classes.userAgent}>
+									<Text size='sm' fw={700} className={classes.userAgent}>
 										{parseUserAgent(session.userAgent)}
 									</Text>
 									{isCurrent && (
@@ -131,14 +131,17 @@ export function SessionsList({
 								</Group>
 							)}
 							description={(
-								<Text size='xs' c='dimmed'>
-									Создана:
-									{' '}
-									{createdAt}
-									{' · '}
-									Активность:
-									{' '}
-									{lastSeen}
+								<Text component='p' size='xs' className={classes.sessionMeta}>
+									<Text component='span' inherit className={classes.sessionMetaItem}>
+										Создана:
+										{' '}
+										{createdAt}
+									</Text>
+									<Text component='span' inherit className={classes.sessionMetaItem}>
+										Активность:
+										{' '}
+										{lastSeen}
+									</Text>
 								</Text>
 							)}
 							className={classes.sessionInfoRow}

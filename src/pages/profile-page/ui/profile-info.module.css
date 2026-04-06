@@ -8,7 +8,7 @@
 
 .banner {
 	min-height: 100px;
-	max-height: 170px;
+	max-height: 200px;
 	background: linear-gradient(135deg, #ffb752 0%, #e09530 50%, #d78d17 100%);
 	border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
 	position: relative;

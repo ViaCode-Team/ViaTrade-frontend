@@ -1,4 +1,4 @@
-import { Loader, Stack, Title } from '@mantine/core';
+import { Loader, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -61,22 +61,16 @@ export function ProfilePage() {
 		return null;
 
 	return (
-		<div className={classes.root}>
-			<Title order={2} fw='bold' mb='sm'>
-				Профиль
-			</Title>
+		<Stack gap='xl' className={classes.root}>
+			<ProfileInfo user={user} />
 
-			<Stack gap='xl'>
-				<ProfileInfo user={user} />
-
-				<SessionsList
-					sessions={sessions}
-					currentSessionId={currentSessionId}
-					onLogoutAll={() => logoutAll()}
-					onLogoutSession={handleLogoutSession}
-					isLoggingOutAll={isLoggingOutAll}
-				/>
-			</Stack>
-		</div>
+			<SessionsList
+				sessions={sessions}
+				currentSessionId={currentSessionId}
+				onLogoutAll={() => logoutAll()}
+				onLogoutSession={handleLogoutSession}
+				isLoggingOutAll={isLoggingOutAll}
+			/>
+		</Stack>
 	);
 }

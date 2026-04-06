@@ -5,13 +5,11 @@ import {
 	Group,
 	Text,
 	TextInput,
-	Tooltip,
 } from '@mantine/core';
 import {
 	IconBrandTelegram,
 	IconCalendarClock,
 	IconCheck,
-	IconEdit,
 	IconMail,
 	IconUser,
 	IconX,
@@ -164,14 +162,17 @@ export function ProfileInfo({ user }: ProfileInfoProps) {
 								<Text size='xl' fw={700}>
 									{user.login}
 								</Text>
-								<Tooltip label='Изменить логин'>
-									<ActionIcon size='sm' variant='subtle' onClick={loginEdit.start}>
-										<IconEdit size={16} />
-									</ActionIcon>
-								</Tooltip>
 							</Group>
+
 						)}
+				{/*
+				<Tooltip label='Изменить логин'>
+					<ActionIcon size='sm' variant='subtle' onClick={loginEdit.start}>
+						<IconEdit size={16} />
+					</ActionIcon>
+				</Tooltip> */}
 			</div>
+
 
 			{/* Content */}
 			<div className={classes.body}>

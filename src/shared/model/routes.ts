@@ -2,6 +2,7 @@ export const ROUTES = {
 	HOME: '/',
 	SIGNALS: '/signals',
 	PROFILE: '/profile',
+	EMAIL_CONFIRMATION: '/confirm-email',
 	LOGIN: '/login',
 	REGISTER: '/register',
 } as const;

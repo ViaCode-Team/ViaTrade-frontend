@@ -66,7 +66,7 @@ export function ProfilePage() {
 				Профиль
 			</Title>
 
-			<Stack gap='lg'>
+			<Stack gap='xl'>
 				<ProfileInfo user={user} />
 
 				<SessionsList

@@ -8,19 +8,22 @@ import {
 	Tooltip,
 } from '@mantine/core';
 import {
+	IconBrandTelegram,
+	IconCalendarClock,
 	IconCheck,
 	IconEdit,
+	IconMail,
 	IconUser,
 	IconX,
 } from '@tabler/icons-react';
-// import dayjs from 'dayjs';
 import { useState } from 'react';
-// import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import type { MeDto } from '@/shared/api';
 
-// import { ROUTES } from '@/shared/model/routes';
-// import { InfoRow } from './info-row';
+import { ROUTES } from '@/shared/model/routes';
+import { InfoRow } from '@/shared/ui/info-row';
+
 import classes from './profile-info.module.css';
 
 type ProfileInfoProps = {
@@ -58,7 +61,7 @@ function useLoginEdit(currentLogin: string) {
 
 export function ProfileInfo({ user }: ProfileInfoProps) {
 	const loginEdit = useLoginEdit(user.login);
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	return (
 		<Card p={0} radius='md' className={classes.card}>
@@ -173,18 +176,18 @@ export function ProfileInfo({ user }: ProfileInfoProps) {
 			{/* Content */}
 			<div className={classes.body}>
 				<div className={classes.grid}>
-					{/* <InfoRow
-						icon={<IconMail size={20} />}
+					<InfoRow
+						icon={<IconMail size={22} />}
 						title='Почта'
-						description='Не привязана'
-						onClick={() => navigate('')}
+						description='Перейти к подтверждению'
+						onClick={() => navigate(ROUTES.EMAIL_CONFIRMATION)}
 					/>
 
 					<InfoRow
-						icon={<IconCalendar size={20} />}
-						title='Последний вход'
-						description={dayjs(user.lastLoginDate).format('DD.MM.YYYY, HH:mm')}
-					/> */}
+						icon={<IconCalendarClock size={22} />}
+						title='Дата регистрации'
+						description='10.03.2026'
+					/>
 				</div>
 
 				<div>
@@ -192,15 +195,14 @@ export function ProfileInfo({ user }: ProfileInfoProps) {
 						Привязки
 					</Text>
 
-					{/* <div className={classes.grid}>
+					<div className={classes.grid}>
 						<InfoRow
-							icon={<IconBrandTelegram size={20} />}
+							icon={<IconBrandTelegram size={22} color='#229ED9' />}
 							title='Telegram'
 							description={user.tgId ? `ID: ${user.tgId}` : 'Не привязан'}
-							onClick={() => { }}
-							accentIcon
+							onClick={() => {}}
 						/>
-					</div> */}
+					</div>
 				</div>
 			</div>
 		</Card>

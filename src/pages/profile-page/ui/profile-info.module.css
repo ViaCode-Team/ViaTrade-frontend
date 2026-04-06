@@ -9,7 +9,7 @@
 .banner {
 	min-height: 100px;
 	max-height: 170px;
-	background: linear-gradient(135deg, #ffb752 0%, #e09530 50%, #db8c0d 100%);
+	background: linear-gradient(135deg, #ffb752 0%, #e09530 50%, #d78d17 100%);
 	border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
 	position: relative;
 	overflow: hidden;
@@ -21,7 +21,7 @@
 	align-items: center;
 	gap: var(--mantine-spacing-sm);
 	margin-top: -48px;
-	padding-bottom: var(--mantine-spacing-xs);
+	margin-bottom: var(--mantine-spacing-xs);
 }
 
 .avatarRing {
@@ -41,12 +41,6 @@
 	}
 }
 
-.loginRow {
-	display: inline-flex;
-	align-items: center;
-	position: relative;
-}
-
 .editButton {
 	position: absolute;
 	right: 0;
@@ -60,8 +54,6 @@
 }
 
 .body {
-	padding: 0 var(--mantine-spacing-lg);
-	padding-top: 0;
 	display: flex;
 	flex-direction: column;
 	gap: var(--mantine-spacing-lg);

@@ -1,0 +1,105 @@
+.root {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--mantine-spacing-sm);
+	padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+	border-radius: var(--mantine-radius-md);
+	border: 1px solid
+		light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+	background-color: transparent;
+}
+
+.main {
+	display: flex;
+	align-items: center;
+	gap: var(--mantine-spacing-sm);
+	flex: 1;
+	min-width: 0;
+}
+
+.icon {
+	width: 42px;
+	height: 42px;
+	border-radius: var(--mantine-radius-md);
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	background-color: light-dark(
+		var(--mantine-color-gray-1),
+		rgba(255, 255, 255, 0.08)
+	);
+}
+
+.iconAccent {
+	color: var(--mantine-color-orange-6);
+	border-color: light-dark(
+		var(--mantine-color-orange-2),
+		var(--mantine-color-orange-8)
+	);
+	background-color: light-dark(
+		var(--mantine-color-orange-0),
+		rgba(230, 119, 0, 0.18)
+	);
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.title {
+	font-size: var(--mantine-font-size-sm);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.description {
+	font-size: var(--mantine-font-size-sm);
+	font-weight: 500;
+	line-height: 1.35;
+	color: var(--mantine-color-dimmed);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.chevron {
+	color: var(--mantine-color-dimmed);
+	flex-shrink: 0;
+	transition:
+		transform 140ms ease,
+		color 140ms ease;
+}
+
+.clickable {
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	transition:
+		background-color 140ms ease,
+		border-color 140ms ease;
+
+	&:hover {
+		border-color: light-dark(
+			var(--mantine-color-gray-4),
+			var(--mantine-color-dark-3)
+		);
+		background-color: light-dark(
+			rgba(0, 0, 0, 0.015),
+			rgba(255, 255, 255, 0.02)
+		);
+	}
+
+	&:hover .chevron {
+		transform: translateX(2px);
+		color: light-dark(var(--mantine-color-dark-6), var(--mantine-color-gray-0));
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--mantine-primary-color-filled);
+		outline-offset: 2px;
+	}
+}

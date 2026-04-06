@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { UnstyledButton } from '@mantine/core';
+import { Box, Card, Stack } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
 
@@ -12,9 +12,23 @@ type InfoRowProps = {
 	description: ReactNode;
 	rightSection?: ReactNode;
 	onClick?: () => void;
-	accentIcon?: boolean;
 	className?: string;
 };
+
+function resolveRightSection(
+	rightSection: ReactNode | undefined,
+	isInteractive: boolean,
+): ReactNode {
+	if (rightSection != null) {
+		return rightSection;
+	}
+
+	if (!isInteractive) {
+		return null;
+	}
+
+	return <IconChevronRight size={14} className={classes.chevron} />;
+}
 
 export function InfoRow({
 	icon,
@@ -22,13 +36,10 @@ export function InfoRow({
 	description,
 	rightSection,
 	onClick,
-	accentIcon,
 	className,
 }: InfoRowProps) {
 	const isInteractive = Boolean(onClick);
-	const resolvedRightSection = rightSection ?? (isInteractive
-		? <IconChevronRight size={14} className={classes.chevron} />
-		: null);
+	const resolvedRightSection = resolveRightSection(rightSection, isInteractive);
 	const rootClassName = clsx(
 		classes.root,
 		isInteractive && classes.clickable,
@@ -38,18 +49,18 @@ export function InfoRow({
 	const content = (
 		<>
 			<div className={classes.main}>
-				<div className={clsx(classes.icon, accentIcon && classes.iconAccent)}>
+				<Box h={42} w={42} className={classes.icon}>
 					{icon}
-				</div>
+				</Box>
 
-				<div className={classes.content}>
+				<Stack gap='2px'>
 					<div className={classes.title}>
 						{title}
 					</div>
 					<div className={classes.description}>
 						{description}
 					</div>
-				</div>
+				</Stack>
 			</div>
 
 			{resolvedRightSection && (
@@ -62,11 +73,27 @@ export function InfoRow({
 
 	if (isInteractive) {
 		return (
-			<UnstyledButton type='button' className={rootClassName} onClick={onClick}>
+			<Card
+				component='button'
+				type='button'
+				orientation='horizontal'
+				className={rootClassName}
+				onClick={onClick}
+				withBorder
+
+			>
 				{content}
-			</UnstyledButton>
+			</Card>
 		);
 	}
 
-	return <div className={rootClassName}>{content}</div>;
+	return (
+		<Card
+			orientation='horizontal'
+			className={rootClassName}
+			withBorder
+		>
+			{content}
+		</Card>
+	);
 }

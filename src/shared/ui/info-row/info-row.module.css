@@ -1,12 +1,6 @@
 .root {
-	display: flex;
-	align-items: center;
 	justify-content: space-between;
 	gap: var(--mantine-spacing-sm);
-	padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
-	border-radius: var(--mantine-radius-md);
-	border: 1px solid
-		light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
 	background-color: transparent;
 }
 
@@ -19,35 +13,14 @@
 }
 
 .icon {
-	width: 42px;
-	height: 42px;
 	border-radius: var(--mantine-radius-md);
-	display: grid;
-	place-items: center;
 	flex-shrink: 0;
+	display: flex;
+	justify-content: center;
 	background-color: light-dark(
 		var(--mantine-color-gray-1),
 		rgba(255, 255, 255, 0.08)
 	);
-}
-
-.iconAccent {
-	color: var(--mantine-color-orange-6);
-	border-color: light-dark(
-		var(--mantine-color-orange-2),
-		var(--mantine-color-orange-8)
-	);
-	background-color: light-dark(
-		var(--mantine-color-orange-0),
-		rgba(230, 119, 0, 0.18)
-	);
-}
-
-.content {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	min-width: 0;
 }
 
 .title {

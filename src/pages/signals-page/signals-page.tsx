@@ -1,7 +1,7 @@
 import {
 	Group,
-	NativeSelect,
 	Paper,
+	Select,
 	SimpleGrid,
 	Text,
 	TextInput,
@@ -107,27 +107,28 @@ export function SignalsPage() {
 						onChange={(e) => setSearchQuery(e.currentTarget.value)}
 						leftSection={<IconSearch size={16} />}
 					/>
-					<NativeSelect
+					<Select
 						data={sortData}
 						value={sortOption}
-						onChange={(e) => setSortOption(e.currentTarget.value as SortOption)}
+						onChange={(v) => setSortOption(v as SortOption)}
 						size='sm'
 					/>
-					<NativeSelect
+					<Select
 						data={directionData}
 						value={directionFilter}
-						onChange={(e) => setDirectionFilter(e.currentTarget.value as DirectionFilter)}
+						onChange={(v) => setDirectionFilter(v as DirectionFilter)}
 						size='sm'
 						leftSection={<IconFilter size={16} />}
 					/>
-					<NativeSelect
+					<Select
 						data={typeData}
 						value={typeFilter}
-						onChange={(e) => setTypeFilter(e.currentTarget.value as TypeFilter)}
+						onChange={(v) => setTypeFilter(v as TypeFilter)}
 						size='sm'
 					/>
 				</SimpleGrid>
 			</Paper>
+
 			<Text size='sm' c='dimmed' mb='sm'>
 				Найдено сигналов:
 				<Text component='span' fw='bold' c='var(--mantine-color-text)'>

@@ -3,7 +3,6 @@ import {
 	Anchor,
 	Badge,
 	Button,
-	Divider,
 	Group,
 	Pagination,
 	Stack,
@@ -16,6 +15,8 @@ import { useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router';
 
 import type { UserSessionDto } from '@/shared/api';
+
+import { InfoRow } from '@/shared/ui/info-row';
 
 import { parseUserAgent } from '../lib/parse-user-agent';
 import classes from './sessions-list.module.css';
@@ -106,59 +107,55 @@ export function SessionsList({
 				</Group>
 			</div>
 
-			<Stack gap={0}>
-				{paginatedSessions.map((session, idx) => {
+			<Stack gap='xs'>
+				{paginatedSessions.map((session) => {
 					const isCurrent = session.id === currentSessionId;
+					const createdAt = dayjs(session.createdAt).format('DD.MM.YYYY, HH:mm');
+					const lastSeen = dayjs(session.lastSeen).format('DD.MM.YYYY, HH:mm');
+					const logoutLabel = isCurrent ? 'Выйти' : 'Завершить сессию';
 
 					return (
-						<div key={session.id}>
-							{idx > 0 && <Divider />}
-							<div className={classes.sessionRow}>
-								{getDeviceIcon(session.userAgent)}
-
-								<div className={classes.sessionInfo}>
-									<Group gap='xs'>
-										<Text size='sm' fw={500} className={classes.userAgent}>
-											{parseUserAgent(session.userAgent)}
-										</Text>
-
-										{isCurrent && (
-											<Badge
-												color='green'
-												variant='filled'
-												size='xs'
-											>
-												Текущая
-											</Badge>
-										)}
-									</Group>
-
-									<Group gap='md' mt={2} className={classes.sessionDates}>
-										<Text size='xs' c='dimmed'>
-											Создана:
-											{' '}
-											{dayjs(session.createdAt).format('DD.MM.YYYY, HH:mm')}
-										</Text>
-										<Text size='xs' c='dimmed'>
-											Активность:
-											{' '}
-											{dayjs(session.lastSeen).format('DD.MM.YYYY, HH:mm')}
-										</Text>
-									</Group>
-								</div>
-
-								<Tooltip label={isCurrent ? 'Выйти' : 'Завершить сессию'}>
+						<InfoRow
+							key={session.id}
+							icon={getDeviceIcon(session.userAgent)}
+							title={(
+								<Group gap='xs' wrap='nowrap'>
+									<Text size='sm' fw={600} className={classes.userAgent}>
+										{parseUserAgent(session.userAgent)}
+									</Text>
+									{isCurrent && (
+										<Badge color='green' variant='filled' size='xs'>
+											Текущая
+										</Badge>
+									)}
+								</Group>
+							)}
+							description={(
+								<Text size='xs' c='dimmed'>
+									Создана:
+									{' '}
+									{createdAt}
+									{' · '}
+									Активность:
+									{' '}
+									{lastSeen}
+								</Text>
+							)}
+							className={classes.sessionInfoRow}
+							rightSection={(
+								<Tooltip label={logoutLabel}>
 									<ActionIcon
-										size='sm'
+										size='lg'
 										variant='subtle'
 										color='red'
+										aria-label={logoutLabel}
 										onClick={() => onLogoutSession(session.id)}
 									>
-										<IconLogout size={16} />
+										<IconLogout size={20} />
 									</ActionIcon>
 								</Tooltip>
-							</div>
-						</div>
+							)}
+						/>
 					);
 				})}
 			</Stack>

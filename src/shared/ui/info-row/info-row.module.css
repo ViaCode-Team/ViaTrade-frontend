@@ -66,6 +66,13 @@
 	white-space: nowrap;
 }
 
+.end {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
 .chevron {
 	color: var(--mantine-color-dimmed);
 	flex-shrink: 0;

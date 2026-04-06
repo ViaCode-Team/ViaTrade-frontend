@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Text, UnstyledButton } from '@mantine/core';
+import { UnstyledButton } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
 
@@ -10,6 +10,7 @@ type InfoRowProps = {
 	icon: ReactNode;
 	title: ReactNode;
 	description: ReactNode;
+	rightSection?: ReactNode;
 	onClick?: () => void;
 	accentIcon?: boolean;
 	className?: string;
@@ -19,11 +20,15 @@ export function InfoRow({
 	icon,
 	title,
 	description,
+	rightSection,
 	onClick,
 	accentIcon,
 	className,
 }: InfoRowProps) {
 	const isInteractive = Boolean(onClick);
+	const resolvedRightSection = rightSection ?? (isInteractive
+		? <IconChevronRight size={14} className={classes.chevron} />
+		: null);
 	const rootClassName = clsx(
 		classes.root,
 		isInteractive && classes.clickable,
@@ -38,16 +43,20 @@ export function InfoRow({
 				</div>
 
 				<div className={classes.content}>
-					<Text component='span' className={classes.title}>
+					<div className={classes.title}>
 						{title}
-					</Text>
-					<Text component='span' className={classes.description}>
+					</div>
+					<div className={classes.description}>
 						{description}
-					</Text>
+					</div>
 				</div>
 			</div>
 
-			{isInteractive && <IconChevronRight size={14} className={classes.chevron} />}
+			{resolvedRightSection && (
+				<div className={classes.end}>
+					{resolvedRightSection}
+				</div>
+			)}
 		</>
 	);
 

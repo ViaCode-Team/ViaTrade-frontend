@@ -3,7 +3,7 @@ import type { RouteObject } from 'react-router';
 import { AuthLayout } from '@/app/layouts/auth-layout';
 import { ROUTES } from '@/shared/model/routes';
 
-export const UnAuthorizedRoutes: RouteObject[] = [
+export const unauthorizedRoutes: RouteObject[] = [
 	{
 		element: <AuthLayout />,
 		children: [

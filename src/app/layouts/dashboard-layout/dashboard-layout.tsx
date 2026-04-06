@@ -3,7 +3,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { type ReactNode, useState } from 'react';
 import { Outlet } from 'react-router';
 
-import { AppHeader } from '@/widgets/header/ui/header';
+import { AppHeader } from '@/widgets/header';
 import { SideBar } from '@/widgets/side-bar';
 
 import classes from './dashboard-layout.module.css';

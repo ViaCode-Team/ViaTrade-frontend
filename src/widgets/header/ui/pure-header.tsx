@@ -1,6 +1,6 @@
 import { Group, Text } from '@mantine/core';
 
-import { Logo } from '@/shared/ui/logo/logo';
+import { Logo } from '@/shared/ui/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';

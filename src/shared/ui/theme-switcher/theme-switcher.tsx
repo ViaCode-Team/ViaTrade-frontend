@@ -1,6 +1,6 @@
 import { useMantineColorScheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { getThemeState } from '@/shared/lib/theme-mode';
 
@@ -17,7 +17,7 @@ export function ThemeSwitcher() {
 	const prefersDark = useMediaQuery('(prefers-color-scheme: dark)') ?? false;
 	const { current } = getThemeState(colorScheme, prefersDark);
 
-	const checked = useMemo(() => current === 'light', [current]);
+	const checked = current === 'light';
 
 	const toggleTheme = useCallback(() => {
 		setColorScheme(current === 'light' ? 'dark' : 'light');
@@ -34,9 +34,9 @@ export function ThemeSwitcher() {
 			/>
 
 			<span className={classes.slider}>
-				{STARS.map((pos, i) => (
+				{STARS.map((pos) => (
 					<span
-						key={i}
+						key={`${pos.left}-${pos.top}`}
 						className={classes.star}
 						style={{ left: pos.left, top: pos.top }}
 					/>

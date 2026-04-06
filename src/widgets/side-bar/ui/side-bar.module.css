@@ -1,10 +1,13 @@
 .root {
+	--vt-sidebar-expanded-width: 200px;
+	--vt-sidebar-header-offset: 57px;
+
 	flex-shrink: 0;
 	transition: width 0.2s ease;
 	border-right: 1px solid var(--mantine-color-default-border);
-	height: calc(100vh - 57px);
+	height: calc(100vh - var(--vt-sidebar-header-offset));
 	position: sticky;
-	top: 57px;
+	top: var(--vt-sidebar-header-offset);
 	display: flex;
 	flex-direction: column;
 	overflow-x: hidden;
@@ -14,7 +17,7 @@
 		position: fixed;
 		left: 0;
 		z-index: 100;
-		width: 200px !important;
+		width: var(--vt-sidebar-expanded-width) !important;
 		transform: translateX(-100%);
 		transition: transform 0.3s ease;
 		background-color: var(--mantine-color-body);
@@ -32,7 +35,7 @@
 		display: block;
 		position: fixed;
 		inset: 0;
-		top: 57px;
+		top: var(--vt-sidebar-header-offset, 57px);
 		z-index: 99;
 		background-color: rgba(0, 0, 0, 0.5);
 	}

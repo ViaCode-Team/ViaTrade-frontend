@@ -56,6 +56,13 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 		return undefined;
 	}
 
+	function getProfitText(profit: number | undefined) {
+		if (profit == null || profit === 0)
+			return '—';
+
+		return `$${profit.toFixed(2)}`;
+	}
+
 	return (
 		<Modal
 			opened
@@ -94,11 +101,11 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 									$
 									{row.open.toFixed(2)}
 								</Table.Td>
-								<Table.Td className={classes.alignRight} style={{ color: 'var(--mantine-color-green-6)' }}>
+								<Table.Td className={`${classes.alignRight} ${classes.positiveCell}`}>
 									$
 									{row.high.toFixed(2)}
 								</Table.Td>
-								<Table.Td className={classes.alignRight} style={{ color: 'var(--mantine-color-red-6)' }}>
+								<Table.Td className={`${classes.alignRight} ${classes.negativeCell}`}>
 									$
 									{row.low.toFixed(2)}
 								</Table.Td>
@@ -110,8 +117,8 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 								<Table.Td className={classes.alignCenter}>
 									{getSignalBadge(row.signal)}
 								</Table.Td>
-								<Table.Td className={classes.alignRight} style={{ color: getProfitColor(row.profit), fontWeight: 'bold' }}>
-									{row.profit ? `$${row.profit.toFixed(2)}` : '—'}
+								<Table.Td className={`${classes.alignRight} ${classes.profitCell}`} style={{ color: getProfitColor(row.profit) }}>
+									{getProfitText(row.profit)}
 								</Table.Td>
 							</Table.Tr>
 						))}

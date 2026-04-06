@@ -88,7 +88,7 @@ export function SessionsList({
 						component={RouterLink}
 						to='/reset-password'
 						size='sm'
-						c='#ffb752'
+						c='var(--mantine-color-brand-5)'
 						fw={500}
 					>
 						Сбросить пароль

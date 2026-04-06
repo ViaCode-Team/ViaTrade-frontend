@@ -3,7 +3,7 @@ import type { RouteObject } from 'react-router';
 import { DashboardLayout } from '@/app/layouts/dashboard-layout';
 import { ROUTES } from '@/shared/model/routes';
 
-export const AuthorizedRoutes: RouteObject[] = [
+export const authorizedRoutes: RouteObject[] = [
 	{
 		element: <DashboardLayout />,
 		children: [

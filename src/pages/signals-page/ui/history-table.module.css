@@ -1,0 +1,23 @@
+.tableWrapper {
+	overflow-x: auto;
+}
+
+.alignRight {
+	text-align: right;
+}
+
+.alignCenter {
+	text-align: center;
+}
+
+.positiveCell {
+	color: var(--mantine-color-green-6);
+}
+
+.negativeCell {
+	color: var(--mantine-color-red-6);
+}
+
+.profitCell {
+	font-weight: 700;
+}

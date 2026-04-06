@@ -21,19 +21,27 @@ async function refreshToken(): Promise<void> {
 }
 
 let refreshPromise: Promise<void> | null = null;
+let isRegistered = false;
 
-interceptors.response.use(async (response, url, options): Promise<Response> => {
-	if (response.status !== 401 || isAuthRequest(url))
-		return response;
+export function registerAuthRefreshInterceptor() {
+	if (isRegistered)
+		return;
 
-	// Deduplicate refresh requests
-	refreshPromise ??= refreshToken()
-		.finally(() => {
-			refreshPromise = null;
-		});
+	interceptors.response.use(async (response, url, options): Promise<Response> => {
+		if (response.status !== 401 || isAuthRequest(url))
+			return response;
 
-	await refreshPromise;
+		// Deduplicate refresh requests
+		refreshPromise ??= refreshToken()
+			.finally(() => {
+				refreshPromise = null;
+			});
 
-	// Retry
-	return fetch(url, options);
-});
+		await refreshPromise;
+
+		// Retry
+		return fetch(url, options);
+	});
+
+	isRegistered = true;
+}

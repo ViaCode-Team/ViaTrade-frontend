@@ -27,16 +27,19 @@ type TMenuItem = {
 	path: string;
 };
 
+const SIDEBAR_COLLAPSED_WIDTH = 56;
+const SIDEBAR_EXPANDED_WIDTH = 200;
+
 const menuItems: TMenuItem[] = [
 	{
 		icon: <IconHome size={22} />,
 		text: 'Главная',
-		path: '/',
+		path: ROUTES.HOME,
 	},
 	{
 		icon: <IconChartCandle size={22} />,
 		text: 'Сигналы',
-		path: '/signals',
+		path: ROUTES.SIGNALS,
 	},
 	{
 		icon: <IconChartBar size={22} />,
@@ -60,7 +63,7 @@ export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarPro
 			<nav
 				className={classes.root}
 				data-mobile-open={mobileOpen || undefined}
-				style={{ width: isCollapsed ? 56 : 200 }}
+				style={{ width: isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH }}
 			>
 				<div className={classes.list}>
 					{menuItems.map((item) => (

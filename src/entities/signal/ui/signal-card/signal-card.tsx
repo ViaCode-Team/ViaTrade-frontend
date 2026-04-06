@@ -10,6 +10,14 @@ type SignalCardProps = {
 	onClick: (signal: Signal) => void;
 };
 
+function getSignalDirectionColor(direction: Signal['direction']) {
+	return direction === 'buy' ? 'var(--mantine-color-green-7)' : 'var(--mantine-color-red-7)';
+}
+
+function getConfidenceColor(confidence: number) {
+	return confidence >= 70 ? 'var(--mantine-color-green-6)' : 'var(--mantine-color-yellow-6)';
+}
+
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
 
@@ -18,17 +26,17 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 			onClick={() => onClick(signal)}
 			className={classes.root}
 			style={{
-				borderLeftColor: isBuy ? '#2e7d32' : '#d32f2f',
+				borderLeftColor: getSignalDirectionColor(signal.direction),
 			}}
 			withBorder
 		>
 			<div className={classes.header}>
 				<div className={classes.assetInfo}>
 					<div>
-						<Text fw='bold' size='lg' truncate style={{ maxWidth: 120 }}>
+						<Text fw='bold' size='lg' truncate className={classes.assetName}>
 							{signal.asset}
 						</Text>
-						<Text size='xs' c='dimmed' style={{ whiteSpace: 'nowrap' }}>
+						<Text size='xs' c='dimmed' className={classes.assetType}>
 							{signal.type === 'stock' ? 'Акция' : 'Фьючерс'}
 						</Text>
 					</div>
@@ -51,16 +59,13 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						{signal.close.toFixed(2)}
 					</Text>
 				</div>
-				<div style={{ textAlign: 'right' }}>
+				<div className={classes.dateInfo}>
 					<Text size='xs' c='dimmed'>Дата сигнала</Text>
 					<div className={classes.dateCol}>
 						<Text fw='bold' truncate>{signal.date}</Text>
 
 						{signal.time && (
-							<Text
-								size='xs'
-								style={{ whiteSpace: 'nowrap', fontSize: '0.7rem' }}
-							>
+							<Text size='xs' className={classes.signalTime}>
 								{signal.time}
 							</Text>
 						)}
@@ -75,7 +80,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						size='xs'
 						fw='bold'
 						c={signal.confidence >= 70 ? 'green' : 'yellow'}
-						style={{ flexShrink: 0, marginLeft: 8 }}
+						className={classes.confidenceValue}
 					>
 						{signal.confidence}
 						%
@@ -86,17 +91,15 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						className={classes.progressBar}
 						style={{
 							width: `${signal.confidence}%`,
-							backgroundColor: signal.confidence >= 70
-								? 'var(--mantine-color-green-6)'
-								: 'var(--mantine-color-yellow-6)',
+							backgroundColor: getConfidenceColor(signal.confidence),
 						}}
 					/>
 				</div>
 			</div>
 
 			<div className={classes.footer}>
-				<IconTimeline size={18} style={{ flexShrink: 0, color: 'var(--mantine-color-dimmed)' }} />
-				<Text size='sm' c='dimmed' truncate style={{ flex: 1, minWidth: 0 }}>
+				<IconTimeline size={18} className={classes.strategyIcon} />
+				<Text size='sm' c='dimmed' truncate className={classes.strategy}>
 					{signal.strategy}
 				</Text>
 			</div>

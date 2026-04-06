@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/nprogress/styles.css';
 
@@ -17,5 +17,3 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 		</MantineProvider>
 	);
 }
-
-export { ColorSchemeScript };

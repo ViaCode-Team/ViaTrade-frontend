@@ -17,7 +17,7 @@ export function AuthFooter({ text, linkText, to }: AuthFooterProps) {
 			<Anchor
 				component={RouterLink}
 				to={to}
-				c='#ffb752'
+				c='var(--mantine-color-brand-5)'
 			>
 				{linkText}
 			</Anchor>

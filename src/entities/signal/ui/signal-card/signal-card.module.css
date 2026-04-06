@@ -31,16 +31,33 @@
 	flex: 1;
 }
 
+.assetName {
+	max-width: 120px;
+}
+
+.assetType {
+	white-space: nowrap;
+}
+
 .priceRow {
 	display: flex;
 	justify-content: space-between;
 	gap: var(--mantine-spacing-xs);
 }
 
+.dateInfo {
+	text-align: right;
+}
+
 .dateCol {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
+}
+
+.signalTime {
+	white-space: nowrap;
+	font-size: 0.7rem;
 }
 
 .confidenceSection {
@@ -53,6 +70,11 @@
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 4px;
+}
+
+.confidenceValue {
+	flex-shrink: 0;
+	margin-left: var(--mantine-spacing-xs);
 }
 
 .progressTrack {
@@ -75,4 +97,14 @@
 	gap: var(--mantine-spacing-xs);
 	padding-top: var(--mantine-spacing-sm);
 	border-top: 1px solid var(--mantine-color-default-border);
+}
+
+.strategyIcon {
+	flex-shrink: 0;
+	color: var(--mantine-color-dimmed);
+}
+
+.strategy {
+	flex: 1;
+	min-width: 0;
 }

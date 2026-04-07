@@ -2,6 +2,10 @@
 	overflow-x: auto;
 }
 
+.table {
+	--table-hover-color: var(--mantine-color-gray-light-hover);
+}
+
 .alignRight {
 	text-align: right;
 }
@@ -10,14 +14,14 @@
 	text-align: center;
 }
 
-.positiveCell {
-	color: var(--mantine-color-green-6);
+.rowBuy {
+	background-color: var(--mantine-color-green-light);
 }
 
-.negativeCell {
-	color: var(--mantine-color-red-6);
+.rowSell {
+	background-color: var(--mantine-color-red-light);
 }
 
-.profitCell {
-	font-weight: 700;
+.rowHold {
+	background-color: var(--mantine-color-default-hover);
 }

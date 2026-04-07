@@ -2,14 +2,14 @@ import {
 	Badge,
 	Group,
 	Modal,
-	NativeSelect,
 	Pagination,
+	Select,
 	Table,
 	Text,
 	Title,
 } from '@mantine/core';
 import { IconChartLine, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { generateMockHistory } from '@/entities/signal';
 
@@ -25,7 +25,10 @@ const ROWS_PER_PAGE_OPTIONS = ['5', '10', '25'];
 export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 	const [page, setPage] = useState(1);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
-	const history = generateMockHistory(asset);
+	const history = useMemo(
+		() => generateMockHistory(asset).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+		[asset],
+	);
 
 	const totalPages = Math.ceil(history.length / rowsPerPage);
 	const from = (page - 1) * rowsPerPage;
@@ -40,27 +43,12 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 		return <Badge color='gray' size='sm'>Hold</Badge>;
 	}
 
-	function getProfitColor(profit: number | undefined) {
-		if (profit && profit > 0)
-			return 'var(--mantine-color-green-6)';
-		if (profit && profit < 0)
-			return 'var(--mantine-color-red-6)';
-		return undefined;
-	}
-
-	function getRowBg(profit: number | undefined) {
-		if (profit && profit > 0)
-			return 'var(--mantine-color-green-light)';
-		if (profit && profit < 0)
-			return 'var(--mantine-color-red-light)';
-		return undefined;
-	}
-
-	function getProfitText(profit: number | undefined) {
-		if (profit == null || profit === 0)
-			return '—';
-
-		return `$${profit.toFixed(2)}`;
+	function getRowClass(signal: 'buy' | 'sell' | 'hold') {
+		if (signal === 'buy')
+			return classes.rowBuy;
+		if (signal === 'sell')
+			return classes.rowSell;
+		return classes.rowHold;
 	}
 
 	return (
@@ -72,7 +60,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 				<Group gap='xs'>
 					<IconChartLine size={20} />
 					<Title order={4}>
-						История торгов:
+						История сигнала:
 						{' '}
 						{asset}
 					</Title>
@@ -80,45 +68,29 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 			)}
 		>
 			<div className={classes.tableWrapper}>
-				<Table striped highlightOnHover>
+				<Table highlightOnHover className={classes.table}>
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>Дата</Table.Th>
 							<Table.Th className={classes.alignRight}>Открытие</Table.Th>
-							<Table.Th className={classes.alignRight}>Максимум</Table.Th>
-							<Table.Th className={classes.alignRight}>Минимум</Table.Th>
 							<Table.Th className={classes.alignRight}>Закрытие</Table.Th>
-							<Table.Th className={classes.alignRight}>Объём</Table.Th>
 							<Table.Th className={classes.alignCenter}>Сигнал</Table.Th>
-							<Table.Th className={classes.alignRight}>Прибыль</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>
 						{paginatedHistory.map((row) => (
-							<Table.Tr key={row.id} style={{ backgroundColor: getRowBg(row.profit) }}>
+							<Table.Tr key={row.id} className={getRowClass(row.signal)}>
 								<Table.Td>{row.date}</Table.Td>
 								<Table.Td className={classes.alignRight}>
 									$
 									{row.open.toFixed(2)}
 								</Table.Td>
-								<Table.Td className={`${classes.alignRight} ${classes.positiveCell}`}>
-									$
-									{row.high.toFixed(2)}
-								</Table.Td>
-								<Table.Td className={`${classes.alignRight} ${classes.negativeCell}`}>
-									$
-									{row.low.toFixed(2)}
-								</Table.Td>
 								<Table.Td className={classes.alignRight}>
 									$
 									{row.close.toFixed(2)}
 								</Table.Td>
-								<Table.Td className={classes.alignRight}>{row.volume.toLocaleString()}</Table.Td>
 								<Table.Td className={classes.alignCenter}>
 									{getSignalBadge(row.signal)}
-								</Table.Td>
-								<Table.Td className={`${classes.alignRight} ${classes.profitCell}`} style={{ color: getProfitColor(row.profit) }}>
-									{getProfitText(row.profit)}
 								</Table.Td>
 							</Table.Tr>
 						))}
@@ -129,11 +101,11 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 			<Group justify='space-between' mt='md' wrap='wrap' gap='sm'>
 				<Group gap='xs'>
 					<Text size='sm' c='dimmed'>Строк на странице:</Text>
-					<NativeSelect
+					<Select
 						data={ROWS_PER_PAGE_OPTIONS}
 						value={String(rowsPerPage)}
-						onChange={(e) => {
-							setRowsPerPage(Number(e.currentTarget.value));
+						onChange={(v) => {
+							setRowsPerPage(Number(v));
 							setPage(1);
 						}}
 						size='xs'
@@ -148,6 +120,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 						{history.length}
 					</Text>
 				</Group>
+
 				<Pagination
 					total={totalPages}
 					value={page}

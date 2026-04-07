@@ -6,7 +6,7 @@ export function ProfileBanner() {
 		<div className={classes.banner}>
 			<svg
 				className={classes.chartLine}
-				viewBox='0 0 480 120'
+				viewBox='0 0 450 120'
 				preserveAspectRatio='xMidYMid slice'
 				fill='none'
 				xmlns='http://www.w3.org/2000/svg'

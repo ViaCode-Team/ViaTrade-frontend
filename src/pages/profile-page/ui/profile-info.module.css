@@ -16,7 +16,7 @@
 
 .banner {
 	min-height: 100px;
-	max-height: 200px;
+	max-height: 230px;
 	background: linear-gradient(
 		135deg,
 		var(--vt-profile-banner-start) 0%,

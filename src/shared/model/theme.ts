@@ -44,5 +44,18 @@ export const theme = createTheme({
 				variant: 'filled',
 			},
 		},
+		Loader: {
+			defaultProps: {
+				c: 'brand.5',
+			},
+			styles: {
+				root: {
+					display: 'flex',
+					height: '100%',
+					justifyContent: 'center',
+					alignItems: 'center',
+				},
+			},
+		},
 	},
 });

@@ -127,5 +127,18 @@ const authApiConfig = createApiConfig('Auth', 'auth', {
 
 export default defineConfig({
 	authApi: authApiConfig,
-	usersApi: createApiConfig('User', 'user'),
+	usersApi: createApiConfig('User', 'user', {
+		output: {
+			override: {
+
+				operations: {
+					'GetMe': {
+						query: {
+							useSuspenseQuery: true,
+						},
+					},
+				},
+			},
+		},
+	}),
 });

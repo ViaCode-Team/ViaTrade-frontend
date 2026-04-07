@@ -1,11 +1,9 @@
-import { Loader as MantineLoader } from '@mantine/core';
+import { Loader } from '@mantine/core';
 
 import classes from './loader.module.css';
 
-export function Loader() {
+export function LocalLoader() {
 	return (
-		<div className={classes.root}>
-			<MantineLoader />
-		</div>
+		<Loader className={classes.root} />
 	);
 }

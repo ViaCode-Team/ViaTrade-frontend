@@ -7,6 +7,7 @@
  */
 import {
 	useQuery,
+	useSuspenseQuery,
 } from '@tanstack/react-query';
 import type {
 	DataTag,
@@ -19,6 +20,8 @@ import type {
 	UndefinedInitialDataOptions,
 	UseQueryOptions,
 	UseQueryResult,
+	UseSuspenseQueryOptions,
+	UseSuspenseQueryResult,
 } from '@tanstack/react-query';
 
 import type {
@@ -150,4 +153,45 @@ export async function invalidateGetMe(queryClient: QueryClient, options?: Invali
 	await queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() }, options);
 
 	return queryClient;
+}
+
+
+export function getGetMeSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetMeQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getMe>>> = ({ signal }) => getMe({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetMeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMe>>>;
+export type GetMeSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetMeSuspense<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetMeSuspense<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetMeSuspense<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetMeSuspense<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetMeSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
 }

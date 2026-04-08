@@ -1,11 +1,11 @@
 import { profileBannerCandles } from '../model/profile-banner-candles';
-import classes from './profile-info.module.css';
+import cls from './profile-info.module.css';
 
 export function ProfileBanner() {
 	return (
-		<div className={classes.banner}>
+		<div className={cls.banner}>
 			<svg
-				className={classes.chartLine}
+				className={cls.chartLine}
 				viewBox='0 0 450 120'
 				preserveAspectRatio='xMidYMid slice'
 				fill='none'

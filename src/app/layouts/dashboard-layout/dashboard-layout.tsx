@@ -6,7 +6,7 @@ import { Outlet } from 'react-router';
 import { AppHeader } from '@/widgets/header';
 import { SideBar } from '@/widgets/side-bar';
 
-import classes from './dashboard-layout.module.css';
+import cls from './dashboard-layout.module.css';
 
 type DashboardLayoutProps = { children?: ReactNode };
 
@@ -31,7 +31,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 					onClose={closeSidebar}
 				/>
 
-				<Container size='xl' component='main' className={classes.main}>
+				<Container size='xl' component='main' className={cls.main}>
 					{children ?? <Outlet />}
 				</Container>
 			</Group>

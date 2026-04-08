@@ -4,7 +4,7 @@ import { Box, Card, Stack } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
 
-import classes from './info-row.module.css';
+import cls from './info-row.module.css';
 
 type InfoRowProps = {
 	icon: ReactNode;
@@ -27,7 +27,7 @@ function resolveRightSection(
 		return null;
 	}
 
-	return <IconChevronRight size={14} className={classes.chevron} />;
+	return <IconChevronRight size={14} className={cls.chevron} />;
 }
 
 export function InfoRow({
@@ -41,30 +41,30 @@ export function InfoRow({
 	const isInteractive = Boolean(onClick);
 	const resolvedRightSection = resolveRightSection(rightSection, isInteractive);
 	const rootClassName = clsx(
-		classes.root,
-		isInteractive && classes.clickable,
+		cls.root,
+		isInteractive && cls.clickable,
 		className,
 	);
 
 	const content = (
 		<>
-			<div className={classes.main}>
-				<Box h={42} w={42} className={classes.icon}>
+			<div className={cls.main}>
+				<Box h={42} w={42} className={cls.icon}>
 					{icon}
 				</Box>
 
 				<Stack gap='2px'>
-					<div className={classes.title}>
+					<div className={cls.title}>
 						{title}
 					</div>
-					<div className={classes.description}>
+					<div className={cls.description}>
 						{description}
 					</div>
 				</Stack>
 			</div>
 
 			{resolvedRightSection && (
-				<div className={classes.end}>
+				<div className={cls.end}>
 					{resolvedRightSection}
 				</div>
 			)}

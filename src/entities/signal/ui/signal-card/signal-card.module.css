@@ -1,42 +1,20 @@
 .root {
-	padding: var(--mantine-spacing-md);
 	cursor: pointer;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	border-left: 4px solid;
-	position: relative;
-	overflow: hidden;
-	height: 100%;
 	display: flex;
-	flex-direction: column;
+	gap: var(--mantine-spacing-sm);
+	height: 100%;
 
 	&:hover {
-		transform: translateY(-6px);
-		box-shadow: var(--mantine-shadow-lg);
+		transform: translateY(-5px);
+		box-shadow: var(--mantine-shadow-md);
 	}
 }
 
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	margin-bottom: var(--mantine-spacing-sm);
-	gap: var(--mantine-spacing-xs);
-}
-
 .assetInfo {
-	display: flex;
-	align-items: center;
-	gap: var(--mantine-spacing-sm);
-	min-width: 0;
+	min-width: 120px;
 	flex: 1;
-}
-
-.assetName {
-	max-width: 120px;
-}
-
-.assetType {
-	white-space: nowrap;
 }
 
 .priceRow {
@@ -55,56 +33,7 @@
 	align-items: flex-end;
 }
 
-.signalTime {
-	white-space: nowrap;
-	font-size: 0.7rem;
-}
-
-.confidenceSection {
-	margin-bottom: var(--mantine-spacing-sm);
-	margin-top: auto;
-}
-
-.confidenceHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 4px;
-}
-
-.confidenceValue {
-	flex-shrink: 0;
-	margin-left: var(--mantine-spacing-xs);
-}
-
-.progressTrack {
-	width: 100%;
-	height: 8px;
-	background-color: var(--mantine-color-gray-2);
-	border-radius: 4px;
-	overflow: hidden;
-}
-
-.progressBar {
-	height: 100%;
-	border-radius: 4px;
-	transition: width 0.5s ease;
-}
-
-.footer {
-	display: flex;
-	align-items: center;
-	gap: var(--mantine-spacing-xs);
-	padding-top: var(--mantine-spacing-sm);
-	border-top: 1px solid var(--mantine-color-default-border);
-}
-
 .strategyIcon {
 	flex-shrink: 0;
 	color: var(--mantine-color-dimmed);
-}
-
-.strategy {
-	flex: 1;
-	min-width: 0;
 }

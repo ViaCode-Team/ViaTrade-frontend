@@ -13,7 +13,7 @@ import {
 import { ROUTES } from '@/shared/model/routes';
 
 import { SideBarItem } from './side-bar-item';
-import classes from './side-bar.module.css';
+import cls from './side-bar.module.css';
 
 type SideBarProps = {
 	isCollapsed?: boolean;
@@ -56,16 +56,16 @@ export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarPro
 		<>
 			{mobileOpen && (
 				<div
-					className={classes.backdrop}
+					className={cls.backdrop}
 					onClick={onClose}
 				/>
 			)}
 			<nav
-				className={classes.root}
+				className={cls.root}
 				data-mobile-open={mobileOpen || undefined}
 				style={{ width: isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH }}
 			>
-				<div className={classes.list}>
+				<div className={cls.list}>
 					{menuItems.map((item) => (
 						<SideBarItem
 							key={item.text}
@@ -77,7 +77,7 @@ export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarPro
 					))}
 				</div>
 
-				<div className={classes.bottom}>
+				<div className={cls.bottom}>
 					<SideBarItem
 						icon={<IconUser size={22} />}
 						text='Профиль'

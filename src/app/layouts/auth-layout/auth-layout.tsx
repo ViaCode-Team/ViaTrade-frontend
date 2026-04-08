@@ -5,7 +5,7 @@ import { Outlet } from 'react-router';
 
 import { PureHeader } from '@/widgets/header';
 
-import classes from './auth-layout.module.css';
+import cls from './auth-layout.module.css';
 
 type AuthLayoutProps = { children?: ReactNode };
 
@@ -17,7 +17,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
 			<Container
 				size='xl'
 				component='main'
-				className={classes.main}
+				className={cls.main}
 			>
 				{children ?? <Outlet />}
 			</Container>

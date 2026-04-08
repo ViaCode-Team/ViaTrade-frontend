@@ -3,7 +3,7 @@ import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react
 
 import type { DashboardSignal } from '../model/dashboard-data';
 
-import classes from '../dashboard-page.module.css';
+import cls from '../dashboard-page.module.css';
 
 type DashboardSignalCardProps = {
 	signal: DashboardSignal;
@@ -35,8 +35,8 @@ export function DashboardSignalCard({ signal }: DashboardSignalCardProps) {
 	const direction = getDirectionProps(signal.direction);
 
 	return (
-		<Paper className={classes.signalCard} withBorder p='sm'>
-			<div className={classes.signalHeader}>
+		<Paper className={cls.signalCard} withBorder p='sm'>
+			<div className={cls.signalHeader}>
 				<Group gap='xs'>
 					<Badge
 						color={direction.color}
@@ -51,13 +51,13 @@ export function DashboardSignalCard({ signal }: DashboardSignalCardProps) {
 				<Text size='xs' c='dimmed'>{signal.timestamp}</Text>
 			</div>
 
-			<div className={classes.signalFooter}>
+			<div className={cls.signalFooter}>
 				<Text size='sm' c='dimmed'>{signal.strategy}</Text>
 				<Group gap='xs'>
 					<Text size='xs' c='dimmed'>Сила:</Text>
-					<div className={classes.strengthTrack}>
+					<div className={cls.strengthTrack}>
 						<div
-							className={classes.strengthBar}
+							className={cls.strengthBar}
 							style={{
 								width: `${signal.strength}%`,
 								backgroundColor: getStrengthColor(signal.strength),

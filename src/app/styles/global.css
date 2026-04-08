@@ -20,3 +20,12 @@ body,
 :where(button) {
 	-webkit-tap-highlight-color: transparent;
 }
+
+li {
+	list-style: none;
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+}

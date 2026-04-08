@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Link } from 'react-router';
 
-import classes from './side-bar-item.module.css';
+import cls from './side-bar-item.module.css';
 
 type SideBarItemProps = {
 	icon: ReactNode;
@@ -20,9 +20,9 @@ export function SideBarItem({
 	onClick,
 }: SideBarItemProps) {
 	return (
-		<Link to={path} className={classes.link} onClick={onClick}>
-			<span className={classes.icon}>{icon}</span>
-			{!isCollapsed && <span className={classes.text}>{text}</span>}
+		<Link to={path} className={cls.link} onClick={onClick}>
+			<span className={cls.icon}>{icon}</span>
+			{!isCollapsed && <span className={cls.text}>{text}</span>}
 		</Link>
 	);
 }

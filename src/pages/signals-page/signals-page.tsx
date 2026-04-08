@@ -1,10 +1,9 @@
-import { Text, Title } from '@mantine/core';
-import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
+import { SimpleGrid, Stack, Text, Title } from '@mantine/core';
 import { useMemo, useState } from 'react';
 
 import type { Signal } from '@/entities/signal';
 
-import { mockSignals } from '@/entities/signal';
+import { mockSignals, SignalCard } from '@/entities/signal';
 
 import {
 	type DirectionFilter,
@@ -12,9 +11,8 @@ import {
 	type SortOption,
 	type TypeFilter,
 } from './model/signal-filters';
-import classes from './signals-page.module.css';
+import cls from './signals-page.module.css';
 import { HistoryTable } from './ui/history-table';
-import { SignalsCardsSection } from './ui/signals-cards-section';
 import { SignalsFilters } from './ui/signals-filters';
 
 export function SignalsPage() {
@@ -33,51 +31,45 @@ export function SignalsPage() {
 		});
 	}, [searchQuery, sortOption, directionFilter, typeFilter]);
 
-	const buySignals = filteredAndSortedSignals.filter((s) => s.direction === 'buy');
-	const sellSignals = filteredAndSortedSignals.filter((s) => s.direction === 'sell');
-
 	return (
-		<>
-			<Title order={2} fw='bold' mb='sm'>
-				Сигналы
-			</Title>
+		<Stack gap='lg'>
+			<Stack gap='sm'>
+				<SignalsFilters
+					searchQuery={searchQuery}
+					sortOption={sortOption}
+					directionFilter={directionFilter}
+					typeFilter={typeFilter}
+					onSearchQueryChange={setSearchQuery}
+					onSortOptionChange={setSortOption}
+					onDirectionFilterChange={setDirectionFilter}
+					onTypeFilterChange={setTypeFilter}
+				/>
 
-			<SignalsFilters
-				searchQuery={searchQuery}
-				sortOption={sortOption}
-				directionFilter={directionFilter}
-				typeFilter={typeFilter}
-				onSearchQueryChange={setSearchQuery}
-				onSortOptionChange={setSortOption}
-				onDirectionFilterChange={setDirectionFilter}
-				onTypeFilterChange={setTypeFilter}
-			/>
-
-			<Text size='sm' c='dimmed' mb='sm'>
-				Найдено сигналов:
-				<Text component='span' fw='bold' c='var(--mantine-color-text)'>
-					{' '}
-					{filteredAndSortedSignals.length}
+				<Text size='sm' c='dimmed'>
+					Найдено сигналов:
+					<Text component='span' fw='bold' c='var(--mantine-color-text)'>
+						{' '}
+						{filteredAndSortedSignals.length}
+					</Text>
 				</Text>
-			</Text>
+			</Stack>
 
-			<SignalsCardsSection
-				title='Сигналы на покупку'
-				icon={<IconTrendingUp size={20} color='var(--mantine-color-green-6)' />}
-				signals={buySignals}
-				onSignalSelect={setSelectedSignal}
-			/>
+			<SimpleGrid
+				minColWidth='280px'
+				spacing={{ base: 'sm', sm: 'lg' }}
+				component='ul'
+				className={cls.signalsGrid}
+			>
+				{filteredAndSortedSignals.map((signal) => (
+					<li key={signal.id} className={cls.signalItem}>
+						<SignalCard signal={signal} onClick={setSelectedSignal} />
+					</li>
+				))}
+			</SimpleGrid>
 
-			<SignalsCardsSection
-				title='Сигналы на продажу'
-				icon={<IconTrendingDown size={20} color='var(--mantine-color-red-6)' />}
-				signals={sellSignals}
-				marginTop='xl'
-				onSignalSelect={setSelectedSignal}
-			/>
 
 			{filteredAndSortedSignals.length === 0 && (
-				<div className={classes.emptyState}>
+				<div className={cls.emptyState}>
 					<Title order={4} c='dimmed'>
 						Сигналы не найдены
 					</Title>
@@ -90,6 +82,6 @@ export function SignalsPage() {
 			{selectedSignal && (
 				<HistoryTable asset={selectedSignal.asset} onClose={() => setSelectedSignal(null)} />
 			)}
-		</>
+		</Stack>
 	);
 }

@@ -4,7 +4,7 @@ import { Logo } from '@/shared/ui/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
 import { AppBar } from './app-bar';
-import classes from './header.module.css';
+import cls from './header.module.css';
 import { MenuButton } from './menu-button';
 
 type AppHeaderProps = {
@@ -24,7 +24,7 @@ export function AppHeader({
 
 	return (
 		<AppBar>
-			<div className={classes.toolbar}>
+			<div className={cls.toolbar}>
 				<Group gap='sm'>
 					<Group gap='xs'>
 						<MenuButton
@@ -36,7 +36,7 @@ export function AppHeader({
 					<Logo logoWidth={32} logoHeight={32} />
 				</Group>
 
-				{title && <h1 className={classes.title}>{title}</h1>}
+				{title && <h1 className={cls.title}>{title}</h1>}
 
 				<Group gap='sm' ml='auto'>
 					<ThemeSwitcher />

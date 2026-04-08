@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Group, Paper, Text, Title } from '@mantine/core';
 
-import classes from '../dashboard-page.module.css';
+import cls from '../dashboard-page.module.css';
 
 type StatCardProps = {
 	icon: ReactNode;
@@ -13,9 +13,9 @@ type StatCardProps = {
 
 export function StatCard({ icon, title, value, subtitle }: StatCardProps) {
 	return (
-		<Paper className={classes.statCard} withBorder p='lg'>
+		<Paper className={cls.statCard} withBorder p='lg'>
 			<Group gap='sm' mb='sm'>
-				<div className={classes.iconWrapper}>
+				<div className={cls.iconWrapper}>
 					{icon}
 				</div>
 				<Text size='sm' c='dimmed'>

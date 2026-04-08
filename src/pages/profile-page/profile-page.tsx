@@ -1,12 +1,12 @@
 import { Stack } from '@mantine/core';
 
-import classes from './profile-page.module.css';
+import cls from './profile-page.module.css';
 import { ProfileInfo } from './ui/profile-info';
 import { SessionsListSection } from './ui/sessions-list-section';
 
 export function ProfilePage() {
 	return (
-		<Stack gap='xl' className={classes.root}>
+		<Stack gap='xl' className={cls.root}>
 			<ProfileInfo />
 			<SessionsListSection />
 		</Stack>

@@ -13,7 +13,7 @@ import { useMemo, useState } from 'react';
 
 import { generateMockHistory } from '@/entities/signal';
 
-import classes from './history-table.module.css';
+import cls from './history-table.module.css';
 
 type HistoryTableProps = {
 	asset: string;
@@ -45,10 +45,10 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 
 	function getRowClass(signal: 'buy' | 'sell' | 'hold') {
 		if (signal === 'buy')
-			return classes.rowBuy;
+			return cls.rowBuy;
 		if (signal === 'sell')
-			return classes.rowSell;
-		return classes.rowHold;
+			return cls.rowSell;
+		return cls.rowHold;
 	}
 
 	return (
@@ -67,29 +67,30 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 				</Group>
 			)}
 		>
-			<div className={classes.tableWrapper}>
-				<Table highlightOnHover className={classes.table}>
+			<div className={cls.tableWrapper}>
+				<Table highlightOnHover className={cls.table}>
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>Дата</Table.Th>
-							<Table.Th className={classes.alignRight}>Открытие</Table.Th>
-							<Table.Th className={classes.alignRight}>Закрытие</Table.Th>
-							<Table.Th className={classes.alignCenter}>Сигнал</Table.Th>
+							<Table.Th className={cls.alignRight}>Открытие</Table.Th>
+							<Table.Th className={cls.alignRight}>Закрытие</Table.Th>
+							<Table.Th className={cls.alignCenter}>Сигнал</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>
+
 						{paginatedHistory.map((row) => (
 							<Table.Tr key={row.id} className={getRowClass(row.signal)}>
 								<Table.Td>{row.date}</Table.Td>
-								<Table.Td className={classes.alignRight}>
+								<Table.Td className={cls.alignRight}>
 									$
 									{row.open.toFixed(2)}
 								</Table.Td>
-								<Table.Td className={classes.alignRight}>
+								<Table.Td className={cls.alignRight}>
 									$
 									{row.close.toFixed(2)}
 								</Table.Td>
-								<Table.Td className={classes.alignCenter}>
+								<Table.Td className={cls.alignCenter}>
 									{getSignalBadge(row.signal)}
 								</Table.Td>
 							</Table.Tr>
@@ -117,6 +118,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 						{to}
 						{' '}
 						из
+						{' '}
 						{history.length}
 					</Text>
 				</Group>
@@ -125,6 +127,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 					total={totalPages}
 					value={page}
 					onChange={setPage}
+					withEdges
 					size='sm'
 				/>
 			</Group>

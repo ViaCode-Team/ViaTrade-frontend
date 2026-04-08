@@ -2,7 +2,7 @@ import { Anchor, Button, Group, Text } from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
 import { Link as RouterLink } from 'react-router';
 
-import classes from './sessions-list.module.css';
+import cls from './sessions-list.module.css';
 
 type SessionsListHeaderProps = {
 	totalSessions: number;
@@ -16,7 +16,7 @@ export function SessionsListHeader({
 	isLoggingOutAll,
 }: SessionsListHeaderProps) {
 	return (
-		<div className={classes.header}>
+		<div className={cls.header}>
 			<Text size='lg' fw={600}>
 				Активные сессии
 				<Text component='span' size='sm' c='dimmed' ml='xs'>

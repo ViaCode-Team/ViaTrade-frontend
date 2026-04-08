@@ -10,13 +10,13 @@ import { useNavigate } from 'react-router';
 
 import { ROUTES } from '@/shared/model/routes';
 
-import classes from './email-confirmation-page.module.css';
+import cls from './email-confirmation-page.module.css';
 
 export function EmailConfirmationPage() {
 	const navigate = useNavigate();
 
 	return (
-		<div className={classes.root}>
+		<div className={cls.root}>
 			<Title order={2} fw='bold' mb='sm'>
 				Подтверждение почты
 			</Title>

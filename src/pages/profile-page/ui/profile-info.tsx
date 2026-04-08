@@ -22,7 +22,7 @@ import { InfoRow } from '@/shared/ui/info-row';
 
 import { useLoginEdit } from '../model/use-login-edit';
 import { ProfileBanner } from './profile-banner';
-import classes from './profile-info.module.css';
+import cls from './profile-info.module.css';
 
 export function ProfileInfo() {
 	const { data } = useGetMeSuspense();
@@ -32,11 +32,11 @@ export function ProfileInfo() {
 	const navigate = useNavigate();
 
 	return (
-		<Card p={0} radius='md' className={classes.card}>
+		<Card p={0} radius='md' className={cls.card}>
 			<ProfileBanner />
 
-			<div className={classes.header}>
-				<div className={classes.avatarRing}>
+			<div className={cls.header}>
+				<div className={cls.avatarRing}>
 					<Avatar size={96}>
 						<IconUser size={48} />
 					</Avatar>
@@ -50,7 +50,7 @@ export function ProfileInfo() {
 									size='sm'
 									value={loginEdit.value}
 									onChange={(e) => loginEdit.setValue(e.currentTarget.value)}
-									className={classes.editField}
+									className={cls.editField}
 									rightSection={(
 										<Group gap={2}>
 											<ActionIcon size='sm' variant='subtle' color='green' onClick={loginEdit.save}>
@@ -84,14 +84,14 @@ export function ProfileInfo() {
 
 			</div>
 
-			<div className={classes.body}>
+			<div className={cls.body}>
 
 				<div>
 					<Text size='xs' c='dimmed' fw={600} tt='uppercase' mb='xs'>
 						Сторонние сервисы
 					</Text>
 
-					<div className={classes.grid}>
+					<div className={cls.grid}>
 						<InfoRow
 							icon={<IconMail size={22} color='var(--mantine-color-brand-7)' />}
 							title='Электронная почта'

@@ -1,9 +1,17 @@
-import { Badge, Paper, Text } from '@mantine/core';
+import {
+	Badge,
+	Card,
+	Divider,
+	Flex,
+	Progress,
+	Stack,
+	Text,
+} from '@mantine/core';
 import { IconTimeline } from '@tabler/icons-react';
 
 import type { Signal } from '@/entities/signal';
 
-import classes from './signal-card.module.css';
+import cls from './signal-card.module.css';
 
 type SignalCardProps = {
 	signal: Signal;
@@ -15,94 +23,92 @@ function getSignalDirectionColor(direction: Signal['direction']) {
 }
 
 function getConfidenceColor(confidence: number) {
-	return confidence >= 70 ? 'var(--mantine-color-green-6)' : 'var(--mantine-color-yellow-6)';
+	return confidence >= 70 ? 'green.6' : 'yellow.6';
 }
 
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
 
 	return (
-		<Paper
+		<Card
 			onClick={() => onClick(signal)}
-			className={classes.root}
+			className={cls.root}
 			style={{
 				borderLeftColor: getSignalDirectionColor(signal.direction),
 			}}
+			bg='transparent'
 			withBorder
 		>
-			<div className={classes.header}>
-				<div className={classes.assetInfo}>
-					<div>
-						<Text fw='bold' size='lg' truncate className={classes.assetName}>
-							{signal.asset}
-						</Text>
-						<Text size='xs' c='dimmed' className={classes.assetType}>
-							{signal.type === 'stock' ? 'Акция' : 'Фьючерс'}
-						</Text>
-					</div>
+			<Flex gap='xs'>
+				<div className={cls.assetInfo}>
+					<Text component='h3' size='lg' fw='bold' lineClamp={1}>
+						{signal.asset}
+					</Text>
+					<Text size='xs' c='dimmed'>
+						{signal.type === 'stock' ? 'Акция' : 'Фьючерс'}
+					</Text>
 				</div>
+
 				<Badge
 					color={isBuy ? 'green' : 'red'}
 					size='sm'
-					fw={600}
-					style={{ flexShrink: 0 }}
 				>
 					{isBuy ? 'Покупка' : 'Продажа'}
 				</Badge>
-			</div>
+			</Flex>
 
-			<div className={classes.priceRow}>
-				<div>
-					<Text size='xs' c='dimmed'>Цена закрытия</Text>
-					<Text fw='bold' truncate>
-						$
-						{signal.close.toFixed(2)}
-					</Text>
-				</div>
-				<div className={classes.dateInfo}>
-					<Text size='xs' c='dimmed'>Дата сигнала</Text>
-					<div className={classes.dateCol}>
-						<Text fw='bold' truncate>{signal.date}</Text>
 
-						{signal.time && (
-							<Text size='xs' className={classes.signalTime}>
+			<Stack h='100%' gap='xs'>
+				<div className={cls.priceRow}>
+					<div>
+						<Text size='xs' c='dimmed'>Цена закрытия</Text>
+						<Text fw='bold' truncate>
+							$
+							{signal.close.toFixed(2)}
+						</Text>
+					</div>
+
+					<div className={cls.dateInfo}>
+						<Text size='xs' c='dimmed'>Дата сигнала</Text>
+						<div className={cls.dateCol}>
+							<Text fw='bold' truncate>{signal.date}</Text>
+
+							<Text size='xs'>
 								{signal.time}
 							</Text>
-						)}
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div className={classes.confidenceSection}>
-				<div className={classes.confidenceHeader}>
-					<Text size='xs' c='dimmed'>Надёжность сигнала</Text>
-					<Text
-						size='xs'
-						fw='bold'
-						c={signal.confidence >= 70 ? 'green' : 'yellow'}
-						className={classes.confidenceValue}
-					>
-						{signal.confidence}
-						%
-					</Text>
-				</div>
-				<div className={classes.progressTrack}>
-					<div
-						className={classes.progressBar}
-						style={{
-							width: `${signal.confidence}%`,
-							backgroundColor: getConfidenceColor(signal.confidence),
-						}}
+				<Stack gap={4} flex={1} justify='flex-end'>
+					<Flex justify='space-between' wrap='nowrap'>
+						<Text size='xs' c='dimmed'>Надёжность сигнала</Text>
+						<Text
+							size='xs'
+							fw='bold'
+							c={signal.confidence >= 70 ? 'green' : 'yellow'}
+						>
+							{signal.confidence}
+							%
+						</Text>
+					</Flex>
+
+					<Progress
+						value={signal.confidence}
+						bg='gray.4'
+						color={getConfidenceColor(signal.confidence)}
 					/>
-				</div>
-			</div>
+				</Stack>
+			</Stack>
 
-			<div className={classes.footer}>
-				<IconTimeline size={18} className={classes.strategyIcon} />
-				<Text size='sm' c='dimmed' truncate className={classes.strategy}>
+			<Divider />
+
+			<Flex gap={7} align='center'>
+				<IconTimeline size={18} className={cls.strategyIcon} />
+				<Text size='sm' c='dimmed' lineClamp={1}>
 					{signal.strategy}
 				</Text>
-			</div>
-		</Paper>
+			</Flex>
+		</Card>
 	);
 }

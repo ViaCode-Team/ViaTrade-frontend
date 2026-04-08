@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Stack, Title } from '@mantine/core';
 
-import classes from './auth-layout.module.css';
+import cls from './auth-layout.module.css';
 
 type AuthLayoutProps = {
 	title: string;
@@ -12,7 +12,7 @@ type AuthLayoutProps = {
 export function AuthLayout({ title, children }: AuthLayoutProps) {
 	return (
 		<Stack w='100%' maw={420} align='center' gap='xl' mx='auto'>
-			<Title order={1} className={classes.title}>
+			<Title order={1} className={cls.title}>
 				{title}
 			</Title>
 

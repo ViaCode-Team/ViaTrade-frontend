@@ -1,5 +1,5 @@
-import { Paper, Select, SimpleGrid, TextInput } from '@mantine/core';
-import { IconFilter, IconSearch } from '@tabler/icons-react';
+import { Select, SimpleGrid, TextInput } from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
 
 import {
 	type DirectionFilter,
@@ -32,35 +32,28 @@ export function SignalsFilters({
 	onTypeFilterChange,
 }: SignalsFiltersProps) {
 	return (
-		<Paper mb='lg'>
-			<SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing='sm'>
-				<TextInput
-					size='sm'
-					placeholder='Поиск по активу или стратегии...'
-					value={searchQuery}
-					onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
-					leftSection={<IconSearch size={16} />}
-				/>
-				<Select
-					data={sortOptions}
-					value={sortOption}
-					onChange={(value) => value && onSortOptionChange(value as SortOption)}
-					size='sm'
-				/>
-				<Select
-					data={directionOptions}
-					value={directionFilter}
-					onChange={(value) => value && onDirectionFilterChange(value as DirectionFilter)}
-					size='sm'
-					leftSection={<IconFilter size={16} />}
-				/>
-				<Select
-					data={typeOptions}
-					value={typeFilter}
-					onChange={(value) => value && onTypeFilterChange(value as TypeFilter)}
-					size='sm'
-				/>
-			</SimpleGrid>
-		</Paper>
+		<SimpleGrid minColWidth={250} spacing='sm'>
+			<TextInput
+				placeholder='Поиск по активу или стратегии...'
+				value={searchQuery}
+				onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
+				leftSection={<IconSearch size={16} />}
+			/>
+			<Select
+				data={sortOptions}
+				value={sortOption}
+				onChange={(value) => value && onSortOptionChange(value as SortOption)}
+			/>
+			<Select
+				data={directionOptions}
+				value={directionFilter}
+				onChange={(value) => value && onDirectionFilterChange(value as DirectionFilter)}
+			/>
+			<Select
+				data={typeOptions}
+				value={typeFilter}
+				onChange={(value) => value && onTypeFilterChange(value as TypeFilter)}
+			/>
+		</SimpleGrid>
 	);
 }

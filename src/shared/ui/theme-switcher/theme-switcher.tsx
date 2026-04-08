@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 import { getThemeState } from '@/shared/lib/theme-mode';
 
-import classes from './theme-switcher.module.css';
+import cls from './theme-switcher.module.css';
 
 const STARS = [
 	{ left: '2.5em', top: '0.5em' },
@@ -24,7 +24,7 @@ export function ThemeSwitcher() {
 	}, [current, setColorScheme]);
 
 	return (
-		<label className={classes.root}>
+		<label className={cls.root}>
 			<input
 				type='checkbox'
 				checked={checked}
@@ -33,18 +33,18 @@ export function ThemeSwitcher() {
 				aria-checked={checked}
 			/>
 
-			<span className={classes.slider}>
+			<span className={cls.slider}>
 				{STARS.map((pos) => (
 					<span
 						key={`${pos.left}-${pos.top}`}
-						className={classes.star}
+						className={cls.star}
 						style={{ left: pos.left, top: pos.top }}
 					/>
 				))}
 
 				<svg
 					viewBox='0 0 16 16'
-					className={classes.cloud}
+					className={cls.cloud}
 				>
 					<path
 						transform='matrix(.77976 0 0 .78395-299.99-418.63)'

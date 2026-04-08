@@ -4,6 +4,18 @@ import { createTheme } from '@mantine/core';
 
 export const brandGradient: MantineGradient = { from: '#ffb752', to: '#e09530', deg: 135 };
 
+const inputStyles = {
+	wrapper: {
+		'--input-bd-focus': 'var(--mantine-color-brand-5)',
+	},
+	input: {
+		color: 'var(--mantine-color-text)',
+	},
+	label: {
+		color: 'var(--mantine-color-text)',
+	},
+};
+
 export const theme = createTheme({
 	primaryColor: 'dark',
 	colors: {
@@ -39,6 +51,18 @@ export const theme = createTheme({
 		fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
 	},
 	components: {
+		TextInput: {
+			defaultProps: {
+				withAsterisk: true,
+			},
+			styles: inputStyles,
+		},
+		PasswordInput: {
+			defaultProps: {
+				withAsterisk: true,
+			},
+			styles: inputStyles,
+		},
 		Button: {
 			defaultProps: {
 				variant: 'filled',

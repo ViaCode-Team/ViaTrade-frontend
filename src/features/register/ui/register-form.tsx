@@ -1,4 +1,10 @@
-import { Alert, Button, Stack, TextInput } from '@mantine/core';
+import {
+	Alert,
+	Button,
+	PasswordInput,
+	Stack,
+	TextInput,
+} from '@mantine/core';
 
 import { brandGradient } from '@/shared/model/theme';
 
@@ -30,6 +36,7 @@ export function RegisterForm() {
 						value={formData.email}
 						onChange={(e) => setField('email', e.currentTarget.value)}
 						error={errors.email}
+						autoFocus
 					/>
 					<TextInput
 						label='Логин'
@@ -37,16 +44,14 @@ export function RegisterForm() {
 						onChange={(e) => setField('login', e.currentTarget.value)}
 						error={errors.login}
 					/>
-					<TextInput
+					<PasswordInput
 						label='Пароль'
-						type='password'
 						value={formData.password}
 						onChange={(e) => setField('password', e.currentTarget.value)}
 						error={errors.password}
 					/>
-					<TextInput
+					<PasswordInput
 						label='Подтверждение пароля'
-						type='password'
 						value={formData.confirmPassword}
 						onChange={(e) => setField('confirmPassword', e.currentTarget.value)}
 						error={errors.confirmPassword}

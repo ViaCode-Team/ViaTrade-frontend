@@ -1,4 +1,10 @@
-import { Alert, Button, Stack, TextInput } from '@mantine/core';
+import {
+	Alert,
+	Button,
+	PasswordInput,
+	Stack,
+	TextInput,
+} from '@mantine/core';
 
 import { brandGradient } from '@/shared/model/theme';
 
@@ -31,12 +37,12 @@ export function LoginForm() {
 						error={errors.login}
 						autoFocus
 					/>
-					<TextInput
+					<PasswordInput
 						label='Пароль'
-						type='password'
 						value={formData.password}
 						onChange={(e) => setField('password', e.currentTarget.value)}
 						error={errors.password}
+
 					/>
 				</Stack>
 

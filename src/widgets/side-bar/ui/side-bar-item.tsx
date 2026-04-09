@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Link } from 'react-router';
+import { Flex, NavLink } from '@mantine/core';
+import { Link as RouterLink } from 'react-router';
 
 import cls from './side-bar-item.module.css';
 
@@ -20,9 +21,20 @@ export function SideBarItem({
 	onClick,
 }: SideBarItemProps) {
 	return (
-		<Link to={path} className={cls.link} onClick={onClick}>
-			<span className={cls.icon}>{icon}</span>
-			{!isCollapsed && <span className={cls.text}>{text}</span>}
-		</Link>
+		<NavLink
+			pl='md'
+			h={40}
+			className={!isCollapsed ? cls.link : ''}
+			label={!isCollapsed && text}
+			leftSection={<Flex component='span' w={22}>{icon}</Flex>}
+			component={RouterLink}
+			to={path}
+			onClick={onClick}
+			styles={{
+				section: {
+					marginInlineEnd: 0,
+				},
+			}}
+		/>
 	);
 }

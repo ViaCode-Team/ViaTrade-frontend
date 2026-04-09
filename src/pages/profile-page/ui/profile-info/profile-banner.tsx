@@ -1,4 +1,4 @@
-import { profileBannerCandles } from '../model/profile-banner-candles';
+import { profileBannerCandles } from '../../model/profile-banner-candles';
 import cls from './profile-info.module.css';
 
 export function ProfileBanner() {

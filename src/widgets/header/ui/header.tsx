@@ -8,13 +8,11 @@ import cls from './header.module.css';
 import { MenuButton } from './menu-button';
 
 type AppHeaderProps = {
-	title?: string;
 	isMenuOpen: boolean;
 	onToggleMenu: (open: boolean) => void;
 };
 
 export function AppHeader({
-	title,
 	isMenuOpen,
 	onToggleMenu,
 }: AppHeaderProps) {
@@ -36,7 +34,6 @@ export function AppHeader({
 					<Logo logoWidth={32} logoHeight={32} />
 				</Group>
 
-				{title && <h1 className={cls.title}>{title}</h1>}
 
 				<Group gap='sm' ml='auto'>
 					<ThemeSwitcher />

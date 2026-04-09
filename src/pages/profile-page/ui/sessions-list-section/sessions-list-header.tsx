@@ -1,4 +1,10 @@
-import { Anchor, Button, Group, Text } from '@mantine/core';
+import {
+	Anchor,
+	Button,
+	Group,
+	Text,
+	Title,
+} from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
 import { Link as RouterLink } from 'react-router';
 
@@ -17,21 +23,21 @@ export function SessionsListHeader({
 }: SessionsListHeaderProps) {
 	return (
 		<div className={cls.header}>
-			<Text size='lg' fw={600}>
+			<Title order={4}>
 				Активные сессии
-				<Text component='span' size='sm' c='dimmed' ml='xs'>
+				{' '}
+				<Text component='span' size='sm' c='dimmed'>
 					(
 					{totalSessions}
 					)
 				</Text>
-			</Text>
+			</Title>
 
 			<Group gap='sm'>
 				<Anchor
 					component={RouterLink}
 					to='/reset-password'
 					size='sm'
-					c='var(--mantine-color-brand-5)'
 					fw={500}
 				>
 					Сбросить пароль

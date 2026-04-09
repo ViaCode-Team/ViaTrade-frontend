@@ -1,4 +1,4 @@
-import { Loader } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -8,6 +8,7 @@ import { ROUTES } from '@/shared/model/routes';
 import { getCurrentSessionId, normalizeUserSessions } from '../../model/user-sessions';
 import { SessionsList } from './sessions-list';
 import { SessionsListHeader } from './sessions-list-header';
+import { SessionsListSkeleton } from './sessions-list.skeleton';
 
 export function SessionsListSection() {
 	const navigate = useNavigate();
@@ -35,7 +36,7 @@ export function SessionsListSection() {
 
 
 	return (
-		<>
+		<Stack>
 			<SessionsListHeader
 				totalSessions={sessions.length}
 				onLogoutAll={logoutAll}
@@ -43,7 +44,7 @@ export function SessionsListSection() {
 			/>
 
 			{isLoading
-				? <Loader />
+				? <SessionsListSkeleton />
 				: (
 						<SessionsList
 							sessions={sessions}
@@ -51,6 +52,6 @@ export function SessionsListSection() {
 							onLogoutSession={handleLogoutSession}
 						/>
 					)}
-		</>
+		</Stack>
 	);
 }

@@ -1,11 +1,10 @@
 .card {
 	--vt-profile-banner-start: var(--mantine-color-brand-5);
-	--vt-profile-banner-mid: var(--mantine-color-brand-8);
-	--vt-profile-banner-end: var(--mantine-color-brand-9);
+	--vt-profile-banner-mid: var(--mantine-color-brand-6);
+	--vt-profile-banner-end: var(--mantine-color-brand-8);
 	--vt-profile-chart-line: rgba(255, 255, 255, 0.1);
 	--vt-profile-candle-up: rgba(255, 255, 255, 0.1);
 	--vt-profile-candle-down: rgba(255, 255, 255, 0.05);
-	--vt-profile-avatar-size: 96px;
 
 	overflow: visible;
 	background-color: light-dark(
@@ -34,15 +33,6 @@
 	display: block;
 }
 
-.header {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--mantine-spacing-sm);
-	margin-top: calc(-1 * var(--vt-profile-avatar-size) / 2);
-	margin-bottom: var(--mantine-spacing-xs);
-}
-
 .avatarRing {
 	padding: calc(var(--mantine-spacing-xs) / 2);
 	border-radius: 50%;
@@ -58,12 +48,6 @@
 	& input {
 		text-align: center;
 	}
-}
-
-.body {
-	display: flex;
-	flex-direction: column;
-	gap: var(--mantine-spacing-lg);
 }
 
 .grid {

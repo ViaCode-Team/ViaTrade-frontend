@@ -20,6 +20,10 @@ export const authorizedRoutes: RouteObject[] = [
 				lazy: () => import('@/pages/profile-page'),
 			},
 			{
+				path: ROUTES.STRATEGIES,
+				lazy: () => import('@/pages/strategy-page'),
+			},
+			{
 				path: ROUTES.EMAIL_CONFIRMATION,
 				lazy: () => import('@/pages/email-confirmation-page'),
 			},

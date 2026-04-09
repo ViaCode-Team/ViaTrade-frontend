@@ -4,27 +4,15 @@ import { createTheme } from '@mantine/core';
 
 export const brandGradient: MantineGradient = { from: '#ffb752', to: '#e09530', deg: 135 };
 
-const inputStyles = {
-	wrapper: {
-		'--input-bd-focus': 'var(--mantine-color-brand-5)',
-	},
-	input: {
-		color: 'var(--mantine-color-text)',
-	},
-	label: {
-		color: 'var(--mantine-color-text)',
-	},
-};
-
 export const theme = createTheme({
-	primaryColor: 'dark',
+	primaryColor: 'brand',
 	colors: {
 		brand: [
 			'#fff8e1',
 			'#ffecb3',
 			'#ffe082',
 			'#ffd54f',
-			'#ffca28',
+			'#F4B349',
 			'#ffb752',
 			'#ffa726',
 			'#ff9800',
@@ -32,7 +20,7 @@ export const theme = createTheme({
 			'#c68400',
 		],
 		dark: [
-			'#d5d7da',
+			'#ffffff',
 			'#acaeb2',
 			'#8b8d91',
 			'#5c5f66',
@@ -55,19 +43,18 @@ export const theme = createTheme({
 			defaultProps: {
 				withAsterisk: true,
 			},
-			styles: inputStyles,
 		},
 		PasswordInput: {
 			defaultProps: {
 				withAsterisk: true,
 			},
-			styles: inputStyles,
 		},
 		Button: {
 			defaultProps: {
 				variant: 'filled',
 			},
 		},
+
 		Loader: {
 			defaultProps: {
 				c: 'brand.5',

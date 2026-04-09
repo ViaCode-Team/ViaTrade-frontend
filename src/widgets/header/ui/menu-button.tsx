@@ -10,12 +10,13 @@ export function MenuButton({ isExpanded, onToggle }: MenuButtonProps) {
 	const actionText = isExpanded ? 'Свернуть' : 'Расширить';
 
 	return (
-		<Tooltip label={`${actionText} меню`} openDelay={1000}>
+		<Tooltip label={`${actionText} меню`} openDelay={500}>
 			<ActionIcon
 				size='lg'
-				variant='subtle'
+				variant='transparent'
 				aria-label={`${actionText} навигационное меню`}
 				onClick={onToggle}
+				color='text'
 			>
 				{isExpanded ? <IconLayoutSidebarLeftCollapse size={22} /> : <IconMenu2 size={22} />}
 			</ActionIcon>

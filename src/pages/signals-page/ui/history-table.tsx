@@ -8,7 +8,7 @@ import {
 	Text,
 	Title,
 } from '@mantine/core';
-import { IconChartLine, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
+import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 
 import { generateMockHistory } from '@/entities/signal';
@@ -17,12 +17,13 @@ import cls from './history-table.module.css';
 
 type HistoryTableProps = {
 	asset: string;
+	strategy: string;
 	onClose: () => void;
 };
 
 const ROWS_PER_PAGE_OPTIONS = ['5', '10', '25'];
 
-export function HistoryTable({ asset, onClose }: HistoryTableProps) {
+export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 	const [page, setPage] = useState(1);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const history = useMemo(
@@ -55,16 +56,19 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 		<Modal
 			opened
 			onClose={onClose}
-			size='xl'
+			size='md'
 			title={(
-				<Group gap='xs'>
-					<IconChartLine size={20} />
-					<Title order={4}>
+				<>
+					<Title order={5}>
 						История сигнала:
 						{' '}
 						{asset}
 					</Title>
-				</Group>
+
+					<Text size='sm' c='dimmed'>
+						{strategy}
+					</Text>
+				</>
 			)}
 		>
 			<div className={cls.tableWrapper}>
@@ -72,8 +76,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>Дата</Table.Th>
-							<Table.Th className={cls.alignRight}>Открытие</Table.Th>
-							<Table.Th className={cls.alignRight}>Закрытие</Table.Th>
+							<Table.Th className={cls.alignCenter}>Закрытие</Table.Th>
 							<Table.Th className={cls.alignCenter}>Сигнал</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
@@ -82,11 +85,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 						{paginatedHistory.map((row) => (
 							<Table.Tr key={row.id} className={getRowClass(row.signal)}>
 								<Table.Td>{row.date}</Table.Td>
-								<Table.Td className={cls.alignRight}>
-									$
-									{row.open.toFixed(2)}
-								</Table.Td>
-								<Table.Td className={cls.alignRight}>
+								<Table.Td className={cls.alignCenter}>
 									$
 									{row.close.toFixed(2)}
 								</Table.Td>
@@ -99,7 +98,7 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 				</Table>
 			</div>
 
-			<Group justify='space-between' mt='md' wrap='wrap' gap='sm'>
+			<Group mt='md' wrap='wrap' gap='sm' justify='center'>
 				<Group gap='xs'>
 					<Text size='sm' c='dimmed'>Строк на странице:</Text>
 					<Select
@@ -130,6 +129,8 @@ export function HistoryTable({ asset, onClose }: HistoryTableProps) {
 					withEdges
 					size='sm'
 				/>
+
+
 			</Group>
 		</Modal>
 	);

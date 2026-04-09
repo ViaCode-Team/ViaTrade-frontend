@@ -2,7 +2,6 @@
 	--vt-sidebar-expanded-width: 200px;
 	--vt-sidebar-header-offset: 57px;
 
-	flex-shrink: 0;
 	transition: width 0.2s ease;
 	border-right: 1px solid var(--mantine-color-default-border);
 	height: calc(100vh - var(--vt-sidebar-header-offset));
@@ -11,7 +10,6 @@
 	display: flex;
 	flex-direction: column;
 	overflow-x: hidden;
-	overflow-y: auto;
 
 	@media (max-width: 48em) {
 		position: fixed;

@@ -1,6 +1,7 @@
 export const ROUTES = {
 	HOME: '/',
 	SIGNALS: '/signals',
+	STRATEGIES: '/strategies',
 	PROFILE: '/profile',
 	EMAIL_CONFIRMATION: '/confirm-email',
 	LOGIN: '/login',

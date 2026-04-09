@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react';
 
-import { Box, Card, Stack } from '@mantine/core';
+import {
+	Box,
+	Card,
+	Stack,
+	Text,
+	Title,
+} from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
 
@@ -54,12 +60,12 @@ export function InfoRow({
 				</Box>
 
 				<Stack gap='2px'>
-					<div className={cls.title}>
+					<Title className={cls.title}>
 						{title}
-					</div>
-					<div className={cls.description}>
+					</Title>
+					<Text className={cls.description}>
 						{description}
-					</div>
+					</Text>
 				</Stack>
 			</div>
 

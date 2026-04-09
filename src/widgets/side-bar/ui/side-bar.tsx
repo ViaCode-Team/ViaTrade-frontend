@@ -47,9 +47,11 @@ const menuItems: TMenuItem[] = [
 		path: '/statistics',
 	},
 	{ icon: <IconTrendingUp size={22} />, text: 'Акции', path: '/stocks' },
-	{ icon: <IconChartLine size={22} />, text: 'Стратегии', path: '/strategies' },
+	{ icon: <IconChartLine size={22} />, text: 'Стратегии', path: ROUTES.STRATEGIES },
 	{ icon: <IconBell size={22} />, text: 'Напоминания', path: '/reminders' },
 ] as const;
+
+// TODO: AppShell
 
 export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarProps) {
 	return (
@@ -65,17 +67,15 @@ export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarPro
 				data-mobile-open={mobileOpen || undefined}
 				style={{ width: isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH }}
 			>
-				<div className={cls.list}>
-					{menuItems.map((item) => (
-						<SideBarItem
-							key={item.text}
-							icon={item.icon}
-							text={item.text}
-							path={item.path}
-							isCollapsed={isCollapsed}
-						/>
-					))}
-				</div>
+				{menuItems.map((item) => (
+					<SideBarItem
+						key={item.text}
+						icon={item.icon}
+						text={item.text}
+						path={item.path}
+						isCollapsed={isCollapsed}
+					/>
+				))}
 
 				<div className={cls.bottom}>
 					<SideBarItem

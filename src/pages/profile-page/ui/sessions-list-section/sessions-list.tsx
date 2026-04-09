@@ -35,7 +35,7 @@ export function SessionsList({
 	);
 
 	return (
-		<Stack>
+		<Stack gap='md'>
 			<Stack component='ul' m={0} p={0} gap='xs'>
 				{paginatedSessions.map((session) => (
 					<SessionListItem

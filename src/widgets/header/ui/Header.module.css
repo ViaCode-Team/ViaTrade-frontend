@@ -6,9 +6,3 @@
 	padding: var(--mantine-spacing-xs);
 	min-height: 56px;
 }
-
-.title {
-	font-size: var(--mantine-font-size-md);
-	font-weight: 400;
-	margin: 0;
-}

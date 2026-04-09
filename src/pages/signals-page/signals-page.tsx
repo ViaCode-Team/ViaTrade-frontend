@@ -69,18 +69,22 @@ export function SignalsPage() {
 
 
 			{filteredAndSortedSignals.length === 0 && (
-				<div className={cls.emptyState}>
-					<Title order={4} c='dimmed'>
-						Сигналы не найдены
+				<Stack gap='xs' justify='center'>
+					<Title order={4}>
+						Ничего не найдено
 					</Title>
 					<Text size='sm' c='dimmed'>
 						Попробуйте изменить параметры поиска или фильтры
 					</Text>
-				</div>
+				</Stack>
 			)}
 
 			{selectedSignal && (
-				<HistoryTable asset={selectedSignal.asset} onClose={() => setSelectedSignal(null)} />
+				<HistoryTable
+					asset={selectedSignal.asset}
+					strategy={selectedSignal.strategy}
+					onClose={() => setSelectedSignal(null)}
+				/>
 			)}
 		</Stack>
 	);

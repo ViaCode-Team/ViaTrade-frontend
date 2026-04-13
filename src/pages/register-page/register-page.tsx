@@ -1,13 +1,13 @@
-import { AuthFooter, AuthLayout } from '@/entities/auth';
+import { AuthCard } from '@/entities/auth';
 import { RegisterForm } from '@/features/register';
 import { ROUTES } from '@/shared/model/routes';
 
 export function RegisterPage() {
 	return (
-		<AuthLayout title='Регистрация'>
+		<AuthCard title='Регистрация'>
 			<RegisterForm />
 
-			<AuthFooter text='Уже есть аккаунт?' linkText='Авторизация' to={ROUTES.LOGIN} />
-		</AuthLayout>
+			<AuthCard.Footer text='Уже есть аккаунт?' linkText='Авторизация' to={ROUTES.LOGIN} />
+		</AuthCard>
 	);
 }

@@ -11,10 +11,10 @@ export const router = createBrowserRouter([
 	{
 		element: <MainLayout />,
 
-		// Глобальные ошибки, НЕ роута (500)
+		// Глобальные ошибки
 		errorElement: (
 			<MainLayout>
-				<ErrorPage statusCode={500} />
+				<ErrorPage />
 			</MainLayout>
 		),
 

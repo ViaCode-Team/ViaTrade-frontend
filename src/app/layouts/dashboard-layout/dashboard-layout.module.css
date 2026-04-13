@@ -1,11 +1,3 @@
-.main {
-	flex: 1;
-	container-type: inline-size;
-
-	padding-block: var(--mantine-spacing-xl);
-
-	@media (max-width: 48em) {
-		padding-block: var(--mantine-spacing-lg);
-		padding-inline: var(--mantine-spacing-sm);
-	}
+.navbar {
+	overflow-y: auto;
 }

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { Flex } from '@mantine/core';
 import {
 	IconBell,
 	IconChartBar,
@@ -27,9 +28,6 @@ type TMenuItem = {
 	path: string;
 };
 
-const SIDEBAR_COLLAPSED_WIDTH = 56;
-const SIDEBAR_EXPANDED_WIDTH = 200;
-
 const menuItems: TMenuItem[] = [
 	{
 		icon: <IconHome size={22} />,
@@ -51,41 +49,33 @@ const menuItems: TMenuItem[] = [
 	{ icon: <IconBell size={22} />, text: 'Напоминания', path: '/reminders' },
 ] as const;
 
-// TODO: AppShell
-
 export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarProps) {
+	const isCompact = isCollapsed && !mobileOpen;
+
 	return (
-		<>
-			{mobileOpen && (
-				<div
-					className={cls.backdrop}
-					onClick={onClose}
-				/>
-			)}
-			<nav
-				className={cls.root}
-				data-mobile-open={mobileOpen || undefined}
-				style={{ width: isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH }}
-			>
+		<Flex direction='column' h='100%' gap={4}>
+			<Flex direction='column' gap={4}>
 				{menuItems.map((item) => (
 					<SideBarItem
 						key={item.text}
 						icon={item.icon}
 						text={item.text}
 						path={item.path}
-						isCollapsed={isCollapsed}
+						isCollapsed={isCompact}
+						onClick={mobileOpen ? onClose : undefined}
 					/>
 				))}
+			</Flex>
 
-				<div className={cls.bottom}>
-					<SideBarItem
-						icon={<IconUser size={22} />}
-						text='Профиль'
-						path={ROUTES.PROFILE}
-						isCollapsed={isCollapsed}
-					/>
-				</div>
-			</nav>
-		</>
+			<div className={cls.bottom}>
+				<SideBarItem
+					icon={<IconUser size={22} />}
+					text='Профиль'
+					path={ROUTES.PROFILE}
+					isCollapsed={isCompact}
+					onClick={mobileOpen ? onClose : undefined}
+				/>
+			</div>
+		</Flex>
 	);
 }

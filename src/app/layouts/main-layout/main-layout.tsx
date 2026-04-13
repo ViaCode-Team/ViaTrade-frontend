@@ -1,32 +1,15 @@
-import { NavigationProgress, nprogress } from '@mantine/nprogress';
-import { type ReactNode, useEffect } from 'react';
-import {
-	Outlet,
-	useNavigation,
-} from 'react-router';
+import type { ReactNode } from 'react';
+
+import { Outlet } from 'react-router';
+
+import { AppNavigationProgress } from './app-navigation-progress';
 
 type MainLayoutProps = { children?: ReactNode };
-
-function NavigationProgressBridge() {
-	const navigation = useNavigation();
-
-	useEffect(() => {
-		if (navigation.state !== 'idle') {
-			nprogress.start();
-		}
-		else {
-			nprogress.complete();
-		}
-	}, [navigation.state]);
-
-	return null;
-}
 
 export function MainLayout({ children }: MainLayoutProps) {
 	return (
 		<>
-			<NavigationProgress color='brand' />
-			<NavigationProgressBridge />
+			<AppNavigationProgress />
 			{children ?? <Outlet />}
 		</>
 	);

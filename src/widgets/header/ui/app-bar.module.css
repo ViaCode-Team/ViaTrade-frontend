@@ -1,9 +1,0 @@
-.root {
-	position: sticky;
-	top: 0;
-	z-index: var(--mantine-z-index-app, 200);
-	border-bottom: 1px solid var(--mantine-color-default-border);
-	box-shadow: none;
-	color: inherit;
-	background-color: var(--mantine-color-body);
-}

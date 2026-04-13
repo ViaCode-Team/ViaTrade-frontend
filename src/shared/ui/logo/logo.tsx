@@ -1,34 +1,29 @@
 import { Group, Text } from '@mantine/core';
-import { Link } from 'react-router';
+import { Link as RouterLink } from 'react-router';
 
 import LogoIcon from '@/shared/assets/icons/logo-default.svg?react';
+import { ROUTES } from '@/shared/model/routes';
 
 type LogoProps = {
-	logoWidth: number;
-	logoHeight: number;
-	variantText?: 'h6' | 'h5';
+	logoWidth?: number;
+	logoHeight?: number;
+	fz?: number;
 };
 
 export function Logo({
-	logoWidth,
-	logoHeight,
-	variantText = 'h6',
+	logoWidth = 32,
+	logoHeight = 32,
+	fz,
 }: LogoProps) {
 	return (
-		<Link to='/'>
+		<RouterLink to={ROUTES.HOME}>
 			<Group gap={5} align='center' wrap='nowrap'>
 				<LogoIcon width={logoWidth} height={logoHeight} />
 
-				<Text
-					component='h2'
-					fw='bold'
-					fz={variantText === 'h5' ? 'xl' : 'lg'}
-					lh={1}
-					style={{ whiteSpace: 'nowrap', margin: 0 }}
-				>
+				<Text component='h2' fw='bold' fz={fz || 'lg'}>
 					ViaTrade
 				</Text>
 			</Group>
-		</Link>
+		</RouterLink>
 	);
 }

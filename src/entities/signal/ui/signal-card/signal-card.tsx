@@ -61,7 +61,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 			<Stack h='100%' gap='xs'>
 				<div className={cls.priceRow}>
 					<div>
-						<Text size='xs' c='dimmed'>Цена закрытия</Text>
+						<Text size='sm' c='dimmed'>Цена закрытия</Text>
 						<Text fw='bold' truncate>
 							$
 							{signal.close.toFixed(2)}
@@ -69,7 +69,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 					</div>
 
 					<div className={cls.dateInfo}>
-						<Text size='xs' c='dimmed'>Дата сигнала</Text>
+						<Text size='sm' c='dimmed'>Дата сигнала</Text>
 						<div className={cls.dateCol}>
 							<Text fw='bold' truncate>{signal.date}</Text>
 
@@ -82,7 +82,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 
 				<Stack gap={4} flex={1} justify='flex-end'>
 					<Flex justify='space-between' wrap='nowrap'>
-						<Text size='xs' c='dimmed'>Надёжность сигнала</Text>
+						<Text size='sm' c='dimmed'>Надёжность сигнала</Text>
 						<Text
 							size='xs'
 							fw='bold'

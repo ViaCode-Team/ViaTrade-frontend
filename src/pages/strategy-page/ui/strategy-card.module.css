@@ -1,0 +1,66 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	gap: var(--mantine-spacing-md);
+	height: 100%;
+	border-left: 4px solid;
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--mantine-shadow-md);
+	}
+}
+
+.title {
+	line-height: 1.2;
+	letter-spacing: -0.015em;
+	flex: 1;
+}
+
+.metric {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--mantine-spacing-sm);
+	padding: var(--mantine-spacing-xs) 0;
+	border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.metric:last-child {
+	border-bottom: none;
+}
+
+.metricLabelWrap {
+	display: flex;
+	align-items: center;
+	gap: var(--mantine-spacing-xs);
+	flex: 1;
+}
+
+.metricIcon {
+	display: inline-flex;
+	color: var(--mantine-color-brand-4);
+	opacity: 0.72;
+	transition:
+		color 0.2s,
+		opacity 0.2s;
+}
+
+.root:hover .metricIcon {
+	color: var(--mantine-color-brand-5);
+	opacity: 0.9;
+}
+
+.metricLabel {
+	color: var(--mantine-color-dimmed);
+	line-height: 1.4;
+}
+
+.metricValue {
+	font-weight: 600;
+	text-align: right;
+	line-height: 1.4;
+}

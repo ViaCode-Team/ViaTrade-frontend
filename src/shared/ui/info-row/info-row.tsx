@@ -33,7 +33,7 @@ function resolveRightSection(
 		return null;
 	}
 
-	return <IconChevronRight size={14} className={cls.chevron} />;
+	return <IconChevronRight size={18} className={cls.chevron} />;
 }
 
 export function InfoRow({

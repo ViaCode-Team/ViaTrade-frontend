@@ -62,7 +62,10 @@ export function SignalsPage() {
 			>
 				{filteredAndSortedSignals.map((signal) => (
 					<li key={signal.id} className={cls.signalItem}>
-						<SignalCard signal={signal} onClick={setSelectedSignal} />
+						<SignalCard
+							signal={signal}
+							onClick={setSelectedSignal}
+						/>
 					</li>
 				))}
 			</SimpleGrid>

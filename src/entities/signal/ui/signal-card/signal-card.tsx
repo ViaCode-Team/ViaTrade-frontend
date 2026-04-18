@@ -7,9 +7,13 @@ import {
 	Stack,
 	Text,
 } from '@mantine/core';
-import { IconTimeline } from '@tabler/icons-react';
+import { IconChevronRight } from '@tabler/icons-react';
+import clsx from 'clsx';
+import { Link } from 'react-router';
 
 import type { Signal } from '@/entities/signal';
+
+import { ROUTES } from '@/shared/model/routes';
 
 import cls from './signal-card.module.css';
 
@@ -18,10 +22,6 @@ type SignalCardProps = {
 	onClick: (signal: Signal) => void;
 };
 
-function getSignalDirectionColor(direction: Signal['direction']) {
-	return direction === 'buy' ? 'var(--mantine-color-green-7)' : 'var(--mantine-color-red-7)';
-}
-
 function getConfidenceColor(confidence: number) {
 	return confidence >= 70 ? 'green.6' : 'yellow.6';
 }
@@ -29,13 +29,12 @@ function getConfidenceColor(confidence: number) {
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
 
+	const handleCardClick = () => onClick(signal);
+
 	return (
 		<Card
-			onClick={() => onClick(signal)}
-			className={cls.root}
-			style={{
-				borderLeftColor: getSignalDirectionColor(signal.direction),
-			}}
+			onClick={handleCardClick}
+			className={clsx(cls.root, isBuy ? cls.rootBuy : cls.rootSell)}
 			bg='transparent'
 			withBorder
 		>
@@ -50,8 +49,13 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 				</div>
 
 				<Badge
+					variant='light'
 					color={isBuy ? 'green' : 'red'}
 					size='sm'
+					className={clsx(
+						cls.directionBadge,
+						isBuy ? cls.directionBadgeGreen : cls.directionBadgeRed,
+					)}
 				>
 					{isBuy ? 'Покупка' : 'Продажа'}
 				</Badge>
@@ -84,7 +88,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 					<Flex justify='space-between' wrap='nowrap'>
 						<Text size='sm' c='dimmed'>Надёжность сигнала</Text>
 						<Text
-							size='xs'
+							size='sm'
 							fw='bold'
 							c={signal.confidence >= 70 ? 'green' : 'yellow'}
 						>
@@ -103,12 +107,17 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 
 			<Divider />
 
-			<Flex gap={7} align='center'>
-				<IconTimeline size={18} className={cls.strategyIcon} />
-				<Text size='sm' c='dimmed' lineClamp={1}>
+			<Link
+				to={ROUTES.STRATEGIES}
+				onClick={(event) => event.stopPropagation()}
+				className={cls.strategyButton}
+				aria-label={`Открыть стратегию ${signal.strategy}`}
+			>
+				<Text component='span' size='sm' className={cls.strategyText} lineClamp={1}>
 					{signal.strategy}
 				</Text>
-			</Flex>
+				<IconChevronRight size={16} className={cls.strategyChevron} />
+			</Link>
 		</Card>
 	);
 }

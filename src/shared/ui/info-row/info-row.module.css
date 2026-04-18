@@ -70,7 +70,7 @@
 			var(--mantine-color-dark-3)
 		);
 		background-color: light-dark(
-			rgba(0, 0, 0, 0.015),
+			rgba(0, 0, 0, 0.02),
 			rgba(255, 255, 255, 0.02)
 		);
 	}

@@ -12,6 +12,34 @@
 	}
 }
 
+.rootBuy {
+	border-left-color: var(--mantine-color-green-light);
+}
+
+.rootSell {
+	border-left-color: var(--mantine-color-red-light);
+}
+
+.directionBadge {
+	transition: background-color 0.2s ease;
+}
+
+.rootBuy:hover {
+	border-left-color: var(--mantine-color-green-filled);
+}
+
+.rootSell:hover {
+	border-left-color: var(--mantine-color-red-filled);
+}
+
+.root:hover .directionBadgeRed {
+	background-color: var(--mantine-color-red-filled);
+}
+
+.root:hover .directionBadgeGreen {
+	background-color: var(--mantine-color-green-filled);
+}
+
 .assetInfo {
 	min-width: 120px;
 	flex: 1;
@@ -33,7 +61,43 @@
 	align-items: flex-end;
 }
 
-.strategyIcon {
+.strategyButton {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--mantine-spacing-sm);
+	background-color: transparent;
+	cursor: pointer;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		transform 0.2s ease;
+}
+/* 
+.strategyMain {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+} */
+
+.strategyText {
+	color: var(--mantine-color-dimmed);
+	transition: color 0.2s ease;
+	text-align: left;
+}
+
+.strategyChevron {
 	flex-shrink: 0;
 	color: var(--mantine-color-dimmed);
+	transition:
+		color 0.2s ease,
+		transform 0.2s ease;
+}
+
+.strategyButton:hover .strategyText {
+	color: var(--mantine-color-anchor);
+}
+
+.strategyButton:hover .strategyChevron {
+	color: var(--mantine-color-anchor);
 }

@@ -29,11 +29,9 @@ function getConfidenceColor(confidence: number) {
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
 
-	const handleCardClick = () => onClick(signal);
-
 	return (
 		<Card
-			onClick={handleCardClick}
+			onClick={() => onClick(signal)}
 			className={clsx(cls.root, isBuy ? cls.rootBuy : cls.rootSell)}
 			bg='transparent'
 			withBorder
@@ -110,13 +108,15 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 			<Link
 				to={ROUTES.STRATEGIES}
 				onClick={(event) => event.stopPropagation()}
-				className={cls.strategyButton}
-				aria-label={`Открыть стратегию ${signal.strategy}`}
+				className={cls.strategy}
 			>
-				<Text component='span' size='sm' className={cls.strategyText} lineClamp={1}>
+				<Text component='span' size='sm' lineClamp={1}>
 					{signal.strategy}
 				</Text>
-				<IconChevronRight size={16} className={cls.strategyChevron} />
+
+				<Flex component='span' flex='0 0 auto'>
+					<IconChevronRight size={16} />
+				</Flex>
 			</Link>
 		</Card>
 	);

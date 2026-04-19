@@ -26,6 +26,7 @@ export function MenuButton({
 					visibleFrom='xs'
 					size='lg'
 					variant='transparent'
+					style={{ color: 'var(--mantine-color-text)' }}
 					aria-label={`${desktopActionText} боковое меню`}
 					onClick={onDesktopToggle}
 				>

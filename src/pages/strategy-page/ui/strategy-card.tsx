@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import {
 	Badge,
+	Button,
 	Card,
 	Group,
 	Stack,
@@ -82,6 +83,8 @@ export function StrategyCard({ strategy }: StrategyCardProps) {
 					value={strategy.investmentHorizon}
 				/>
 			</Stack>
+
+			<Button variant='default'>Связать с акцией</Button>
 		</Card>
 	);
 }

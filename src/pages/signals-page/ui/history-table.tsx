@@ -8,7 +8,6 @@ import {
 	Text,
 	Title,
 } from '@mantine/core';
-import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 
 import { generateMockHistory } from '@/entities/signal';
@@ -38,10 +37,10 @@ export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 
 	function getSignalBadge(signal: 'buy' | 'sell' | 'hold') {
 		if (signal === 'buy')
-			return <Badge color='green' size='sm' leftSection={<IconTrendingUp size={12} />}>Buy</Badge>;
+			return <Badge classNames={{ label: cls.badgeLabel }} color='green' size='sm'>Покупать</Badge>;
 		if (signal === 'sell')
-			return <Badge color='red' size='sm' leftSection={<IconTrendingDown size={12} />}>Sell</Badge>;
-		return <Badge color='gray' size='sm'>Hold</Badge>;
+			return <Badge classNames={{ label: cls.badgeLabel }} color='red' size='sm'>Продавать</Badge>;
+		return <Badge classNames={{ label: cls.badgeLabel }} color='gray' size='sm'>Держать</Badge>;
 	}
 
 	function getRowClass(signal: 'buy' | 'sell' | 'hold') {
@@ -129,8 +128,6 @@ export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 					withEdges
 					size='sm'
 				/>
-
-
 			</Group>
 		</Modal>
 	);

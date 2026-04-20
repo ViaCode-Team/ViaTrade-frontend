@@ -1,9 +1,15 @@
 .tableWrapper {
+	width: 100%;
 	overflow-x: auto;
 }
 
 .table {
 	--table-hover-color: var(--mantine-color-gray-light-hover);
+}
+
+.table th,
+.table td {
+	white-space: nowrap;
 }
 
 .alignRight {
@@ -24,4 +30,9 @@
 
 .rowHold {
 	background-color: var(--mantine-color-default-hover);
+}
+
+.badgeLabel {
+	overflow: visible;
+	text-overflow: clip;
 }

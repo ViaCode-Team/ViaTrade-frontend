@@ -10,6 +10,9 @@ import {
 	Title,
 } from '@mantine/core';
 import { IconChartLine, IconClock } from '@tabler/icons-react';
+import { generatePath, Link as RouterLink } from 'react-router';
+
+import { ROUTES } from '@/shared/model/routes';
 
 import type { Strategy } from '../model/strategies';
 
@@ -49,9 +52,12 @@ export function StrategyCard({ strategy }: StrategyCardProps) {
 		: accuracyColor === 'red'
 			? 'var(--mantine-color-red-7)'
 			: 'var(--mantine-color-yellow-7)';
+	const strategyPath = generatePath(ROUTES.STRATEGY, { strategyName: strategy.id });
 
 	return (
 		<Card
+			component={RouterLink}
+			to={strategyPath}
 			bg='transparent'
 			withBorder
 			p='lg'
@@ -84,7 +90,7 @@ export function StrategyCard({ strategy }: StrategyCardProps) {
 				/>
 			</Stack>
 
-			<Button variant='default'>Связать с акцией</Button>
+			<Button component='span' variant='default'>Связать с акцией</Button>
 		</Card>
 	);
 }

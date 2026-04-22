@@ -4,6 +4,8 @@
 	gap: var(--mantine-spacing-md);
 	height: 100%;
 	border-left: 4px solid;
+	text-decoration: none;
+	color: inherit;
 	transition:
 		transform 0.2s,
 		box-shadow 0.2s;

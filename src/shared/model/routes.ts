@@ -2,24 +2,29 @@ export const ROUTES = {
 	HOME: '/',
 	SIGNALS: '/signals',
 	STRATEGIES: '/strategies',
+	STRATEGY: '/strategies/:strategyName',
 	PROFILE: '/profile',
 	EMAIL_CONFIRMATION: '/confirm-email',
 	LOGIN: '/login',
 	REGISTER: '/register',
 } as const;
 
-// export type PathParams = {};
+export type PathParams = {
+	[ROUTES.STRATEGY]: {
+		strategyName: string;
+	};
+};
 
-// Типизированны переход по пути с динамическим параметром
-// navigate(generatePath(ROUTES.POST, { postId: 1 }));
+// Типизированный переход по пути с динамическим параметром
+// navigate(generatePath(ROUTES.STRATEGY, { strategyName: 'momentum-1d' }));
 
 // Использование типизированного useParams
-// const params = useParams<PathParams[typeof ROUTES.POST]>();
-// params.postId - динамический параметр
+// const params = useParams<PathParams[typeof ROUTES.STRATEGY]>();
+// params.strategyName - динамический параметр
 
-// declare module 'react-router' {
-// 	// eslint-disable-next-line ts/consistent-type-definitions
-// 	interface Register {
-// 		params: PathParams;
-// 	}
-// }
+declare module 'react-router' {
+	// eslint-disable-next-line ts/consistent-type-definitions
+	interface Register {
+		params: PathParams;
+	}
+}

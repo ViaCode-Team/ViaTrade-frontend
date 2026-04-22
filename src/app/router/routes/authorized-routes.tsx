@@ -21,6 +21,10 @@ export const authorizedRoutes: RouteObject[] = [
 			},
 			{
 				path: ROUTES.STRATEGIES,
+				lazy: () => import('@/pages/strategies-page'),
+			},
+			{
+				path: ROUTES.STRATEGY,
 				lazy: () => import('@/pages/strategy-page'),
 			},
 			{

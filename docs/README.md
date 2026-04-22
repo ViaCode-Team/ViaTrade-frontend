@@ -1,77 +1,75 @@
 [Russian](./README_RU.md)
 
-# ViaTrade Frontend
+# ViaTrade frontend
 
-A modern web application for investment analysis.
+Modern web application for investment analysis, trading signals, and related user workflows.
 
 > [!WARNING]
 > **Work in Progress.** This project is currently under active development. Some features may be incomplete or subject to change.
 
-## 🚀 Tech Stack
+## Key Features
 
-| Category             | Technology             |
-| -------------------- | ---------------------- |
-| **Framework**        | React 19.2+            |
-| **Language**         | TypeScript 5.9+        |
-| **Build Tool**       | Vite 7.3+              |
-| **UI Library**       | Material-UI (MUI) 7.3+ |
-| **Styling**          | Emotion                |
-| **State Management** | TanStack Query 5.90+   |
-| **Routing**          | React Router 7.1+      |
-| **Validation**       | Valibot                |
-| **Icons**            | MUI Icons              |
+todo Key Features...
 
-## 📐 Architecture
+## Tech Stack
 
-The project follows [**Feature-Sliced Design (FSD)**](https://fsd.how/) architecture
+| Area             | Technologies                                  |
+| ---------------- | --------------------------------------------- |
+| Core             | React 19, TypeScript 5, Vite 7                |
+| Routing and Data | React Router 7, TanStack Query 5              |
+| UI and Styling   | Mantine 9, Tabler Icons, CSS Modules, PostCSS |
+| Tooling and DX   | ESLint, Prettier, Husky                       |
+| API and Mocking  | Orval, MSW                                    |
 
-## 📦 Getting Started
+## Prerequisites
 
-### Prerequisites
-
-- Node.js (compatible with project's `package.json`)
+- Node.js compatible with `package.json`
 - npm or compatible package manager
 
-### Installation
+## Quick Start
+
+Clone the repository and navigate to the project folder:
+
+```bash
+git clone <repository-url>
+cd SkillSwap
+```
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Development
+Start the Vite development server:
 
 ```bash
-npm run dev          # Start Vite development server
+npm run dev
 ```
 
-### Production Build
+## Commands
 
-```bash
-npm run build        # Type-check and build for production
-npm run preview      # Preview production build locally
-```
+| Command              | Purpose                                                     |
+| -------------------- | ----------------------------------------------------------- |
+| `npm run dev`        | Start the Vite development server                           |
+| `npm run build`      | Run TypeScript project build and create a production bundle |
+| `npm run preview`    | Preview the production build locally                        |
+| `npm run api:gen`    | Generate API client and types with Orval                    |
+| `npm run types`      | Run TypeScript type-check for app sources                   |
+| `npm run lint`       | Run ESLint                                                  |
+| `npm run lint:fix`   | Run ESLint with autofix                                     |
+| `npm run format`     | Check formatting with Prettier                              |
+| `npm run format:fix` | Apply Prettier formatting                                   |
+| `npm run check`      | Run `types`, `lint`, and `format`                           |
+| `npm run check:fix`  | Run `types`, `lint:fix`, and `format:fix`                   |
+| `npm run prepare`    | Install Husky hooks                                         |
 
-## 🛠 Code Quality
+## Contributing
 
-```bash
-npm run lint         # Run ESLint with timing information
-npm run lint:fix     # Run ESLint and auto-fix issues
-npm run format       # Check formatting with Prettier
-npm run format:fix   # Fix formatting with Prettier
-npm run tsc          # Type-check the project
-npm run check        # Run all checks: tsc + lint + format
-npm run check:fix    # Run all checks with auto-fix: tsc + lint:fix + format:fix
-```
+We welcome contributions! Please follow these steps:
 
-## 🔧 API Generation
-
-```bash
-npm run api:gen      # Generate API types from OpenAPI spec using Orval
-```
-
-## 📜 Other Commands
-
-```bash
-npm run prepare      # Install Husky git hooks (runs automatically after install)
-npm run types        # Type-check TypeScript files
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b <feature/amazing-feature>`)
+3. Commit your changes using [Conventional Commits](https://www.conventionalcommits.org/)
+4. Push to the branch (`git push origin <feature/amazing-feature>`)
+5. Open a Pull Request

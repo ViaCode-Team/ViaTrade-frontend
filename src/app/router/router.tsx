@@ -5,16 +5,16 @@ import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import { MainLayout } from '../layouts/main-layout';
 import { ProtectedRoute } from './protected-route';
-import { AuthorizedRoutes, UnAuthorizedRoutes } from './routes';
+import { authorizedRoutes, unauthorizedRoutes } from './routes';
 
 export const router = createBrowserRouter([
 	{
 		element: <MainLayout />,
 
-		// Глобальные ошибки, НЕ роута (500)
+		// Глобальные ошибки
 		errorElement: (
 			<MainLayout>
-				<ErrorPage statusCode={500} />
+				<ErrorPage />
 			</MainLayout>
 		),
 
@@ -26,13 +26,13 @@ export const router = createBrowserRouter([
 			// Только для авторизованных
 			{
 				element: <ProtectedRoute isPrivate />,
-				children: [...AuthorizedRoutes],
+				children: [...authorizedRoutes],
 			},
 
 			// Только для НЕавторизованных
 			{
 				element: <ProtectedRoute />,
-				children: [...UnAuthorizedRoutes],
+				children: [...unauthorizedRoutes],
 			},
 
 			// Ошибки роута (404)

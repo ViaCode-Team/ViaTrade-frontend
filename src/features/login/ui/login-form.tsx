@@ -1,7 +1,12 @@
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+import {
+	Alert,
+	Button,
+	PasswordInput,
+	Stack,
+	TextInput,
+} from '@mantine/core';
+
+import { brandGradient } from '@/shared/model/theme';
 
 import { useLoginForm } from '../lib/use-login-form';
 
@@ -16,43 +21,41 @@ export function LoginForm() {
 	} = useLoginForm();
 
 	return (
-		<Stack component='form' onSubmit={submit} gap={4}>
-			{apiError && (
-				<Alert severity='error' variant='outlined'>
-					{apiError}
-				</Alert>
-			)}
+		<form onSubmit={submit}>
+			<Stack gap='lg'>
+				{apiError && (
+					<Alert color='red' variant='outline'>
+						{apiError}
+					</Alert>
+				)}
 
-			<Stack gap={2}>
-				<TextField
-					label='Логин'
-					value={formData.login}
-					onChange={(e) => setField('login', e.target.value)}
-					error={!!errors.login}
-					helperText={errors.login}
-					fullWidth
-				/>
-				<TextField
-					label='Пароль'
-					type='password'
-					value={formData.password}
-					onChange={(e) => setField('password', e.target.value)}
-					error={!!errors.password}
-					helperText={errors.password}
-					fullWidth
-				/>
+				<Stack gap='sm'>
+					<TextInput
+						label='Логин'
+						value={formData.login}
+						onChange={(e) => setField('login', e.currentTarget.value)}
+						error={errors.login}
+						autoFocus
+					/>
+					<PasswordInput
+						label='Пароль'
+						value={formData.password}
+						onChange={(e) => setField('password', e.currentTarget.value)}
+						error={errors.password}
+
+					/>
+				</Stack>
+
+				<Button
+					variant='gradient'
+					gradient={brandGradient}
+					size='md'
+					type='submit'
+					loading={isPending}
+				>
+					Войти
+				</Button>
 			</Stack>
-
-			<Button
-				color='secondary'
-				variant='contained'
-				size='large'
-				type='submit'
-				sx={{ fontSize: 16 }}
-				loading={isPending}
-			>
-				Войти
-			</Button>
-		</Stack>
+		</form>
 	);
 }

@@ -1,0 +1,9 @@
+.title {
+	@container (max-width: 425px) {
+		font-size: 46px;
+	}
+
+	@container (max-width: 320px) {
+		font-size: 36px;
+	}
+}

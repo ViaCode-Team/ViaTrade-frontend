@@ -1,0 +1,84 @@
+.root {
+	--vt-switch-height: 2.2em;
+	--vt-switch-width: 4em;
+	--vt-switch-radius: 30px;
+	--vt-switch-thumb-radius: 20px;
+	--vt-switch-track-dark: var(--mantine-color-dark-6);
+	--vt-switch-track-light: var(--mantine-color-blue-5);
+	--vt-switch-star-color: var(--mantine-color-white);
+	--vt-switch-thumb-moon: var(--mantine-color-white);
+	--vt-switch-thumb-sun: var(--mantine-color-yellow-4);
+
+	font-size: 15px;
+	position: relative;
+	display: inline-block;
+	width: var(--vt-switch-width);
+	height: var(--vt-switch-height);
+	border-radius: var(--vt-switch-radius);
+	box-shadow: var(--mantine-shadow-xs);
+
+	& input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+		position: absolute;
+	}
+
+	& input:checked + .slider {
+		background-color: var(--vt-switch-track-light);
+	}
+
+	& input:checked + .slider::before {
+		transform: translateX(1.8em);
+		box-shadow: inset 15px -4px 0 15px var(--vt-switch-thumb-sun);
+	}
+
+	& input:checked ~ .slider .star {
+		opacity: 0;
+	}
+
+	& input:checked ~ .slider .cloud {
+		opacity: 1;
+	}
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	inset: 0;
+	background-color: var(--vt-switch-track-dark);
+	transition: 0.4s !important;
+	border-radius: var(--vt-switch-radius);
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		height: 1.2em;
+		width: 1.2em;
+		border-radius: var(--vt-switch-thumb-radius);
+		left: 0.5em;
+		bottom: 0.5em;
+		transition: 0.4s !important;
+		transition-timing-function: cubic-bezier(0.81, -0.04, 0.38, 1.5) !important;
+		box-shadow: inset 8px -4px 0 var(--vt-switch-thumb-moon);
+	}
+}
+
+.star {
+	position: absolute;
+	width: 5px;
+	height: 5px;
+	background-color: var(--vt-switch-star-color);
+	border-radius: 50%;
+	transition: 0.4s !important;
+}
+
+.cloud {
+	width: 3.5em;
+	position: absolute;
+	bottom: -1.4em;
+	left: -1.1em;
+	opacity: 0;
+	transition: 0.4s !important;
+}

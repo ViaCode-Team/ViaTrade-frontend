@@ -1,27 +1,48 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import { ActionIcon, Burger, Tooltip } from '@mantine/core';
+import {
+	IconLayoutSidebarLeftCollapse,
+	IconLayoutSidebarLeftExpand,
+} from '@tabler/icons-react';
 
 type MenuButtonProps = {
-	isExpanded: boolean;
-	onToggle: () => void;
+	isDesktopExpanded: boolean;
+	isMobileOpen: boolean;
+	onDesktopToggle: () => void;
+	onMobileToggle: () => void;
 };
 
-export function MenuButton({ isExpanded, onToggle }: MenuButtonProps) {
-	const actionText = isExpanded ? 'Свернуть' : 'Расширить';
+export function MenuButton({
+	isDesktopExpanded,
+	isMobileOpen,
+	onDesktopToggle,
+	onMobileToggle,
+}: MenuButtonProps) {
+	const desktopActionText = isDesktopExpanded ? 'Свернуть' : 'Развернуть';
 
 	return (
-		<Tooltip title={`${actionText} меню`} enterDelay={1000}>
-			<div>
-				<IconButton
-					size='medium'
-					aria-label={`${actionText} навигационное меню`}
-					onClick={onToggle}
+		<>
+			<Tooltip label={`${desktopActionText} меню`} openDelay={500}>
+				<ActionIcon
+					visibleFrom='xs'
+					size='lg'
+					variant='transparent'
+					style={{ color: 'var(--mantine-color-text)' }}
+					aria-label={`${desktopActionText} боковое меню`}
+					onClick={onDesktopToggle}
 				>
-					{isExpanded ? <MenuOpenIcon /> : <MenuIcon />}
-				</IconButton>
-			</div>
-		</Tooltip>
+					{isDesktopExpanded
+						? <IconLayoutSidebarLeftCollapse size={22} />
+						: <IconLayoutSidebarLeftExpand size={22} />}
+				</ActionIcon>
+			</Tooltip>
+
+			<Burger
+				hiddenFrom='xs'
+				opened={isMobileOpen}
+				onClick={onMobileToggle}
+				aria-label={isMobileOpen ? 'Закрыть боковое меню' : 'Открыть боковое меню'}
+				size='sm'
+			/>
+		</>
 	);
 }

@@ -1,147 +1,123 @@
-import TimelineIcon from '@mui/icons-material/Timeline';
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import {
+	Badge,
+	Card,
+	Divider,
+	Flex,
+	Progress,
+	Stack,
+	Text,
+} from '@mantine/core';
+import { IconChevronRight } from '@tabler/icons-react';
+import clsx from 'clsx';
+import { Link } from 'react-router';
 
 import type { Signal } from '@/entities/signal';
+
+import { ROUTES } from '@/shared/model/routes';
+
+import cls from './signal-card.module.css';
 
 type SignalCardProps = {
 	signal: Signal;
 	onClick: (signal: Signal) => void;
 };
 
+function getConfidenceColor(confidence: number) {
+	return confidence >= 70 ? 'green.6' : 'yellow.6';
+}
+
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
 
 	return (
-		<Paper
+		<Card
 			onClick={() => onClick(signal)}
-			sx={{
-				p: 2.0,
-				cursor: 'pointer',
-				transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-				borderLeft: `4px solid ${isBuy ? '#2e7d32' : '#d32f2f'}`,
-				'&:hover': {
-					transform: 'translateY(-6px)',
-					boxShadow: 12,
-				},
-				position: 'relative',
-				overflow: 'hidden',
-				height: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-			}}
+			className={clsx(cls.root, isBuy ? cls.rootBuy : cls.rootSell)}
+			bg='transparent'
+			withBorder
 		>
-			<Box sx={{
-				display: 'flex',
-				justifyContent: 'space-between',
-				alignItems: 'flex-start',
-				mb: 2,
-				gap: 1,
-			}}
-			>
-				<Box sx={{
-					display: 'flex',
-					alignItems: 'center',
-					gap: 1.5,
-					minWidth: 0,
-					flex: 1,
-				}}
+			<Flex gap='xs'>
+				<div className={cls.assetInfo}>
+					<Text component='h3' size='lg' fw='bold' lineClamp={1}>
+						{signal.asset}
+					</Text>
+					<Text size='xs' c='dimmed'>
+						{signal.type === 'stock' ? 'Акция' : 'Фьючерс'}
+					</Text>
+				</div>
+
+				<Badge
+					variant='light'
+					color={isBuy ? 'green' : 'red'}
+					size='sm'
+					className={clsx(
+						cls.directionBadge,
+						isBuy ? cls.directionBadgeGreen : cls.directionBadgeRed,
+					)}
 				>
-					<Box sx={{ minWidth: 0 }}>
-						<Typography variant='h6' fontWeight='bold' noWrap sx={{ maxWidth: 120 }}>
-							{signal.asset}
-						</Typography>
-						<Typography variant='caption' color='text.secondary' sx={{ whiteSpace: 'nowrap' }}>
-							{signal.type === 'stock' ? 'Акция' : 'Фьючерс'}
-						</Typography>
-					</Box>
-				</Box>
-				<Chip
-					label={isBuy ? 'Покупка' : 'Продажа'}
-					color={isBuy ? 'success' : 'error'}
-					size='small'
-					sx={{ fontWeight: 600, flexShrink: 0 }}
-				/>
-			</Box>
+					{isBuy ? 'Покупка' : 'Продажа'}
+				</Badge>
+			</Flex>
 
-			<Box sx={{
-				display: 'flex',
-				justifyContent: 'space-between',
-				gap: 1,
-			}}
-			>
-				<Box sx={{ minWidth: 0 }}>
-					<Typography variant='caption' color='text.secondary'>Цена закрытия</Typography>
-					<Typography variant='body1' fontWeight='bold' noWrap>
-						$
-						{signal.close.toFixed(2)}
-					</Typography>
-				</Box>
-				<Box sx={{ textAlign: 'right', minWidth: 0 }}>
-					<Typography variant='caption' color='text.secondary'>Дата сигнала</Typography>
-					<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-						<Typography variant='body1' fontWeight='bold' noWrap>{signal.date}</Typography>
 
-						{signal.time && (
-							<Typography
-								variant='caption'
-								sx={{
-									whiteSpace: 'nowrap',
-									fontSize: '0.7rem',
-								}}
-							>
+			<Stack h='100%' gap='xs'>
+				<div className={cls.priceRow}>
+					<div>
+						<Text size='sm' c='dimmed'>Цена закрытия</Text>
+						<Text fw='bold' truncate>
+							$
+							{signal.close.toFixed(2)}
+						</Text>
+					</div>
+
+					<div className={cls.dateInfo}>
+						<Text size='sm' c='dimmed'>Дата сигнала</Text>
+						<div className={cls.dateCol}>
+							<Text fw='bold' truncate>{signal.date}</Text>
+
+							<Text size='xs'>
 								{signal.time}
-							</Typography>
-						)}
-					</Box>
-				</Box>
-			</Box>
+							</Text>
+						</div>
+					</div>
+				</div>
 
-			<Box sx={{ mb: 1.5, mt: 'auto' }}>
-				<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
-					<Typography variant='caption' color='text.secondary'>Надёжность сигнала</Typography>
-					<Typography variant='caption' fontWeight='bold' color={signal.confidence >= 70 ? 'success.main' : 'warning.main'} sx={{ flexShrink: 0, ml: 1 }}>
-						{signal.confidence}
-						%
-					</Typography>
-				</Box>
-				<Box sx={{
-					width: '100%',
-					height: 8,
-					bgcolor: 'grey.200',
-					borderRadius: 4,
-					overflow: 'hidden',
-				}}
-				>
-					<Box
-						sx={{
-							height: '100%',
-							width: `${signal.confidence}%`,
-							bgcolor: signal.confidence >= 70 ? 'success.main' : 'warning.main',
-							borderRadius: 4,
-							transition: 'width 0.5s ease',
-						}}
+				<Stack gap={4} flex={1} justify='flex-end'>
+					<Flex justify='space-between' wrap='nowrap'>
+						<Text size='sm' c='dimmed'>Надёжность сигнала</Text>
+						<Text
+							size='sm'
+							fw='bold'
+							c={signal.confidence >= 70 ? 'green' : 'yellow'}
+						>
+							{signal.confidence}
+							%
+						</Text>
+					</Flex>
+
+					<Progress
+						value={signal.confidence}
+						bg='gray.4'
+						color={getConfidenceColor(signal.confidence)}
 					/>
-				</Box>
-			</Box>
+				</Stack>
+			</Stack>
 
-			<Box sx={{
-				display: 'flex',
-				alignItems: 'center',
-				gap: 1,
-				pt: 1.5,
-				borderTop: 1,
-				borderColor: 'divider',
+			<Divider />
 
-			}}
+			<Link
+				to={ROUTES.STRATEGIES}
+				onClick={(event) => event.stopPropagation()}
+				className={cls.strategy}
 			>
-				<TimelineIcon fontSize='small' color='action' sx={{ flexShrink: 0 }} />
-				<Typography variant='body2' color='text.secondary' noWrap sx={{ flex: 1, minWidth: 0 }}>
+				<Text component='span' size='sm' lineClamp={1}>
 					{signal.strategy}
-				</Typography>
-			</Box>
-		</Paper>
+				</Text>
+
+				<Flex component='span' flex='0 0 auto'>
+					<IconChevronRight size={16} />
+				</Flex>
+			</Link>
+		</Card>
 	);
 }

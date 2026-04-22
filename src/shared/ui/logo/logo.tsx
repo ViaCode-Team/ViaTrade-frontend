@@ -1,37 +1,29 @@
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { Link } from 'react-router';
+import { Group, Text } from '@mantine/core';
+import { Link as RouterLink } from 'react-router';
 
 import LogoIcon from '@/shared/assets/icons/logo-default.svg?react';
+import { ROUTES } from '@/shared/model/routes';
 
 type LogoProps = {
-	logoWidth: number;
-	logoHeight: number;
-	variantText?: 'h6' | 'h5';
+	logoWidth?: number;
+	logoHeight?: number;
+	fz?: number;
 };
 
 export function Logo({
-	logoWidth,
-	logoHeight,
-	variantText = 'h6',
+	logoWidth = 32,
+	logoHeight = 32,
+	fz,
 }: LogoProps) {
 	return (
-		<Link to='/'>
-			<Stack direction='row' alignItems='center' gap='5px'>
+		<RouterLink to={ROUTES.HOME}>
+			<Group gap={5} align='center' wrap='nowrap'>
 				<LogoIcon width={logoWidth} height={logoHeight} />
 
-				<Typography
-					variant={variantText}
-					component='h2'
-					fontWeight='bold'
-					sx={{
-						whiteSpace: 'nowrap',
-						lineHeight: 1,
-					}}
-				>
+				<Text component='h2' fw='bold' fz={fz || 'lg'}>
 					ViaTrade
-				</Typography>
-			</Stack>
-		</Link>
+				</Text>
+			</Group>
+		</RouterLink>
 	);
 }

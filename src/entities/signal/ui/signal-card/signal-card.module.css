@@ -1,0 +1,77 @@
+.root {
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	border-left: 4px solid;
+	display: flex;
+	gap: var(--mantine-spacing-sm);
+	height: 100%;
+
+	&:hover {
+		transform: translateY(-5px);
+		box-shadow: var(--mantine-shadow-md);
+	}
+}
+
+.rootBuy {
+	border-left-color: var(--mantine-color-green-light);
+}
+
+.rootSell {
+	border-left-color: var(--mantine-color-red-light);
+}
+
+.directionBadge {
+	transition: background-color 0.2s ease;
+}
+
+.root:hover .directionBadge {
+	color: var(--mantine-color-white);
+}
+
+.rootBuy:hover {
+	border-left-color: var(--mantine-color-green-filled);
+}
+
+.rootSell:hover {
+	border-left-color: var(--mantine-color-red-filled);
+}
+
+.root:hover .directionBadgeRed {
+	background-color: var(--mantine-color-red-filled);
+}
+
+.root:hover .directionBadgeGreen {
+	background-color: var(--mantine-color-green-filled);
+}
+
+.assetInfo {
+	min-width: 120px;
+	flex: 1;
+}
+
+.priceRow {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--mantine-spacing-xs);
+}
+
+.dateInfo {
+	text-align: right;
+}
+
+.dateCol {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.strategy {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition: color 0.2s ease;
+}
+
+.strategy:hover {
+	color: var(--mantine-color-anchor);
+}

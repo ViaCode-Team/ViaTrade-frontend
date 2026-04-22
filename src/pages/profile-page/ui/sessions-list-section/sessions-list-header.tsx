@@ -1,0 +1,59 @@
+import {
+	Anchor,
+	Button,
+	Group,
+	Text,
+	Title,
+} from '@mantine/core';
+import { IconLogout } from '@tabler/icons-react';
+import { Link as RouterLink } from 'react-router';
+
+import cls from './sessions-list.module.css';
+
+type SessionsListHeaderProps = {
+	totalSessions: number;
+	onLogoutAll: () => void;
+	isLoggingOutAll?: boolean;
+};
+
+export function SessionsListHeader({
+	totalSessions,
+	onLogoutAll,
+	isLoggingOutAll,
+}: SessionsListHeaderProps) {
+	return (
+		<div className={cls.header}>
+			<Title order={4}>
+				Активные сессии
+				{' '}
+				<Text component='span' size='sm' c='dimmed'>
+					(
+					{totalSessions}
+					)
+				</Text>
+			</Title>
+
+			<Group gap='sm'>
+				<Anchor
+					component={RouterLink}
+					to='/reset-password'
+					size='sm'
+					fw={500}
+				>
+					Сбросить пароль
+				</Anchor>
+
+				<Button
+					variant='outline'
+					color='red'
+					size='xs'
+					leftSection={<IconLogout size={16} />}
+					onClick={onLogoutAll}
+					disabled={isLoggingOutAll}
+				>
+					Выйти из всех
+				</Button>
+			</Group>
+		</div>
+	);
+}

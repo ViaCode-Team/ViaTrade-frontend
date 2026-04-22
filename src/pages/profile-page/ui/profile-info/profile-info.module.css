@@ -1,0 +1,57 @@
+.card {
+	--vt-profile-banner-start: var(--mantine-color-brand-5);
+	--vt-profile-banner-mid: var(--mantine-color-brand-6);
+	--vt-profile-banner-end: var(--mantine-color-brand-8);
+	--vt-profile-chart-line: rgba(255, 255, 255, 0.1);
+	--vt-profile-candle-up: rgba(255, 255, 255, 0.1);
+	--vt-profile-candle-down: rgba(255, 255, 255, 0.05);
+
+	overflow: visible;
+	background-color: light-dark(
+		var(--mantine-color-white),
+		var(--mantine-color-dark-7)
+	);
+}
+
+.banner {
+	min-height: 100px;
+	max-height: 230px;
+	background: linear-gradient(
+		135deg,
+		var(--vt-profile-banner-start) 0%,
+		var(--vt-profile-banner-mid) 50%,
+		var(--vt-profile-banner-end) 100%
+	);
+	border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
+	position: relative;
+	overflow: hidden;
+}
+
+.chartLine {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.avatarRing {
+	padding: calc(var(--mantine-spacing-xs) / 2);
+	border-radius: 50%;
+	background: light-dark(
+		var(--mantine-color-white),
+		var(--mantine-color-dark-6)
+	);
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+	z-index: 1;
+}
+
+.editField {
+	& input {
+		text-align: center;
+	}
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+	gap: var(--mantine-spacing-sm);
+}

@@ -60,10 +60,6 @@ export default antfu(
 
 			'ts/consistent-type-definitions': ['warn', 'type'],
 			'no-console': 'warn',
-			'no-restricted-imports': [
-				'error',
-				{ patterns: [{ regex: '^@mui/[^/]+$' }] },
-			],
 		},
 	},
 	{

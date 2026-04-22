@@ -91,7 +91,7 @@ export function generateMockHistory(asset: string): TradeHistory[] {
 	const basePrice = mockSignals.find((s) => s.asset === asset)?.close || 100;
 	const history: TradeHistory[] = [];
 
-	for (let i = 30; i >= 0; i--) {
+	for (let i = 50; i >= 0; i--) {
 		const date = new Date(2024, 0, 15 - i);
 		const volatility = basePrice * 0.02;
 		const open = basePrice + (Math.random() - 0.5) * volatility;

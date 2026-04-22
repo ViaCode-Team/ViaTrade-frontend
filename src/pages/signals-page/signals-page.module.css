@@ -1,0 +1,4 @@
+.emptyState {
+	text-align: center;
+	padding: calc(var(--mantine-spacing-xl) * 2) 0;
+}

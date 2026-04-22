@@ -1,77 +1,75 @@
 [English](./README.md)
 
-# ViaTrade Frontend
+# ViaTrade фронтенд
 
-Современное веб-приложение для инвестиционного анализа.
+Современное веб-приложение для инвестиционного анализа, работы с торговыми сигналами и связанных пользовательских сценариев.
 
 > [!WARNING]
 > **В разработке.** Проект находится в активной разработке. Некоторые функции могут быть неполными или подвержены изменениям.
 
-## 🚀 Технологический стек
+## Ключевые возможности
 
-| Категория                 | Технология             |
-| ------------------------- | ---------------------- |
-| **Фреймворк**             | React 19.2+            |
-| **Язык**                  | TypeScript 5.9+        |
-| **Сборка**                | Vite 7.3+              |
-| **UI библиотека**         | Material-UI (MUI) 7.3+ |
-| **Стилизация**            | Emotion                |
-| **Управление состоянием** | TanStack Query 5.90+   |
-| **Роутинг**               | React Router 7.1+      |
-| **Валидация**             | Valibot                |
-| **Иконки**                | MUI Icons              |
+todo Ключевые возможности...
 
-## 📐 Архитектура
+## Технологический стек
 
-Проект следует архитектуре [**Feature-Sliced Design (FSD)**](https://fsd.how/)
+| Зона             | Технологии                                    |
+| ---------------- | --------------------------------------------- |
+| Основа           | React 19, TypeScript 5, Vite 7                |
+| Роутинг и данные | React Router 7, TanStack Query 5              |
+| UI и стили       | Mantine 9, Tabler Icons, CSS Modules, PostCSS |
+| Инструменты и DX | ESLint, Prettier, Husky                       |
+| API и моки       | Orval, MSW                                    |
 
-## 📦 Начало работы
+## Требования
 
-### Требования
+- Node.js совместимые с `package.json`
+- npm или другой совместимый пакетный менеджер
 
-- Node.js (совместимый с `package.json` проекта)
-- npm или другой пакетный менеджер
+## Быстрый старт
 
-### Установка
+Клонируйте репозиторий и перейдите в папку проекта:
+
+```bash
+git clone <repository-url>
+cd SkillSwap
+```
+
+Установить зависимости:
 
 ```bash
 npm install
 ```
 
-### Разработка
+Запустить Vite dev server:
 
 ```bash
-npm run dev          # Запуск сервера разработки Vite
+npm run dev
 ```
 
-### Продакшн сборка
+## Команды
 
-```bash
-npm run build        # Проверка типов и сборка для продакшена
-npm run preview      # Локальный просмотр продакшн сборки
-```
+| Команда              | Назначение                                             |
+| -------------------- | ------------------------------------------------------ |
+| `npm run dev`        | Запустить Vite dev server                              |
+| `npm run build`      | Выполнить TypeScript build и собрать production bundle |
+| `npm run preview`    | Локально открыть production build                      |
+| `npm run api:gen`    | Сгенерировать API-клиент и типы через Orval            |
+| `npm run types`      | Проверить TypeScript-типы приложения                   |
+| `npm run lint`       | Запустить ESLint                                       |
+| `npm run lint:fix`   | Запустить ESLint с автоисправлением                    |
+| `npm run format`     | Проверить форматирование через Prettier                |
+| `npm run format:fix` | Применить форматирование Prettier                      |
+| `npm run check`      | Запустить `types`, `lint` и `format`                   |
+| `npm run check:fix`  | Запустить `types`, `lint:fix` и `format:fix`           |
+| `npm run prepare`    | Установить Husky hooks                                 |
 
-## 🛠 Качество кода
+## Вклад в проект
 
-```bash
-npm run lint         # Запуск ESLint с информацией о времени
-npm run lint:fix     # Запуск ESLint с авто-исправлением
-npm run format       # Проверка форматирования Prettier
-npm run format:fix   # Исправление форматирования Prettier
-npm run tsc          # Проверка типов TypeScript
-npm run check        # Запуск всех проверок: tsc + lint + format
-npm run check:fix    # Запуск всех проверок с авто-исправлением: tsc + lint:fix + format:fix
-```
+Мы приветствуем ваши contributions! Следуйте этим шагам:
 
-## 🔧 Генерация API
-
-```bash
-npm run api:gen      # Генерация типов API из OpenAPI спецификации через Orval
-```
-
-## 📜 Другие команды
-
-```bash
-npm run prepare      # Установка git-хуков Husky (выполняется автоматически после install)
-npm run types        # Проверка типов TypeScript
-```
+1. Форкните репозиторий
+2. Создайте ветку для фичи (`git checkout -b <feature/amazing-feature>`)
+3. Закоммитьте изменения, используя [Conventional Commits](https://www.conventionalcommits.org/)
+4. Запушьте ветку (`git push origin <feature/amazing-feature>`)
+5. Откройте Pull Request

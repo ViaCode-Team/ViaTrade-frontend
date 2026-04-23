@@ -1,15 +1,15 @@
-import type { ReactNode } from 'react';
-
 import {
 	Badge,
 	Button,
 	Card,
+	Divider,
+	Flex,
 	Group,
+	Progress,
 	Stack,
 	Text,
 	Title,
 } from '@mantine/core';
-import { IconChartLine, IconClock } from '@tabler/icons-react';
 import { generatePath, Link as RouterLink } from 'react-router';
 
 import { ROUTES } from '@/shared/model/routes';
@@ -23,35 +23,11 @@ type StrategyCardProps = {
 	strategy: Strategy;
 };
 
-type StrategyMetricProps = {
-	icon: ReactNode;
-	label: string;
-	value: string;
-};
-
-function StrategyMetric({ icon, label, value }: StrategyMetricProps) {
-	return (
-		<div className={cls.metric}>
-			<div className={cls.metricLabelWrap}>
-				<span className={cls.metricIcon}>{icon}</span>
-				<Text size='sm' className={cls.metricLabel}>
-					{label}
-				</Text>
-			</div>
-			<Text size='sm' className={cls.metricValue}>
-				{value}
-			</Text>
-		</div>
-	);
-}
-
 export function StrategyCard({ strategy }: StrategyCardProps) {
-	const accuracyColor = getAccuracyColor(strategy.accuracy);
-	const metricBorderColor = accuracyColor === 'green'
+	const activeColor = strategy.isActive
 		? 'var(--mantine-color-green-7)'
-		: accuracyColor === 'red'
-			? 'var(--mantine-color-red-7)'
-			: 'var(--mantine-color-yellow-7)';
+		: 'var(--mantine-color-red-7)';
+
 	const strategyPath = generatePath(ROUTES.STRATEGY, { strategyName: strategy.id });
 
 	return (
@@ -60,16 +36,18 @@ export function StrategyCard({ strategy }: StrategyCardProps) {
 			to={strategyPath}
 			bg='transparent'
 			withBorder
-			p='lg'
 			className={cls.root}
-			style={{ borderLeftColor: metricBorderColor }}
+			style={{ borderLeftColor: activeColor }}
 		>
 			<Group justify='space-between' align='flex-start' gap='sm'>
-				<Title order={4} className={cls.title}>
+				<Title order={4} className={cls.title} lineClamp={1}>
 					{strategy.name}
 				</Title>
-				<Badge variant='light' color={accuracyColor}>
-					{`Точность ${strategy.accuracy}%`}
+				<Badge
+					variant='light'
+					color={strategy.isActive ? 'green' : 'red'}
+				>
+					{strategy.isActive ? 'Активна' : 'Не активна'}
 				</Badge>
 			</Group>
 
@@ -77,20 +55,50 @@ export function StrategyCard({ strategy }: StrategyCardProps) {
 				{strategy.description}
 			</Text>
 
-			<Stack gap={4} mt='auto'>
-				<StrategyMetric
-					icon={<IconChartLine size={16} />}
-					label='Частота сигналов'
-					value={strategy.signalFrequency}
-				/>
-				<StrategyMetric
-					icon={<IconClock size={16} />}
-					label='Инвест. горизонт'
-					value={strategy.investmentHorizon}
-				/>
+
+			<Stack gap='xs'>
+				<Flex justify='space-between'>
+					<Flex direction='column' flex={1}>
+						<Text size='sm' c='dimmed'>Частота сигнала</Text>
+						<Text fw='bold' lineClamp={1}>
+							{strategy.signalFrequency}
+						</Text>
+					</Flex>
+					<Flex direction='column' flex={1}>
+						<Text size='sm' c='dimmed' ta='end'>Инвест горизонт</Text>
+						<Text fw='bold' ta='end' lineClamp={1}>
+							{strategy.investmentHorizon}
+						</Text>
+					</Flex>
+				</Flex>
+
+				<Stack gap={4} flex={1} justify='flex-end'>
+					<Flex justify='space-between' wrap='nowrap'>
+						<Text size='sm' c='dimmed'>Точность</Text>
+						<Text
+							size='sm'
+							fw='bold'
+						>
+							{strategy.accuracy}
+							%
+						</Text>
+					</Flex>
+					<Progress
+						value={strategy.accuracy}
+						bg='gray.4'
+						color={getAccuracyColor(strategy.accuracy)}
+					/>
+				</Stack>
 			</Stack>
 
-			<Button component='span' variant='default'>Связать с акцией</Button>
+			<Card.Section>
+				<Divider />
+			</Card.Section>
+
+			<Flex gap='xs'>
+				<Button w='100%' variant='default'>Связать с акцией</Button>
+				<Button w='100%'>{strategy.isActive ? 'Деактивировать' : 'Активировать' }</Button>
+			</Flex>
 		</Card>
 	);
 }

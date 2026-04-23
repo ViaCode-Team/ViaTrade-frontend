@@ -1,7 +1,6 @@
 import {
 	Badge,
 	Card,
-	Divider,
 	Flex,
 	Progress,
 	Stack,
@@ -61,26 +60,24 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 
 
 			<Stack h='100%' gap='xs'>
-				<div className={cls.priceRow}>
-					<div>
+				<Flex justify='space-between' gap='xs'>
+					<Flex direction='column'>
 						<Text size='sm' c='dimmed'>Цена закрытия</Text>
-						<Text fw='bold' truncate>
+						<Text fw='bold' lineClamp={1}>
 							$
 							{signal.close.toFixed(2)}
 						</Text>
-					</div>
+					</Flex>
 
-					<div className={cls.dateInfo}>
-						<Text size='sm' c='dimmed'>Дата сигнала</Text>
-						<div className={cls.dateCol}>
-							<Text fw='bold' truncate>{signal.date}</Text>
+					<div>
+						<Text ta='end' size='sm' c='dimmed'>Дата сигнала</Text>
+						<Text ta='end' fw='bold' lineClamp={1}>{signal.date}</Text>
 
-							<Text size='xs'>
-								{signal.time}
-							</Text>
-						</div>
+						<Text ta='end' size='xs' lineClamp={1}>
+							{signal.time}
+						</Text>
 					</div>
-				</div>
+				</Flex>
 
 				<Stack gap={4} flex={1} justify='flex-end'>
 					<Flex justify='space-between' wrap='nowrap'>
@@ -103,7 +100,6 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 				</Stack>
 			</Stack>
 
-			<Divider />
 
 			<Link
 				to={ROUTES.STRATEGIES}

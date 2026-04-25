@@ -1,10 +1,22 @@
 import { SimpleGrid, Stack, Text, Title } from '@mantine/core';
+import { useState } from 'react';
 
-import { mockStrategies } from './model/strategies';
+import { mockStrategies } from '@/entities/strategy';
+
 import cls from './strategies-page.module.css';
 import { StrategyCard } from './ui/strategy-card';
 
 export function StrategiesPage() {
+	const [strategies, setStrategies] = useState(mockStrategies);
+
+	function handleActiveChange(strategyId: string, isActive: boolean) {
+		setStrategies((currentStrategies) =>
+			currentStrategies.map((strategy) =>
+				strategy.id === strategyId ? { ...strategy, isActive } : strategy,
+			),
+		);
+	}
+
 	return (
 		<Stack gap='lg'>
 			<Stack gap='xs'>
@@ -15,9 +27,12 @@ export function StrategiesPage() {
 			</Stack>
 
 			<SimpleGrid minColWidth={400} spacing='lg' component='ul' className={cls.grid}>
-				{mockStrategies.map((strategy) => (
+				{strategies.map((strategy) => (
 					<li key={strategy.id} className={cls.item}>
-						<StrategyCard strategy={strategy} />
+						<StrategyCard
+							strategy={strategy}
+							onActiveChange={handleActiveChange}
+						/>
 					</li>
 				))}
 			</SimpleGrid>

@@ -35,7 +35,6 @@ export const mockStrategies: Strategy[] = [
 		signalFrequency: '3-6 в неделю',
 		investmentHorizon: 'несколько часов - 2 дня',
 		isActive: true,
-
 	},
 	{
 		id: 'dividend-value',
@@ -45,7 +44,6 @@ export const mockStrategies: Strategy[] = [
 		signalFrequency: '1-3 в месяц',
 		investmentHorizon: '6-18 месяцев',
 		isActive: true,
-
 	},
 	{
 		id: 'trend-following-futures',
@@ -55,7 +53,6 @@ export const mockStrategies: Strategy[] = [
 		signalFrequency: '4-8 в месяц',
 		investmentHorizon: '2-8 недель',
 		isActive: false,
-
 	},
 	{
 		id: 'event-driven-news',
@@ -65,7 +62,6 @@ export const mockStrategies: Strategy[] = [
 		signalFrequency: 'по событию',
 		investmentHorizon: '1-24 часа',
 		isActive: true,
-
 	},
 ];
 

@@ -1,104 +1,137 @@
 import {
-	Badge,
 	Button,
 	Card,
-	Divider,
+	Checkbox,
 	Flex,
 	Group,
 	Progress,
 	Stack,
 	Text,
 	Title,
+	Tooltip,
 } from '@mantine/core';
 import { generatePath, Link as RouterLink } from 'react-router';
 
+import type { Strategy } from '@/entities/strategy';
+
+import { getAccuracyColor } from '@/entities/strategy';
 import { ROUTES } from '@/shared/model/routes';
 
-import type { Strategy } from '../model/strategies';
-
-import { getAccuracyColor } from '../model/strategies';
 import cls from './strategy-card.module.css';
 
 type StrategyCardProps = {
 	strategy: Strategy;
+	onActiveChange: (strategyId: string, isActive: boolean) => void;
 };
 
-export function StrategyCard({ strategy }: StrategyCardProps) {
+export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 	const activeColor = strategy.isActive
 		? 'var(--mantine-color-green-7)'
 		: 'var(--mantine-color-red-7)';
 
-	const strategyPath = generatePath(ROUTES.STRATEGY, { strategyName: strategy.id });
+	const strategyPath = generatePath(ROUTES.STRATEGY, {
+		strategyName: strategy.id,
+	});
+
+	const activeActionLabel = strategy.isActive
+		? 'Деактивировать стратегию'
+		: 'Активировать стратегию';
 
 	return (
 		<Card
-			component={RouterLink}
-			to={strategyPath}
+			component='article'
 			bg='transparent'
 			withBorder
 			className={cls.root}
 			style={{ borderLeftColor: activeColor }}
 		>
-			<Group justify='space-between' align='flex-start' gap='sm'>
-				<Title order={4} className={cls.title} lineClamp={1}>
-					{strategy.name}
-				</Title>
-				<Badge
-					variant='light'
-					color={strategy.isActive ? 'green' : 'red'}
-				>
-					{strategy.isActive ? 'Активна' : 'Не активна'}
-				</Badge>
-			</Group>
+			<RouterLink
+				to={strategyPath}
+				className={cls.cardLink}
+				aria-label={`Открыть стратегию ${strategy.name}`}
+			/>
 
-			<Text size='sm' c='dimmed' lineClamp={2}>
-				{strategy.description}
-			</Text>
+			<div className={cls.content}>
+				<Group justify='space-between' align='flex-start' gap='sm'>
+					<Title order={4} className={cls.title} lineClamp={1}>
+						{strategy.name}
+					</Title>
 
+					<Tooltip label={activeActionLabel}>
+						<Checkbox
+							checked={strategy.isActive}
+							onChange={(event) => {
+								onActiveChange(strategy.id, event.currentTarget.checked);
+							}}
+							className={cls.cardAction}
+							styles={{
+								root: {
+									'--checkbox-size': '22px',
+								},
+							}}
+							aria-label={`${activeActionLabel} ${strategy.name}`}
+						/>
+					</Tooltip>
+				</Group>
 
-			<Stack gap='xs'>
-				<Flex justify='space-between'>
-					<Flex direction='column' flex={1}>
-						<Text size='sm' c='dimmed'>Частота сигнала</Text>
-						<Text fw='bold' lineClamp={1}>
-							{strategy.signalFrequency}
-						</Text>
+				<Text size='sm' c='dimmed' lineClamp={2}>
+					{strategy.description}
+				</Text>
+
+				<Stack gap='xs'>
+					<Flex justify='space-between' gap='md'>
+						<Flex direction='column' flex={1}>
+							<Text size='sm' c='dimmed'>
+								Частота сигнала
+							</Text>
+
+							<Text fw='bold' lineClamp={1}>
+								{strategy.signalFrequency}
+							</Text>
+						</Flex>
+
+						<Flex direction='column' flex={1}>
+							<Text size='sm' c='dimmed' ta='end'>
+								Инвест горизонт
+							</Text>
+
+							<Text fw='bold' ta='end' lineClamp={1}>
+								{strategy.investmentHorizon}
+							</Text>
+						</Flex>
 					</Flex>
-					<Flex direction='column' flex={1}>
-						<Text size='sm' c='dimmed' ta='end'>Инвест горизонт</Text>
-						<Text fw='bold' ta='end' lineClamp={1}>
-							{strategy.investmentHorizon}
-						</Text>
-					</Flex>
-				</Flex>
 
-				<Stack gap={4} flex={1} justify='flex-end'>
-					<Flex justify='space-between' wrap='nowrap'>
-						<Text size='sm' c='dimmed'>Точность</Text>
-						<Text
-							size='sm'
-							fw='bold'
-						>
-							{strategy.accuracy}
-							%
-						</Text>
-					</Flex>
-					<Progress
-						value={strategy.accuracy}
-						bg='gray.4'
-						color={getAccuracyColor(strategy.accuracy)}
-					/>
+					<Stack gap={4}>
+						<Flex justify='space-between' wrap='nowrap'>
+							<Text size='sm' c='dimmed'>
+								Точность
+							</Text>
+
+							<Text size='sm' fw='bold'>
+								{strategy.accuracy}
+								%
+							</Text>
+						</Flex>
+
+						<Progress
+							value={strategy.accuracy}
+							bg='gray.4'
+							color={getAccuracyColor(strategy.accuracy)}
+						/>
+					</Stack>
 				</Stack>
-			</Stack>
+			</div>
 
-			<Card.Section>
-				<Divider />
-			</Card.Section>
-
-			<Flex gap='xs'>
-				<Button w='100%' variant='default'>Связать с акцией</Button>
-				<Button w='100%'>{strategy.isActive ? 'Деактивировать' : 'Активировать' }</Button>
-			</Flex>
+			<Button
+				type='button'
+				variant='default'
+				className={cls.cardAction}
+				onClick={() => {
+					// TODO: связать стратегию с акцией
+				}}
+			>
+				Связать с акцией
+			</Button>
 		</Card>
 	);
 }

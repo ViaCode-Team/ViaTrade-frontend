@@ -1,0 +1,12 @@
+.card[data-variant='left-border'] {
+	--card-left-border-color: var(--mantine-primary-color-light);
+
+	border-left: 4px solid var(--card-left-border-color);
+}
+
+.card[data-variant='left-border']:hover {
+	border-left-color: var(
+		--card-left-border-hover-color,
+		var(--card-left-border-color)
+	);
+}

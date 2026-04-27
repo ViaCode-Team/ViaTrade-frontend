@@ -26,7 +26,12 @@ export function StrategiesPage() {
 				</Text>
 			</Stack>
 
-			<SimpleGrid minColWidth={400} spacing='lg' component='ul' className={cls.grid}>
+			<SimpleGrid
+				minColWidth={300}
+				spacing={{ base: 'sm', sm: 'lg' }}
+				component='ul'
+				className={cls.grid}
+			>
 				{strategies.map((strategy) => (
 					<li key={strategy.id} className={cls.item}>
 						<StrategyCard

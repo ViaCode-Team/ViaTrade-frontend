@@ -55,10 +55,9 @@ export function SignalsPage() {
 			</Stack>
 
 			<SimpleGrid
-				minColWidth='280px'
+				minColWidth={300}
 				spacing={{ base: 'sm', sm: 'lg' }}
 				component='ul'
-				className={cls.signalsGrid}
 			>
 				{filteredAndSortedSignals.map((signal) => (
 					<li key={signal.id} className={cls.signalItem}>

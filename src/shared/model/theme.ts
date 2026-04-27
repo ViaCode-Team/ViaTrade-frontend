@@ -1,6 +1,8 @@
 import type { MantineGradient } from '@mantine/core';
 
-import { createTheme } from '@mantine/core';
+import { Card, createTheme } from '@mantine/core';
+
+import cls from './theme.module.css';
 
 export const brandGradient: MantineGradient = { from: '#ffb752', to: '#e09530', deg: 135 };
 
@@ -54,6 +56,11 @@ export const theme = createTheme({
 				variant: 'filled',
 			},
 		},
+		Card: Card.extend({
+			classNames: {
+				root: cls.card,
+			},
+		}),
 
 		Loader: {
 			defaultProps: {

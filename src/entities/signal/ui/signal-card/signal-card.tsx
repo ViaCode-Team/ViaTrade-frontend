@@ -1,10 +1,11 @@
 import {
 	Badge,
+	Box,
 	Card,
 	Flex,
 	Progress,
-	Stack,
 	Text,
+	Title,
 } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -12,6 +13,7 @@ import { Link } from 'react-router';
 
 import type { Signal } from '@/entities/signal';
 
+import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
 import { ROUTES } from '@/shared/model/routes';
 
 import cls from './signal-card.module.css';
@@ -22,28 +24,45 @@ type SignalCardProps = {
 };
 
 function getConfidenceColor(confidence: number) {
-	return confidence >= 70 ? 'green.6' : 'yellow.6';
+	return confidence >= 70 ? 'green' : 'yellow';
 }
 
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
+	const leftBorderStyle = getLeftBorderCardStyle({
+		color: isBuy
+			? 'var(--mantine-color-green-light)'
+			: 'var(--mantine-color-red-light)',
+		hoverColor: isBuy
+			? 'var(--mantine-color-green-filled)'
+			: 'var(--mantine-color-red-filled)',
+	});
 
 	return (
 		<Card
-			onClick={() => onClick(signal)}
-			className={clsx(cls.root, isBuy ? cls.rootBuy : cls.rootSell)}
+			component='article'
+			className={cls.root}
+			variant='left-border'
+			style={leftBorderStyle}
 			bg='transparent'
 			withBorder
 		>
+			<button
+				type='button'
+				className={cls.cardButton}
+				onClick={() => onClick(signal)}
+				aria-label={`Открыть историю сигнала ${signal.asset}`}
+			/>
+
 			<Flex gap='xs'>
-				<div className={cls.assetInfo}>
-					<Text component='h3' size='lg' fw='bold' lineClamp={1}>
+				<Box flex={1}>
+					<Title order={4} lineClamp={1}>
 						{signal.asset}
-					</Text>
-					<Text size='xs' c='dimmed'>
+					</Title>
+					<Text size='sm' c='dimmed'>
 						{signal.type === 'stock' ? 'Акция' : 'Фьючерс'}
 					</Text>
-				</div>
+				</Box>
 
 				<Badge
 					variant='light'
@@ -58,59 +77,60 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 				</Badge>
 			</Flex>
 
+			<Flex justify='space-between' gap='xs'>
+				<div>
+					<Text size='sm' c='dimmed'>
+						Цена закрытия
+					</Text>
 
-			<Stack h='100%' gap='xs'>
-				<Flex justify='space-between' gap='xs'>
-					<Flex direction='column'>
-						<Text size='sm' c='dimmed'>Цена закрытия</Text>
-						<Text fw='bold' lineClamp={1}>
-							$
-							{signal.close.toFixed(2)}
-						</Text>
-					</Flex>
+					<Text fw='bold' lineClamp={1}>
+						{signal.close.toFixed(2)}
+						{' '}
+						₽
+					</Text>
+				</div>
 
-					<div>
-						<Text ta='end' size='sm' c='dimmed'>Дата сигнала</Text>
-						<Text ta='end' fw='bold' lineClamp={1}>{signal.date}</Text>
-
-						<Text ta='end' size='xs' lineClamp={1}>
+				<div>
+					<Text ta='end' size='sm' c='dimmed'>Дата сигнала</Text>
+					<Text ta='end' fw='bold' lineClamp={1}>
+						{signal.date}
+						{' '}
+						<Text component='span'size='xs'>
 							{signal.time}
 						</Text>
-					</div>
+					</Text>
+				</div>
+			</Flex>
+
+			<Flex direction='column' gap={4} flex={1} justify='flex-end'>
+				<Flex justify='space-between' wrap='nowrap'>
+					<Text size='sm' c='dimmed'>Надёжность сигнала</Text>
+					<Text
+						size='sm'
+						fw='bold'
+						c={getConfidenceColor(signal.confidence)}
+					>
+						{signal.confidence}
+						%
+					</Text>
 				</Flex>
 
-				<Stack gap={4} flex={1} justify='flex-end'>
-					<Flex justify='space-between' wrap='nowrap'>
-						<Text size='sm' c='dimmed'>Надёжность сигнала</Text>
-						<Text
-							size='sm'
-							fw='bold'
-							c={signal.confidence >= 70 ? 'green' : 'yellow'}
-						>
-							{signal.confidence}
-							%
-						</Text>
-					</Flex>
-
-					<Progress
-						value={signal.confidence}
-						bg='gray.4'
-						color={getConfidenceColor(signal.confidence)}
-					/>
-				</Stack>
-			</Stack>
-
+				<Progress
+					value={signal.confidence}
+					bg='gray.4'
+					color={getConfidenceColor(signal.confidence)}
+				/>
+			</Flex>
 
 			<Link
 				to={ROUTES.STRATEGIES}
-				onClick={(event) => event.stopPropagation()}
 				className={cls.strategy}
 			>
 				<Text component='span' size='sm' lineClamp={1}>
 					{signal.strategy}
 				</Text>
 
-				<Flex component='span' flex='0 0 auto'>
+				<Flex flex='0 0 auto'>
 					<IconChevronRight size={16} />
 				</Flex>
 			</Link>

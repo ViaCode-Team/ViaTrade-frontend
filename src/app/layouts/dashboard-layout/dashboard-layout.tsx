@@ -35,7 +35,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 				breakpoint: NAVBAR_BREAKPOINT,
 				collapsed: { mobile: !mobileOpened },
 			}}
-			padding='md'
+			padding={{ base: 'xs', xs: 'sm', sm: 'md' }}
 			transitionDuration={220}
 			transitionTimingFunction='ease'
 		>

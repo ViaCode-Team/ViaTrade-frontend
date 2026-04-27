@@ -1,23 +1,21 @@
 .root {
-	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	border-left: 4px solid;
-	display: flex;
-	gap: var(--mantine-spacing-sm);
+	gap: var(--mantine-spacing-md);
 	height: 100%;
-
-	&:hover {
-		transform: translateY(-5px);
-		box-shadow: var(--mantine-shadow-md);
-	}
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.rootBuy {
-	border-left-color: var(--mantine-color-green-light);
+.root:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--mantine-shadow-md);
 }
 
-.rootSell {
-	border-left-color: var(--mantine-color-red-light);
+.cardButton {
+	position: absolute;
+	inset: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	cursor: pointer;
 }
 
 .directionBadge {
@@ -28,14 +26,6 @@
 	color: var(--mantine-color-white);
 }
 
-.rootBuy:hover {
-	border-left-color: var(--mantine-color-green-filled);
-}
-
-.rootSell:hover {
-	border-left-color: var(--mantine-color-red-filled);
-}
-
 .root:hover .directionBadgeRed {
 	background-color: var(--mantine-color-red-filled);
 }
@@ -44,12 +34,8 @@
 	background-color: var(--mantine-color-green-filled);
 }
 
-.assetInfo {
-	min-width: 120px;
-	flex: 1;
-}
-
 .strategy {
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

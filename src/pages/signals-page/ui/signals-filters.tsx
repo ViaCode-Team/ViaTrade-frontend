@@ -32,7 +32,7 @@ export function SignalsFilters({
 	onTypeFilterChange,
 }: SignalsFiltersProps) {
 	return (
-		<SimpleGrid minColWidth={250} spacing='sm'>
+		<SimpleGrid minColWidth={280} spacing={{ base: 'sm', sm: 'lg' }}>
 			<TextInput
 				placeholder='Поиск по активу или стратегии...'
 				value={searchQuery}

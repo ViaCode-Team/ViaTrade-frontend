@@ -33,7 +33,7 @@ export const mockStrategies: Strategy[] = [
 		description: 'Фокус на резких движениях при росте волатильности и объема.',
 		accuracy: 59,
 		signalFrequency: '3-6 в неделю',
-		investmentHorizon: 'несколько часов - 2 дня',
+		investmentHorizon: '1-2 часа - 2 дня',
 		isActive: true,
 	},
 	{

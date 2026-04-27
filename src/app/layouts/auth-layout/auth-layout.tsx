@@ -11,7 +11,7 @@ type AuthLayoutProps = { children?: ReactNode };
 
 export function AuthLayout({ children }: AuthLayoutProps) {
 	return (
-		<AppShell header={{ height: 53 }} padding='md'>
+		<AppShell header={{ height: 53 }} padding={{ base: 'xs', xs: 'sm', sm: 'md' }}>
 			<AppShell.Header>
 				<PureHeader />
 			</AppShell.Header>

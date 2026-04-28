@@ -2,15 +2,21 @@ import { Stack } from '@mantine/core';
 import { Suspense } from 'react';
 
 import { ProfileInfo, ProfileInfoSkeleton } from './ui/profile-info';
-import { SessionsListSection } from './ui/sessions-list-section';
+import { SessionsSection } from './ui/sessions-section';
+import { ThirdPartyService } from './ui/third-party-services';
 
 export function ProfilePage() {
 	return (
 		<Stack gap='xl'>
-			<Suspense fallback={<ProfileInfoSkeleton />}>
-				<ProfileInfo />
-			</Suspense>
-			<SessionsListSection />
+			<Stack>
+				<Suspense fallback={<ProfileInfoSkeleton />}>
+					<ProfileInfo />
+				</Suspense>
+
+				<ThirdPartyService />
+			</Stack>
+
+			<SessionsSection />
 		</Stack>
 	);
 }

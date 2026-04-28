@@ -24,14 +24,6 @@
 	--ti-bd: 1px solid transparent;
 }
 
-.content {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	min-width: 0;
-	flex: 1;
-}
-
 .end {
 	display: flex;
 	align-items: center;

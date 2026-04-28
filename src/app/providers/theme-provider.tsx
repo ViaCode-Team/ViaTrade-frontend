@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import '@mantine/core/styles.css';
 import '@mantine/nprogress/styles.css';
 
@@ -13,7 +14,9 @@ type ThemeProviderProps = {
 export function ThemeProvider({ children }: ThemeProviderProps) {
 	return (
 		<MantineProvider theme={theme} deduplicateInlineStyles defaultColorScheme='auto'>
-			{children}
+			<ModalsProvider>
+				{children}
+			</ModalsProvider>
 		</MantineProvider>
 	);
 }

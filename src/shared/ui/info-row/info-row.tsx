@@ -61,7 +61,7 @@ export function InfoRow({
 					{icon}
 				</ThemeIcon>
 
-				<Flex direction='column' gap={2}>
+				<Flex direction='column' miw={0}>
 					{title}
 					{description}
 				</Flex>

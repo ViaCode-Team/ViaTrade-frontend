@@ -12,10 +12,6 @@ const defaultOptions: Partial<Options> = {
 	},
 } as const;
 
-const defaultInput: InputOptions = {
-	target: SWAGGER_PATH,
-} as const;
-
 const defaultOutput: Partial<OutputOptions> = {
 	mode: 'split',
 	httpClient: 'fetch',
@@ -72,8 +68,9 @@ function createApiConfig(
 		...deepmerge(defaultOptions, overrides?.options ?? {}),
 
 		input: {
+			target: SWAGGER_PATH,
 			filters: { mode: 'include', tags: [tagName] },
-			...deepmerge(defaultInput, overrides?.input ?? {}),
+			...overrides?.input,
 		},
 
 		output: {

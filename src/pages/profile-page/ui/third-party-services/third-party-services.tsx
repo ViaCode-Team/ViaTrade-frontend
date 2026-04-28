@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { SimpleGrid, Text } from '@mantine/core';
+import { SimpleGrid, Text, Title } from '@mantine/core';
 import { IconBrandTelegram, IconMail } from '@tabler/icons-react';
 import { useNavigate } from 'react-router';
 
@@ -11,37 +11,6 @@ type ThirdPartyServicesProps = {
 	email?: string;
 	tgId?: string;
 };
-
-type ThirdPartyServiceRowProps = {
-	icon: ReactNode;
-	title: string;
-	description: string;
-	onClick: () => void;
-};
-
-function ThirdPartyServiceRow({
-	icon,
-	title,
-	description,
-	onClick,
-}: ThirdPartyServiceRowProps) {
-	return (
-		<InfoRow
-			icon={icon}
-			title={(
-				<Text size='sm' fw={700} lh={1.2}>
-					{title}
-				</Text>
-			)}
-			description={(
-				<Text size='xs' c='dimmed' lineClamp={2} style={{ overflowWrap: 'anywhere' }}>
-					{description}
-				</Text>
-			)}
-			onClick={onClick}
-		/>
-	);
-}
 
 export function ThirdPartyService({ email, tgId }: ThirdPartyServicesProps) {
 	const navigate = useNavigate();
@@ -62,5 +31,36 @@ export function ThirdPartyService({ email, tgId }: ThirdPartyServicesProps) {
 				onClick={() => {}}
 			/>
 		</SimpleGrid>
+	);
+}
+
+type ThirdPartyServiceRowProps = {
+	icon: ReactNode;
+	title: string;
+	description: string;
+	onClick: () => void;
+};
+
+function ThirdPartyServiceRow({
+	icon,
+	title,
+	description,
+	onClick,
+}: ThirdPartyServiceRowProps) {
+	return (
+		<InfoRow
+			icon={icon}
+			title={(
+				<Title order={5} lineClamp={1} style={{ overflowWrap: 'anywhere' }}>
+					{title}
+				</Title>
+			)}
+			description={(
+				<Text size='sm' c='dimmed' lineClamp={2} style={{ overflowWrap: 'anywhere' }}>
+					{description}
+				</Text>
+			)}
+			onClick={onClick}
+		/>
 	);
 }

@@ -8,5 +8,6 @@ gen
 *.jsx
 *.js
 *.ts
+*.cjs
 *.mjs
 *.min*

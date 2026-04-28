@@ -17,14 +17,14 @@
 	);
 }
 
-@container (max-width: 36em) {
+@container (max-width: 48em) {
 	.profileHeader {
 		--vt-profile-avatar-size: 136px;
 		--vt-profile-avatar-icon-size: 68px;
 	}
 }
 
-@container (max-width: 22em) {
+@container (max-width: 36em) {
 	.profileHeader {
 		--vt-profile-avatar-size: 112px;
 		--vt-profile-avatar-icon-size: 56px;

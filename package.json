@@ -26,6 +26,7 @@
 		"@mantine/core": "^9.1.1",
 		"@mantine/form": "^9.1.1",
 		"@mantine/hooks": "^9.1.1",
+		"@mantine/modals": "^9.1.1",
 		"@mantine/nprogress": "^9.1.1",
 		"@tabler/icons-react": "^3.41.1",
 		"@tanstack/react-query": "^5.100.5",

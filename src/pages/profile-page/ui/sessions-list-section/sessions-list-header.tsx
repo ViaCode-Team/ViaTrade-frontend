@@ -2,6 +2,7 @@ import {
 	Anchor,
 	Button,
 	Group,
+	Skeleton,
 	Text,
 	Title,
 } from '@mantine/core';
@@ -14,12 +15,14 @@ type SessionsListHeaderProps = {
 	totalSessions: number;
 	onLogoutAll: () => void;
 	isLoggingOutAll?: boolean;
+	isLoading?: boolean;
 };
 
 export function SessionsListHeader({
 	totalSessions,
 	onLogoutAll,
 	isLoggingOutAll,
+	isLoading,
 }: SessionsListHeaderProps) {
 	return (
 		<div className={cls.header}>
@@ -27,9 +30,9 @@ export function SessionsListHeader({
 				Активные сессии
 				{' '}
 				<Text component='span' size='sm' c='dimmed'>
-					(
-					{totalSessions}
-					)
+					{isLoading
+						? <Skeleton component='span' h={16} w={22} display='inline-block' />
+						: `(${totalSessions})`}
 				</Text>
 			</Title>
 
@@ -49,7 +52,7 @@ export function SessionsListHeader({
 					size='xs'
 					leftSection={<IconLogout size={16} />}
 					onClick={onLogoutAll}
-					disabled={isLoggingOutAll}
+					disabled={isLoading || isLoggingOutAll}
 				>
 					Выйти из всех
 				</Button>

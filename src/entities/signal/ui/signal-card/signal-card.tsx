@@ -15,6 +15,7 @@ import type { Signal } from '@/entities/signal';
 
 import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
 import { ROUTES } from '@/shared/model/routes';
+import { InfoPair } from '@/shared/ui/info-pair';
 
 import cls from './signal-card.module.css';
 
@@ -77,32 +78,29 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 				</Badge>
 			</Flex>
 
-			<Flex justify='space-between' gap='xs'>
-				<div>
-					<Text size='sm' c='dimmed'>
-						Цена закрытия
-					</Text>
+			<InfoPair
+				gap='xs'
+				items={[
+					{
+						label: 'Цена закрытия',
+						value: `${signal.close.toFixed(2)} ₽`,
+					},
+					{
+						label: 'Дата сигнала',
+						value: (
+							<>
+								{signal.date}
+								{' '}
+								<Text span size='xs'>
+									{signal.time}
+								</Text>
+							</>
+						),
+					},
+				]}
+			/>
 
-					<Text fw='bold' lineClamp={1}>
-						{signal.close.toFixed(2)}
-						{' '}
-						₽
-					</Text>
-				</div>
-
-				<div>
-					<Text ta='end' size='sm' c='dimmed'>Дата сигнала</Text>
-					<Text ta='end' fw='bold' lineClamp={1}>
-						{signal.date}
-						{' '}
-						<Text component='span'size='xs'>
-							{signal.time}
-						</Text>
-					</Text>
-				</div>
-			</Flex>
-
-			<Flex direction='column' gap={4} flex={1} justify='flex-end'>
+			<Flex direction='column' gap={4} mt='auto'>
 				<Flex justify='space-between' wrap='nowrap'>
 					<Text size='sm' c='dimmed'>Надёжность сигнала</Text>
 					<Text

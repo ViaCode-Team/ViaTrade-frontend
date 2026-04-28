@@ -7,6 +7,7 @@ import {
 	Stack,
 	Text,
 	TextInput,
+	Title,
 } from '@mantine/core';
 import {
 	IconCheck,
@@ -32,14 +33,14 @@ export function ProfileInfo() {
 			<ProfileBanner />
 
 			<Stack gap='sm'>
-				<Stack align='center' gap='xs' mt='-53px'>
+				<Stack align='center' gap='sm' className={cls.profileHeader}>
 					<div className={cls.avatarRing}>
-						<Avatar size={96}>
-							<IconUser size={48} />
+						<Avatar size='var(--vt-profile-avatar-size)'>
+							<IconUser size='var(--vt-profile-avatar-icon-size)' />
 						</Avatar>
 					</div>
 
-					<Flex direction='column'>
+					<Flex direction='column' align='center'>
 						{loginEdit.isEditing
 							? (
 									<TextInput
@@ -68,14 +69,12 @@ export function ProfileInfo() {
 									/>
 								)
 							: (
-									<Group gap='xs' justify='center'>
-										<Text size='xl' fw={700}>
-											{user.login}
-										</Text>
-									</Group>
+									<Title order={2} ta='center' textWrap='balance' className={cls.loginTitle}>
+										{user.login}
+									</Title>
 								)}
 
-						<Text c='dimmed' ta='center' size='sm'>Дата регистрации: 10.03.2026</Text>
+						<Text c='dimmed' ta='center'>Дата регистрации: 10.03.2026</Text>
 					</Flex>
 				</Stack>
 

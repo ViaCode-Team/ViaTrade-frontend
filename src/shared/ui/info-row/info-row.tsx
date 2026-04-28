@@ -1,11 +1,9 @@
 import type { ReactNode } from 'react';
 
 import {
-	Box,
 	Card,
-	Stack,
-	Text,
-	Title,
+	Flex,
+	ThemeIcon,
 } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -55,18 +53,18 @@ export function InfoRow({
 	const content = (
 		<>
 			<div className={cls.main}>
-				<Box h={42} w={42} className={cls.icon}>
+				<ThemeIcon
+					className={cls.icon}
+					radius='md'
+					size={42}
+				>
 					{icon}
-				</Box>
+				</ThemeIcon>
 
-				<Stack gap='2px'>
-					<Title className={cls.title}>
-						{title}
-					</Title>
-					<Text className={cls.description}>
-						{description}
-					</Text>
-				</Stack>
+				<Flex direction='column' gap={2}>
+					{title}
+					{description}
+				</Flex>
 			</div>
 
 			{resolvedRightSection && (
@@ -86,7 +84,6 @@ export function InfoRow({
 				className={rootClassName}
 				onClick={onClick}
 				withBorder
-
 			>
 				{content}
 			</Card>

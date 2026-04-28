@@ -13,32 +13,23 @@
 }
 
 .icon {
-	border-radius: var(--mantine-radius-md);
-	flex-shrink: 0;
-	display: flex;
-	justify-content: center;
-	background-color: light-dark(
-		var(--mantine-color-gray-1),
-		rgba(255, 255, 255, 0.08)
+	--ti-bg: light-dark(
+		var(--mantine-color-gray-light),
+		var(--mantine-color-dark-6)
 	);
+	--ti-color: light-dark(
+		var(--mantine-color-gray-light-color),
+		var(--mantine-color-white)
+	);
+	--ti-bd: 1px solid transparent;
 }
 
-.title {
-	font-size: var(--mantine-font-size-sm);
-	font-weight: 700;
-	line-height: 1.2;
-}
-
-.description {
-	font-size: var(--mantine-font-size-xs);
-	color: var(--mantine-color-dimmed);
-	white-space: normal;
-	overflow-wrap: anywhere;
-	overflow: hidden;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	line-clamp: 2;
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+	flex: 1;
 }
 
 .end {

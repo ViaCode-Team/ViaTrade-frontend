@@ -5,12 +5,30 @@
 	--vt-profile-chart-line: rgba(255, 255, 255, 0.1);
 	--vt-profile-candle-up: rgba(255, 255, 255, 0.1);
 	--vt-profile-candle-down: rgba(255, 255, 255, 0.05);
+	--vt-profile-avatar-size: 160px;
+	--vt-profile-avatar-icon-size: 80px;
+	--vt-profile-avatar-ring-padding: calc(var(--mantine-spacing-xs) / 2);
 
+	container-type: inline-size;
 	overflow: visible;
 	background-color: light-dark(
 		var(--mantine-color-white),
 		var(--mantine-color-dark-7)
 	);
+}
+
+@container (max-width: 36em) {
+	.profileHeader {
+		--vt-profile-avatar-size: 136px;
+		--vt-profile-avatar-icon-size: 68px;
+	}
+}
+
+@container (max-width: 22em) {
+	.profileHeader {
+		--vt-profile-avatar-size: 112px;
+		--vt-profile-avatar-icon-size: 56px;
+	}
 }
 
 .banner {
@@ -34,7 +52,7 @@
 }
 
 .avatarRing {
-	padding: calc(var(--mantine-spacing-xs) / 2);
+	padding: var(--vt-profile-avatar-ring-padding);
 	border-radius: 50%;
 	background: light-dark(
 		var(--mantine-color-white),
@@ -42,6 +60,17 @@
 	);
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
 	z-index: 1;
+}
+
+.profileHeader {
+	margin-top: calc(
+		(var(--vt-profile-avatar-size) / -2) - var(--vt-profile-avatar-ring-padding)
+	);
+}
+
+.loginTitle {
+	width: min(100%, 520px);
+	overflow-wrap: anywhere;
 }
 
 .editField {

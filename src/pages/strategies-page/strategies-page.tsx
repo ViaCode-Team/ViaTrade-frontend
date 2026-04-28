@@ -1,10 +1,9 @@
 import { SimpleGrid, Stack, Text, Title } from '@mantine/core';
 import { useState } from 'react';
 
-import { mockStrategies } from '@/entities/strategy';
+import { mockStrategies, StrategyCard } from '@/entities/strategy';
 
 import cls from './strategies-page.module.css';
-import { StrategyCard } from './ui/strategy-card';
 
 export function StrategiesPage() {
 	const [strategies, setStrategies] = useState(mockStrategies);

@@ -41,6 +41,7 @@ export function SessionsListSection() {
 				totalSessions={sessions.length}
 				onLogoutAll={logoutAll}
 				isLoggingOutAll={isLoggingOutAll}
+				isLoading={isLoading}
 			/>
 
 			{isLoading

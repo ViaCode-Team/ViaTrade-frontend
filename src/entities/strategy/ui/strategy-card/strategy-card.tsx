@@ -10,12 +10,13 @@ import {
 } from '@mantine/core';
 import { generatePath, Link as RouterLink } from 'react-router';
 
-import type { Strategy } from '@/entities/strategy';
-
-import { getAccuracyColor } from '@/entities/strategy';
 import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
 import { ROUTES } from '@/shared/model/routes';
+import { InfoPair } from '@/shared/ui/info-pair';
 
+import type { Strategy } from '../../model';
+
+import { getAccuracyColor } from '../../model';
 import cls from './strategy-card.module.css';
 
 type StrategyCardProps = {
@@ -66,11 +67,7 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 							onChange={(event) => {
 								onActiveChange(strategy.id, event.currentTarget.checked);
 							}}
-							styles={{
-								root: {
-									'--checkbox-size': '22px',
-								},
-							}}
+							size='md'
 							aria-label={`${activeActionLabel} ${strategy.name}`}
 						/>
 					</Tooltip>
@@ -80,28 +77,19 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 					{strategy.description}
 				</Text>
 			</Flex>
-
-			<Flex justify='space-between' mt='auto' gap='md'>
-				<Flex direction='column' flex={1}>
-					<Text size='sm' c='dimmed'>
-						Частота сигнала
-					</Text>
-
-					<Text fw='bold' lineClamp={1}>
-						{strategy.signalFrequency}
-					</Text>
-				</Flex>
-
-				<Flex direction='column' flex={1}>
-					<Text size='sm' c='dimmed' ta='end'>
-						Инвест горизонт
-					</Text>
-
-					<Text fw='bold' ta='end' lineClamp={1}>
-						{strategy.investmentHorizon}
-					</Text>
-				</Flex>
-			</Flex>
+			<InfoPair
+				mt='auto'
+				items={[
+					{
+						label: 'Частота сигнала',
+						value: strategy.signalFrequency,
+					},
+					{
+						label: 'Инвест горизонт',
+						value: strategy.investmentHorizon,
+					},
+				]}
+			/>
 
 			<Flex direction='column' gap={4}>
 				<Flex justify='space-between' wrap='nowrap'>

@@ -22,8 +22,18 @@ type SessionListItemProps = {
 	onLogoutSession: (sessionId: string) => void;
 };
 
+type SessionMetaItemProps = {
+	label: string;
+	value: string;
+};
+
+const SESSION_DATE_FORMAT = 'DD.MM.YYYY, HH:mm';
 const MOBILE_RE = /mobile|android|iphone/;
 const TABLET_RE = /tablet|ipad/;
+
+function formatSessionDate(date: Date | string) {
+	return dayjs(date).format(SESSION_DATE_FORMAT);
+}
 
 function getDeviceIcon(userAgent: string) {
 	const normalizedUserAgent = userAgent.toLowerCase();
@@ -36,9 +46,20 @@ function getDeviceIcon(userAgent: string) {
 	return <IconDeviceDesktop size={24} className={cls.deviceIcon} />;
 }
 
+function SessionMetaItem({ label, value }: SessionMetaItemProps) {
+	return (
+		<Text component='span' inherit className={cls.sessionMetaItem}>
+			{label}
+			:
+			{' '}
+			{value}
+		</Text>
+	);
+}
+
 export function SessionListItem({ session, isCurrent, onLogoutSession }: SessionListItemProps) {
-	const createdAt = dayjs(session.createdAt).format('DD.MM.YYYY, HH:mm');
-	const lastSeen = dayjs(session.lastSeen).format('DD.MM.YYYY, HH:mm');
+	const createdAt = formatSessionDate(session.createdAt);
+	const lastSeen = formatSessionDate(session.lastSeen);
 	const logoutLabel = isCurrent ? 'Выйти' : 'Завершить сессию';
 
 	return (
@@ -58,17 +79,9 @@ export function SessionListItem({ session, isCurrent, onLogoutSession }: Session
 					</Group>
 				)}
 				description={(
-					<Text component='p' size='xs' className={cls.sessionMeta}>
-						<Text component='span' inherit className={cls.sessionMetaItem}>
-							Создана:
-							{' '}
-							{createdAt}
-						</Text>
-						<Text component='span' inherit className={cls.sessionMetaItem}>
-							Активность:
-							{' '}
-							{lastSeen}
-						</Text>
+					<Text component='p' size='xs' c='dimmed' className={cls.sessionMeta}>
+						<SessionMetaItem label='Создана' value={createdAt} />
+						<SessionMetaItem label='Активность' value={lastSeen} />
 					</Text>
 				)}
 				rightSection={(

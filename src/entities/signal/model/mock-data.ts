@@ -6,7 +6,7 @@ export const mockSignals: Signal[] = [
 		asset: 'AAPL',
 		type: 'stock',
 		date: '2024-01-15',
-		close: 185.92,
+		close: 185.91232,
 		direction: 'buy',
 		confidence: 87,
 		strategy: 'RSI Divergence',

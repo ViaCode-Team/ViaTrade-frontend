@@ -3,6 +3,7 @@ import {
 	Box,
 	Card,
 	Flex,
+	NumberFormatter,
 	Progress,
 	Text,
 	Title,
@@ -83,7 +84,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 				items={[
 					{
 						label: 'Цена закрытия',
-						value: `${signal.close.toFixed(2)} ₽`,
+						value: <NumberFormatter value={signal.close} suffix=' ₽' decimalScale={3} thousandSeparator='&#8201;' />,
 					},
 					{
 						label: 'Дата сигнала',
@@ -124,7 +125,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 				to={ROUTES.STRATEGIES}
 				className={cls.strategy}
 			>
-				<Text component='span' size='sm' lineClamp={1}>
+				<Text span size='sm' lineClamp={1}>
 					{signal.strategy}
 				</Text>
 

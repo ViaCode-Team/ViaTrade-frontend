@@ -29,7 +29,7 @@ export function SessionsListHeader({
 			<Title order={4}>
 				Активные сессии
 				{' '}
-				<Text component='span' size='sm' c='dimmed'>
+				<Text span size='sm' c='dimmed'>
 					{isLoading
 						? <Skeleton component='span' h={16} w={22} display='inline-block' />
 						: `(${totalSessions})`}

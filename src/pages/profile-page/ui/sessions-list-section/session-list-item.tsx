@@ -48,7 +48,7 @@ function getDeviceIcon(userAgent: string) {
 
 function SessionMetaItem({ label, value }: SessionMetaItemProps) {
 	return (
-		<Text component='span' inherit className={cls.sessionMetaItem}>
+		<Text span inherit className={cls.sessionMetaItem}>
 			{label}
 			:
 			{' '}

@@ -47,7 +47,7 @@ export function SignalsPage() {
 
 				<Text size='sm' c='dimmed'>
 					Найдено сигналов:
-					<Text component='span' fw='bold' c='var(--mantine-color-text)'>
+					<Text span fw='bold' c='var(--mantine-color-text)'>
 						{' '}
 						{filteredAndSortedSignals.length}
 					</Text>

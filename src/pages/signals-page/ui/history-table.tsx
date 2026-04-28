@@ -2,6 +2,7 @@ import {
 	Badge,
 	Group,
 	Modal,
+	NumberFormatter,
 	Pagination,
 	Select,
 	Table,
@@ -85,8 +86,7 @@ export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 							<Table.Tr key={row.id} className={getRowClass(row.signal)}>
 								<Table.Td>{row.date}</Table.Td>
 								<Table.Td className={cls.alignCenter}>
-									$
-									{row.close.toFixed(2)}
+									<NumberFormatter value={row.close} suffix=' ₽' decimalScale={3} thousandSeparator='&#8201;' />
 								</Table.Td>
 								<Table.Td className={cls.alignCenter}>
 									{getSignalBadge(row.signal)}

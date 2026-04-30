@@ -77,6 +77,7 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 					{strategy.description}
 				</Text>
 			</Flex>
+
 			<InfoPair
 				mt='auto'
 				items={[
@@ -93,7 +94,7 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 
 			<Flex direction='column' gap={4}>
 				<Flex justify='space-between' wrap='nowrap'>
-					<Text size='sm' c='dimmed'>
+					<Text size='sm'c='dimmed'>
 						Точность
 					</Text>
 

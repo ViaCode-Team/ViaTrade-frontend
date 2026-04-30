@@ -1,0 +1,68 @@
+.backLink {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	width: fit-content;
+	color: var(--mantine-color-dimmed);
+	transition: color 140ms ease;
+}
+
+.backLink:hover {
+	color: var(--mantine-primary-color-filled);
+}
+
+.heroContent {
+	min-width: 0;
+}
+
+.titleBlock {
+	position: relative;
+	padding-left: 18px;
+}
+
+.titleBlock::before {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 4px;
+	border-radius: var(--mantine-radius-xl);
+	background: var(--mantine-color-red-5);
+	content: '';
+}
+
+.titleBlock[data-active='true']::before {
+	background: var(--mantine-color-green-5);
+}
+
+.pageTitle {
+	line-height: 1.05;
+	overflow-wrap: anywhere;
+	letter-spacing: 0;
+}
+
+.activeControl {
+	width: fit-content;
+	margin-top: var(--mantine-spacing-xs);
+}
+
+.accuracyBlock {
+	min-width: 0;
+}
+
+.helpButton {
+	flex-shrink: 0;
+}
+
+.accuracyValue {
+	white-space: nowrap;
+}
+
+.infoSection {
+	min-width: 0;
+	height: 100%;
+}
+
+.notFoundTitle {
+	letter-spacing: 0;
+}

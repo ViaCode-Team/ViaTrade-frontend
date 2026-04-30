@@ -45,7 +45,7 @@ function renderInfoPairItem(item: InfoPairItem, defaultAlign: InfoPairAlign) {
 			<Text
 				fw='bold'
 				ta={getTextAlign(align)}
-				truncate='end'
+				truncate
 				{...item.valueProps}
 			>
 				{item.value}

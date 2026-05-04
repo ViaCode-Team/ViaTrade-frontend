@@ -1,16 +1,16 @@
 import {
-	Group,
-	Paper,
+	Flex,
 	SimpleGrid,
 	Title,
 } from '@mantine/core';
 import {
 	IconBuildingBank,
-	IconChartLine,
 	IconClock,
 	IconCurrencyDollar,
 	IconPercentage,
 } from '@tabler/icons-react';
+
+import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
 import { mockSignals, mockStats } from './model/dashboard-data';
 import { DashboardSignalCard } from './ui/dashboard-signal-card';
@@ -19,13 +19,11 @@ import { StatCard } from './ui/stat-card';
 export function DashboardPage() {
 	return (
 		<>
-			<Title order={2} fw='bold' mb='sm'>
+			<Title order={1}>
 				Панель управления
 			</Title>
-			<Title order={4} mt='lg' mb='sm'>
-				Статистика сделок
-			</Title>
-			<SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing='lg' mb='xl'>
+
+			<SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing={CONTENT_GRID_SPACING}>
 				<StatCard
 					icon={<IconBuildingBank size={22} />}
 					title='Всего сделок'
@@ -51,19 +49,14 @@ export function DashboardPage() {
 					subtitle='на сделку'
 				/>
 			</SimpleGrid>
-			<Title order={4} mb='sm'>
-				<Group gap='xs'>
-					<IconChartLine size={20} />
-					Сигналы от стратегий
-				</Group>
-			</Title>
-			<Paper p='sm' withBorder>
-				<SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing='sm'>
+
+			<Flex direction='column' gap='lg'>
+				<SimpleGrid cols={{ base: 1, md: 2 }} spacing={CONTENT_GRID_SPACING}>
 					{mockSignals.map((signal) => (
 						<DashboardSignalCard key={signal.id} signal={signal} />
 					))}
 				</SimpleGrid>
-			</Paper>
+			</Flex>
 		</>
 	);
 }

@@ -7,7 +7,7 @@ import { ThirdPartyService } from './ui/third-party-services';
 
 export function ProfilePage() {
 	return (
-		<Stack gap='xl'>
+		<>
 			<Stack>
 				<Suspense fallback={<ProfileInfoSkeleton />}>
 					<ProfileInfo />
@@ -17,6 +17,6 @@ export function ProfilePage() {
 			</Stack>
 
 			<SessionsSection />
-		</Stack>
+		</>
 	);
 }

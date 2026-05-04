@@ -38,12 +38,14 @@ export function StrategyPage() {
 	};
 
 	return (
-		<Stack gap='xl'>
-			<BackToStrategiesLink />
+		<>
+			<Stack>
+				<BackToStrategiesLink />
 
-			<StrategyHero strategy={strategy} onActiveChange={handleActiveChange} />
+				<StrategyHero strategy={strategy} onActiveChange={handleActiveChange} />
+			</Stack>
 
 			<StrategyInfoGrid />
-		</Stack>
+		</>
 	);
 }

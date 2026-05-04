@@ -43,6 +43,14 @@ src/
 - Do not create `.module.css` for trivial styling with no real structural value
 - Move styles into CSS Modules when they make JSX cleaner and separate visual logic from markup
 
+## Spacing
+
+- Use Mantine spacing tokens (`xs`, `sm`, `md`, `lg`, `xl`) as the default spacing scale
+- Use shared layout constants from `src/shared/model/layout.ts` for app shell padding, page gaps, and grid spacing
+- Make page gutters, major section gaps, and content grid spacing responsive when they compete with content width
+- Keep small internal UI gaps stable unless a component has a proven mobile layout issue
+- Use raw numeric spacing only for micro gaps that are intentionally smaller than Mantine tokens
+
 ## Naming
 
 | **Entity**       | **Rule**                | **Example**                |

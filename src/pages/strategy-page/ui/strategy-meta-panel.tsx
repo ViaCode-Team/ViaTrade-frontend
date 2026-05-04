@@ -13,7 +13,6 @@ import type { Strategy } from '@/entities/strategy';
 
 import { getAccuracyColor } from '@/entities/strategy';
 
-import cls from '../strategy-page.module.css';
 import { AccuracyHelp } from './accuracy-help';
 
 type StrategyMetaPanelProps = {
@@ -25,12 +24,12 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 
 	return (
 		<Stack gap='lg'>
-			<Stack gap='sm' className={cls.accuracyBlock}>
-				<Flex justify='space-between' align='center' gap='md'>
 
+			<Flex direction='column' gap='sm'>
+				<Flex justify='space-between' align='center' gap='md'>
 					<Group gap={2}>
-						<Group gap={8}>
-							<IconChartBar size={22} stroke={2} className={cls.metaIcon} />
+						<Group gap={8} wrap='nowrap'>
+							<IconChartBar size={22} />
 
 							<Title order={5} c='dimmed'>
 								Точность
@@ -40,16 +39,10 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 						<AccuracyHelp />
 					</Group>
 
-					<Text
-						size='sm'
-						fw={800}
-						c={accuracyColor}
-						className={cls.accuracyValue}
-					>
+					<Title order={4} c={accuracyColor}>
 						{strategy.accuracy}
 						%
-					</Text>
-
+					</Title>
 				</Flex>
 
 				<Progress
@@ -57,7 +50,7 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 					color={accuracyColor}
 					size='md'
 				/>
-			</Stack>
+			</Flex>
 
 			<SimpleGrid
 				type='container'
@@ -66,7 +59,7 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 			>
 				<Stack gap={6}>
 					<Group gap={8} wrap='nowrap'>
-						<IconClock size={22} stroke={2} className={cls.metaIcon} />
+						<IconClock size={22} />
 
 						<Title order={5} c='dimmed'>
 							Частота сигнала
@@ -80,10 +73,10 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 
 				<Stack gap={6}>
 					<Group gap={4} wrap='nowrap'>
-						<IconRoute size={22} stroke={2} className={cls.metaIcon} />
+						<IconRoute size={22} />
 
 						<Title order={5} c='dimmed'>
-							Горизонт
+							Инвест горизонт
 						</Title>
 					</Group>
 

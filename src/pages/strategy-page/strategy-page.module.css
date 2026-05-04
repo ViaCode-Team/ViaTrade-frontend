@@ -46,18 +46,6 @@
 	margin-top: var(--mantine-spacing-xs);
 }
 
-.accuracyBlock {
-	min-width: 0;
-}
-
-.helpButton {
-	flex-shrink: 0;
-}
-
-.accuracyValue {
-	white-space: nowrap;
-}
-
 .infoSection {
 	min-width: 0;
 	height: 100%;

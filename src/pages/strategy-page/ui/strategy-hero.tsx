@@ -24,11 +24,11 @@ export function StrategyHero({ strategy, onActiveChange }: StrategyHeroProps) {
 				xl: '88em',
 			}}
 		>
-			<Grid.Col span={{ base: 12, md: 6, lg: 7 }}>
+			<Grid.Col span={{ base: 12, md: 6 }}>
 				<StrategyTitleBlock strategy={strategy} onActiveChange={onActiveChange} />
 			</Grid.Col>
 
-			<Grid.Col span={{ base: 12, md: 6, lg: 5 }}>
+			<Grid.Col span={{ base: 12, md: 6 }}>
 				<StrategyMetaPanel strategy={strategy} />
 			</Grid.Col>
 		</Grid>

@@ -1,10 +1,20 @@
 import type { ReactNode } from 'react';
 
-import { AppShell, Container, useMantineTheme } from '@mantine/core';
+import {
+	AppShell,
+	Container,
+	Flex,
+	useMantineTheme,
+} from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Outlet } from 'react-router';
 
 import { useLockDocumentScroll } from '@/shared/lib/use-lock-document-scroll';
+import {
+	APP_SHELL_PADDING,
+	PAGE_CONTAINER_SIZE,
+	PAGE_STACK_GAP,
+} from '@/shared/model/layout';
 import { AppHeader } from '@/widgets/header';
 import { SideBar } from '@/widgets/side-bar';
 
@@ -35,7 +45,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 				breakpoint: NAVBAR_BREAKPOINT,
 				collapsed: { mobile: !mobileOpened },
 			}}
-			padding={{ base: 'xs', xs: 'sm', sm: 'md' }}
+			padding={APP_SHELL_PADDING}
 			transitionDuration={220}
 			transitionTimingFunction='ease'
 		>
@@ -56,9 +66,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 				/>
 			</AppShell.Navbar>
 
-			<AppShell.Main className={cls.main}>
-				<Container size='xl' p={0}>
-					{children ?? <Outlet />}
+			<AppShell.Main>
+				<Container size={PAGE_CONTAINER_SIZE} p={0}>
+					<Flex direction='column' gap={PAGE_STACK_GAP}>
+						{children ?? <Outlet />}
+					</Flex>
 				</Container>
 			</AppShell.Main>
 		</AppShell>

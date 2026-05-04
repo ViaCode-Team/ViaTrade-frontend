@@ -1,6 +1,8 @@
 export const ROUTES = {
 	HOME: '/',
 	SIGNALS: '/signals',
+	STOCKS: '/stocks',
+	STOCK: '/stocks/:stockId',
 	STRATEGIES: '/strategies',
 	STRATEGY: '/strategies/:strategyName',
 	PROFILE: '/profile',
@@ -10,6 +12,9 @@ export const ROUTES = {
 } as const;
 
 export type PathParams = {
+	[ROUTES.STOCK]: {
+		stockId: string;
+	};
 	[ROUTES.STRATEGY]: {
 		strategyName: string;
 	};

@@ -44,7 +44,7 @@ const menuItems: TMenuItem[] = [
 		text: 'Статистика',
 		path: '/statistics',
 	},
-	{ icon: <IconTrendingUp size={22} />, text: 'Акции', path: '/stocks' },
+	{ icon: <IconTrendingUp size={22} />, text: 'Акции', path: ROUTES.STOCKS },
 	{ icon: <IconChartLine size={22} />, text: 'Стратегии', path: ROUTES.STRATEGIES },
 	{ icon: <IconBell size={22} />, text: 'Напоминания', path: '/reminders' },
 ] as const;

@@ -1,0 +1,84 @@
+.header {
+	min-width: 0;
+}
+
+.summary {
+	flex: 1;
+	min-width: 0;
+}
+
+.searchInput {
+	width: min(300px, 100%, 500px);
+}
+
+.grid {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.item {
+	min-width: 0;
+	height: 100%;
+}
+
+.card {
+	height: 100%;
+	transition:
+		border-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease,
+		background-color 160ms ease;
+}
+
+.card:hover {
+	transform: translateY(-3px);
+	box-shadow: var(--mantine-shadow-sm);
+}
+
+.card[data-selected='true'] {
+	border-color: var(--mantine-primary-color-filled);
+	background: color-mix(
+		in srgb,
+		var(--mantine-primary-color-light) 46%,
+		transparent
+	);
+}
+
+.checkboxColumn {
+	flex: 0 0 auto;
+	padding-top: 2px;
+}
+
+.stockLink {
+	flex: 1;
+	min-width: 0;
+	color: inherit;
+	text-decoration: none;
+	border-radius: var(--mantine-radius-sm);
+	outline: none;
+}
+
+.stockLink:focus-visible {
+	outline: 2px solid var(--mantine-primary-color-filled);
+	outline-offset: 3px;
+}
+
+.stockInfo {
+	min-width: 0;
+}
+
+.ticker {
+	letter-spacing: 0;
+	overflow-wrap: anywhere;
+}
+
+@media (max-width: 30em) {
+	.card {
+		padding: var(--mantine-spacing-sm);
+	}
+
+	.header {
+		align-items: flex-start;
+	}
+}

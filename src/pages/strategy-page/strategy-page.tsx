@@ -4,7 +4,9 @@ import { useParams } from 'react-router';
 
 import type { Strategy } from '@/entities/strategy';
 
+import { mockStocks } from '@/entities/stock';
 import { mockStrategies } from '@/entities/strategy';
+import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
 
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
 import { StrategyHero } from './ui/strategy-hero';
@@ -20,6 +22,7 @@ export function StrategyPage() {
 	);
 
 	const [activeOverrides, setActiveOverrides] = useState<Record<string, boolean>>({});
+	const [selectedStockIds, setSelectedStockIds] = useState<string[]>([]);
 
 	if (!strategyFromRoute) {
 		return <StrategyNotFound />;
@@ -37,6 +40,17 @@ export function StrategyPage() {
 		}));
 	};
 
+	const handleLinkedStocksChange = (nextStockIds: string[]) => {
+		setSelectedStockIds(nextStockIds);
+
+		// TODO: replace with a real strategy-stock binding mutation.
+		// eslint-disable-next-line no-console
+		console.info('strategy-stock-binding:update', {
+			strategyId: strategy.id,
+			stockIds: nextStockIds,
+		});
+	};
+
 	return (
 		<>
 			<Stack>
@@ -46,6 +60,12 @@ export function StrategyPage() {
 			</Stack>
 
 			<StrategyInfoGrid />
+
+			<StrategyStockBindingList
+				stocks={mockStocks}
+				selectedStockIds={selectedStockIds}
+				onSelectedStockIdsChange={handleLinkedStocksChange}
+			/>
 		</>
 	);
 }

@@ -21,7 +21,7 @@ export function StrategyInfoCard({
 	description,
 }: StrategyInfoSectionProps) {
 	return (
-		<Card withBorder bg='transparent'>
+		<Card>
 			<Flex direction='column' gap='sm'>
 				<Group gap='xs' align='center' wrap='nowrap'>
 					<ThemeIcon size='lg' variant='light'>

@@ -24,14 +24,14 @@ export function StrategyInfoCard({
 		<Card>
 			<Flex direction='column' gap='sm'>
 				<Group gap='xs' align='center' wrap='nowrap'>
-					<ThemeIcon size='lg' variant='light'>
+					<ThemeIcon size='md' variant='light'>
 						{icon}
 					</ThemeIcon>
 
 					<Title order={3}>{title}</Title>
 				</Group>
 
-				<Text size='sm' c='dimmed'>
+				<Text size='sm'>
 					{description}
 				</Text>
 			</Flex>

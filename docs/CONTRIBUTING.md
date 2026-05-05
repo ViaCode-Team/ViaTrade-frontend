@@ -8,7 +8,10 @@ When updating documentation, **DO NOT FORGET** to update all supported language 
 
 ## Required Workflow After Changes
 
-`npm run check:fix` -> fix remaining issues manually -> repeat until clean
+- Run `npm run check:fix` after code or documentation changes.
+- If it reports errors or warnings caused by the current change, fix them and run `npm run check:fix` again.
+- Repeat until `npm run check:fix` exits successfully for the current change.
+- Do not silently fix unrelated pre-existing issues outside the current change scope; report them separately with the failing command output.
 
 ## Architecture
 
@@ -31,6 +34,12 @@ src/
 - Prefer alias imports through `@/`, except for imports within the current slice
 - Keep changes focused and minimal
 
+## Data Loading and Skeletons
+
+- Prefer fetching data in the component that uses it when practical, especially to avoid prop drilling
+- Place loading boundaries around meaningful UI regions that own their data, not around the whole page or isolated text fragments
+- Use React `Suspense` with that region's skeleton fallback when the data or lazy-loading API supports suspense
+
 ## Types
 
 - Use `type` by default
@@ -49,19 +58,20 @@ src/
 - Use shared layout constants from `src/shared/model/layout.ts` for app shell padding, page gaps, and grid spacing
 - Make page gutters, major section gaps, and content grid spacing responsive when they compete with content width
 - Keep small internal UI gaps stable unless a component has a proven mobile layout issue
-- Use raw numeric spacing only for micro gaps that are intentionally smaller than Mantine tokens
+- Use raw numeric spacing only for micro gaps intentionally smaller than Mantine tokens or layout gaps larger than the Mantine spacing scale
 
 ## Naming
 
-| **Entity**       | **Rule**                | **Example**                |
-| ---------------- | ----------------------- | -------------------------- |
-| Folders/Files    | `kebab-case`            | `strategy-page`            |
-| CSS Modules      | `kebab-case.module.css` | `strategy-page.module.css` |
-| React Components | `PascalCase`            | `StrategyPage`             |
-| SCSS/CSS Classes | `camelCase`             | `pageTitle`                |
-| Variables        | `camelCase`             | `strategyName`             |
-| Functions        | `camelCase`             | `getAccuracyColor`         |
-| Constants        | `SCREAMING_SNAKE_CASE`  | `ROUTES`                   |
-| Hooks            | `use` + `camelCase`     | `useLoginForm`             |
-| List pages       | plural                  | `strategies-page`          |
-| Detail pages     | singular                | `strategy-page`            |
+| **Entity**       | **Rule**                                         | **Example**                  |
+| ---------------- | ------------------------------------------------ | ---------------------------- |
+| Folders/Files    | `kebab-case`                                     | `strategy-page`              |
+| CSS Modules      | `kebab-case.module.css`                          | `strategy-page.module.css`   |
+| Skeleton files   | `<component>.skeleton.tsx` next to the component | `strategy-hero.skeleton.tsx` |
+| React Components | `PascalCase`                                     | `StrategyPage`               |
+| SCSS/CSS Classes | `camelCase`                                      | `pageTitle`                  |
+| Variables        | `camelCase`                                      | `strategyName`               |
+| Functions        | `camelCase`                                      | `getAccuracyColor`           |
+| Constants        | `SCREAMING_SNAKE_CASE`                           | `ROUTES`                     |
+| Hooks            | `use` + `camelCase`                              | `useLoginForm`               |
+| List pages       | plural                                           | `strategies-page`            |
+| Detail pages     | singular                                         | `strategy-page`              |

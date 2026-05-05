@@ -12,11 +12,13 @@ import cls from '../strategy-page.module.css';
 
 type StrategyTitleBlockProps = {
 	strategy: Strategy;
+	isActiveChangePending?: boolean;
 	onActiveChange: (isActive: boolean) => void;
 };
 
 export function StrategyTitleBlock({
 	strategy,
+	isActiveChangePending = false,
 	onActiveChange,
 }: StrategyTitleBlockProps) {
 	const activeActionLabel = strategy.isActive
@@ -40,6 +42,7 @@ export function StrategyTitleBlock({
 						onActiveChange(event.currentTarget.checked);
 					}}
 					size='md'
+					disabled={isActiveChangePending}
 					label={strategy.isActive ? 'Сигналы включены' : 'Сигналы отключены'}
 					aria-label={`${activeActionLabel} ${strategy.name}`}
 					className={cls.activeControl}

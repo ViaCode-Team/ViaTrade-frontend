@@ -21,12 +21,17 @@ import cls from './strategy-card.module.css';
 
 type StrategyCardProps = {
 	strategy: Strategy;
-	onActiveChange: (strategyId: string, isActive: boolean) => void;
+	isActiveChangePending?: boolean;
+	onActiveChange: (strategyId: number, isActive: boolean) => void;
 };
 
-export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
+export function StrategyCard({
+	strategy,
+	isActiveChangePending = false,
+	onActiveChange,
+}: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
-		strategyName: strategy.id,
+		strategyName: String(strategy.id),
 	});
 	const leftBorderStyle = getLeftBorderCardStyle({
 		color: strategy.isActive
@@ -68,6 +73,7 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 								onActiveChange(strategy.id, event.currentTarget.checked);
 							}}
 							size='md'
+							disabled={isActiveChangePending}
 							aria-label={activeActionLabel}
 						/>
 					</Tooltip>
@@ -94,7 +100,7 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 
 			<Flex direction='column' gap={4}>
 				<Flex justify='space-between' wrap='nowrap'>
-					<Text size='sm'c='dimmed'>
+					<Text size='sm' c='dimmed'>
 						Точность
 					</Text>
 
@@ -119,7 +125,7 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 				type='button'
 				variant='default'
 				onClick={() => {
-					// TODO: связать стратегию с акцией
+					// TODO: modal связать стратегию с акцией
 				}}
 			>
 				Связать с акцией

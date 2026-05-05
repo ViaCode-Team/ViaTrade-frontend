@@ -27,6 +27,12 @@ src/
 - Предпочитать alias-импорты через `@/`, кроме импортов внутри текущего слайса
 - Держать изменения точечными и минимальными
 
+## Загрузка данных и skeleton
+
+- Предпочитать загрузку данных в компоненте, который их использует, когда это практично, особенно чтобы избегать prop drilling
+- Размещать loading-boundary вокруг осмысленной области интерфейса, которая владеет своими данными, а не вокруг всей страницы или отдельного текстового фрагмента
+- Использовать React `Suspense` с fallback в виде skeleton этой области, когда API загрузки данных или lazy-loading поддерживает suspense
+
 ## Типы
 
 - По умолчанию использовать `type`
@@ -45,23 +51,27 @@ src/
 - Для отступов app shell, page gap и grid spacing использовать общие константы из `src/shared/model/layout.ts`
 - Делать адаптивными page gutters, отступы между крупными секциями и content grid spacing, если они конкурируют с шириной контента
 - Маленькие внутренние UI-gap оставлять стабильными, если у компонента нет подтвержденной проблемы на mobile
-- Числовые значения использовать только для micro-gap, которые намеренно меньше Mantine-токенов
+- Числовые значения использовать только для micro-gap, которые намеренно меньше Mantine-токенов, или для layout-gap больше шкалы Mantine spacing
 
 ## Обязательный workflow после изменений
 
-`npm run check:fix` -> исправить оставшиеся ошибки вручную -> повторять до чистого результата
+- Запустить `npm run check:fix` после изменений в коде или документации.
+- Если команда сообщает об ошибках или предупреждениях, вызванных текущим изменением, исправить их и снова запустить `npm run check:fix`.
+- Повторять до тех пор, пока `npm run check:fix` не завершится успешно для текущего изменения.
+- Не исправлять молча несвязанные существующие проблемы вне области текущего изменения; сообщить о них отдельно с выводом упавшей команды.
 
 ## Именование
 
-| **Сущность**     | **Правило**             | **Пример**                 |
-| ---------------- | ----------------------- | -------------------------- |
-| Папки/файлы      | `kebab-case`            | `strategy-page`            |
-| CSS Modules      | `kebab-case.module.css` | `strategy-page.module.css` |
-| React-компоненты | `PascalCase`            | `StrategyPage`             |
-| CSS/SCSS-классы  | `camelCase`             | `pageTitle`                |
-| Переменные       | `camelCase`             | `strategyName`             |
-| Функции          | `camelCase`             | `getAccuracyColor`         |
-| Константы        | `SCREAMING_SNAKE_CASE`  | `ROUTES`                   |
-| Хуки             | `use` + `camelCase`     | `useLoginForm`             |
-| List pages       | множественное число     | `strategies-page`          |
-| Detail pages     | единственное число      | `strategy-page`            |
+| **Сущность**     | **Правило**                                    | **Пример**                   |
+| ---------------- | ---------------------------------------------- | ---------------------------- |
+| Папки/файлы      | `kebab-case`                                   | `strategy-page`              |
+| CSS Modules      | `kebab-case.module.css`                        | `strategy-page.module.css`   |
+| Skeleton-файлы   | `<component>.skeleton.tsx` рядом с компонентом | `strategy-hero.skeleton.tsx` |
+| React-компоненты | `PascalCase`                                   | `StrategyPage`               |
+| CSS/SCSS-классы  | `camelCase`                                    | `pageTitle`                  |
+| Переменные       | `camelCase`                                    | `strategyName`               |
+| Функции          | `camelCase`                                    | `getAccuracyColor`           |
+| Константы        | `SCREAMING_SNAKE_CASE`                         | `ROUTES`                     |
+| Хуки             | `use` + `camelCase`                            | `useLoginForm`               |
+| List pages       | множественное число                            | `strategies-page`            |
+| Detail pages     | единственное число                             | `strategy-page`              |

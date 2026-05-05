@@ -1,34 +1,71 @@
-import { SimpleGrid } from '@mantine/core';
+import { Alert, SimpleGrid } from '@mantine/core';
 import {
 	IconAlertTriangle,
 	IconTargetArrow,
 	IconTrendingUp,
 } from '@tabler/icons-react';
 
+import type { Strategy } from '@/entities/strategy';
+
+import { mapTradeStrategyToStrategy, useGetById } from '@/entities/strategy';
+
 import { StrategyInfoCard } from './strategy-info-card';
+import { StrategyInfoGridSkeleton } from './strategy-info-grid.skeleton';
+
+const INACTIVE_STRATEGY_IDS = new Set<number>();
 
 const STRATEGY_INFO_SECTIONS = [
 	{
 		title: 'Логика стратегии',
-		description:
-			'Стратегия анализирует движение цены и ищет ситуации, где рынок показывает устойчивое направление. Основной фокус — найти момент, когда актив уже подтвердил импульс, но ещё сохраняет потенциал дальнейшего движения.',
-		icon: <IconTrendingUp size={22} stroke={2} />,
+		getDescription: (strategy: Strategy) => strategy.logicDescription,
+		icon: <IconTrendingUp size={18} stroke={2} />,
 	},
 	{
 		title: 'Когда использовать',
-		description:
-			'Подходит для сценариев, где трейдеру важны понятные сигналы и заранее определённый горизонт удержания позиции. Лучше раскрывается на инструментах с достаточной ликвидностью и выраженным направленным движением.',
-		icon: <IconTargetArrow size={22} stroke={2} />,
+		getDescription: (strategy: Strategy) => strategy.useDescription,
+		icon: <IconTargetArrow size={18} stroke={2} />,
 	},
 	{
 		title: 'Ограничения',
-		description:
-			'Точность не гарантирует будущий результат. В боковом рынке стратегия может давать ложные сигналы.',
-		icon: <IconAlertTriangle size={22} stroke={2} />,
+		getDescription: (strategy: Strategy) => strategy.limitDescription,
+		icon: <IconAlertTriangle size={18} stroke={2} />,
 	},
 ];
 
-export function StrategyInfoGrid() {
+type StrategyInfoGridProps = {
+	strategyId: number;
+};
+
+export function StrategyInfoGrid({ strategyId }: StrategyInfoGridProps) {
+	const strategyQuery = useGetById(strategyId);
+	const strategy = strategyQuery.data?.data
+		? mapTradeStrategyToStrategy(strategyQuery.data.data, INACTIVE_STRATEGY_IDS)
+		: null;
+
+	if (strategyQuery.isLoading) {
+		return <StrategyInfoGridSkeleton />;
+	}
+
+	if (strategyQuery.isError) {
+		return (
+			<section>
+				<Alert color='red' variant='outline'>
+					Не удалось загрузить описание стратегии. Попробуйте обновить страницу.
+				</Alert>
+			</section>
+		);
+	}
+
+	if (!strategy) {
+		return (
+			<section>
+				<Alert color='red' variant='outline'>
+					Описание стратегии не найдено.
+				</Alert>
+			</section>
+		);
+	}
+
 	return (
 		<section>
 			<SimpleGrid minColWidth={300} autoFlow='auto-fit'>
@@ -36,7 +73,7 @@ export function StrategyInfoGrid() {
 					<StrategyInfoCard
 						key={section.title}
 						title={section.title}
-						description={section.description}
+						description={section.getDescription(strategy)}
 						icon={section.icon}
 					/>
 				))}

@@ -14,8 +14,8 @@
 		"lint:fix": "eslint . --fix",
 		"format": "prettier . -c -u --cache",
 		"format:fix": "prettier . -w -u --cache",
-		"check": "npm run types && npm run lint && npm run format",
-		"check:fix": "npm run types && npm run lint:fix && npm run format:fix"
+		"check": " npm run lint && npm run types && npm run format",
+		"check:fix": "npm run lint:fix && npm run types && npm run format:fix"
 	},
 	"lint-staged": {
 		"*.{ts,tsx}": "bash -c 'tsc -p tsconfig.app.json'",

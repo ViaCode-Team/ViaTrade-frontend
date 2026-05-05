@@ -3,7 +3,7 @@ import type { InputOptions, Options, OutputOptions } from 'orval';
 import { deepmerge } from 'deepmerge-ts';
 import { defineConfig } from 'orval';
 
-const SWAGGER_PATH = './swagger.yml';
+const SWAGGER_PATH = './swagger.yaml';
 const SCHEMAS_PATH = './src/shared/api/gen/types';
 
 const defaultOptions: Partial<Options> = {
@@ -138,4 +138,6 @@ export default defineConfig({
 			},
 		},
 	}),
+
+	strategyApi: createApiConfig('Strategy', 'strategy'),
 });

@@ -6,8 +6,21 @@
  * OpenAPI spec version: v1
  */
 
+export * from './createUserStrategyRequest';
+export * from './deleteInstrumentsLinkParams';
+export * from './deleteUsersStrategyParams';
 export * from './loginRequest';
 export * from './meDto';
 export * from './problemDetails';
 export * from './registerRequest';
+export * from './strategyData';
+export * from './strategyResult';
+export * from './strategyResultResponse';
+export * from './tickerResults';
+export * from './tradeCode';
+export * from './tradeCodeFileDto';
+export * from './tradeStrategy';
 export * from './userSessionDto';
+export * from './userStrategyTradeCodeDto';
+export * from './userStrategyTradeCodeRequest';
+export * from './userTradeStrategyDto';

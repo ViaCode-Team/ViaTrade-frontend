@@ -61,6 +61,16 @@ export type getMeResponse404 = {
 	status: 404;
 };
 
+export type getMeResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getMeResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
 export type getMeResponse500 = {
 	data: ProblemDetails;
 	status: 500;
@@ -69,7 +79,7 @@ export type getMeResponse500 = {
 export type getMeResponseSuccess = (getMeResponse200) & {
 	headers: Headers;
 };
-export type getMeResponseError = (getMeResponse400 | getMeResponse401 | getMeResponse403 | getMeResponse404 | getMeResponse500) & {
+export type getMeResponseError = (getMeResponse400 | getMeResponse401 | getMeResponse403 | getMeResponse404 | getMeResponse408 | getMeResponse409 | getMeResponse500) & {
 	headers: Headers;
 };
 

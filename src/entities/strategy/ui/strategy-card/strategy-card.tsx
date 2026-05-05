@@ -38,8 +38,8 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 	});
 
 	const activeActionLabel = strategy.isActive
-		? 'Деактивировать стратегию'
-		: 'Активировать стратегию';
+		? 'Выключить сигналы'
+		: 'Включить сигналы';
 
 	return (
 		<Card
@@ -68,7 +68,7 @@ export function StrategyCard({ strategy, onActiveChange }: StrategyCardProps) {
 								onActiveChange(strategy.id, event.currentTarget.checked);
 							}}
 							size='md'
-							aria-label={`${activeActionLabel} ${strategy.name}`}
+							aria-label={activeActionLabel}
 						/>
 					</Tooltip>
 				</Flex>

@@ -75,6 +75,16 @@ export type loginResponse404 = {
 	status: 404;
 };
 
+export type loginResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type loginResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
 export type loginResponse500 = {
 	data: ProblemDetails;
 	status: 500;
@@ -83,7 +93,7 @@ export type loginResponse500 = {
 export type loginResponseSuccess = (loginResponse200) & {
 	headers: Headers;
 };
-export type loginResponseError = (loginResponse400 | loginResponse401 | loginResponse403 | loginResponse404 | loginResponse500) & {
+export type loginResponseError = (loginResponse400 | loginResponse401 | loginResponse403 | loginResponse404 | loginResponse408 | loginResponse409 | loginResponse500) & {
 	headers: Headers;
 };
 
@@ -170,6 +180,16 @@ export type registerResponse404 = {
 	status: 404;
 };
 
+export type registerResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type registerResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
 export type registerResponse500 = {
 	data: ProblemDetails;
 	status: 500;
@@ -178,7 +198,7 @@ export type registerResponse500 = {
 export type registerResponseSuccess = (registerResponse201) & {
 	headers: Headers;
 };
-export type registerResponseError = (registerResponse400 | registerResponse401 | registerResponse403 | registerResponse404 | registerResponse500) & {
+export type registerResponseError = (registerResponse400 | registerResponse401 | registerResponse403 | registerResponse404 | registerResponse408 | registerResponse409 | registerResponse500) & {
 	headers: Headers;
 };
 
@@ -265,6 +285,16 @@ export type refreshResponse404 = {
 	status: 404;
 };
 
+export type refreshResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type refreshResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
 export type refreshResponse500 = {
 	data: ProblemDetails;
 	status: 500;
@@ -273,7 +303,7 @@ export type refreshResponse500 = {
 export type refreshResponseSuccess = (refreshResponse200) & {
 	headers: Headers;
 };
-export type refreshResponseError = (refreshResponse400 | refreshResponse401 | refreshResponse403 | refreshResponse404 | refreshResponse500) & {
+export type refreshResponseError = (refreshResponse400 | refreshResponse401 | refreshResponse403 | refreshResponse404 | refreshResponse408 | refreshResponse409 | refreshResponse500) & {
 	headers: Headers;
 };
 
@@ -355,6 +385,16 @@ export type logoutResponse404 = {
 	status: 404;
 };
 
+export type logoutResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type logoutResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
 export type logoutResponse500 = {
 	data: ProblemDetails;
 	status: 500;
@@ -363,7 +403,7 @@ export type logoutResponse500 = {
 export type logoutResponseSuccess = (logoutResponse200) & {
 	headers: Headers;
 };
-export type logoutResponseError = (logoutResponse400 | logoutResponse401 | logoutResponse403 | logoutResponse404 | logoutResponse500) & {
+export type logoutResponseError = (logoutResponse400 | logoutResponse401 | logoutResponse403 | logoutResponse404 | logoutResponse408 | logoutResponse409 | logoutResponse500) & {
 	headers: Headers;
 };
 
@@ -446,6 +486,16 @@ export type logoutAllResponse404 = {
 	status: 404;
 };
 
+export type logoutAllResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type logoutAllResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
 export type logoutAllResponse500 = {
 	data: ProblemDetails;
 	status: 500;
@@ -454,7 +504,7 @@ export type logoutAllResponse500 = {
 export type logoutAllResponseSuccess = (logoutAllResponse200) & {
 	headers: Headers;
 };
-export type logoutAllResponseError = (logoutAllResponse400 | logoutAllResponse401 | logoutAllResponse403 | logoutAllResponse404 | logoutAllResponse500) & {
+export type logoutAllResponseError = (logoutAllResponse400 | logoutAllResponse401 | logoutAllResponse403 | logoutAllResponse404 | logoutAllResponse408 | logoutAllResponse409 | logoutAllResponse500) & {
 	headers: Headers;
 };
 
@@ -537,6 +587,16 @@ export type getSessionsResponse404 = {
 	status: 404;
 };
 
+export type getSessionsResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getSessionsResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
 export type getSessionsResponse500 = {
 	data: ProblemDetails;
 	status: 500;
@@ -545,7 +605,7 @@ export type getSessionsResponse500 = {
 export type getSessionsResponseSuccess = (getSessionsResponse200) & {
 	headers: Headers;
 };
-export type getSessionsResponseError = (getSessionsResponse400 | getSessionsResponse401 | getSessionsResponse403 | getSessionsResponse404 | getSessionsResponse500) & {
+export type getSessionsResponseError = (getSessionsResponse400 | getSessionsResponse401 | getSessionsResponse403 | getSessionsResponse404 | getSessionsResponse408 | getSessionsResponse409 | getSessionsResponse500) & {
 	headers: Headers;
 };
 

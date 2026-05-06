@@ -1,7 +1,7 @@
 import type {
 	TradeStrategy,
 	UserTradeStrategyDto,
-} from '@/shared/api/gen/types';
+} from '@/shared/api';
 
 export type Strategy = {
 	id: number;

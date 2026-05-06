@@ -1,4 +1,4 @@
-import type { ProblemDetails } from '../gen/types';
+import type { ProblemDetails } from '..';
 
 import { ApiError } from './custom-instance-fetch';
 

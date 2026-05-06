@@ -3,6 +3,11 @@ import type { InputOptions, Options, OutputOptions } from 'orval';
 import { deepmerge } from 'deepmerge-ts';
 import { defineConfig } from 'orval';
 
+import {
+	authMutationInvalidates,
+	strategyMutationInvalidates,
+} from './orval.invalidation';
+
 const SWAGGER_PATH = './swagger.yaml';
 const SCHEMAS_PATH = './src/shared/api/types/gen';
 
@@ -12,7 +17,7 @@ const defaultOptions: Partial<Options> = {
 	},
 } as const;
 
-const defaultOutput: Partial<OutputOptions> = {
+const defaultOutput = {
 	mode: 'split',
 	httpClient: 'fetch',
 	client: 'react-query',
@@ -44,17 +49,12 @@ const defaultOutput: Partial<OutputOptions> = {
 			signal: true,
 		},
 
-		// mutator: {
-		// 	path: './src/shared/api/client/custom-instance-axios.ts',
-		// 	name: 'customInstanceAxios',
-		// },
-
 		mutator: {
 			path: './src/shared/api/client/custom-instance-fetch.ts',
 			name: 'customInstance',
 		},
 	},
-} as const;
+} satisfies Partial<OutputOptions>;
 
 function createApiConfig(
 	tagName: string,
@@ -85,31 +85,7 @@ const authApiConfig = createApiConfig('Auth', 'auth', {
 	output: {
 		override: {
 			query: {
-				mutationInvalidates: [
-					{
-						onMutations: ['login', 'register'],
-						invalidates: [
-							{ query: 'getSessions', invalidateMode: 'invalidate' },
-							{ query: 'getSessionsInfinite', invalidateMode: 'invalidate' },
-							{ query: 'getMe', invalidateMode: 'invalidate', file: '@/entities/user' },
-						],
-					},
-					{
-						onMutations: ['refresh'],
-						invalidates: [
-							{ query: 'getSessions', invalidateMode: 'invalidate' },
-							{ query: 'getSessionsInfinite', invalidateMode: 'invalidate' },
-						],
-					},
-					{
-						onMutations: ['logout', 'logoutAll'],
-						invalidates: [
-							{ query: 'getSessions', invalidateMode: 'reset' },
-							{ query: 'getSessionsInfinite', invalidateMode: 'reset' },
-							{ query: 'getMe', invalidateMode: 'reset', file: '@/entities/user' },
-						],
-					},
-				],
+				mutationInvalidates: authMutationInvalidates,
 			},
 
 			operations: {
@@ -123,8 +99,18 @@ const authApiConfig = createApiConfig('Auth', 'auth', {
 	},
 });
 
+const strategyApiConfig = createApiConfig('Strategy', 'strategy', {
+	output: {
+		override: {
+			query: {
+				mutationInvalidates: strategyMutationInvalidates,
+			},
+		},
+	},
+});
+
 export default defineConfig({
 	authApi: authApiConfig,
 	usersApi: createApiConfig('User', 'user'),
-	strategyApi: createApiConfig('Strategy', 'strategy'),
+	strategyApi: strategyApiConfig,
 });

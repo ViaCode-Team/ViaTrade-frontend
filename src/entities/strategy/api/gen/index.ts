@@ -8,6 +8,7 @@
 import {
 	useMutation,
 	useQuery,
+	useQueryClient,
 	useSuspenseQuery,
 } from '@tanstack/react-query';
 import type {
@@ -16,6 +17,7 @@ import type {
 	DefinedUseQueryResult,
 	InvalidateOptions,
 	MutationFunction,
+	MutationFunctionContext,
 	QueryClient,
 	QueryFunction,
 	QueryKey,
@@ -646,7 +648,7 @@ export async function createInstrumentsLink(userStrategyTradeCodeRequest: UserSt
 }
 
 
-export function getCreateInstrumentsLinkMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createInstrumentsLink>>, TError, { data: UserStrategyTradeCodeRequest }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createInstrumentsLink>>, TError, { data: UserStrategyTradeCodeRequest }, TContext> {
+export function getCreateInstrumentsLinkMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createInstrumentsLink>>, TError, { data: UserStrategyTradeCodeRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createInstrumentsLink>>, TError, { data: UserStrategyTradeCodeRequest }, TContext> {
 	const mutationKey = ['createInstrumentsLink'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -661,21 +663,29 @@ export function getCreateInstrumentsLinkMutationOptions<TError = ErrorType<Probl
 		return createInstrumentsLink(data, requestOptions);
 	};
 
+	const onSuccess = (data: Awaited<ReturnType<typeof createInstrumentsLink>>, variables: { data: UserStrategyTradeCodeRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
+		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+		}
+		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+	};
 
-	return { mutationFn, ...mutationOptions };
+
+	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
 export type CreateInstrumentsLinkMutationResult = NonNullable<Awaited<ReturnType<typeof createInstrumentsLink>>>;
 export type CreateInstrumentsLinkMutationBody = UserStrategyTradeCodeRequest;
 export type CreateInstrumentsLinkMutationError = ErrorType<ProblemDetails>;
 
-export function useCreateInstrumentsLink<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createInstrumentsLink>>, TError, { data: UserStrategyTradeCodeRequest }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+export function useCreateInstrumentsLink<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createInstrumentsLink>>, TError, { data: UserStrategyTradeCodeRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof createInstrumentsLink>>,
 	TError,
 	{ data: UserStrategyTradeCodeRequest },
 	TContext
 > {
-	return useMutation(getCreateInstrumentsLinkMutationOptions(options), queryClient);
+	const backupQueryClient = useQueryClient();
+	return useMutation(getCreateInstrumentsLinkMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
 export type deleteInstrumentsLinkResponse204 = {
@@ -749,7 +759,7 @@ export async function deleteInstrumentsLink(params: DeleteInstrumentsLinkParams,
 }
 
 
-export function getDeleteInstrumentsLinkMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteInstrumentsLink>>, TError, { params: DeleteInstrumentsLinkParams }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteInstrumentsLink>>, TError, { params: DeleteInstrumentsLinkParams }, TContext> {
+export function getDeleteInstrumentsLinkMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteInstrumentsLink>>, TError, { params: DeleteInstrumentsLinkParams }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteInstrumentsLink>>, TError, { params: DeleteInstrumentsLinkParams }, TContext> {
 	const mutationKey = ['deleteInstrumentsLink'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -764,21 +774,29 @@ export function getDeleteInstrumentsLinkMutationOptions<TError = ErrorType<Probl
 		return deleteInstrumentsLink(params, requestOptions);
 	};
 
+	const onSuccess = (data: Awaited<ReturnType<typeof deleteInstrumentsLink>>, variables: { params: DeleteInstrumentsLinkParams }, onMutateResult: TContext, context: MutationFunctionContext) => {
+		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+		}
+		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+	};
 
-	return { mutationFn, ...mutationOptions };
+
+	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
 export type DeleteInstrumentsLinkMutationResult = NonNullable<Awaited<ReturnType<typeof deleteInstrumentsLink>>>;
 
 export type DeleteInstrumentsLinkMutationError = ErrorType<ProblemDetails>;
 
-export function useDeleteInstrumentsLink<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteInstrumentsLink>>, TError, { params: DeleteInstrumentsLinkParams }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+export function useDeleteInstrumentsLink<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteInstrumentsLink>>, TError, { params: DeleteInstrumentsLinkParams }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof deleteInstrumentsLink>>,
 	TError,
 	{ params: DeleteInstrumentsLinkParams },
 	TContext
 > {
-	return useMutation(getDeleteInstrumentsLinkMutationOptions(options), queryClient);
+	const backupQueryClient = useQueryClient();
+	return useMutation(getDeleteInstrumentsLinkMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
 export type getUsersStrategyResponse200 = {
@@ -1022,7 +1040,7 @@ export async function createUsersStrategy(createUserStrategyRequest: CreateUserS
 }
 
 
-export function getCreateUsersStrategyMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createUsersStrategy>>, TError, { data: CreateUserStrategyRequest }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createUsersStrategy>>, TError, { data: CreateUserStrategyRequest }, TContext> {
+export function getCreateUsersStrategyMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createUsersStrategy>>, TError, { data: CreateUserStrategyRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createUsersStrategy>>, TError, { data: CreateUserStrategyRequest }, TContext> {
 	const mutationKey = ['createUsersStrategy'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1037,21 +1055,30 @@ export function getCreateUsersStrategyMutationOptions<TError = ErrorType<Problem
 		return createUsersStrategy(data, requestOptions);
 	};
 
+	const onSuccess = (data: Awaited<ReturnType<typeof createUsersStrategy>>, variables: { data: CreateUserStrategyRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
+		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetUsersStrategyQueryKey() });
+			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+		}
+		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+	};
 
-	return { mutationFn, ...mutationOptions };
+
+	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
 export type CreateUsersStrategyMutationResult = NonNullable<Awaited<ReturnType<typeof createUsersStrategy>>>;
 export type CreateUsersStrategyMutationBody = CreateUserStrategyRequest;
 export type CreateUsersStrategyMutationError = ErrorType<ProblemDetails>;
 
-export function useCreateUsersStrategy<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createUsersStrategy>>, TError, { data: CreateUserStrategyRequest }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+export function useCreateUsersStrategy<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createUsersStrategy>>, TError, { data: CreateUserStrategyRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof createUsersStrategy>>,
 	TError,
 	{ data: CreateUserStrategyRequest },
 	TContext
 > {
-	return useMutation(getCreateUsersStrategyMutationOptions(options), queryClient);
+	const backupQueryClient = useQueryClient();
+	return useMutation(getCreateUsersStrategyMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
 export type deleteUsersStrategyResponse204 = {
@@ -1125,7 +1152,7 @@ export async function deleteUsersStrategy(params: DeleteUsersStrategyParams, opt
 }
 
 
-export function getDeleteUsersStrategyMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUsersStrategy>>, TError, { params: DeleteUsersStrategyParams }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteUsersStrategy>>, TError, { params: DeleteUsersStrategyParams }, TContext> {
+export function getDeleteUsersStrategyMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUsersStrategy>>, TError, { params: DeleteUsersStrategyParams }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteUsersStrategy>>, TError, { params: DeleteUsersStrategyParams }, TContext> {
 	const mutationKey = ['deleteUsersStrategy'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1140,19 +1167,28 @@ export function getDeleteUsersStrategyMutationOptions<TError = ErrorType<Problem
 		return deleteUsersStrategy(params, requestOptions);
 	};
 
+	const onSuccess = (data: Awaited<ReturnType<typeof deleteUsersStrategy>>, variables: { params: DeleteUsersStrategyParams }, onMutateResult: TContext, context: MutationFunctionContext) => {
+		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetUsersStrategyQueryKey() });
+			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+		}
+		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+	};
 
-	return { mutationFn, ...mutationOptions };
+
+	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
 export type DeleteUsersStrategyMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUsersStrategy>>>;
 
 export type DeleteUsersStrategyMutationError = ErrorType<ProblemDetails>;
 
-export function useDeleteUsersStrategy<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUsersStrategy>>, TError, { params: DeleteUsersStrategyParams }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+export function useDeleteUsersStrategy<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUsersStrategy>>, TError, { params: DeleteUsersStrategyParams }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof deleteUsersStrategy>>,
 	TError,
 	{ params: DeleteUsersStrategyParams },
 	TContext
 > {
-	return useMutation(getDeleteUsersStrategyMutationOptions(options), queryClient);
+	const backupQueryClient = useQueryClient();
+	return useMutation(getDeleteUsersStrategyMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }

@@ -66,14 +66,28 @@ export function StrategyInfoGrid({ strategyId }: StrategyInfoGridProps) {
 		);
 	}
 
+	const visibleSections = STRATEGY_INFO_SECTIONS
+		.map((section) => ({
+			...section,
+			description: section.getDescription(strategy),
+		}))
+		.filter(
+			(section): section is typeof section & { description: string } =>
+				section.description != null,
+		);
+
+	if (visibleSections.length === 0) {
+		return null;
+	}
+
 	return (
 		<section>
 			<SimpleGrid minColWidth={300} autoFlow='auto-fit'>
-				{STRATEGY_INFO_SECTIONS.map((section) => (
+				{visibleSections.map((section) => (
 					<StrategyInfoCard
 						key={section.title}
 						title={section.title}
-						description={section.getDescription(strategy)}
+						description={section.description}
 						icon={section.icon}
 					/>
 				))}

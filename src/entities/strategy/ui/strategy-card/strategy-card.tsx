@@ -1,4 +1,5 @@
 import {
+	Box,
 	Button,
 	Card,
 	Checkbox,
@@ -98,30 +99,35 @@ export function StrategyCard({
 				]}
 			/>
 
-			<Flex direction='column' gap={4}>
-				<Flex justify='space-between' wrap='nowrap'>
-					<Text size='sm' c='dimmed'>
-						Точность
-					</Text>
+			{strategy.accuracy
+				? (
+						<Flex direction='column' gap={4}>
+							<Flex justify='space-between' wrap='nowrap'>
+								<Text size='sm' c='dimmed'>
+									Точность
+								</Text>
 
-					<Text
-						size='sm'
-						fw='bold'
-						c={getAccuracyColor(strategy.accuracy)}
-					>
-						{strategy.accuracy}
-						%
-					</Text>
-				</Flex>
+								<Text
+									size='sm'
+									fw='bold'
+									c={getAccuracyColor(strategy.accuracy)}
+								>
+									{strategy.accuracy}
+									%
+								</Text>
+							</Flex>
 
-				<Progress
-					value={strategy.accuracy}
-					bg='gray.4'
-					color={getAccuracyColor(strategy.accuracy)}
-				/>
-			</Flex>
+							<Progress
+								value={strategy.accuracy}
+								bg='gray.4'
+								color={getAccuracyColor(strategy.accuracy)}
+							/>
+						</Flex>
+					)
+				: <Box h={33}></Box>}
 
 			<Button
+				mt='auto'
 				type='button'
 				variant='default'
 				onClick={() => {

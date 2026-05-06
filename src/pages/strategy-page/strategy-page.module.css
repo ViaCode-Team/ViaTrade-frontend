@@ -36,14 +36,7 @@
 }
 
 .pageTitle {
-	line-height: 1.05;
 	overflow-wrap: anywhere;
-	letter-spacing: 0;
-}
-
-.activeControl {
-	width: fit-content;
-	margin-top: var(--mantine-spacing-xs);
 }
 
 .infoSection {

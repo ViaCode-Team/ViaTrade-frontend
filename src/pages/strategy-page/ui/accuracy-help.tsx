@@ -20,7 +20,7 @@ export function AccuracyHelp() {
 				variant='transparent'
 				c='dimmed'
 			>
-				<IconHelpCircle size={18} stroke={2} />
+				<IconHelpCircle size={18} />
 			</ActionIcon>
 		</Tooltip>
 	);

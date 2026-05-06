@@ -10,6 +10,7 @@ import {
 	useMutation,
 	useQuery,
 	useQueryClient,
+	useSuspenseQuery,
 } from '@tanstack/react-query';
 import type {
 	DataTag,
@@ -30,6 +31,8 @@ import type {
 	UseMutationResult,
 	UseQueryOptions,
 	UseQueryResult,
+	UseSuspenseQueryOptions,
+	UseSuspenseQueryResult,
 } from '@tanstack/react-query';
 
 import type {
@@ -37,7 +40,7 @@ import type {
 	ProblemDetails,
 	RegisterRequest,
 	UserSessionDto,
-} from '../../../../shared/api/gen/types';
+} from '../../../../shared/api/types/gen';
 
 import {
 	getGetMeQueryKey,
@@ -691,6 +694,13 @@ export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<t
 	return { ...query, queryKey: queryOptions.queryKey };
 }
 
+export async function prefetchGetSessionsInfiniteQuery<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetSessionsInfiniteQueryOptions(options);
+
+	await queryClient.prefetchInfiniteQuery(queryOptions);
+
+	return queryClient;
+}
 
 export async function invalidateGetSessionsInfinite(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
 	await queryClient.invalidateQueries({ queryKey: getGetSessionsInfiniteQueryKey() }, options);
@@ -753,9 +763,57 @@ export function useGetSessions<TData = Awaited<ReturnType<typeof getSessions>>, 
 	return { ...query, queryKey: queryOptions.queryKey };
 }
 
+export async function prefetchGetSessionsQuery<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetSessionsQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
 
 export async function invalidateGetSessions(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
 	await queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() }, options);
 
 	return queryClient;
+}
+
+
+export function getGetSessionsSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetSessionsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSessions>>> = ({ signal }) => getSessions({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetSessionsSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getSessions>>>;
+export type GetSessionsSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetSessionsSuspense<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetSessionsSuspense<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetSessionsSuspense<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetSessionsSuspense<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetSessionsSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
 }

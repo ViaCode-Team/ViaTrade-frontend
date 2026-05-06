@@ -21,7 +21,7 @@ import type {
 	TradeStrategy,
 	UserStrategyTradeCodeDto,
 	UserTradeStrategyDto,
-} from '../../../../shared/api/gen/types';
+} from '../../../../shared/api/types/gen';
 
 
 export function getGetAllResponseMock(): TradeStrategy[] {

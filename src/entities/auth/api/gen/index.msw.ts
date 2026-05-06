@@ -19,7 +19,7 @@ import type {
 
 import type {
 	UserSessionDto,
-} from '../../../../shared/api/gen/types';
+} from '../../../../shared/api/types/gen';
 
 
 export function getGetSessionsResponseMock(overrideResponse: Partial<Extract<UserSessionDto, object>> = {}): UserSessionDto {

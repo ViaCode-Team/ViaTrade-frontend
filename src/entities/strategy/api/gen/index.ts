@@ -8,6 +8,7 @@
 import {
 	useMutation,
 	useQuery,
+	useSuspenseQuery,
 } from '@tanstack/react-query';
 import type {
 	DataTag,
@@ -23,6 +24,8 @@ import type {
 	UseMutationResult,
 	UseQueryOptions,
 	UseQueryResult,
+	UseSuspenseQueryOptions,
+	UseSuspenseQueryResult,
 } from '@tanstack/react-query';
 
 import type {
@@ -34,7 +37,7 @@ import type {
 	UserStrategyTradeCodeDto,
 	UserStrategyTradeCodeRequest,
 	UserTradeStrategyDto,
-} from '../../../../shared/api/gen/types';
+} from '../../../../shared/api/types/gen';
 
 import { customInstance } from '../../../../shared/api/client/custom-instance-fetch';
 import type { ErrorType } from '../../../../shared/api/client/custom-instance-fetch';
@@ -165,11 +168,59 @@ export function useGetAll<TData = Awaited<ReturnType<typeof getAll>>, TError = E
 	return { ...query, queryKey: queryOptions.queryKey };
 }
 
+export async function prefetchGetAllQuery<TData = Awaited<ReturnType<typeof getAll>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAll>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetAllQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
 
 export async function invalidateGetAll(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
 	await queryClient.invalidateQueries({ queryKey: getGetAllQueryKey() }, options);
 
 	return queryClient;
+}
+
+
+export function getGetAllSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getAll>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAll>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetAllQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getAll>>> = ({ signal }) => getAll({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAll>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetAllSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAll>>>;
+export type GetAllSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetAllSuspense<TData = Awaited<ReturnType<typeof getAll>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAll>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetAllSuspense<TData = Awaited<ReturnType<typeof getAll>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAll>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetAllSuspense<TData = Awaited<ReturnType<typeof getAll>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAll>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetAllSuspense<TData = Awaited<ReturnType<typeof getAll>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAll>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetAllSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
 }
 
 
@@ -297,11 +348,60 @@ export function useGetById<TData = Awaited<ReturnType<typeof getById>>, TError =
 	return { ...query, queryKey: queryOptions.queryKey };
 }
 
+export async function prefetchGetByIdQuery<TData = Awaited<ReturnType<typeof getById>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, strategyId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetByIdQueryOptions(strategyId, options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
 
 export async function invalidateGetById(queryClient: QueryClient, strategyId: number, options?: InvalidateOptions): Promise<QueryClient> {
 	await queryClient.invalidateQueries({ queryKey: getGetByIdQueryKey(strategyId) }, options);
 
 	return queryClient;
+}
+
+
+export function getGetByIdSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getById>>, TError = ErrorType<ProblemDetails>>(strategyId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetByIdQueryKey(strategyId);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getById>>> = ({ signal }) => getById(strategyId, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetByIdSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getById>>>;
+export type GetByIdSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetByIdSuspense<TData = Awaited<ReturnType<typeof getById>>, TError = ErrorType<ProblemDetails>>(
+	strategyId: number, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetByIdSuspense<TData = Awaited<ReturnType<typeof getById>>, TError = ErrorType<ProblemDetails>>(
+	strategyId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetByIdSuspense<TData = Awaited<ReturnType<typeof getById>>, TError = ErrorType<ProblemDetails>>(
+	strategyId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetByIdSuspense<TData = Awaited<ReturnType<typeof getById>>, TError = ErrorType<ProblemDetails>>(
+	strategyId: number,
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetByIdSuspenseQueryOptions(strategyId, options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
 }
 
 
@@ -427,11 +527,59 @@ export function useGetAllInstrumentsLink<TData = Awaited<ReturnType<typeof getAl
 	return { ...query, queryKey: queryOptions.queryKey };
 }
 
+export async function prefetchGetAllInstrumentsLinkQuery<TData = Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetAllInstrumentsLinkQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
 
 export async function invalidateGetAllInstrumentsLink(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
 	await queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() }, options);
 
 	return queryClient;
+}
+
+
+export function getGetAllInstrumentsLinkSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetAllInstrumentsLinkQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllInstrumentsLink>>> = ({ signal }) => getAllInstrumentsLink({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetAllInstrumentsLinkSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAllInstrumentsLink>>>;
+export type GetAllInstrumentsLinkSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetAllInstrumentsLinkSuspense<TData = Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetAllInstrumentsLinkSuspense<TData = Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetAllInstrumentsLinkSuspense<TData = Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetAllInstrumentsLinkSuspense<TData = Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAllInstrumentsLink>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetAllInstrumentsLinkSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
 }
 
 
@@ -755,11 +903,59 @@ export function useGetUsersStrategy<TData = Awaited<ReturnType<typeof getUsersSt
 	return { ...query, queryKey: queryOptions.queryKey };
 }
 
+export async function prefetchGetUsersStrategyQuery<TData = Awaited<ReturnType<typeof getUsersStrategy>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersStrategy>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetUsersStrategyQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
 
 export async function invalidateGetUsersStrategy(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
 	await queryClient.invalidateQueries({ queryKey: getGetUsersStrategyQueryKey() }, options);
 
 	return queryClient;
+}
+
+
+export function getGetUsersStrategySuspenseQueryOptions<TData = Awaited<ReturnType<typeof getUsersStrategy>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUsersStrategy>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetUsersStrategyQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersStrategy>>> = ({ signal }) => getUsersStrategy({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUsersStrategy>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetUsersStrategySuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getUsersStrategy>>>;
+export type GetUsersStrategySuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetUsersStrategySuspense<TData = Awaited<ReturnType<typeof getUsersStrategy>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUsersStrategy>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetUsersStrategySuspense<TData = Awaited<ReturnType<typeof getUsersStrategy>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUsersStrategy>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetUsersStrategySuspense<TData = Awaited<ReturnType<typeof getUsersStrategy>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUsersStrategy>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetUsersStrategySuspense<TData = Awaited<ReturnType<typeof getUsersStrategy>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUsersStrategy>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetUsersStrategySuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
 }
 
 

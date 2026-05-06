@@ -8,7 +8,7 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"preview": "vite preview",
-		"api:gen": "orval",
+		"api:gen": "orval --clean",
 		"types": "tsc -p tsconfig.app.json",
 		"lint": "set TIMING=1 && eslint .",
 		"lint:fix": "eslint . --fix",

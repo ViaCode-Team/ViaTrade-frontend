@@ -19,7 +19,7 @@ import type {
 
 import type {
 	MeDto,
-} from '../../../../shared/api/gen/types';
+} from '../../../../shared/api/types/gen';
 
 
 export function getGetMeResponseMock(overrideResponse: Partial<Extract<MeDto, object>> = {}): MeDto {

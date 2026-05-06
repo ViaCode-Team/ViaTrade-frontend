@@ -4,7 +4,7 @@ import { deepmerge } from 'deepmerge-ts';
 import { defineConfig } from 'orval';
 
 const SWAGGER_PATH = './swagger.yaml';
-const SCHEMAS_PATH = './src/shared/api/gen/types';
+const SCHEMAS_PATH = './src/shared/api/types/gen';
 
 const defaultOptions: Partial<Options> = {
 	hooks: {
@@ -23,6 +23,7 @@ const defaultOutput: Partial<OutputOptions> = {
 		useTypeOverInterfaces: true,
 		useDates: true,
 		useBigInt: true,
+		// In future
 		formData: true,
 
 		contentType: {
@@ -36,8 +37,8 @@ const defaultOutput: Partial<OutputOptions> = {
 		query: {
 			useQuery: true,
 			useMutation: true,
-			// useSuspenseQuery: true,
-			// usePrefetch: true,
+			useSuspenseQuery: true,
+			usePrefetch: true,
 			useInvalidate: true,
 			useOperationIdAsQueryKey: true,
 			signal: true,
@@ -124,20 +125,6 @@ const authApiConfig = createApiConfig('Auth', 'auth', {
 
 export default defineConfig({
 	authApi: authApiConfig,
-	usersApi: createApiConfig('User', 'user', {
-		output: {
-			override: {
-
-				operations: {
-					'GetMe': {
-						query: {
-							useSuspenseQuery: true,
-						},
-					},
-				},
-			},
-		},
-	}),
-
+	usersApi: createApiConfig('User', 'user'),
 	strategyApi: createApiConfig('Strategy', 'strategy'),
 });

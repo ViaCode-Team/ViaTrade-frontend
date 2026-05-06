@@ -27,7 +27,7 @@ import type {
 import type {
 	MeDto,
 	ProblemDetails,
-} from '../../../../shared/api/gen/types';
+} from '../../../../shared/api/types/gen';
 
 import { customInstance } from '../../../../shared/api/client/custom-instance-fetch';
 import type { ErrorType } from '../../../../shared/api/client/custom-instance-fetch';
@@ -158,6 +158,13 @@ export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = Err
 	return { ...query, queryKey: queryOptions.queryKey };
 }
 
+export async function prefetchGetMeQuery<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetMeQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
 
 export async function invalidateGetMe(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
 	await queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() }, options);

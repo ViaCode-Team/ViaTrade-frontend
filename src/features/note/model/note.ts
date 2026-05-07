@@ -1,0 +1,45 @@
+import { v } from '@/shared/model/validate';
+
+export const noteFormSchema = v.object({
+	text: v.string('Введите заметку'),
+});
+
+export type NoteFormData = v.InferInput<typeof noteFormSchema>;
+
+export type PersonalNote = {
+	text: string;
+	updatedAt: string;
+};
+
+export function getNormalizedNoteFormData(formData: NoteFormData): NoteFormData {
+	return {
+		text: formData.text.trim(),
+	};
+}
+
+export function validateNoteForm(data: unknown) {
+	return v.safeParse(noteFormSchema, data);
+}
+
+export function getNoteFormErrors(
+	result: ReturnType<typeof validateNoteForm>,
+): Partial<Record<keyof NoteFormData, string>> {
+	if (!result.success) {
+		const { nested } = v.flatten(result.issues);
+
+		return {
+			text: nested?.text?.[0],
+		};
+	}
+
+	return {};
+}
+
+export function createPersonalNote(formData: NoteFormData): PersonalNote {
+	const normalizedFormData = getNormalizedNoteFormData(formData);
+
+	return {
+		text: normalizedFormData.text,
+		updatedAt: new Date().toISOString(),
+	};
+}

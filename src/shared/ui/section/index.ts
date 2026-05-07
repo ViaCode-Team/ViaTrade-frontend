@@ -1,0 +1,3 @@
+export { Section } from './section';
+export { SectionHeader } from './section-header';
+export type { SectionHeaderProps } from './section-header';

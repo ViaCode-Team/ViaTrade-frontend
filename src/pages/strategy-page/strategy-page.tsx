@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { useParams } from 'react-router';
 
 import { mockStocks } from '@/entities/stock';
+import { NoteForm, usePersonalNote } from '@/features/note';
 import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
+import { Section } from '@/shared/ui/section';
 
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
 import { StrategyHero } from './ui/strategy-hero';
@@ -15,6 +17,8 @@ export function StrategyPage() {
 	const strategyId = getStrategyIdFromRoute(strategyName);
 	const hasStrategyId = strategyId !== null;
 	const [selectedStockIds, setSelectedStockIds] = useState<string[]>([]);
+
+	const strategyNote = usePersonalNote();
 
 	if (!hasStrategyId) {
 		return <StrategyNotFound />;
@@ -46,6 +50,13 @@ export function StrategyPage() {
 				selectedStockIds={selectedStockIds}
 				onSelectedStockIdsChange={handleLinkedStocksChange}
 			/>
+
+			<Section header={{ title: 'Заметка к стратегии' }}>
+				<NoteForm
+					{...strategyNote.noteFormProps}
+					placeholder='Запишите важные условия, риски и наблюдения'
+				/>
+			</Section>
 		</>
 	);
 }

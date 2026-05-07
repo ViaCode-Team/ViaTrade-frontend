@@ -24,12 +24,14 @@ type StrategyCardProps = {
 	strategy: Strategy;
 	isActiveChangePending?: boolean;
 	onActiveChange: (strategyId: number, isActive: boolean) => void;
+	onStockBindClick: (strategyId: number) => void;
 };
 
 export function StrategyCard({
 	strategy,
 	isActiveChangePending = false,
 	onActiveChange,
+	onStockBindClick,
 }: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
 		strategyName: String(strategy.id),
@@ -131,7 +133,7 @@ export function StrategyCard({
 				type='button'
 				variant='default'
 				onClick={() => {
-					// TODO: modal связать стратегию с акцией
+					onStockBindClick(strategy.id);
 				}}
 			>
 				Связать с акцией

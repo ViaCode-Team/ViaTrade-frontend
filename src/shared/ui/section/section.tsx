@@ -10,14 +10,12 @@ import {
 
 type SectionComponent = 'section' | 'article' | 'div';
 type SectionHeaderConfig = SectionHeaderProps | ReactNode;
+type SectionStackProps = Omit<StackProps, 'children' | 'component'>;
 
-type SectionProps = {
+type SectionProps = SectionStackProps & {
 	children: ReactNode;
 	header?: SectionHeaderConfig;
-	gap?: StackProps['gap'];
 	component?: SectionComponent;
-	className?: string;
-	id?: string;
 };
 
 export function Section({
@@ -25,13 +23,12 @@ export function Section({
 	header,
 	gap = 'md',
 	component = 'section',
-	className,
-	id,
+	...stackProps
 }: SectionProps) {
 	const resolvedHeader = resolveSectionHeader(header);
 
 	return (
-		<Stack gap={gap} component={component} className={className} id={id}>
+		<Stack {...stackProps} gap={gap} component={component}>
 			{resolvedHeader}
 			{children}
 		</Stack>

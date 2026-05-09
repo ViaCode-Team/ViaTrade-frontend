@@ -1,4 +1,5 @@
 import {
+	Badge,
 	Box,
 	Button,
 	Card,
@@ -15,23 +16,26 @@ import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
 import { ROUTES } from '@/shared/model/routes';
 import { InfoPair } from '@/shared/ui/info-pair';
 
-import type { Strategy } from '../../model';
+import type { StrategyCardStrategy } from '../../model';
 
 import { getAccuracyColor } from '../../model';
 import cls from './strategy-card.module.css';
 
 type StrategyCardProps = {
-	strategy: Strategy;
-	isActiveChangePending?: boolean;
-	onActiveChange: (strategyId: number, isActive: boolean) => void;
-	onStockBindClick: (strategyId: number) => void;
+	strategy: StrategyCardStrategy;
+	activation?: {
+		isActiveChangePending?: boolean;
+		onActiveChange: (strategyId: number, isActive: boolean) => void;
+	};
+	stockBinding?: {
+		onStockBindClick: (strategyId: number) => void;
+	};
 };
 
 export function StrategyCard({
 	strategy,
-	isActiveChangePending = false,
-	onActiveChange,
-	onStockBindClick,
+	activation,
+	stockBinding,
 }: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
 		strategyName: String(strategy.id),
@@ -61,6 +65,7 @@ export function StrategyCard({
 			<RouterLink
 				to={strategyPath}
 				className={cls.cardLink}
+				aria-label={`Открыть стратегию ${strategy.name}`}
 			/>
 
 			<Flex direction='column' gap='xs'>
@@ -69,17 +74,30 @@ export function StrategyCard({
 						{strategy.name}
 					</Title>
 
-					<Tooltip label={activeActionLabel}>
-						<Checkbox
-							checked={strategy.isActive}
-							onChange={(event) => {
-								onActiveChange(strategy.id, event.currentTarget.checked);
-							}}
-							size='md'
-							disabled={isActiveChangePending}
-							aria-label={activeActionLabel}
-						/>
-					</Tooltip>
+					{activation
+						? (
+								<Box className={cls.interactiveAction}>
+									<Tooltip label={activeActionLabel}>
+										<Checkbox
+											checked={strategy.isActive}
+											onChange={(event) => {
+												activation.onActiveChange(
+													strategy.id,
+													event.currentTarget.checked,
+												);
+											}}
+											size='md'
+											disabled={activation.isActiveChangePending}
+											aria-label={activeActionLabel}
+										/>
+									</Tooltip>
+								</Box>
+							)
+						: (
+								<Badge color={strategy.isActive ? 'green' : 'red'} variant='light' size='sm'>
+									{strategy.isActive ? 'Активна' : 'Выключена'}
+								</Badge>
+							)}
 				</Flex>
 
 				<Text size='sm' c='dimmed' lineClamp={2}>
@@ -128,16 +146,19 @@ export function StrategyCard({
 					)
 				: <Box h={33}></Box>}
 
-			<Button
-				mt='auto'
-				type='button'
-				variant='default'
-				onClick={() => {
-					onStockBindClick(strategy.id);
-				}}
-			>
-				Связать с акцией
-			</Button>
+			{stockBinding && (
+				<Button
+					mt='auto'
+					type='button'
+					variant='default'
+					className={cls.interactiveAction}
+					onClick={() => {
+						stockBinding.onStockBindClick(strategy.id);
+					}}
+				>
+					Связать с акцией
+				</Button>
+			)}
 		</Card>
 	);
 }

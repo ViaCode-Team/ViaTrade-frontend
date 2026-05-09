@@ -17,18 +17,29 @@ import { generatePath, Link as RouterLink } from 'react-router';
 import type { Stock } from '@/entities/stock';
 
 import { getStockChangeColor } from '@/entities/stock';
+import {
+	StrategyCard,
+	toStrategyCardStrategy,
+} from '@/entities/strategy';
 import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { ROUTES } from '@/shared/model/routes';
-import { StockLinkedStrategyCard } from '@/widgets/stock-linked-strategies';
 
 import cls from '../stocks-page.module.css';
 
 type StockCardProps = {
 	stock: Stock;
+	activeStrategyIds: Set<number>;
+	pendingStrategyId?: number;
+	onStrategyActiveChange: (strategyId: number, isActive: boolean) => void;
 };
 
-export function StockCard({ stock }: StockCardProps) {
+export function StockCard({
+	stock,
+	activeStrategyIds,
+	pendingStrategyId,
+	onStrategyActiveChange,
+}: StockCardProps) {
 	const [strategiesModalOpened, strategiesModalHandlers] = useDisclosure(false);
 	const stockPath = generatePath(ROUTES.STOCK, {
 		stockId: stock.id,
@@ -71,7 +82,16 @@ export function StockCard({ stock }: StockCardProps) {
 					>
 						{stock.linkedStrategies.map((strategy) => (
 							<li key={strategy.id} className={cls.modalStrategyItem}>
-								<StockLinkedStrategyCard strategy={strategy} />
+								<StrategyCard
+									strategy={toStrategyCardStrategy(
+										strategy,
+										activeStrategyIds.has(strategy.id),
+									)}
+									activation={{
+										isActiveChangePending: pendingStrategyId === strategy.id,
+										onActiveChange: onStrategyActiveChange,
+									}}
+								/>
 							</li>
 						))}
 					</SimpleGrid>
@@ -119,7 +139,7 @@ export function StockCard({ stock }: StockCardProps) {
 
 				<Stack gap={2}>
 					<Text size='sm' c='dimmed'>
-						Цена
+						Последняя цена
 					</Text>
 
 					<Text fw={700} size='lg'>

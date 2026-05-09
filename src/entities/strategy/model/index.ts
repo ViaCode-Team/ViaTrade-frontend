@@ -3,6 +3,7 @@ export {
 	getUserStrategyIdSet,
 	mapTradeStrategiesToStrategies,
 	mapTradeStrategyToStrategy,
+	toStrategyCardStrategy,
 } from './strategy';
-export type { Strategy } from './strategy';
+export type { Strategy, StrategyCardStrategy } from './strategy';
 export { useToggleUserStrategy } from './use-toggle-user-strategy';

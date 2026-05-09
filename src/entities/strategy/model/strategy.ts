@@ -3,17 +3,20 @@ import type {
 	UserTradeStrategyDto,
 } from '@/shared/api';
 
-export type Strategy = {
+export type StrategyCardStrategy = {
 	id: number;
 	name: string;
 	description: string;
 	accuracy: number | null;
 	signalFrequency: string;
 	investmentHorizon: string;
+	isActive: boolean;
+};
+
+export type Strategy = StrategyCardStrategy & {
 	logicDescription: string | null;
 	useDescription: string | null;
 	limitDescription: string | null;
-	isActive: boolean;
 };
 
 const STRATEGY_EMPTY_FIELD = 'Не указана';
@@ -65,6 +68,21 @@ export function mapTradeStrategiesToStrategies(
 
 		return strategies;
 	}, []);
+}
+
+export function toStrategyCardStrategy(
+	strategy: Omit<StrategyCardStrategy, 'isActive'>,
+	isActive: boolean,
+): StrategyCardStrategy {
+	return {
+		id: strategy.id,
+		name: strategy.name,
+		description: strategy.description,
+		accuracy: strategy.accuracy,
+		signalFrequency: strategy.signalFrequency,
+		investmentHorizon: strategy.investmentHorizon,
+		isActive,
+	};
 }
 
 export function getAccuracyColor(accuracy: number) {

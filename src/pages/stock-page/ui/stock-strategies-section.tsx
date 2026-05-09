@@ -2,14 +2,25 @@ import { SimpleGrid } from '@mantine/core';
 
 import type { Stock } from '@/entities/stock';
 
+import {
+	StrategyCard,
+	toStrategyCardStrategy,
+} from '@/entities/strategy';
 import { Section } from '@/shared/ui/section';
-import { StockLinkedStrategyCard } from '@/widgets/stock-linked-strategies';
 
 type StockStrategiesSectionProps = {
 	stock: Stock;
+	activeStrategyIds: Set<number>;
+	pendingStrategyId?: number;
+	onStrategyActiveChange: (strategyId: number, isActive: boolean) => void;
 };
 
-export function StockStrategiesSection({ stock }: StockStrategiesSectionProps) {
+export function StockStrategiesSection({
+	stock,
+	activeStrategyIds,
+	pendingStrategyId,
+	onStrategyActiveChange,
+}: StockStrategiesSectionProps) {
 	return (
 		<Section
 			header={{
@@ -20,7 +31,16 @@ export function StockStrategiesSection({ stock }: StockStrategiesSectionProps) {
 			<SimpleGrid minColWidth={300}>
 				{stock.linkedStrategies.map((strategy) => (
 					<li key={strategy.id}>
-						<StockLinkedStrategyCard strategy={strategy} />
+						<StrategyCard
+							strategy={toStrategyCardStrategy(
+								strategy,
+								activeStrategyIds.has(strategy.id),
+							)}
+							activation={{
+								isActiveChangePending: pendingStrategyId === strategy.id,
+								onActiveChange: onStrategyActiveChange,
+							}}
+						/>
 					</li>
 				))}
 			</SimpleGrid>

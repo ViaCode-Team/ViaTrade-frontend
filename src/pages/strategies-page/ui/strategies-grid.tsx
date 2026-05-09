@@ -12,6 +12,7 @@ import {
 	type GetUsersStrategySuspenseQueryResult,
 	mapTradeStrategiesToStrategies,
 	StrategyCard,
+	toStrategyCardStrategy,
 	useToggleUserStrategy,
 } from '@/entities/strategy';
 import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
@@ -107,10 +108,14 @@ export function StrategiesGrid() {
 				{strategies.map((strategy) => (
 					<li key={strategy.id}>
 						<StrategyCard
-							strategy={strategy}
-							isActiveChangePending={pendingStrategyId === strategy.id}
-							onActiveChange={handleActiveChange}
-							onStockBindClick={setStockBindingStrategyId}
+							strategy={toStrategyCardStrategy(strategy, strategy.isActive)}
+							activation={{
+								isActiveChangePending: pendingStrategyId === strategy.id,
+								onActiveChange: handleActiveChange,
+							}}
+							stockBinding={{
+								onStockBindClick: setStockBindingStrategyId,
+							}}
 						/>
 					</li>
 				))}

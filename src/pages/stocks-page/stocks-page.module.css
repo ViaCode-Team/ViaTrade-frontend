@@ -9,14 +9,6 @@
 	height: 100%;
 }
 
-.searchInput {
-	width: min(420px, 100%);
-}
-
-.summaryCard {
-	height: 100%;
-}
-
 .summaryIcon {
 	display: flex;
 	align-items: center;

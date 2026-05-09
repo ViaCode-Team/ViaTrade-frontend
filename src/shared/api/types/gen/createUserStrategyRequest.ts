@@ -7,5 +7,5 @@
  */
 
 export type CreateUserStrategyRequest = {
-	strategyId?: number;
+	strategyId: number;
 };

@@ -8,5 +8,5 @@
 import type { StrategyData } from './strategyData';
 
 export type StrategyResultResponse = {
-	strategies?: StrategyData[];
+	strategies: StrategyData[];
 };

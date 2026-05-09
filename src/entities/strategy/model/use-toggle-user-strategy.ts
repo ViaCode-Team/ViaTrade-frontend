@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import type { UserTradeStrategyDto } from '@/shared/api';
+
 import type { GetUsersStrategyQueryResult } from '../api/gen';
 
 import {
@@ -70,14 +72,16 @@ function getOptimisticUserStrategies(
 	const userStrategiesWithoutCurrent = currentUserStrategies.data.filter(
 		(userStrategy) => userStrategy.tradeStrategyId !== variables.strategyId,
 	);
+	const optimisticUserStrategy: UserTradeStrategyDto = {
+		id: -variables.strategyId,
+		userId: currentUserStrategies.data[0]?.userId ?? 0,
+		tradeStrategyId: variables.strategyId,
+	};
 
 	return {
 		...currentUserStrategies,
 		data: variables.isActive
-			? [
-					...userStrategiesWithoutCurrent,
-					{ tradeStrategyId: variables.strategyId },
-				]
+			? [...userStrategiesWithoutCurrent, optimisticUserStrategy]
 			: userStrategiesWithoutCurrent,
 	};
 }

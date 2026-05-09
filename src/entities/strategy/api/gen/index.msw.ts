@@ -26,36 +26,36 @@ import type {
 
 export function getGetAllResponseMock(): TradeStrategy[] {
 	return Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-		id: faker.helpers.arrayElement([faker.number.int(), undefined]),
+		id: faker.number.int(),
 		name: faker.string.alpha({ length: { min: 1, max: 128 } }),
-		description: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
-		accuracy: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int(), null]), undefined]),
-		signalFrequency: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), null]), undefined]),
-		investmentHorizon: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), null]), undefined]),
-		logicDesc: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
-		useDesc: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
-		limitDesc: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
+		description: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
+		accuracy: faker.helpers.arrayElement([faker.number.int(), undefined]),
+		signalFrequency: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), undefined]),
+		investmentHorizon: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), undefined]),
+		logicDesc: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
+		useDesc: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
+		limitDesc: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
 	}));
 }
 
 export function getGetByIdResponseMock(overrideResponse: Partial<Extract<TradeStrategy, object>> = {}): TradeStrategy {
 	return {
-		id: faker.helpers.arrayElement([faker.number.int(), undefined]),
+		id: faker.number.int(),
 		name: faker.string.alpha({ length: { min: 1, max: 128 } }),
-		description: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
-		accuracy: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int(), null]), undefined]),
-		signalFrequency: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), null]), undefined]),
-		investmentHorizon: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), null]), undefined]),
-		logicDesc: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
-		useDesc: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
-		limitDesc: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), null]), undefined]),
+		description: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
+		accuracy: faker.helpers.arrayElement([faker.number.int(), undefined]),
+		signalFrequency: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), undefined]),
+		investmentHorizon: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 128 } }), undefined]),
+		logicDesc: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
+		useDesc: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
+		limitDesc: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 256 } }), undefined]),
 		...overrideResponse,
 	};
 }
 
-export const getGetAllInstrumentsLinkResponseMock = (): UserStrategyTradeCodeDto[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({ userId: faker.helpers.arrayElement([faker.number.int(), undefined]), tradeCodeId: faker.helpers.arrayElement([faker.number.int(), undefined]), strategyId: faker.helpers.arrayElement([faker.number.int(), undefined]) })));
+export const getGetAllInstrumentsLinkResponseMock = (): UserStrategyTradeCodeDto[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({ userId: faker.number.int(), tradeCodeId: faker.number.int(), strategyId: faker.number.int() })));
 
-export const getGetUsersStrategyResponseMock = (): UserTradeStrategyDto[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({ id: faker.helpers.arrayElement([faker.number.int(), undefined]), userId: faker.helpers.arrayElement([faker.number.int(), undefined]), tradeStrategyId: faker.helpers.arrayElement([faker.number.int(), undefined]) })));
+export const getGetUsersStrategyResponseMock = (): UserTradeStrategyDto[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({ id: faker.number.int(), userId: faker.number.int(), tradeStrategyId: faker.number.int() })));
 
 
 export function getGetAllMockHandler(overrideResponse?: TradeStrategy[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<TradeStrategy[]> | TradeStrategy[]), options?: RequestHandlerOptions) {

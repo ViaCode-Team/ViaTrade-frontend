@@ -7,7 +7,7 @@
  */
 
 export type UserTradeStrategyDto = {
-	id?: number;
-	userId?: number;
-	tradeStrategyId?: number;
+	id: number;
+	userId: number;
+	tradeStrategyId: number;
 };

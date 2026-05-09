@@ -1,7 +1,8 @@
 import {
 	Button,
-	Group,
+	Flex,
 	Stack,
+	Text,
 	Textarea,
 } from '@mantine/core';
 
@@ -30,7 +31,7 @@ export function NoteForm({
 	onValueChange,
 	onSubmit,
 	placeholder,
-	submitLabel = 'Сохранить заметку',
+	submitLabel = 'Сохранить',
 	minLength,
 	maxLength = 4000,
 	minRows = 4,
@@ -51,13 +52,13 @@ export function NoteForm({
 
 	return (
 		<form onSubmit={submit}>
-			<Stack>
+			<Stack gap='sm'>
 				<Textarea
 					value={formData.text}
 					onChange={(event) => setField('text', event.currentTarget.value)}
 					error={errors.text}
 					placeholder={placeholder}
-					size='lg'
+					size='md'
 					autosize
 					minLength={minLength}
 					maxLength={maxLength}
@@ -65,17 +66,25 @@ export function NoteForm({
 					maxRows={maxRows}
 				/>
 
-				<Group justify='flex-end'>
+				<Flex justify='space-between'>
+					<Text size='sm' c='dimmed'>
+						Символов:
+						{' '}
+						{formData.text.length}
+						/
+						{maxLength}
+					</Text>
+
 					<Button
 						variant='gradient'
 						gradient={brandGradient}
-						size='md'
+						size='sm'
 						type='submit'
 						disabled={isSubmitDisabled}
 					>
 						{submitLabel}
 					</Button>
-				</Group>
+				</Flex>
 			</Stack>
 		</form>
 	);

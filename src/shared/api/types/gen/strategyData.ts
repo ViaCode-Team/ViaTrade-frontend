@@ -9,5 +9,5 @@ import type { TickerResults } from './tickerResults';
 
 export type StrategyData = {
 	name: string;
-	tickers?: TickerResults[];
+	tickers: TickerResults[];
 };

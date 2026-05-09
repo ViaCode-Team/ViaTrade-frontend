@@ -7,42 +7,23 @@
  */
 
 export type TradeStrategy = {
-	id?: number;
+	id: number;
 	/**
 	 * @minLength 1
 	 * @maxLength 128
 	 */
 	name: string;
-	/**
-	 * @maxLength 256
-	 * @nullable
-	 */
-	description?: string | null;
-	/** @nullable */
-	accuracy?: number | null;
-	/**
-	 * @maxLength 128
-	 * @nullable
-	 */
-	signalFrequency?: string | null;
-	/**
-	 * @maxLength 128
-	 * @nullable
-	 */
-	investmentHorizon?: string | null;
-	/**
-	 * @maxLength 256
-	 * @nullable
-	 */
-	logicDesc?: string | null;
-	/**
-	 * @maxLength 256
-	 * @nullable
-	 */
-	useDesc?: string | null;
-	/**
-	 * @maxLength 256
-	 * @nullable
-	 */
-	limitDesc?: string | null;
+	/** @maxLength 256 */
+	description?: string;
+	accuracy?: number;
+	/** @maxLength 128 */
+	signalFrequency?: string;
+	/** @maxLength 128 */
+	investmentHorizon?: string;
+	/** @maxLength 256 */
+	logicDesc?: string;
+	/** @maxLength 256 */
+	useDesc?: string;
+	/** @maxLength 256 */
+	limitDesc?: string;
 };

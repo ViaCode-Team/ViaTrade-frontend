@@ -10,6 +10,5 @@ export type MeDto = {
 	id: number;
 	login: string;
 	lastLoginDate: Date;
-	/** @nullable */
-	tgId?: string | null;
+	tgId?: string;
 };

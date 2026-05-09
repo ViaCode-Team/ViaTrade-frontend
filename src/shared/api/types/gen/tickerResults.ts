@@ -9,7 +9,6 @@ import type { StrategyResult } from './strategyResult';
 
 export type TickerResults = {
 	tradeCode: string;
-	/** @nullable */
-	accuracy?: number | null;
-	results?: StrategyResult[];
+	accuracy?: number;
+	results: StrategyResult[];
 };

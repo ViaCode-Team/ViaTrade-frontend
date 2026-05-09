@@ -7,9 +7,9 @@
  */
 
 export type TradeCodeFileDto = {
-	id?: number;
-	exchangeId?: string;
-	timeFrame?: string;
-	startDate?: Date;
-	endDate?: Date;
+	id: number;
+	exchangeId: string;
+	timeFrame: string;
+	startDate: Date;
+	endDate: Date;
 };

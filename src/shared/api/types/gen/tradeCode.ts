@@ -7,15 +7,12 @@
  */
 
 export type TradeCode = {
-	id?: number;
+	id: number;
 	/**
 	 * @minLength 1
 	 * @maxLength 128
 	 */
 	exchangeId: string;
-	/**
-	 * @maxLength 512
-	 * @nullable
-	 */
-	description?: string | null;
+	/** @maxLength 512 */
+	description?: string;
 };

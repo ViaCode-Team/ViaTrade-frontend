@@ -7,7 +7,7 @@
  */
 
 export type StrategyResult = {
-	date?: Date;
-	closePrice?: number;
+	date: Date;
+	closePrice: number;
 	signal: string;
 };

@@ -1,0 +1,21 @@
+.card {
+	transition:
+		border-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease,
+		background-color 160ms ease;
+}
+
+.card:hover {
+	transform: translateY(-3px);
+	box-shadow: var(--mantine-shadow-sm);
+}
+
+.textInput {
+	flex: 1;
+	min-width: 0;
+}
+
+.cardActions {
+	flex: 0 0 auto;
+}

@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 
 import { mockStocks } from '@/entities/stock';
 import { NoteForm, usePersonalNote } from '@/features/note';
+import { NotificationList, useNotificationList } from '@/features/notification';
 import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
 import { Section } from '@/shared/ui/section';
 
@@ -19,6 +20,7 @@ export function StrategyPage() {
 	const [selectedStockIds, setSelectedStockIds] = useState<string[]>([]);
 
 	const strategyNote = usePersonalNote();
+	const notifications = useNotificationList();
 
 	if (!hasStrategyId) {
 		return <StrategyNotFound />;
@@ -56,6 +58,10 @@ export function StrategyPage() {
 					{...strategyNote.noteFormProps}
 					placeholder='Запишите важные условия, риски и наблюдения'
 				/>
+			</Section>
+
+			<Section header={{ title: 'Уведомления' }}>
+				<NotificationList {...notifications} />
 			</Section>
 		</>
 	);

@@ -16,6 +16,14 @@ export const authorizedRoutes: RouteObject[] = [
 				lazy: () => import('@/pages/signals-page'),
 			},
 			{
+				path: ROUTES.STOCKS,
+				lazy: () => import('@/pages/stocks-page'),
+			},
+			{
+				path: ROUTES.STOCK,
+				lazy: () => import('@/pages/stock-page'),
+			},
+			{
 				path: ROUTES.PROFILE,
 				lazy: () => import('@/pages/profile-page'),
 			},

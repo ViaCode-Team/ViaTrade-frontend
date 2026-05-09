@@ -1,2 +1,6 @@
-export { mockStocks } from './stock';
-export type { Stock } from './stock';
+export {
+	getStockById,
+	getStockChangeColor,
+	mockStocks,
+} from './stock';
+export type { Stock, StockLinkedStrategy } from './stock';

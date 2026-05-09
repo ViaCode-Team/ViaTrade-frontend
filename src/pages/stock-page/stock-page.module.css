@@ -1,0 +1,36 @@
+.backLink {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	width: fit-content;
+	color: var(--mantine-color-dimmed);
+	transition: color 140ms ease;
+}
+
+.backLink:hover {
+	color: var(--mantine-primary-color-filled);
+}
+
+.titleBlock {
+	position: relative;
+	padding-left: 18px;
+}
+
+.titleBlock::before {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 4px;
+	border-radius: var(--mantine-radius-xl);
+	background: var(--mantine-primary-color-filled);
+	content: '';
+}
+
+.pageTitle {
+	overflow-wrap: anywhere;
+}
+
+.pricePanel {
+	text-align: end;
+}

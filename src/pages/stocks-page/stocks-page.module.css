@@ -1,0 +1,106 @@
+.grid {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.item {
+	min-width: 0;
+	height: 100%;
+}
+
+.searchInput {
+	width: min(420px, 100%);
+}
+
+.summaryCard {
+	height: 100%;
+}
+
+.summaryIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	flex: 0 0 40px;
+	border-radius: var(--mantine-radius-sm);
+	color: var(--mantine-color-dimmed);
+	background: var(--mantine-color-default-hover);
+}
+
+.summaryIcon[data-color='green'] {
+	color: var(--mantine-color-green-7);
+	background: var(--mantine-color-green-light);
+}
+
+.summaryIcon[data-color='red'] {
+	color: var(--mantine-color-red-7);
+	background: var(--mantine-color-red-light);
+}
+
+.stockCard {
+	position: relative;
+	gap: var(--mantine-spacing-md);
+	height: 100%;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stockCard:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--mantine-shadow-md);
+}
+
+.stockCard:has(.cardLink:focus-visible) {
+	outline: 2px solid var(--mantine-primary-color-filled);
+	outline-offset: 3px;
+	box-shadow: var(--mantine-shadow-md);
+}
+
+.cardLink {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+	outline: none;
+}
+
+.stockTitle {
+	min-width: 0;
+}
+
+.ticker {
+	letter-spacing: 0;
+	overflow-wrap: anywhere;
+}
+
+.changeBadge {
+	transition: background-color 0.2s ease;
+}
+
+.stockCard:hover .changeBadge {
+	color: var(--mantine-color-white);
+	background-color: var(--card-left-border-hover-color);
+}
+
+.strategiesButton {
+	position: relative;
+	z-index: 2;
+}
+
+.modalStrategiesGrid {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.modalStrategyItem {
+	min-width: 0;
+	height: 100%;
+}
+
+@media (max-width: 36em) {
+	.searchInput {
+		width: 100%;
+	}
+}

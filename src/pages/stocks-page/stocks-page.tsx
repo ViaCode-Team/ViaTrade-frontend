@@ -5,14 +5,16 @@ import {
 	Text,
 	Title,
 } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { useMemo, useState } from 'react';
 
-import { mockStocks } from '@/entities/stock';
 import {
-	getUserStrategyIdSet,
-	useGetUsersStrategySuspense,
-	useToggleUserStrategy,
-} from '@/entities/strategy';
+	mockStocks,
+	type Stock,
+	StockCard,
+	StockLinkedStrategiesModal,
+	type StockLinkedStrategy,
+} from '@/entities/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
 import {
@@ -20,29 +22,44 @@ import {
 	getStocksSummary,
 } from './model/stock-filters';
 import cls from './stocks-page.module.css';
-import { StockCard } from './ui/stock-card';
+import { StockLinkedStrategyCard } from './ui/stock-linked-strategy-card';
 import { StocksControls } from './ui/stocks-controls';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
 
 export function StocksPage() {
 	const [searchQuery, setSearchQuery] = useState('');
-	const { data: userStrategies } = useGetUsersStrategySuspense();
-	const strategyToggle = useToggleUserStrategy();
 	const summary = useMemo(() => getStocksSummary(mockStocks), []);
 	const filteredStocks = useMemo(
 		() => getFilteredStocks({ stocks: mockStocks, searchQuery }),
 		[searchQuery],
 	);
-	const activeStrategyIds = useMemo(
-		() => getUserStrategyIdSet(userStrategies.data),
-		[userStrategies.data],
-	);
-	const pendingStrategyId = strategyToggle.isPending
-		? strategyToggle.variables?.strategyId
-		: undefined;
 
-	function handleStrategyActiveChange(strategyId: number, isActive: boolean) {
-		strategyToggle.mutate({ strategyId, isActive });
+	function renderLinkedStrategy(strategy: StockLinkedStrategy, modalId: string) {
+		return (
+			<StockLinkedStrategyCard
+				strategy={strategy}
+				onNavigate={() => {
+					modals.close(modalId);
+				}}
+			/>
+		);
+	}
+
+	function openLinkedStrategiesModal(stock: Stock) {
+		const modalId = `stock-linked-strategies-${stock.id}`;
+
+		modals.open({
+			modalId,
+			title: `Привязанные стратегии ${stock.ticker}`,
+			size: 'xl',
+			centered: true,
+			children: (
+				<StockLinkedStrategiesModal
+					stock={stock}
+					renderLinkedStrategy={(strategy) => renderLinkedStrategy(strategy, modalId)}
+				/>
+			),
+		});
 	}
 
 	return (
@@ -72,9 +89,9 @@ export function StocksPage() {
 						<li key={stock.id} className={cls.item}>
 							<StockCard
 								stock={stock}
-								activeStrategyIds={activeStrategyIds}
-								pendingStrategyId={pendingStrategyId}
-								onStrategyActiveChange={handleStrategyActiveChange}
+								onLinkedStrategiesClick={() => {
+									openLinkedStrategiesModal(stock);
+								}}
 							/>
 						</li>
 					))}

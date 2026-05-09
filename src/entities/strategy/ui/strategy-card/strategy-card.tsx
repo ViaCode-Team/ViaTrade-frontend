@@ -23,6 +23,7 @@ import cls from './strategy-card.module.css';
 
 type StrategyCardProps = {
 	strategy: StrategyCardStrategy;
+	onLinkClick?: () => void;
 	activation?: {
 		isActiveChangePending?: boolean;
 		onActiveChange: (strategyId: number, isActive: boolean) => void;
@@ -34,6 +35,7 @@ type StrategyCardProps = {
 
 export function StrategyCard({
 	strategy,
+	onLinkClick,
 	activation,
 	stockBinding,
 }: StrategyCardProps) {
@@ -66,6 +68,7 @@ export function StrategyCard({
 				to={strategyPath}
 				className={cls.cardLink}
 				aria-label={`Открыть стратегию ${strategy.name}`}
+				onClick={onLinkClick}
 			/>
 
 			<Flex direction='column' gap='xs'>

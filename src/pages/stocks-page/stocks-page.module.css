@@ -31,66 +31,6 @@
 	background: var(--mantine-color-red-light);
 }
 
-.stockCard {
-	position: relative;
-	gap: var(--mantine-spacing-md);
-	height: 100%;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.stockCard:hover {
-	transform: translateY(-5px);
-	box-shadow: var(--mantine-shadow-md);
-}
-
-.stockCard:has(.cardLink:focus-visible) {
-	outline: 2px solid var(--mantine-primary-color-filled);
-	outline-offset: 3px;
-	box-shadow: var(--mantine-shadow-md);
-}
-
-.cardLink {
-	position: absolute;
-	inset: 0;
-	z-index: 1;
-	border-radius: inherit;
-	outline: none;
-}
-
-.stockTitle {
-	min-width: 0;
-}
-
-.ticker {
-	letter-spacing: 0;
-	overflow-wrap: anywhere;
-}
-
-.changeBadge {
-	transition: background-color 0.2s ease;
-}
-
-.stockCard:hover .changeBadge {
-	color: var(--mantine-color-white);
-	background-color: var(--card-left-border-hover-color);
-}
-
-.strategiesButton {
-	position: relative;
-	z-index: 2;
-}
-
-.modalStrategiesGrid {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
-.modalStrategyItem {
-	min-width: 0;
-	height: 100%;
-}
-
 @media (max-width: 36em) {
 	.searchInput {
 		width: 100%;

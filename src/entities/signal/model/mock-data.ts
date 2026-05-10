@@ -1,11 +1,13 @@
-import type { Signal, TradeHistory } from './types';
+import type { Signal, TradeHistory } from './signal';
 
 export const mockSignals: Signal[] = [
 	{
 		id: '1',
 		asset: 'AAPL',
-		type: 'stock',
+		tradeCode: 'AAPL',
 		date: '2024-01-15',
+		dateTime: '2024-01-15T00:00:00Z',
+		time: null,
 		close: 185.91232,
 		direction: 'buy',
 		confidence: 87,
@@ -14,8 +16,10 @@ export const mockSignals: Signal[] = [
 	{
 		id: '2',
 		asset: 'TSLA',
-		type: 'stock',
+		tradeCode: 'TSLA',
 		date: '2024-01-15',
+		dateTime: '2024-01-15T00:00:00Z',
+		time: null,
 		close: 219.45,
 		direction: 'sell',
 		confidence: 72,
@@ -24,9 +28,10 @@ export const mockSignals: Signal[] = [
 	{
 		id: '3',
 		asset: 'EUR/USD',
-		type: 'futures',
 		date: '2024-01-15',
+		dateTime: '2024-01-15T10:45:00Z',
 		time: '10:45',
+		tradeCode: 'EUR/USD',
 		close: 1.0892,
 		direction: 'buy',
 		confidence: 90,
@@ -35,9 +40,10 @@ export const mockSignals: Signal[] = [
 	{
 		id: '4',
 		asset: 'Gold',
-		type: 'futures',
 		date: '2024-01-15',
+		dateTime: '2024-01-15T09:30:00Z',
 		time: '09:30',
+		tradeCode: 'Gold',
 		close: 2034.50,
 		direction: 'buy',
 		confidence: 78,
@@ -46,8 +52,10 @@ export const mockSignals: Signal[] = [
 	{
 		id: '5',
 		asset: 'MSFT',
-		type: 'stock',
+		tradeCode: 'MSFT',
 		date: '2024-01-14',
+		dateTime: '2024-01-14T00:00:00Z',
+		time: null,
 		close: 388.47,
 		direction: 'buy',
 		confidence: 82,
@@ -56,9 +64,10 @@ export const mockSignals: Signal[] = [
 	{
 		id: '6',
 		asset: 'Crude Oil',
-		type: 'futures',
 		date: '2024-01-14',
+		dateTime: '2024-01-14T14:20:00Z',
 		time: '14:20',
+		tradeCode: 'Crude Oil',
 		close: 72.68,
 		direction: 'sell',
 		confidence: 75,
@@ -67,8 +76,10 @@ export const mockSignals: Signal[] = [
 	{
 		id: '7',
 		asset: 'GOOGL',
-		type: 'stock',
+		tradeCode: 'GOOGL',
 		date: '2024-01-14',
+		dateTime: '2024-01-14T00:00:00Z',
+		time: null,
 		close: 142.38,
 		direction: 'sell',
 		confidence: 68,
@@ -77,9 +88,10 @@ export const mockSignals: Signal[] = [
 	{
 		id: '8',
 		asset: 'S&P 500',
-		type: 'futures',
 		date: '2024-01-13',
+		dateTime: '2024-01-13T16:00:00Z',
 		time: '16:00',
+		tradeCode: 'S&P 500',
 		close: 4783.45,
 		direction: 'buy',
 		confidence: 85,
@@ -96,19 +108,13 @@ export function generateMockHistory(asset: string): TradeHistory[] {
 		const volatility = basePrice * 0.02;
 		const open = basePrice + (Math.random() - 0.5) * volatility;
 		const close = open + (Math.random() - 0.5) * volatility;
-		const high = Math.max(open, close) + Math.random() * volatility * 0.5;
-		const low = Math.min(open, close) - Math.random() * volatility * 0.5;
 
 		history.push({
 			id: `${asset}-${i}`,
 			date: date.toISOString().split('T')[0],
-			open: Number(open.toFixed(2)),
-			high: Number(high.toFixed(2)),
-			low: Number(low.toFixed(2)),
+			dateTime: date.toISOString(),
 			close: Number(close.toFixed(2)),
-			volume: Math.floor(Math.random() * 1000000) + 100000,
 			signal: Math.random() > 0.6 ? 'buy' : Math.random() > 0.4 ? 'sell' : 'hold',
-			profit: Math.random() > 0.5 ? Number((Math.random() * 500).toFixed(2)) : -Number((Math.random() * 300).toFixed(2)),
 		});
 	}
 

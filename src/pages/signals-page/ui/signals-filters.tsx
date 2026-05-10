@@ -6,30 +6,24 @@ import {
 	directionOptions,
 	type SortOption,
 	sortOptions,
-	type TypeFilter,
-	typeOptions,
 } from '../model/signal-filters';
 
 type SignalsFiltersProps = {
 	searchQuery: string;
 	sortOption: SortOption;
 	directionFilter: DirectionFilter;
-	typeFilter: TypeFilter;
 	onSearchQueryChange: (value: string) => void;
 	onSortOptionChange: (value: SortOption) => void;
 	onDirectionFilterChange: (value: DirectionFilter) => void;
-	onTypeFilterChange: (value: TypeFilter) => void;
 };
 
 export function SignalsFilters({
 	searchQuery,
 	sortOption,
 	directionFilter,
-	typeFilter,
 	onSearchQueryChange,
 	onSortOptionChange,
 	onDirectionFilterChange,
-	onTypeFilterChange,
 }: SignalsFiltersProps) {
 	return (
 		<SimpleGrid minColWidth={280} spacing={{ base: 'sm', sm: 'lg' }}>
@@ -48,11 +42,6 @@ export function SignalsFilters({
 				data={directionOptions}
 				value={directionFilter}
 				onChange={(value) => value && onDirectionFilterChange(value as DirectionFilter)}
-			/>
-			<Select
-				data={typeOptions}
-				value={typeFilter}
-				onChange={(value) => value && onTypeFilterChange(value as TypeFilter)}
 			/>
 		</SimpleGrid>
 	);

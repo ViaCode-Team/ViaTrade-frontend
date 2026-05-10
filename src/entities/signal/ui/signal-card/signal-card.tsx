@@ -25,19 +25,51 @@ type SignalCardProps = {
 	onClick: (signal: Signal) => void;
 };
 
-function getConfidenceColor(confidence: number) {
+function getConfidenceColor(confidence: number | null) {
+	if (confidence === null) {
+		return 'gray';
+	}
+
 	return confidence >= 70 ? 'green' : 'yellow';
+}
+
+function getSignalDirectionLabel(signal: Signal) {
+	switch (signal.direction) {
+		case 'buy':
+			return 'Покупка';
+		case 'sell':
+			return 'Продажа';
+		case 'hold':
+			return 'Держать';
+	}
+}
+
+function getSignalDirectionColor(signal: Signal) {
+	switch (signal.direction) {
+		case 'buy':
+			return 'green';
+		case 'sell':
+			return 'red';
+		case 'hold':
+			return 'gray';
+	}
 }
 
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
+	const isSell = signal.direction === 'sell';
+	const directionColor = getSignalDirectionColor(signal);
 	const leftBorderStyle = getLeftBorderCardStyle({
 		color: isBuy
 			? 'var(--mantine-color-green-light)'
-			: 'var(--mantine-color-red-light)',
+			: isSell
+				? 'var(--mantine-color-red-light)'
+				: 'var(--mantine-color-gray-light)',
 		hoverColor: isBuy
 			? 'var(--mantine-color-green-filled)'
-			: 'var(--mantine-color-red-filled)',
+			: isSell
+				? 'var(--mantine-color-red-filled)'
+				: 'var(--mantine-color-gray-filled)',
 	});
 
 	return (
@@ -62,20 +94,21 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						{signal.asset}
 					</Title>
 					<Text size='sm' c='dimmed'>
-						{signal.type === 'stock' ? 'Акция' : 'Фьючерс'}
+						Инструмент
 					</Text>
 				</Box>
 
 				<Badge
 					variant='light'
-					color={isBuy ? 'green' : 'red'}
+					color={directionColor}
 					size='sm'
 					className={clsx(
 						cls.directionBadge,
-						isBuy ? cls.directionBadgeGreen : cls.directionBadgeRed,
+						isBuy && cls.directionBadgeGreen,
+						isSell && cls.directionBadgeRed,
 					)}
 				>
-					{isBuy ? 'Покупка' : 'Продажа'}
+					{getSignalDirectionLabel(signal)}
 				</Badge>
 			</Flex>
 
@@ -91,10 +124,14 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						value: (
 							<>
 								{signal.date}
-								{' '}
-								<Text span size='xs'>
-									{signal.time}
-								</Text>
+								{signal.time && (
+									<>
+										{' '}
+										<Text span size='xs'>
+											{signal.time}
+										</Text>
+									</>
+								)}
 							</>
 						),
 					},
@@ -109,13 +146,12 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						fw='bold'
 						c={getConfidenceColor(signal.confidence)}
 					>
-						{signal.confidence}
-						%
+						{signal.confidence === null ? 'Не указана' : `${signal.confidence}%`}
 					</Text>
 				</Flex>
 
 				<Progress
-					value={signal.confidence}
+					value={signal.confidence ?? 0}
 					bg='gray.4'
 					color={getConfidenceColor(signal.confidence)}
 				/>

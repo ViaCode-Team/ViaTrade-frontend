@@ -1,2 +1,9 @@
-export { generateMockHistory, mockSignals } from './mock-data';
-export type { Signal, TradeHistory } from './types';
+export {
+	mapStrategyResultResponseToSignals,
+	mapStrategyResultResponseToTradeHistory,
+} from './signal';
+export type {
+	Signal,
+	SignalDirection,
+	TradeHistory,
+} from './signal';

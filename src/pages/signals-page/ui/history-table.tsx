@@ -1,42 +1,67 @@
 import {
 	Badge,
 	Group,
-	Modal,
 	NumberFormatter,
 	Pagination,
 	Select,
 	Table,
 	Text,
-	Title,
 } from '@mantine/core';
 import { useMemo, useState } from 'react';
 
-import { generateMockHistory } from '@/entities/signal';
+import type { SignalDirection } from '@/entities/signal';
 
+import {
+	mapStrategyResultResponseToTradeHistory,
+	useGetResultByStrategyAndTradeCodeSuspense,
+} from '@/entities/signal';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import { getSignalHistoryMock } from '../api/signal-results.mock';
 import cls from './history-table.module.css';
+import { HistoryTableSkeleton } from './history-table.skeleton';
 
 type HistoryTableProps = {
-	asset: string;
-	strategy: string;
-	onClose: () => void;
+	tradeCode: string;
+	strategyName: string;
 };
 
 const ROWS_PER_PAGE_OPTIONS = ['5', '10', '25'];
 
-export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
+export function HistoryTable({
+	tradeCode,
+	strategyName,
+}: HistoryTableProps) {
 	const [page, setPage] = useState(1);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
+	const { data: historyData } = useGetResultByStrategyAndTradeCodeSuspense(
+		strategyName,
+		tradeCode,
+		undefined,
+		{
+			query: {
+				queryFn: () => getSignalHistoryMock(strategyName, tradeCode),
+				staleTime: Infinity,
+			},
+		},
+	);
 	const history = useMemo(
-		() => generateMockHistory(asset).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
-		[asset],
+		() => mapStrategyResultResponseToTradeHistory(
+			historyData.data,
+			strategyName,
+			tradeCode,
+		),
+		[historyData.data, strategyName, tradeCode],
 	);
 
-	const totalPages = Math.ceil(history.length / rowsPerPage);
-	const from = (page - 1) * rowsPerPage;
-	const to = Math.min(page * rowsPerPage, history.length);
+	const totalPages = Math.max(1, Math.ceil(history.length / rowsPerPage));
+	const activePage = Math.min(page, totalPages);
+	const from = (activePage - 1) * rowsPerPage;
+	const to = Math.min(activePage * rowsPerPage, history.length);
+	const start = history.length === 0 ? 0 : from + 1;
 	const paginatedHistory = history.slice(from, to);
 
-	function getSignalBadge(signal: 'buy' | 'sell' | 'hold') {
+	function getSignalBadge(signal: SignalDirection) {
 		if (signal === 'buy')
 			return <Badge classNames={{ label: cls.badgeLabel }} color='green' size='sm'>Покупать</Badge>;
 		if (signal === 'sell')
@@ -44,7 +69,7 @@ export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 		return <Badge classNames={{ label: cls.badgeLabel }} color='gray' size='sm'>Держать</Badge>;
 	}
 
-	function getRowClass(signal: 'buy' | 'sell' | 'hold') {
+	function getRowClass(signal: SignalDirection) {
 		if (signal === 'buy')
 			return cls.rowBuy;
 		if (signal === 'sell')
@@ -53,24 +78,11 @@ export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 	}
 
 	return (
-		<Modal
-			opened
-			onClose={onClose}
-			size='md'
-			title={(
-				<>
-					<Title order={5}>
-						История сигнала:
-						{' '}
-						{asset}
-					</Title>
+		<>
+			<Text size='sm' c='dimmed' mb='md'>
+				{strategyName}
+			</Text>
 
-					<Text size='sm' c='dimmed'>
-						{strategy}
-					</Text>
-				</>
-			)}
-		>
 			<div className={cls.tableWrapper}>
 				<Table highlightOnHover className={cls.table}>
 					<Table.Thead>
@@ -111,7 +123,7 @@ export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 						w={70}
 					/>
 					<Text size='sm' c='dimmed'>
-						{from + 1}
+						{start}
 						-
 						{to}
 						{' '}
@@ -121,14 +133,22 @@ export function HistoryTable({ asset, strategy, onClose }: HistoryTableProps) {
 					</Text>
 				</Group>
 
-				<Pagination
-					total={totalPages}
-					value={page}
-					onChange={setPage}
-					withEdges
-					size='sm'
-				/>
+				{totalPages > 1 && (
+					<Pagination
+						total={totalPages}
+						value={activePage}
+						onChange={setPage}
+						withEdges
+						size='sm'
+					/>
+				)}
 			</Group>
-		</Modal>
+		</>
 	);
 }
+
+export const HistoryTableBoundary = withQueryBoundary(HistoryTable, {
+	suspenseProps: {
+		fallback: <HistoryTableSkeleton />,
+	},
+});

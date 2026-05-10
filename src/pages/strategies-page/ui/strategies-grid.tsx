@@ -17,6 +17,9 @@ import {
 } from '@/entities/strategy';
 import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import { StrategiesListSkeleton } from './strategies-grid.skeleton';
 
 type StrategiesQueries = [
 	{
@@ -29,7 +32,7 @@ type StrategiesQueries = [
 	},
 ];
 
-export function StrategiesGrid() {
+export function StrategiesList() {
 	const [strategiesQuery, userStrategiesQuery]
 		= useSuspenseQueries<StrategiesQueries>({
 			queries: [
@@ -129,3 +132,9 @@ export function StrategiesGrid() {
 		</>
 	);
 }
+
+export const StrategiesListBoundary = withQueryBoundary(StrategiesList, {
+	suspenseProps: {
+		fallback: <StrategiesListSkeleton />,
+	},
+});

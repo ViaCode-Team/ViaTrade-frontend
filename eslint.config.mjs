@@ -60,6 +60,13 @@ export default antfu(
 
 			'ts/consistent-type-definitions': ['warn', 'type'],
 			'no-console': 'warn',
+
+			'react-refresh/only-export-components': [
+				'error',
+				{
+					extraHOCs: ['withQueryBoundary'],
+				},
+			],
 		},
 	},
 	{

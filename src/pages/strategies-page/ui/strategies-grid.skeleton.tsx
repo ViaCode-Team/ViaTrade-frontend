@@ -6,7 +6,7 @@ import {
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
-export function StrategiesGridSkeleton() {
+export function StrategiesListSkeleton() {
 	return (
 		<SimpleGrid
 			minColWidth={300}

@@ -12,8 +12,6 @@ import {
 	mockStocks,
 	type Stock,
 	StockCard,
-	StockLinkedStrategiesModal,
-	type StockLinkedStrategy,
 } from '@/entities/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
@@ -22,7 +20,7 @@ import {
 	getStocksSummary,
 } from './model/stock-filters';
 import cls from './stocks-page.module.css';
-import { StockLinkedStrategyCard } from './ui/stock-linked-strategy-card';
+import { StockLinkedStrategiesModalContentBoundary } from './ui/stock-linked-strategies-modal-content';
 import { StocksControls } from './ui/stocks-controls';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
 
@@ -34,15 +32,8 @@ export function StocksPage() {
 		[searchQuery],
 	);
 
-	function renderLinkedStrategy(strategy: StockLinkedStrategy, modalId: string) {
-		return (
-			<StockLinkedStrategyCard
-				strategy={strategy}
-				onNavigate={() => {
-					modals.close(modalId);
-				}}
-			/>
-		);
+	function handleLinkedStrategyNavigate(modalId: string) {
+		modals.close(modalId);
 	}
 
 	function openLinkedStrategiesModal(stock: Stock) {
@@ -54,9 +45,10 @@ export function StocksPage() {
 			size: 'xl',
 			centered: true,
 			children: (
-				<StockLinkedStrategiesModal
+				<StockLinkedStrategiesModalContentBoundary
 					stock={stock}
-					renderLinkedStrategy={(strategy) => renderLinkedStrategy(strategy, modalId)}
+					modalId={modalId}
+					onNavigate={handleLinkedStrategyNavigate}
 				/>
 			),
 		});

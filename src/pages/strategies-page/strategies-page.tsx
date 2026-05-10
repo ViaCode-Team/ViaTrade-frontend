@@ -3,10 +3,8 @@ import {
 	Text,
 	Title,
 } from '@mantine/core';
-import { Suspense } from 'react';
 
-import { StrategiesGrid } from './ui/strategies-grid';
-import { StrategiesGridSkeleton } from './ui/strategies-grid.skeleton';
+import { StrategiesListBoundary } from './ui/strategies-grid';
 
 export function StrategiesPage() {
 	return (
@@ -18,9 +16,7 @@ export function StrategiesPage() {
 				</Text>
 			</Flex>
 
-			<Suspense fallback={<StrategiesGridSkeleton />}>
-				<StrategiesGrid />
-			</Suspense>
+			<StrategiesListBoundary />
 		</>
 	);
 }

@@ -9,9 +9,11 @@ import {
 import { IconUser } from '@tabler/icons-react';
 
 import { useGetMeSuspense } from '@/entities/user';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { ProfileBanner } from './profile-banner';
 import cls from './profile-info.module.css';
+import { ProfileInfoSkeleton } from './profile-info.skeleton';
 
 export function ProfileInfo() {
 	const { data } = useGetMeSuspense();
@@ -38,3 +40,9 @@ export function ProfileInfo() {
 		</Card>
 	);
 }
+
+export const ProfileInfoBoundary = withQueryBoundary(ProfileInfo, {
+	suspenseProps: {
+		fallback: <ProfileInfoSkeleton />,
+	},
+});

@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react';
+import type { ComponentType, FC } from 'react';
 
 import { QueryBoundary, type QueryBoundaryProps } from './query-boundary';
 
@@ -7,7 +7,7 @@ type WithQueryBoundaryOptions = Omit<QueryBoundaryProps, 'children'>;
 export function withQueryBoundary<Props extends object>(
 	Component: ComponentType<Props>,
 	options?: WithQueryBoundaryOptions,
-) {
+): FC<Props> {
 	function ComponentWithQueryBoundary(props: Props) {
 		return (
 			<QueryBoundary {...options}>

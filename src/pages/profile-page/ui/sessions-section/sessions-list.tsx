@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
 import { getGetSessionsQueryKey, getSessions } from '@/entities/auth';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { useUserSessionLogout } from '../../model/use-user-session-logout';
 import {
@@ -13,6 +14,7 @@ import {
 	sortUserSessionsByActivity,
 } from '../../model/user-sessions';
 import { SessionListItem } from './session-list-item';
+import { SessionsListSkeleton } from './sessions-list.skeleton';
 
 export function SessionsList() {
 	const [page, setPage] = useState(1);
@@ -67,3 +69,9 @@ export function SessionsList() {
 		</Stack>
 	);
 }
+
+export const SessionsListBoundary = withQueryBoundary(SessionsList, {
+	suspenseProps: {
+		fallback: <SessionsListSkeleton />,
+	},
+});

@@ -4,7 +4,7 @@ type SessionsResponseData = UserSessionDto | UserSessionDto[] | null | undefined
 
 export const SESSIONS_PER_PAGE = 5;
 
-function toTimestamp(value: Date) {
+function toTimestamp(value: string | Date) {
 	return new Date(value).getTime();
 }
 

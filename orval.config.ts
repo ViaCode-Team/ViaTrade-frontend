@@ -22,12 +22,15 @@ const defaultOutput = {
 	httpClient: 'fetch',
 	client: 'react-query',
 	schemas: SCHEMAS_PATH,
+	indexFiles: false,
+	clean: false,
 	mock: true,
 
 	override: {
 		useTypeOverInterfaces: true,
-		useDates: true,
 		useBigInt: true,
+		// todo: open issue for this
+		useDates: false,
 		// In future
 		formData: true,
 
@@ -112,5 +115,6 @@ const strategyApiConfig = createApiConfig('Strategy', 'strategy', {
 export default defineConfig({
 	authApi: authApiConfig,
 	usersApi: createApiConfig('User', 'user'),
+	signalApi: createApiConfig('Result', 'signal'),
 	strategyApi: strategyApiConfig,
 });

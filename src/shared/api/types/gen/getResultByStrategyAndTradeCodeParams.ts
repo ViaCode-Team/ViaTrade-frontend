@@ -6,6 +6,7 @@
  * OpenAPI spec version: v1
  */
 
-export type DeleteUsersStrategyParams = {
-	strategyId: number;
+export type GetResultByStrategyAndTradeCodeParams = {
+	startDate?: string;
+	endTime?: string;
 };

@@ -5,6 +5,14 @@ import { defineConfig } from 'vite';
 import { analyzer } from 'vite-bundle-analyzer';
 import svgr from 'vite-plugin-svgr';
 
+const proxy = {
+	'/api': {
+		target: 'https://localhost:7249',
+		changeOrigin: true,
+		secure: false,
+	},
+} as const;
+
 // https://vite.dev/config/
 export default defineConfig({
 	plugins: [
@@ -44,12 +52,10 @@ export default defineConfig({
 	},
 
 	server: {
-		proxy: {
-			'/api': {
-				target: 'https://localhost:7249',
-				changeOrigin: true,
-				secure: false,
-			},
-		},
+		proxy,
+	},
+
+	preview: {
+		proxy,
 	},
 });

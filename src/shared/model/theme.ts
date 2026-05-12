@@ -6,6 +6,9 @@ import cls from './theme.module.css';
 
 export const brandGradient: MantineGradient = { from: '#ffb752', to: '#e09530', deg: 135 };
 
+const primaryFontFamily = 'Roboto, system-ui, -apple-system, sans-serif';
+const headingFontFamily = 'Poppins, system-ui, -apple-system, sans-serif';
+
 export const theme = createTheme({
 	primaryColor: 'brand',
 	colors: {
@@ -35,10 +38,9 @@ export const theme = createTheme({
 		],
 	},
 	defaultRadius: 'md',
-	fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-	fontFamilyMonospace: '"JetBrains Mono", ui-monospace, monospace',
+	fontFamily: primaryFontFamily,
 	headings: {
-		fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+		fontFamily: headingFontFamily,
 	},
 	components: {
 		TextInput: {

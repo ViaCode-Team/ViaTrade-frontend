@@ -1,5 +1,4 @@
 export * from './api/gen';
-export * from './api/gen/index.msw';
 export { getAccuracyColor } from './model';
 export type { Strategy, StrategyCardStrategy } from './model';
 export {

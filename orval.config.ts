@@ -24,7 +24,6 @@ const defaultOutput = {
 	schemas: SCHEMAS_PATH,
 	indexFiles: false,
 	clean: false,
-	mock: true,
 
 	override: {
 		useTypeOverInterfaces: true,
@@ -43,7 +42,6 @@ const defaultOutput = {
 		},
 
 		query: {
-			useQuery: true,
 			useMutation: true,
 			useSuspenseQuery: true,
 			usePrefetch: true,

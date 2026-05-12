@@ -1,11 +1,10 @@
-import {
-	getGetResultByStrategyAndTradeCodeResponseMock,
-	getGetResultResponseMock,
-	type getResultByStrategyAndTradeCodeResponseSuccess,
-	type getResultResponseSuccess,
+import type {
+	getResultByStrategyAndTradeCodeResponseSuccess,
+	getResultResponseSuccess,
 } from '@/entities/signal';
+import type { StrategyData } from '@/shared/api';
 
-const MOCK_SIGNAL_STRATEGIES = [
+const MOCK_SIGNAL_STRATEGIES: StrategyData[] = [
 	{
 		name: 'RSI Divergence',
 		tickers: [
@@ -69,11 +68,9 @@ const MOCK_SIGNAL_STRATEGIES = [
 ];
 
 export function getSignalResultsMock(): Promise<getResultResponseSuccess> {
-	return Promise.resolve(createMockResponse(
-		getGetResultResponseMock({
-			strategies: MOCK_SIGNAL_STRATEGIES,
-		}),
-	));
+	return Promise.resolve(createMockResponse({
+		strategies: MOCK_SIGNAL_STRATEGIES,
+	}));
 }
 
 export function getSignalHistoryMock(
@@ -87,13 +84,11 @@ export function getSignalHistoryMock(
 		(mockTicker) => mockTicker.tradeCode === tradeCode,
 	);
 
-	return Promise.resolve(createMockResponse(
-		getGetResultByStrategyAndTradeCodeResponseMock({
-			strategies: strategy && ticker
-				? [{ ...strategy, tickers: [ticker] }]
-				: [],
-		}),
-	));
+	return Promise.resolve(createMockResponse({
+		strategies: strategy && ticker
+			? [{ ...strategy, tickers: [ticker] }]
+			: [],
+	}));
 }
 
 function createMockResponse<TData>(data: TData) {

@@ -1,4 +1,5 @@
-import react from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 // import { VitePWA } from 'vite-plugin-pwa';
@@ -16,10 +17,9 @@ const proxy = {
 // https://vite.dev/config/
 export default defineConfig({
 	plugins: [
-		react({
-			babel: {
-				plugins: [['babel-plugin-react-compiler']],
-			},
+		react(),
+		babel({
+			presets: [reactCompilerPreset()],
 		}),
 		// VitePWA(),
 		svgr({
@@ -42,6 +42,9 @@ export default defineConfig({
 		}),
 		analyzer({
 			openAnalyzer: false,
+			exclude: [
+				/\.woff2?$/,
+			],
 		}),
 	],
 

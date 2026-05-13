@@ -1,5 +1,6 @@
 .link {
 	overflow: hidden;
+	padding-inline: var(--mantine-spacing-xs);
 }
 
 .body {
@@ -7,15 +8,31 @@
 	max-width: 12rem;
 	opacity: 1;
 	transition:
-		max-width 220ms ease,
-		opacity 140ms ease;
+		max-width 240ms ease,
+		opacity 160ms ease;
 }
 
 .label {
 	white-space: nowrap;
+	font-weight: 600;
 }
 
 .section {
+	width: 34px;
+	min-width: 34px;
 	flex-shrink: 0;
+}
+
+.section:where([data-position='left']) {
 	margin-inline-end: var(--mantine-spacing-sm);
+	transition: margin-inline-end 240ms ease;
+}
+
+.link[data-collapsed] .body {
+	max-width: 0;
+	opacity: 0;
+}
+
+.link[data-collapsed] .section:where([data-position='left']) {
+	margin-inline-end: 0;
 }

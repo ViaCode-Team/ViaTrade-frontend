@@ -23,7 +23,7 @@ import cls from './dashboard-layout.module.css';
 type DashboardLayoutProps = { children?: ReactNode };
 
 const DESKTOP_SIDEBAR_EXPANDED_WIDTH = 216;
-const DESKTOP_SIDEBAR_COLLAPSED_WIDTH = 52;
+const DESKTOP_SIDEBAR_COLLAPSED_WIDTH = 54;
 const NAVBAR_BREAKPOINT = 'xs' as const;
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -46,8 +46,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 				collapsed: { mobile: !mobileOpened },
 			}}
 			padding={APP_SHELL_PADDING}
-			transitionDuration={220}
-			transitionTimingFunction='ease'
+			transitionDuration={240}
+			transitionTimingFunction='cubic-bezier(0.2, 0, 0, 1)'
 		>
 			<AppShell.Header>
 				<AppHeader

@@ -23,7 +23,6 @@ export function SideBarItem({
 	return (
 		<NavLink
 			h={40}
-			px='md'
 			className={cls.link}
 			classNames={{
 				body: cls.body,
@@ -33,6 +32,7 @@ export function SideBarItem({
 			data-collapsed={isCollapsed || undefined}
 			label={text}
 			leftSection={icon}
+			noWrap
 			component={RouterLink}
 			to={path}
 			onClick={onClick}

@@ -1,11 +1,16 @@
 import { Stack } from '@mantine/core';
-import { useParams } from 'react-router';
+import { useMemo } from 'react';
+import {
+	generatePath,
+	useParams,
+} from 'react-router';
 
 import type { Stock } from '@/entities/stock';
 
 import { getStockById } from '@/entities/stock';
 import { NoteForm, usePersonalNote } from '@/features/note';
 import { NotificationList, useNotificationList } from '@/features/notification';
+import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
 
 import { BackToStocksLink } from './ui/back-to-stocks-link';
@@ -29,7 +34,17 @@ type StockPageContentProps = {
 };
 
 function StockPageContent({ stock }: StockPageContentProps) {
-	const stockNote = usePersonalNote();
+	const stockNoteSource = useMemo(
+		() => ({
+			type: 'stock' as const,
+			id: stock.id,
+			label: stock.ticker,
+			description: stock.name,
+			path: generatePath(ROUTES.STOCK, { stockId: stock.id }),
+		}),
+		[stock.id, stock.name, stock.ticker],
+	);
+	const stockNote = usePersonalNote({ source: stockNoteSource });
 	const notifications = useNotificationList();
 
 	return (

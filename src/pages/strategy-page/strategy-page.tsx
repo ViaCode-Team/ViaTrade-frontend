@@ -1,10 +1,17 @@
 import { Stack } from '@mantine/core';
-import { useState } from 'react';
-import { useParams } from 'react-router';
+import {
+	useMemo,
+	useState,
+} from 'react';
+import {
+	generatePath,
+	useParams,
+} from 'react-router';
 
 import { mockStocks } from '@/entities/stock';
 import { NoteForm, usePersonalNote } from '@/features/note';
 import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
+import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
 
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
@@ -17,8 +24,24 @@ export function StrategyPage() {
 	const strategyId = getStrategyIdFromRoute(strategyName);
 	const hasStrategyId = strategyId !== null;
 	const [selectedStockIds, setSelectedStockIds] = useState<string[]>([]);
+	const strategyNoteSource = useMemo(() => {
+		if (strategyId === null) {
+			return undefined;
+		}
 
-	const strategyNote = usePersonalNote();
+		const linkedStrategy = mockStocks
+			.flatMap((stock) => stock.linkedStrategies)
+			.find((strategy) => strategy.id === strategyId);
+
+		return {
+			type: 'strategy' as const,
+			id: String(strategyId),
+			label: linkedStrategy?.name ?? `Стратегия #${strategyId}`,
+			description: linkedStrategy?.description ?? 'Торговая стратегия',
+			path: generatePath(ROUTES.STRATEGY, { strategyName: String(strategyId) }),
+		};
+	}, [strategyId]);
+	const strategyNote = usePersonalNote({ source: strategyNoteSource });
 
 	if (!hasStrategyId) {
 		return <StrategyNotFound />;

@@ -1,16 +1,14 @@
 import {
-	Button,
 	Flex,
 	Stack,
-	Text,
-	Textarea,
 } from '@mantine/core';
 
-import { brandGradient } from '@/shared/model/theme';
-
-import type { NoteFormData } from '../model';
+import type { NoteFormData } from '@/entities/note';
 
 import { useNoteForm } from '../lib/use-note-form';
+import { NoteCharactersRemaining } from './note-characters-remaining';
+import { NoteFormActions } from './note-form-actions';
+import { NoteTextarea } from './note-textarea';
 
 type NoteFormProps = {
 	value: string;
@@ -19,10 +17,12 @@ type NoteFormProps = {
 	onSubmit: (formData: NoteFormData) => void;
 	placeholder?: string;
 	submitLabel?: string;
+	resetLabel?: string;
 	minLength?: number;
 	maxLength?: number;
 	minRows?: number;
 	maxRows?: number;
+	autoFocus?: boolean;
 };
 
 export function NoteForm({
@@ -32,16 +32,20 @@ export function NoteForm({
 	onSubmit,
 	placeholder,
 	submitLabel = 'Сохранить',
+	resetLabel = 'Сбросить',
 	minLength,
-	maxLength = 4000,
+	maxLength = 1024,
 	minRows = 4,
 	maxRows = 12,
+	autoFocus,
 }: NoteFormProps) {
 	const {
 		formData,
 		errors,
 		isSubmitDisabled,
+		isResetDisabled,
 		setField,
+		reset,
 		submit,
 	} = useNoteForm({
 		value,
@@ -53,37 +57,31 @@ export function NoteForm({
 	return (
 		<form onSubmit={submit}>
 			<Stack gap='sm'>
-				<Textarea
+				<NoteTextarea
 					value={formData.text}
-					onChange={(event) => setField('text', event.currentTarget.value)}
 					error={errors.text}
 					placeholder={placeholder}
-					size='md'
-					autosize
 					minLength={minLength}
 					maxLength={maxLength}
 					minRows={minRows}
 					maxRows={maxRows}
+					autoFocus={autoFocus}
+					onChange={(nextValue) => setField('text', nextValue)}
 				/>
 
-				<Flex justify='space-between'>
-					<Text size='sm' c='dimmed'>
-						Символов:
-						{' '}
-						{formData.text.length}
-						/
-						{maxLength}
-					</Text>
+				<Flex justify='space-between' gap='sm' wrap='wrap'>
+					<NoteCharactersRemaining
+						valueLength={formData.text.length}
+						maxLength={maxLength}
+					/>
 
-					<Button
-						variant='gradient'
-						gradient={brandGradient}
-						size='sm'
-						type='submit'
-						disabled={isSubmitDisabled}
-					>
-						{submitLabel}
-					</Button>
+					<NoteFormActions
+						submitLabel={submitLabel}
+						resetLabel={resetLabel}
+						isSubmitDisabled={isSubmitDisabled}
+						isResetDisabled={isResetDisabled}
+						onReset={reset}
+					/>
 				</Flex>
 			</Stack>
 		</form>

@@ -11,6 +11,22 @@ export type PersonalNote = {
 	updatedAt: string;
 };
 
+export type NoteSourceType = 'stock' | 'strategy';
+
+export type NoteSource = {
+	type: NoteSourceType;
+	id: string;
+	label: string;
+	description?: string;
+	path: string;
+};
+
+export type StoredPersonalNote = PersonalNote & {
+	id: string;
+	source: NoteSource;
+	createdAt: string;
+};
+
 export function getNormalizedNoteFormData(formData: NoteFormData): NoteFormData {
 	return {
 		text: formData.text.trim(),
@@ -42,4 +58,8 @@ export function createPersonalNote(formData: NoteFormData): PersonalNote {
 		text: normalizedFormData.text,
 		updatedAt: new Date().toISOString(),
 	};
+}
+
+export function getNoteId(source: NoteSource) {
+	return `${source.type}:${source.id}`;
 }

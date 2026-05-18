@@ -5,6 +5,7 @@ export const ROUTES = {
 	STOCK: '/stocks/:stockId',
 	STRATEGIES: '/strategies',
 	STRATEGY: '/strategies/:strategyName',
+	NOTES: '/notes',
 	PROFILE: '/profile',
 	EMAIL_CONFIRMATION: '/confirm-email',
 	LOGIN: '/login',

@@ -1,12 +1,11 @@
 import { type SubmitEvent, useState } from 'react';
 
-import type { NoteFormData } from '../model';
-
 import {
 	getNormalizedNoteFormData,
 	getNoteFormErrors,
+	type NoteFormData,
 	validateNoteForm,
-} from '../model';
+} from '@/entities/note';
 
 type NoteFormErrors = Partial<Record<keyof NoteFormData, string>>;
 
@@ -21,7 +20,9 @@ type UseNoteFormReturn = {
 	formData: NoteFormData;
 	errors: NoteFormErrors;
 	isSubmitDisabled: boolean;
+	isResetDisabled: boolean;
 	setField: (field: keyof NoteFormData, value: string) => void;
+	reset: () => void;
 	submit: (event: SubmitEvent<HTMLFormElement>) => void;
 };
 
@@ -37,6 +38,7 @@ export function useNoteForm({
 	const normalizedText = getNormalizedNoteFormData(formData).text;
 	const normalizedSavedText = getNormalizedNoteFormData({ text: savedValue }).text;
 	const isSubmitDisabled = normalizedText.length === 0 || normalizedText === normalizedSavedText;
+	const isResetDisabled = normalizedText === normalizedSavedText;
 
 	const setField = (field: keyof NoteFormData, value: string) => {
 		if (field === 'text') {
@@ -64,11 +66,18 @@ export function useNoteForm({
 		setErrors({});
 	};
 
+	const reset = () => {
+		onValueChange(savedValue);
+		setErrors({});
+	};
+
 	return {
 		formData,
 		errors,
 		isSubmitDisabled,
+		isResetDisabled,
 		setField,
+		reset,
 		submit,
 	};
 }

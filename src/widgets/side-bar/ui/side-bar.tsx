@@ -7,6 +7,7 @@ import {
 	IconChartCandle,
 	IconChartLine,
 	IconHome,
+	IconNotebook,
 	IconTrendingUp,
 	IconUser,
 } from '@tabler/icons-react';
@@ -46,6 +47,7 @@ const menuItems: TMenuItem[] = [
 	},
 	{ icon: <IconTrendingUp size={22} />, text: 'Акции', path: ROUTES.STOCKS },
 	{ icon: <IconChartLine size={22} />, text: 'Стратегии', path: ROUTES.STRATEGIES },
+	{ icon: <IconNotebook size={22} />, text: 'Заметки', path: ROUTES.NOTES },
 	{ icon: <IconBell size={22} />, text: 'Напоминания', path: '/reminders' },
 ] as const;
 

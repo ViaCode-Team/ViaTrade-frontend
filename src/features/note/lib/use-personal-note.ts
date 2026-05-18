@@ -1,10 +1,21 @@
-import { useState } from 'react';
+import {
+	useState,
+	useSyncExternalStore,
+} from 'react';
 
-import type { NoteFormData, PersonalNote } from '../model';
-
-import { createPersonalNote } from '../model';
+import {
+	createPersonalNote,
+	getNoteId,
+	getStoredPersonalNotes,
+	type NoteFormData,
+	type NoteSource,
+	type PersonalNote,
+	saveStoredPersonalNote,
+	subscribeStoredPersonalNotes,
+} from '@/entities/note';
 
 type UsePersonalNoteOptions = {
+	source?: NoteSource;
 	value?: string;
 	defaultValue?: string;
 	onValueChange?: (value: string) => void;
@@ -23,27 +34,54 @@ type UsePersonalNoteReturn = {
 };
 
 export function usePersonalNote({
+	source,
 	value,
 	defaultValue = '',
 	onValueChange,
 	onNoteSave,
 }: UsePersonalNoteOptions = {}): UsePersonalNoteReturn {
-	const [localValue, setLocalValue] = useState(defaultValue);
-	const [savedValue, setSavedValue] = useState(defaultValue);
-	const noteText = value ?? localValue;
+	const [localDraft, setLocalDraft] = useState(() => ({
+		sourceId: source ? getNoteId(source) : null,
+		value: defaultValue,
+	}));
+	const [localSavedValue, setLocalSavedValue] = useState(defaultValue);
+	const storedNotes = useSyncExternalStore(
+		subscribeStoredPersonalNotes,
+		getStoredPersonalNotes,
+		() => [],
+	);
+	const sourceId = source ? getNoteId(source) : null;
+	const storedNote = source
+		? storedNotes.find((note) => note.id === sourceId)
+		: null;
+	const storedValue = storedNote?.text ?? defaultValue;
+	const uncontrolledValue = source
+		? (localDraft.sourceId === sourceId ? localDraft.value : storedValue)
+		: localDraft.value;
+	const noteText = value ?? uncontrolledValue;
+	const savedValue = source ? storedValue : localSavedValue;
 
 	const handleNoteTextChange = (nextValue: string) => {
 		if (value === undefined) {
-			setLocalValue(nextValue);
+			setLocalDraft({
+				sourceId,
+				value: nextValue,
+			});
 		}
 
 		onValueChange?.(nextValue);
 	};
 
 	const handleNoteSubmit = (formData: NoteFormData) => {
-		const nextNote = createPersonalNote(formData);
+		const nextNote = source
+			? saveStoredPersonalNote(source, formData.text)
+			: createPersonalNote(formData);
 
-		setSavedValue(nextNote.text);
+		setLocalSavedValue(nextNote.text);
+		setLocalDraft({
+			sourceId,
+			value: nextNote.text,
+		});
 		onNoteSave?.(nextNote);
 	};
 

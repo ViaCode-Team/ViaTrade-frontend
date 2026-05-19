@@ -18,10 +18,6 @@
 	margin-left: auto;
 }
 
-.sortSelect {
-	width: 170px;
-}
-
 .noteActions {
 	position: relative;
 	z-index: 2;
@@ -41,21 +37,9 @@
 	text-align: center;
 }
 
-.emptyIcon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 54px;
-	height: 54px;
-	border-radius: var(--mantine-radius-md);
-	color: var(--mantine-color-dimmed);
-	background: var(--mantine-color-default-hover);
-}
-
 @media (max-width: 48em) {
 	.searchInput,
-	.controlsRight,
-	.sortSelect {
+	.controlsRight {
 		width: 100%;
 		max-width: none;
 	}

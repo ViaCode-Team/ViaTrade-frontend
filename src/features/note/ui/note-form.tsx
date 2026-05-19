@@ -1,7 +1,9 @@
 import {
+	Alert,
 	Flex,
 	Stack,
 } from '@mantine/core';
+import { IconAlertTriangle } from '@tabler/icons-react';
 
 import type { NoteFormData } from '@/entities/note';
 
@@ -23,6 +25,9 @@ type NoteFormProps = {
 	minRows?: number;
 	maxRows?: number;
 	autoFocus?: boolean;
+	isLoading?: boolean;
+	isSubmitting?: boolean;
+	errorMessage?: string;
 };
 
 export function NoteForm({
@@ -38,6 +43,9 @@ export function NoteForm({
 	minRows = 4,
 	maxRows = 12,
 	autoFocus,
+	isLoading,
+	isSubmitting,
+	errorMessage,
 }: NoteFormProps) {
 	const {
 		formData,
@@ -57,6 +65,18 @@ export function NoteForm({
 	return (
 		<form onSubmit={submit}>
 			<Stack gap='sm'>
+				{errorMessage
+					? (
+							<Alert
+								color='red'
+								variant='outline'
+								icon={<IconAlertTriangle size={18} />}
+							>
+								{errorMessage}
+							</Alert>
+						)
+					: null}
+
 				<NoteTextarea
 					value={formData.text}
 					error={errors.text}
@@ -66,6 +86,7 @@ export function NoteForm({
 					minRows={minRows}
 					maxRows={maxRows}
 					autoFocus={autoFocus}
+					disabled={isLoading || isSubmitting}
 					onChange={(nextValue) => setField('text', nextValue)}
 				/>
 
@@ -80,6 +101,7 @@ export function NoteForm({
 						resetLabel={resetLabel}
 						isSubmitDisabled={isSubmitDisabled}
 						isResetDisabled={isResetDisabled}
+						isSubmitting={isSubmitting}
 						onReset={reset}
 					/>
 				</Flex>

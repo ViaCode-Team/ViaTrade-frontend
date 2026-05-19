@@ -1,5 +1,6 @@
 export {
 	getStockById,
+	getStockByInstrumentId,
 	getStockChangeColor,
 	mockStocks,
 } from './model';

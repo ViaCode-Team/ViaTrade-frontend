@@ -1,3 +1,4 @@
+export * from './api/gen';
 export {
 	createPersonalNote,
 	deleteStoredPersonalNote,

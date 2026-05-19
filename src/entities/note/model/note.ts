@@ -8,7 +8,6 @@ export type NoteFormData = v.InferInput<typeof noteFormSchema>;
 
 export type PersonalNote = {
 	text: string;
-	updatedAt: string;
 };
 
 export type NoteSourceType = 'stock' | 'strategy';
@@ -24,7 +23,6 @@ export type NoteSource = {
 export type StoredPersonalNote = PersonalNote & {
 	id: string;
 	source: NoteSource;
-	createdAt: string;
 };
 
 export function getNormalizedNoteFormData(formData: NoteFormData): NoteFormData {
@@ -56,7 +54,6 @@ export function createPersonalNote(formData: NoteFormData): PersonalNote {
 
 	return {
 		text: normalizedFormData.text,
-		updatedAt: new Date().toISOString(),
 	};
 }
 

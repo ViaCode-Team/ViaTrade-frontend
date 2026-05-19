@@ -9,6 +9,7 @@ type NoteTextareaProps = {
 	minRows: number;
 	maxRows: number;
 	autoFocus?: boolean;
+	disabled?: boolean;
 	onChange: (value: string) => void;
 };
 
@@ -21,6 +22,7 @@ export function NoteTextarea({
 	minRows,
 	maxRows,
 	autoFocus,
+	disabled,
 	onChange,
 }: NoteTextareaProps) {
 	return (
@@ -36,6 +38,7 @@ export function NoteTextarea({
 			maxLength={maxLength}
 			minRows={minRows}
 			maxRows={maxRows}
+			disabled={disabled}
 		/>
 	);
 }

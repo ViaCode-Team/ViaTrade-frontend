@@ -11,12 +11,14 @@ type NoteEditorProps = {
 	note: StoredPersonalNote;
 	onSave: (noteId: string, text: string) => void;
 	placeholder?: string;
+	isSaving?: boolean;
 };
 
 export function NoteEditor({
 	note,
 	onSave,
 	placeholder = 'Текст заметки',
+	isSaving,
 }: NoteEditorProps) {
 	const [draftText, setDraftText] = useState(note.text);
 
@@ -32,6 +34,7 @@ export function NoteEditor({
 			minRows={4}
 			maxRows={7}
 			autoFocus
+			isSubmitting={isSaving}
 			onValueChange={setDraftText}
 			onSubmit={saveNote}
 		/>

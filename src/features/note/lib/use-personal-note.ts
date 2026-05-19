@@ -1,17 +1,17 @@
-import {
-	useState,
-	useSyncExternalStore,
-} from 'react';
+import { useState } from 'react';
 
 import {
 	createPersonalNote,
 	getNoteId,
-	getStoredPersonalNotes,
 	type NoteFormData,
 	type NoteSource,
 	type PersonalNote,
-	saveStoredPersonalNote,
-	subscribeStoredPersonalNotes,
+	useCreateInstrumentNote,
+	useCreateStrategyNote,
+	useGetByUserInstrumentAll,
+	useGetByUserStrategyAll,
+	useUpdateInstrumentNote,
+	useUpdateStrategyNote,
 } from '@/entities/note';
 
 type UsePersonalNoteOptions = {
@@ -28,6 +28,9 @@ type UsePersonalNoteReturn = {
 	noteFormProps: {
 		value: string;
 		savedValue: string;
+		isLoading?: boolean;
+		isSubmitting?: boolean;
+		errorMessage?: string;
 		onValueChange: (value: string) => void;
 		onSubmit: (formData: NoteFormData) => void;
 	};
@@ -40,47 +43,164 @@ export function usePersonalNote({
 	onValueChange,
 	onNoteSave,
 }: UsePersonalNoteOptions = {}): UsePersonalNoteReturn {
+	const sourceId = source ? getNoteId(source) : null;
+	const apiSourceId = getApiSourceId(source);
+	const isStockNote = source?.type === 'stock';
+	const isStrategyNote = source?.type === 'strategy';
+	const isApiSource = apiSourceId !== null;
+
+	const instrumentNotesQuery = useGetByUserInstrumentAll({
+		query: {
+			enabled: isStockNote && isApiSource,
+		},
+	});
+	const strategyNotesQuery = useGetByUserStrategyAll({
+		query: {
+			enabled: isStrategyNote && isApiSource,
+		},
+	});
+	const createInstrumentNoteMutation = useCreateInstrumentNote();
+	const updateInstrumentNoteMutation = useUpdateInstrumentNote();
+	const createStrategyNoteMutation = useCreateStrategyNote();
+	const updateStrategyNoteMutation = useUpdateStrategyNote();
+	const sourceNote = source?.type === 'stock'
+		? instrumentNotesQuery.data?.data.find(
+				(note) => note.tradeCodeId === apiSourceId,
+			)
+		: strategyNotesQuery.data?.data.find(
+				(note) => note.tradeStrategyId === apiSourceId,
+			);
+	const storedValue = sourceNote?.noteText ?? defaultValue;
+	const isLoading = source?.type === 'stock'
+		? instrumentNotesQuery.isLoading
+		: source?.type === 'strategy'
+			? strategyNotesQuery.isLoading
+			: false;
+	const mutationError = createInstrumentNoteMutation.error
+		?? updateInstrumentNoteMutation.error
+		?? createStrategyNoteMutation.error
+		?? updateStrategyNoteMutation.error;
+	const queryError = source?.type === 'stock'
+		? instrumentNotesQuery.error
+		: source?.type === 'strategy'
+			? strategyNotesQuery.error
+			: null;
+	const errorMessage = queryError || mutationError
+		? 'Не удалось синхронизировать заметку с API.'
+		: undefined;
+	const isSubmitting = createInstrumentNoteMutation.isPending
+		|| updateInstrumentNoteMutation.isPending
+		|| createStrategyNoteMutation.isPending
+		|| updateStrategyNoteMutation.isPending;
 	const [localDraft, setLocalDraft] = useState(() => ({
 		sourceId: source ? getNoteId(source) : null,
 		value: defaultValue,
+		isDirty: false,
 	}));
-	const [localSavedValue, setLocalSavedValue] = useState(defaultValue);
-	const storedNotes = useSyncExternalStore(
-		subscribeStoredPersonalNotes,
-		getStoredPersonalNotes,
-		() => [],
-	);
-	const sourceId = source ? getNoteId(source) : null;
-	const storedNote = source
-		? storedNotes.find((note) => note.id === sourceId)
-		: null;
-	const storedValue = storedNote?.text ?? defaultValue;
+	const [localSavedNote, setLocalSavedNote] = useState(() => ({
+		sourceId: null as string | null,
+		value: defaultValue,
+	}));
+	const savedValue = source
+		? (
+				localSavedNote.sourceId === sourceId
+					? localSavedNote.value
+					: storedValue
+			)
+		: localSavedNote.value;
+
 	const uncontrolledValue = source
-		? (localDraft.sourceId === sourceId ? localDraft.value : storedValue)
+		? (
+				localDraft.sourceId === sourceId && localDraft.isDirty
+					? localDraft.value
+					: savedValue
+			)
 		: localDraft.value;
 	const noteText = value ?? uncontrolledValue;
-	const savedValue = source ? storedValue : localSavedValue;
 
 	const handleNoteTextChange = (nextValue: string) => {
 		if (value === undefined) {
 			setLocalDraft({
 				sourceId,
 				value: nextValue,
+				isDirty: true,
 			});
 		}
 
 		onValueChange?.(nextValue);
 	};
 
-	const handleNoteSubmit = (formData: NoteFormData) => {
-		const nextNote = source
-			? saveStoredPersonalNote(source, formData.text)
-			: createPersonalNote(formData);
+	const saveApiNote = ({
+		source,
+		sourceId,
+		hasNote,
+		text,
+	}: {
+		source: NoteSource;
+		sourceId: number;
+		hasNote: boolean;
+		text: string;
+	}) => {
+		const requestData = { noteText: text };
+		const onSuccess = () => {
+			const nextNote = createPersonalNote({ text });
 
-		setLocalSavedValue(nextNote.text);
+			setLocalSavedNote({
+				sourceId: getNoteId(source),
+				value: nextNote.text,
+			});
+			setLocalDraft({
+				sourceId: getNoteId(source),
+				value: nextNote.text,
+				isDirty: false,
+			});
+			onNoteSave?.(nextNote);
+		};
+
+		if (source.type === 'stock') {
+			const mutation = hasNote
+				? updateInstrumentNoteMutation
+				: createInstrumentNoteMutation;
+
+			mutation.mutate(
+				{ idInstrument: sourceId, data: requestData },
+				{ onSuccess },
+			);
+			return;
+		}
+
+		const mutation = hasNote
+			? updateStrategyNoteMutation
+			: createStrategyNoteMutation;
+
+		mutation.mutate(
+			{ idStrategy: sourceId, data: requestData },
+			{ onSuccess },
+		);
+	};
+
+	const handleNoteSubmit = (formData: NoteFormData) => {
+		if (source && apiSourceId !== null) {
+			saveApiNote({
+				source,
+				sourceId: apiSourceId,
+				hasNote: Boolean(sourceNote),
+				text: formData.text,
+			});
+
+			return;
+		}
+
+		const nextNote = createPersonalNote(formData);
+
+		setLocalSavedNote({
+			sourceId,
+			value: nextNote.text,
+		});
 		setLocalDraft({
 			sourceId,
 			value: nextNote.text,
+			isDirty: false,
 		});
 		onNoteSave?.(nextNote);
 	};
@@ -91,8 +211,21 @@ export function usePersonalNote({
 		noteFormProps: {
 			value: noteText,
 			savedValue,
+			isLoading,
+			isSubmitting,
+			errorMessage,
 			onValueChange: handleNoteTextChange,
 			onSubmit: handleNoteSubmit,
 		},
 	};
+}
+
+function getApiSourceId(source: NoteSource | undefined) {
+	if (!source) {
+		return null;
+	}
+
+	const sourceId = Number(source.id);
+
+	return Number.isInteger(sourceId) && sourceId > 0 ? sourceId : null;
 }

@@ -16,11 +16,13 @@ import cls from '../notes-page.module.css';
 
 type NoteCardHeaderProps = {
 	note: StoredPersonalNote;
+	isDeleting?: boolean;
 	onDelete: () => void;
 };
 
 export function NoteCardHeader({
 	note,
+	isDeleting,
 	onDelete,
 }: NoteCardHeaderProps) {
 	return (
@@ -37,6 +39,8 @@ export function NoteCardHeader({
 							color='red'
 							size='lg'
 							aria-label='Удалить заметку'
+							loading={isDeleting}
+							disabled={isDeleting}
 							onClick={(event) => {
 								event.preventDefault();
 								event.stopPropagation();

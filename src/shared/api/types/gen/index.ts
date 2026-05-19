@@ -13,6 +13,8 @@ export * from './getResultByStrategyAndTradeCodeParams';
 export * from './getResultParams';
 export * from './loginRequest';
 export * from './meDto';
+export * from './note';
+export * from './noteRequest';
 export * from './problemDetails';
 export * from './registerRequest';
 export * from './strategyData';

@@ -66,14 +66,11 @@ export function getStoredPersonalNote(source: NoteSource) {
 
 export function saveStoredPersonalNote(source: NoteSource, text: string) {
 	const notes = getStoredPersonalNotes();
-	const existingNote = getStoredPersonalNote(source);
 	const nextNoteData = createPersonalNote({ text });
 	const nextNote: StoredPersonalNote = {
 		id: getNoteId(source),
 		source,
 		text: nextNoteData.text,
-		createdAt: existingNote?.createdAt ?? nextNoteData.updatedAt,
-		updatedAt: nextNoteData.updatedAt,
 	};
 
 	writeStoredPersonalNotes([
@@ -96,7 +93,6 @@ export function updateStoredPersonalNote(noteId: string, text: string) {
 	const nextNote: StoredPersonalNote = {
 		...note,
 		text: nextNoteData.text,
-		updatedAt: nextNoteData.updatedAt,
 	};
 
 	writeStoredPersonalNotes([
@@ -172,8 +168,6 @@ function isStoredPersonalNote(value: unknown): value is StoredPersonalNote {
 	return (
 		typeof note.id === 'string'
 		&& typeof note.text === 'string'
-		&& typeof note.createdAt === 'string'
-		&& typeof note.updatedAt === 'string'
 		&& isNoteSource(note.source)
 	);
 }

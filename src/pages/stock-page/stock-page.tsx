@@ -37,12 +37,12 @@ function StockPageContent({ stock }: StockPageContentProps) {
 	const stockNoteSource = useMemo(
 		() => ({
 			type: 'stock' as const,
-			id: stock.id,
+			id: String(stock.instrumentId),
 			label: stock.ticker,
 			description: stock.name,
 			path: generatePath(ROUTES.STOCK, { stockId: stock.id }),
 		}),
-		[stock.id, stock.name, stock.ticker],
+		[stock.id, stock.instrumentId, stock.name, stock.ticker],
 	);
 	const stockNote = usePersonalNote({ source: stockNoteSource });
 	const notifications = useNotificationList();

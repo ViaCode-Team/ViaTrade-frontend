@@ -1,5 +1,6 @@
 export type Stock = {
 	id: string;
+	instrumentId: number;
 	ticker: string;
 	name: string;
 	price: number;
@@ -20,6 +21,7 @@ export type StockLinkedStrategy = {
 export const mockStocks: Stock[] = [
 	{
 		id: 'aapl',
+		instrumentId: 1,
 		ticker: 'AAPL',
 		name: 'Apple Inc.',
 		price: 185.91,
@@ -32,6 +34,7 @@ export const mockStocks: Stock[] = [
 	},
 	{
 		id: 'tsla',
+		instrumentId: 2,
 		ticker: 'TSLA',
 		name: 'Tesla, Inc.',
 		price: 219.45,
@@ -44,6 +47,7 @@ export const mockStocks: Stock[] = [
 	},
 	{
 		id: 'msft',
+		instrumentId: 3,
 		ticker: 'MSFT',
 		name: 'Microsoft Corporation',
 		price: 388.47,
@@ -55,6 +59,7 @@ export const mockStocks: Stock[] = [
 	},
 	{
 		id: 'googl',
+		instrumentId: 4,
 		ticker: 'GOOGL',
 		name: 'Alphabet Inc.',
 		price: 142.38,
@@ -67,6 +72,7 @@ export const mockStocks: Stock[] = [
 	},
 	{
 		id: 'nvda',
+		instrumentId: 5,
 		ticker: 'NVDA',
 		name: 'NVIDIA Corporation',
 		price: 875.28,
@@ -79,6 +85,7 @@ export const mockStocks: Stock[] = [
 	},
 	{
 		id: 'jpm',
+		instrumentId: 6,
 		ticker: 'JPM',
 		name: 'JPMorgan Chase & Co.',
 		price: 198.64,
@@ -97,6 +104,10 @@ export function getStockById(stockId: string | undefined) {
 		stock.id === normalizedStockId
 		|| stock.ticker.toLowerCase() === normalizedStockId
 	)) ?? null;
+}
+
+export function getStockByInstrumentId(instrumentId: number | undefined) {
+	return mockStocks.find((stock) => stock.instrumentId === instrumentId) ?? null;
 }
 
 export function getStockChangeColor(dayChangePercent: number) {

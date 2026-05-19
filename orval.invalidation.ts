@@ -33,3 +33,28 @@ export const strategyMutationInvalidates = [
 		invalidates: ['getUsersStrategy', 'getAllInstrumentsLink'],
 	},
 ] satisfies MutationInvalidatesConfig;
+
+export const noteMutationInvalidates = [
+	{
+		onMutations: [
+			'createInstrumentNote',
+			'updateInstrumentNote',
+			'deleteInstrumentNote',
+		],
+		invalidates: [
+			'getByUserInstrumentAll',
+			{ query: 'getByUserInstrument', params: ['idInstrument'] },
+		],
+	},
+	{
+		onMutations: [
+			'createStrategyNote',
+			'updateStrategyNote',
+			'deleteStrategyNote',
+		],
+		invalidates: [
+			'getByUserStrategyAll',
+			{ query: 'getByUserStrategy', params: ['idStrategy'] },
+		],
+	},
+] satisfies MutationInvalidatesConfig;

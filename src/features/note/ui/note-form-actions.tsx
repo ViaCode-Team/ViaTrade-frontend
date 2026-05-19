@@ -14,6 +14,7 @@ type NoteFormActionsProps = {
 	resetLabel: string;
 	isSubmitDisabled: boolean;
 	isResetDisabled: boolean;
+	isSubmitting?: boolean;
 	onReset: () => void;
 };
 
@@ -22,6 +23,7 @@ export function NoteFormActions({
 	resetLabel,
 	isSubmitDisabled,
 	isResetDisabled,
+	isSubmitting,
 	onReset,
 }: NoteFormActionsProps) {
 	return (
@@ -31,7 +33,7 @@ export function NoteFormActions({
 				size='sm'
 				type='button'
 				leftSection={<IconRotate size={16} />}
-				disabled={isResetDisabled}
+				disabled={isResetDisabled || isSubmitting}
 				onClick={onReset}
 			>
 				{resetLabel}
@@ -44,6 +46,7 @@ export function NoteFormActions({
 				type='submit'
 				leftSection={<IconCheck size={16} />}
 				disabled={isSubmitDisabled}
+				loading={isSubmitting}
 			>
 				{submitLabel}
 			</Button>

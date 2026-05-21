@@ -5,17 +5,17 @@ import type {
 
 export type NotesSourceFilter = 'all' | NoteSourceType;
 
-type GetFilteredNotesOptions = {
-	notes: StoredPersonalNote[];
+type GetFilteredNotesOptions<Note extends StoredPersonalNote> = {
+	notes: Note[];
 	searchQuery: string;
 	sourceFilter: NotesSourceFilter;
 };
 
-export function getFilteredNotes({
+export function getFilteredNotes<Note extends StoredPersonalNote>({
 	notes,
 	searchQuery,
 	sourceFilter,
-}: GetFilteredNotesOptions) {
+}: GetFilteredNotesOptions<Note>) {
 	const normalizedQuery = searchQuery.trim().toLowerCase();
 
 	return notes.filter((note) => {

@@ -11,7 +11,7 @@ export {
 	saveStoredPersonalNote,
 	subscribeStoredPersonalNotes,
 	updateStoredPersonalNote,
-	useStoredPersonalNotes,
+	upsertStoredPersonalNote,
 	validateNoteForm,
 } from './model';
 export type {

@@ -12,7 +12,7 @@ import { IconTrash } from '@tabler/icons-react';
 
 import type { StoredPersonalNote } from '@/entities/note';
 
-import cls from '../notes-page.module.css';
+import cls from './notes-overview.module.css';
 
 type NoteCardHeaderProps = {
 	note: StoredPersonalNote;

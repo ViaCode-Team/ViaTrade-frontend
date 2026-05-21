@@ -7,7 +7,7 @@ import { IconSearch } from '@tabler/icons-react';
 
 import type { NotesSourceFilter } from '../model/note-filters';
 
-import cls from '../notes-page.module.css';
+import cls from './notes-overview.module.css';
 
 type NotesControlsProps = {
 	searchQuery: string;

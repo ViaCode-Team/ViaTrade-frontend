@@ -103,6 +103,23 @@ export function updateStoredPersonalNote(noteId: string, text: string) {
 	return nextNote;
 }
 
+export function upsertStoredPersonalNote(note: StoredPersonalNote, text: string) {
+	const notes = getStoredPersonalNotes();
+	const nextNoteData = createPersonalNote({ text });
+	const nextNote: StoredPersonalNote = {
+		id: note.id,
+		source: note.source,
+		text: nextNoteData.text,
+	};
+
+	writeStoredPersonalNotes([
+		nextNote,
+		...notes.filter((currentNote) => currentNote.id !== note.id),
+	]);
+
+	return nextNote;
+}
+
 export function deleteStoredPersonalNote(noteId: string) {
 	const notes = getStoredPersonalNotes();
 	const nextNotes = notes.filter((note) => note.id !== noteId);

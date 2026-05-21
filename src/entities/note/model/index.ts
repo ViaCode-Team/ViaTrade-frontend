@@ -20,5 +20,5 @@ export {
 	saveStoredPersonalNote,
 	subscribeStoredPersonalNotes,
 	updateStoredPersonalNote,
+	upsertStoredPersonalNote,
 } from './note-storage';
-export { useStoredPersonalNotes } from './use-stored-personal-notes';

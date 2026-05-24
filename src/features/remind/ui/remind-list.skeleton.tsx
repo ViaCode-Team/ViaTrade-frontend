@@ -8,11 +8,11 @@ import {
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
-import cls from './notification-list.module.css';
+import cls from './remind-list.module.css';
 
-const NOTIFICATION_CARD_SKELETONS = 2;
+const REMIND_CARD_SKELETONS = 2;
 
-export function NotificationListSkeleton() {
+export function RemindListSkeleton() {
 	return (
 		<SimpleGrid
 			minColWidth={320}
@@ -20,7 +20,7 @@ export function NotificationListSkeleton() {
 			component='ul'
 			className={cls.grid}
 		>
-			{createSkeletons(NOTIFICATION_CARD_SKELETONS).map((item) => (
+			{createSkeletons(REMIND_CARD_SKELETONS).map((item) => (
 				<li key={item.id} className={cls.item}>
 					<Card withBorder bg='transparent' padding='sm'>
 						<Stack gap='sm'>

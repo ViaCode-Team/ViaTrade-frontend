@@ -9,28 +9,6 @@
 	height: 100%;
 }
 
-.summaryIcon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 40px;
-	height: 40px;
-	flex: 0 0 40px;
-	border-radius: var(--mantine-radius-sm);
-	color: var(--mantine-color-dimmed);
-	background: var(--mantine-color-default-hover);
-}
-
-.summaryIcon[data-color='green'] {
-	color: var(--mantine-color-green-7);
-	background: var(--mantine-color-green-light);
-}
-
-.summaryIcon[data-color='red'] {
-	color: var(--mantine-color-red-7);
-	background: var(--mantine-color-red-light);
-}
-
 @media (max-width: 36em) {
 	.searchInput {
 		width: 100%;

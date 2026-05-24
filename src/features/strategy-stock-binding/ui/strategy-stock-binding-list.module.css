@@ -7,10 +7,6 @@
 	min-width: 0;
 }
 
-.searchInput {
-	width: min(300px, 100%, 500px);
-}
-
 .grid {
 	list-style: none;
 	padding: 0;

@@ -9,7 +9,7 @@ import type { Stock } from '@/entities/stock';
 
 import { getStockById } from '@/entities/stock';
 import { NoteForm, usePersonalNote } from '@/features/note';
-import { NotificationList, useNotificationList } from '@/features/notification';
+import { RemindList, useRemindList } from '@/features/remind';
 import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
 
@@ -45,7 +45,7 @@ function StockPageContent({ stock }: StockPageContentProps) {
 		[stock.id, stock.instrumentId, stock.name, stock.ticker],
 	);
 	const stockNote = usePersonalNote({ source: stockNoteSource });
-	const notifications = useNotificationList();
+	const remindList = useRemindList();
 
 	return (
 		<>
@@ -63,8 +63,8 @@ function StockPageContent({ stock }: StockPageContentProps) {
 				/>
 			</Section>
 
-			<Section header={{ title: 'Уведомления' }}>
-				<NotificationList {...notifications} />
+			<Section header={{ title: 'Напоминания' }}>
+				<RemindList {...remindList} />
 			</Section>
 		</>
 	);

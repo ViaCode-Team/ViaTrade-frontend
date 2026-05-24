@@ -1,9 +1,7 @@
 import {
-	Flex,
 	SimpleGrid,
 	Stack,
 	Text,
-	Title,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useMemo, useState } from 'react';
@@ -14,6 +12,7 @@ import {
 	StockCard,
 } from '@/entities/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { PageHeader } from '@/shared/ui/page-header';
 
 import {
 	getFilteredStocks,
@@ -56,12 +55,10 @@ export function StocksPage() {
 
 	return (
 		<>
-			<Flex direction='column' gap='xs'>
-				<Title order={1}>Акции</Title>
-				<Text c='dimmed'>
-					Следите за инструментами, динамикой дня и стратегиями, которые подходят под выбранный тикер.
-				</Text>
-			</Flex>
+			<PageHeader
+				title='Акции'
+				description='Следите за инструментами, динамикой дня и стратегиями, которые подходят под выбранный тикер.'
+			/>
 
 			<StocksMarketSummary {...summary} />
 

@@ -15,33 +15,33 @@ import {
 } from '@tabler/icons-react';
 
 import type {
-	NotificationEditableField,
-	NotificationItem,
+	RemindEditableField,
+	RemindItem,
 } from '../model';
 
-import cls from './notification-list.module.css';
+import cls from './remind-list.module.css';
 
-type NotificationCardProps = {
-	notification: NotificationItem;
-	onNotificationChange: (
-		notificationId: string,
-		field: NotificationEditableField,
+type RemindCardProps = {
+	remind: RemindItem;
+	onRemindChange: (
+		remindId: string,
+		field: RemindEditableField,
 		value: string,
 	) => void;
-	onNotificationDuplicate: (notificationId: string) => void;
-	onNotificationClearText: (notificationId: string) => void;
-	onNotificationDelete: (notificationId: string) => void;
+	onRemindDuplicate: (remindId: string) => void;
+	onRemindClearText: (remindId: string) => void;
+	onRemindDelete: (remindId: string) => void;
 };
 
-export function NotificationCard({
-	notification,
-	onNotificationChange,
-	onNotificationDuplicate,
-	onNotificationClearText,
-	onNotificationDelete,
-}: NotificationCardProps) {
-	const handleFieldChange = (field: NotificationEditableField, value: string) => {
-		onNotificationChange(notification.id, field, value);
+export function RemindCard({
+	remind,
+	onRemindChange,
+	onRemindDuplicate,
+	onRemindClearText,
+	onRemindDelete,
+}: RemindCardProps) {
+	const handleFieldChange = (field: RemindEditableField, value: string) => {
+		onRemindChange(remind.id, field, value);
 	};
 	const handleDateTimeChange = (value: string | null) => {
 		if (value === null) {
@@ -62,18 +62,18 @@ export function NotificationCard({
 			bg='transparent'
 			withBorder
 			padding='sm'
-			aria-label='Карточка уведомления'
+			aria-label='Карточка напоминания'
 			className={cls.card}
 		>
 			<Stack gap='xs'>
 				<Group align='flex-start' gap='xs' wrap='nowrap'>
 					<Textarea
-						value={notification.text}
+						value={remind.text}
 						onChange={(event) => {
 							handleFieldChange('text', event.currentTarget.value);
 						}}
 						placeholder='Что нужно напомнить'
-						aria-label='Текст уведомления'
+						aria-label='Текст напоминания'
 						autosize
 						minRows={4}
 						maxRows={4}
@@ -83,28 +83,28 @@ export function NotificationCard({
 					/>
 
 					<Stack gap='xs' className={cls.cardActions}>
-						<Tooltip label='Удалить уведомление'>
+						<Tooltip label='Удалить напоминание'>
 							<ActionIcon
 								variant='subtle'
 								color='red'
 								size='md'
-								aria-label='Удалить уведомление'
+								aria-label='Удалить напоминание'
 								onClick={() => {
-									onNotificationDelete(notification.id);
+									onRemindDelete(remind.id);
 								}}
 							>
 								<IconTrash size={18} />
 							</ActionIcon>
 						</Tooltip>
 
-						<Tooltip label='Дублировать уведомление'>
+						<Tooltip label='Дублировать напоминание'>
 							<ActionIcon
 								variant='subtle'
 								color='gray'
 								size='md'
-								aria-label='Дублировать уведомление'
+								aria-label='Дублировать напоминание'
 								onClick={() => {
-									onNotificationDuplicate(notification.id);
+									onRemindDuplicate(remind.id);
 								}}
 							>
 								<IconCopy size={18} />
@@ -116,9 +116,9 @@ export function NotificationCard({
 								variant='subtle'
 								color='gray'
 								size='md'
-								aria-label='Очистить текст уведомления'
+								aria-label='Очистить текст напоминания'
 								onClick={() => {
-									onNotificationClearText(notification.id);
+									onRemindClearText(remind.id);
 								}}
 							>
 								<IconEraser size={18} />
@@ -131,10 +131,10 @@ export function NotificationCard({
 
 				<DateTimePicker
 					placeholder='Выберите дату и время'
-					value={getDateTimePickerValue(notification)}
+					value={getDateTimePickerValue(remind)}
 					onChange={handleDateTimeChange}
 					valueFormat='DD.MM.YYYY HH:mm'
-					defaultTimeValue={notification.time || '09:00'}
+					defaultTimeValue={remind.time || '09:00'}
 					leftSection={<IconCalendarTime size={16} />}
 					leftSectionPointerEvents='none'
 					timePickerProps={{ withDropdown: true }}
@@ -144,10 +144,10 @@ export function NotificationCard({
 	);
 }
 
-function getDateTimePickerValue(notification: NotificationItem) {
-	if (!notification.date || !notification.time) {
+function getDateTimePickerValue(remind: RemindItem) {
+	if (!remind.date || !remind.time) {
 		return null;
 	}
 
-	return `${notification.date} ${notification.time}:00`;
+	return `${remind.date} ${remind.time}:00`;
 }

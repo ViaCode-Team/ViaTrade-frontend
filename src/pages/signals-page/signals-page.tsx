@@ -1,8 +1,10 @@
-import { Stack, Title } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useMemo, useState } from 'react';
 
 import type { Signal } from '@/entities/signal';
+
+import { PageHeader } from '@/shared/ui/page-header';
 
 import type {
 	DirectionFilter,
@@ -12,6 +14,7 @@ import type {
 import { HistoryTableBoundary } from './ui/history-table';
 import { SignalsFilters } from './ui/signals-filters';
 import { SignalsListBoundary } from './ui/signals-list';
+import { SignalsSummaryBoundary } from './ui/signals-summary';
 
 export function SignalsPage() {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -42,7 +45,9 @@ export function SignalsPage() {
 
 	return (
 		<>
-			<Title order={1}>Сигналы</Title>
+			<PageHeader title='Сигналы' />
+
+			<SignalsSummaryBoundary />
 
 			<Stack>
 				<Stack gap='sm'>

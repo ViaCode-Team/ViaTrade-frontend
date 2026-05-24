@@ -7,7 +7,6 @@ import { IconSearch } from '@tabler/icons-react';
 
 import type { NotesSourceFilter } from '../model/note-filters';
 
-import cls from './notes-overview.module.css';
 
 type NotesControlsProps = {
 	searchQuery: string;
@@ -25,7 +24,7 @@ export function NotesControls({
 	return (
 		<Group gap='sm' align='center' justify='space-between'>
 			<TextInput
-				className={cls.searchInput}
+				flex={1}
 				value={searchQuery}
 				onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
 				placeholder='Поиск по заметкам и источникам'
@@ -33,18 +32,16 @@ export function NotesControls({
 				size='sm'
 			/>
 
-			<Group gap='sm' className={cls.controlsRight}>
-				<SegmentedControl
-					value={sourceFilter}
-					onChange={(value) => onSourceFilterChange(value as NotesSourceFilter)}
-					size='sm'
-					data={[
-						{ label: 'Все', value: 'all' },
-						{ label: 'Акции', value: 'stock' },
-						{ label: 'Стратегии', value: 'strategy' },
-					]}
-				/>
-			</Group>
+			<SegmentedControl
+				value={sourceFilter}
+				onChange={(value) => onSourceFilterChange(value as NotesSourceFilter)}
+				size='sm'
+				data={[
+					{ label: 'Все', value: 'all' },
+					{ label: 'Акции', value: 'stock' },
+					{ label: 'Стратегии', value: 'strategy' },
+				]}
+			/>
 		</Group>
 	);
 }

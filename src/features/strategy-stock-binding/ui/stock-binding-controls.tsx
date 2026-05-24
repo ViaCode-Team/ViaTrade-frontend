@@ -51,7 +51,6 @@ export function StockBindingControls({
 					placeholder={searchPlaceholder}
 					aria-label='Поиск акции'
 					leftSection={<IconSearch size={16} />}
-					className={cls.searchInput}
 				/>
 
 				<Flex align='center' gap={4} wrap='wrap'>

@@ -19,7 +19,7 @@ export function StocksControls({
 			placeholder='Найти по тикеру или названию'
 			aria-label='Поиск акции'
 			leftSection={<IconSearch size={16} />}
-			maw={300}
+			w='100%'
 		/>
 	);
 }

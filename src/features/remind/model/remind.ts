@@ -1,31 +1,31 @@
-export type NotificationItem = {
+export type RemindItem = {
 	id: string;
 	text: string;
 	date: string;
 	time: string;
 };
 
-export type NotificationEditableField = Exclude<keyof NotificationItem, 'id'>;
+export type RemindEditableField = Exclude<keyof RemindItem, 'id'>;
 
-export function createNotificationItem(): NotificationItem {
+export function createRemindItem(): RemindItem {
 	const now = new Date();
 
 	return {
 		id: crypto.randomUUID(),
 		text: '',
-		date: formatNotificationDate(now),
-		time: formatNotificationTime(now),
+		date: formatRemindDate(now),
+		time: formatRemindTime(now),
 	};
 }
 
-export function createNotificationCopy(notification: NotificationItem): NotificationItem {
+export function createRemindCopy(remind: RemindItem): RemindItem {
 	return {
-		...notification,
+		...remind,
 		id: crypto.randomUUID(),
 	};
 }
 
-function formatNotificationDate(date: Date) {
+function formatRemindDate(date: Date) {
 	const year = date.getFullYear();
 	const month = padDatePart(date.getMonth() + 1);
 	const day = padDatePart(date.getDate());
@@ -33,7 +33,7 @@ function formatNotificationDate(date: Date) {
 	return `${year}-${month}-${day}`;
 }
 
-function formatNotificationTime(date: Date) {
+function formatRemindTime(date: Date) {
 	const hours = padDatePart(date.getHours());
 	const minutes = padDatePart(date.getMinutes());
 

@@ -23,13 +23,13 @@ type SideBarProps = {
 	onClose?: () => void;
 };
 
-type TMenuItem = {
+type MenuItem = {
 	icon: ReactNode;
 	text: string;
 	path: string;
 };
 
-const menuItems: TMenuItem[] = [
+const menuItems: MenuItem[] = [
 	{
 		icon: <IconHome size={22} />,
 		text: 'Главная',
@@ -48,7 +48,7 @@ const menuItems: TMenuItem[] = [
 	{ icon: <IconTrendingUp size={22} />, text: 'Акции', path: ROUTES.STOCKS },
 	{ icon: <IconChartLine size={22} />, text: 'Стратегии', path: ROUTES.STRATEGIES },
 	{ icon: <IconNotebook size={22} />, text: 'Заметки', path: ROUTES.NOTES },
-	{ icon: <IconBell size={22} />, text: 'Напоминания', path: '/reminders' },
+	{ icon: <IconBell size={22} />, text: 'Напоминания', path: ROUTES.REMINDERS },
 ] as const;
 
 export function SideBar({ isCollapsed = false, mobileOpen, onClose }: SideBarProps) {

@@ -19,3 +19,13 @@
 .cardActions {
 	flex: 0 0 auto;
 }
+
+.grid {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.item {
+	display: contents;
+}

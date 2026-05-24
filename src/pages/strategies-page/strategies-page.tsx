@@ -1,20 +1,17 @@
-import {
-	Flex,
-	Text,
-	Title,
-} from '@mantine/core';
+import { PageHeader } from '@/shared/ui/page-header';
 
 import { StrategiesListBoundary } from './ui/strategies-grid';
+import { StrategiesSummaryBoundary } from './ui/strategies-summary';
 
 export function StrategiesPage() {
 	return (
 		<>
-			<Flex direction='column' gap='xs'>
-				<Title order={1}>Стратегии</Title>
-				<Text c='dimmed'>
-					Подберите стратегию под свой стиль торговли и горизонт инвестирования.
-				</Text>
-			</Flex>
+			<PageHeader
+				title='Стратегии'
+				description='Подберите стратегию под свой стиль торговли и горизонт инвестирования.'
+			/>
+
+			<StrategiesSummaryBoundary />
 
 			<StrategiesListBoundary />
 		</>

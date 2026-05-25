@@ -1,4 +1,5 @@
 import { Stack } from '@mantine/core';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import {
 	useMemo,
 	useState,
@@ -9,6 +10,7 @@ import {
 } from 'react-router';
 
 import { mockStocks } from '@/entities/stock';
+import { getGetAllSuspenseQueryOptions } from '@/entities/strategy';
 import { NoteForm, usePersonalNote } from '@/features/note';
 import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
 import { ROUTES } from '@/shared/model/routes';
@@ -21,7 +23,12 @@ import { StrategyNotFound } from './ui/strategy-not-found';
 
 export function StrategyPage() {
 	const { strategyName } = useParams();
-	const strategyId = getStrategyIdFromRoute(strategyName);
+	const strategiesQuery = useSuspenseQuery(getGetAllSuspenseQueryOptions());
+	const decodedName = decodeURIComponent(strategyName || '').toLowerCase();
+	const strategy = strategiesQuery.data.data.find(
+		(s) => s.name.toLowerCase() === decodedName,
+	);
+	const strategyId = strategy ? strategy.id : null;
 	const hasStrategyId = strategyId !== null;
 	const [selectedStockIds, setSelectedStockIds] = useState<string[]>([]);
 	const strategyNoteSource = useMemo(() => {
@@ -29,18 +36,14 @@ export function StrategyPage() {
 			return undefined;
 		}
 
-		const linkedStrategy = mockStocks
-			.flatMap((stock) => stock.linkedStrategies)
-			.find((strategy) => strategy.id === strategyId);
-
 		return {
 			type: 'strategy' as const,
 			id: String(strategyId),
-			label: linkedStrategy?.name ?? `Стратегия #${strategyId}`,
-			description: linkedStrategy?.description ?? 'Торговая стратегия',
-			path: generatePath(ROUTES.STRATEGY, { strategyName: String(strategyId) }),
+			label: strategy?.name ?? `Стратегия #${strategyId}`,
+			description: strategy?.description ?? 'Торговая стратегия',
+			path: generatePath(ROUTES.STRATEGY, { strategyName: strategy?.name ?? String(strategyId) }),
 		};
-	}, [strategyId]);
+	}, [strategyId, strategy]);
 	const strategyNote = usePersonalNote({ source: strategyNoteSource });
 
 	if (!hasStrategyId) {
@@ -82,14 +85,4 @@ export function StrategyPage() {
 			</Section>
 		</>
 	);
-}
-
-function getStrategyIdFromRoute(strategyName: string | undefined) {
-	const strategyId = Number(strategyName);
-
-	if (!Number.isInteger(strategyId) || strategyId <= 0) {
-		return null;
-	}
-
-	return strategyId;
 }

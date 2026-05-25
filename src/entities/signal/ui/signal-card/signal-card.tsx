@@ -10,7 +10,7 @@ import {
 } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
-import { Link } from 'react-router';
+import { generatePath, Link } from 'react-router';
 
 import type { Signal } from '@/entities/signal';
 
@@ -158,7 +158,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 			</Flex>
 
 			<Link
-				to={ROUTES.STRATEGIES}
+				to={generatePath(ROUTES.STRATEGY, { strategyName: signal.strategy })}
 				className={cls.strategy}
 			>
 				<Text span size='sm' lineClamp={1}>

@@ -36,3 +36,17 @@
 	overflow: visible;
 	text-overflow: clip;
 }
+
+.strategyLink {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: var(--mantine-color-text);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.strategyLink:hover {
+	color: var(--mantine-color-anchor);
+}

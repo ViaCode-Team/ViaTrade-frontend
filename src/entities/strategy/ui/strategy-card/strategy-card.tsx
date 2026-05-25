@@ -40,7 +40,7 @@ export function StrategyCard({
 	stockBinding,
 }: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
-		strategyName: String(strategy.id),
+		strategyName: strategy.name,
 	});
 	const leftBorderStyle = getLeftBorderCardStyle({
 		color: strategy.isActive

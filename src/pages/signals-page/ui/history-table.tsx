@@ -1,5 +1,6 @@
 import {
 	Badge,
+	Flex,
 	Group,
 	NumberFormatter,
 	Pagination,
@@ -7,7 +8,10 @@ import {
 	Table,
 	Text,
 } from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { IconChevronRight } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
+import { generatePath, Link as RouterLink } from 'react-router';
 
 import type { SignalDirection } from '@/entities/signal';
 
@@ -15,6 +19,7 @@ import {
 	mapStrategyResultResponseToTradeHistory,
 	useGetResultByStrategyAndTradeCodeSuspense,
 } from '@/entities/signal';
+import { ROUTES } from '@/shared/model/routes';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -80,9 +85,19 @@ export function HistoryTable({
 
 	return (
 		<>
-			<Text size='sm' c='dimmed' mb='md'>
-				{strategyName}
-			</Text>
+			<RouterLink
+				to={generatePath(ROUTES.STRATEGY, { strategyName })}
+				className={cls.strategyLink}
+				onClick={() => modals.closeAll()}
+			>
+				<Text span size='sm' lineClamp={1}>
+					{strategyName}
+				</Text>
+
+				<Flex flex='0 0 auto'>
+					<IconChevronRight size={16} />
+				</Flex>
+			</RouterLink>
 
 			<div className={cls.tableWrapper}>
 				<Table highlightOnHover className={cls.table}>

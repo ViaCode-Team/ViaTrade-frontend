@@ -1,6 +1,7 @@
-import { Stack, Text, Title } from '@mantine/core';
+import { Stack } from '@mantine/core';
 
-import cls from '../strategy-page.module.css';
+import { EmptyState } from '@/shared/ui/empty-state';
+
 import { BackToStrategiesLink } from './back-to-strategies-link';
 
 export function StrategyNotFound() {
@@ -8,15 +9,7 @@ export function StrategyNotFound() {
 		<Stack gap='md'>
 			<BackToStrategiesLink />
 
-			<Stack gap={4}>
-				<Title order={2} className={cls.notFoundTitle}>
-					Стратегия не найдена
-				</Title>
-
-				<Text size='sm' c='dimmed'>
-					Проверьте адрес страницы или вернитесь к списку стратегий.
-				</Text>
-			</Stack>
+			<EmptyState title='Стратегия не найдена' description='Проверьте адрес страницы или вернитесь к списку стратегий.'></EmptyState>
 		</Stack>
 	);
 }

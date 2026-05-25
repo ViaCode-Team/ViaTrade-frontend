@@ -17,17 +17,17 @@ export function DashboardPage() {
 				<SummaryCard
 					title='Всего сделок'
 					value={mockStats.totalTrades}
-					subtitle={`Прибыльных: ${mockStats.profitableTrades} | Убыточных: ${mockStats.losingTrades}`}
+					description={`Прибыльных: ${mockStats.profitableTrades} | Убыточных: ${mockStats.losingTrades}`}
 				/>
 				<SummaryCard
 					title='Общая прибыль'
 					value={`$${mockStats.totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
-					subtitle={`Средняя: $${mockStats.averageProfit.toFixed(2)}`}
+					description={`Средняя: $${mockStats.averageProfit.toFixed(2)}`}
 				/>
 				<SummaryCard
 					title='Win Rate'
 					value={`${mockStats.winRate.toFixed(1)}%`}
-					subtitle={`Profit Factor: ${mockStats.profitFactor}`}
+					description={`Profit Factor: ${mockStats.profitFactor}`}
 				/>
 				<SummaryCard
 					title='Среднее время на сделку'

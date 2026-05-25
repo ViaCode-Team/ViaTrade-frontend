@@ -11,17 +11,19 @@ import {
 export type SummaryCardProps = {
 	title: string;
 	value?: ReactNode;
-	subtitle?: ReactNode;
+	description?: ReactNode;
 	color?: string;
 	isLoading?: boolean;
+	descriptionIsLoading?: boolean;
 };
 
 export function SummaryCard({
 	title,
 	value,
-	subtitle,
+	description,
 	color = 'gray',
 	isLoading,
+	descriptionIsLoading,
 }: SummaryCardProps) {
 	return (
 		<Card withBorder p={{ base: 'sm', sm: 'md' }}>
@@ -32,7 +34,12 @@ export function SummaryCard({
 
 				{isLoading
 					? (
-							<Skeleton height={28} width='50%' radius='sm' />
+							<>
+								<Skeleton height={30} width='30%' radius='sm' />
+								{descriptionIsLoading && (
+									<Skeleton height={17} width='70%' radius='sm' />
+								)}
+							</>
 						)
 					: (
 							<>
@@ -47,9 +54,9 @@ export function SummaryCard({
 									</Title>
 								)}
 
-								{subtitle && (
+								{description !== undefined && (
 									<Text size='xs' c='dimmed'>
-										{subtitle}
+										{description}
 									</Text>
 								)}
 							</>

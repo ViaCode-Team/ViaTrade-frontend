@@ -5,4 +5,4 @@ export {
 	mockStocks,
 } from './model';
 export type { Stock, StockLinkedStrategy } from './model';
-export { StockCard, StockLinkedStrategiesModal } from './ui';
+export { StockCard, StockCardSkeleton, StockLinkedStrategiesModal } from './ui';

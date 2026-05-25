@@ -9,3 +9,4 @@ export {
 	useToggleUserStrategy,
 } from './model';
 export { StrategyCard } from './ui/strategy-card';
+export { StrategyCardSkeleton } from './ui/strategy-card/strategy-card.skeleton';

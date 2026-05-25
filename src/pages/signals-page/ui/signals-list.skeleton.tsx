@@ -1,5 +1,6 @@
-import { SimpleGrid, Skeleton } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 
+import { SignalCardSkeleton } from '@/entities/signal';
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
@@ -11,7 +12,9 @@ export function SignalsListSkeleton() {
 			component='ul'
 		>
 			{createSkeletons(6).map((item) => (
-				<Skeleton key={item.id} component='li' h={260} />
+				<li key={item.id}>
+					<SignalCardSkeleton />
+				</li>
 			))}
 		</SimpleGrid>
 	);

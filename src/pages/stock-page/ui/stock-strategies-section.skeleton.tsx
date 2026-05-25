@@ -1,8 +1,6 @@
-import {
-	SimpleGrid,
-	Skeleton,
-} from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 
+import { StrategyCardSkeleton } from '@/entities/strategy';
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { Section } from '@/shared/ui/section';
@@ -22,7 +20,9 @@ export function StockStrategiesSectionSkeleton() {
 				p={0}
 			>
 				{createSkeletons(3).map((item) => (
-					<Skeleton key={item.id} component='li' h={260} />
+					<li key={item.id}>
+						<StrategyCardSkeleton />
+					</li>
 				))}
 			</SimpleGrid>
 		</Section>

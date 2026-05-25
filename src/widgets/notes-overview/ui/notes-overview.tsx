@@ -10,7 +10,8 @@ import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { useNotesOverview } from '../lib/use-notes-overview';
 import { NoteCard } from './note-card';
 import { NotesControls } from './notes-controls';
-import { EmptyNotesState, LoadingNotesState } from './notes-empty-state';
+import { EmptyNotesState } from './notes-empty-state';
+import { NotesListSkeleton } from './notes-list.skeleton';
 import cls from './notes-overview.module.css';
 import { NotesSummary } from './notes-summary';
 
@@ -57,7 +58,7 @@ export function NotesOverview() {
 
 				{isLoading
 					? (
-							<LoadingNotesState />
+							<NotesListSkeleton />
 						)
 					: filteredNotes.length > 0
 						? (

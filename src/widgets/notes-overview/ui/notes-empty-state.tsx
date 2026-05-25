@@ -1,7 +1,5 @@
 import {
-	Card,
 	Flex,
-	Loader,
 	Stack,
 	Text,
 	ThemeIcon,
@@ -9,20 +7,6 @@ import {
 } from '@mantine/core';
 import { IconNotesOff } from '@tabler/icons-react';
 
-import cls from './notes-overview.module.css';
-
-export function LoadingNotesState() {
-	return (
-		<Card withBorder p='xl' className={cls.emptyState}>
-			<Stack gap='sm' align='center'>
-				<Loader size='sm' />
-				<Text size='sm' c='dimmed'>
-					Заметки загружаются
-				</Text>
-			</Stack>
-		</Card>
-	);
-}
 
 type EmptyNotesStateProps = {
 	hasNotes: boolean;

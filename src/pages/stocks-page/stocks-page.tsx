@@ -1,7 +1,5 @@
 import {
-	SimpleGrid,
 	Stack,
-	Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useMemo, useState } from 'react';
@@ -9,27 +7,18 @@ import { useMemo, useState } from 'react';
 import {
 	mockStocks,
 	type Stock,
-	StockCard,
 } from '@/entities/stock';
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { PageHeader } from '@/shared/ui/page-header';
 
-import {
-	getFilteredStocks,
-	getStocksSummary,
-} from './model/stock-filters';
-import cls from './stocks-page.module.css';
+import { getStocksSummary } from './model/stock-filters';
 import { StockLinkedStrategiesModalContentBoundary } from './ui/stock-linked-strategies-modal-content';
 import { StocksControls } from './ui/stocks-controls';
+import { StocksListBoundary } from './ui/stocks-list/stocks-list';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
 
 export function StocksPage() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const summary = useMemo(() => getStocksSummary(mockStocks), []);
-	const filteredStocks = useMemo(
-		() => getFilteredStocks({ stocks: mockStocks, searchQuery }),
-		[searchQuery],
-	);
 
 	function handleLinkedStrategyNavigate(modalId: string) {
 		modals.close(modalId);
@@ -68,30 +57,11 @@ export function StocksPage() {
 					onSearchQueryChange={setSearchQuery}
 				/>
 
-				<SimpleGrid
-					minColWidth={300}
-					spacing={CONTENT_GRID_SPACING}
-					component='ul'
-					className={cls.grid}
-				>
-					{filteredStocks.map((stock) => (
-						<li key={stock.id} className={cls.item}>
-							<StockCard
-								stock={stock}
-								onLinkedStrategiesClick={() => {
-									openLinkedStrategiesModal(stock);
-								}}
-							/>
-						</li>
-					))}
-				</SimpleGrid>
+				<StocksListBoundary
+					searchQuery={searchQuery}
+					onLinkedStrategiesClick={openLinkedStrategiesModal}
+				/>
 			</Stack>
-
-			{filteredStocks.length === 0 && (
-				<Text size='sm' c='dimmed'>
-					Акции не найдены. Измените запрос.
-				</Text>
-			)}
 		</>
 	);
 }

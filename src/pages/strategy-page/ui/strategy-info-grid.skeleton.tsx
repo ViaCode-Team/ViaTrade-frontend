@@ -1,23 +1,19 @@
-import {
-	Card,
-	SimpleGrid,
-	Skeleton,
-	Stack,
-} from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
+
+import { createSkeletons } from '@/shared/lib/skeleton';
+
+import { StrategyInfoCardSkeleton } from './strategy-info-card.skeleton';
 
 const STRATEGY_INFO_CARD_SKELETONS = 3;
+
+const skeletons = createSkeletons(STRATEGY_INFO_CARD_SKELETONS);
 
 export function StrategyInfoGridSkeleton() {
 	return (
 		<section>
 			<SimpleGrid minColWidth={300} autoFlow='auto-fit'>
-				{Array.from({ length: STRATEGY_INFO_CARD_SKELETONS }, (_, index) => (
-					<Card key={index}>
-						<Stack gap='sm'>
-							<Skeleton h={28} w='60%' radius='sm' />
-							<Skeleton h={44} radius='sm' />
-						</Stack>
-					</Card>
+				{skeletons.map((skeleton) => (
+					<StrategyInfoCardSkeleton key={skeleton.id} />
 				))}
 			</SimpleGrid>
 		</section>

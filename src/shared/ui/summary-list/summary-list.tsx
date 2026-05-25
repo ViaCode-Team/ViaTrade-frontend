@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 
-import cls from './summary-list.module.css';
+import { SimpleGrid } from '@mantine/core';
+
+import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
 export type SummaryListProps = {
 	children: ReactNode;
@@ -8,8 +10,8 @@ export type SummaryListProps = {
 
 export function SummaryList({ children }: SummaryListProps) {
 	return (
-		<div className={cls.list}>
+		<SimpleGrid minColWidth={300} spacing={CONTENT_GRID_SPACING}>
 			{children}
-		</div>
+		</SimpleGrid>
 	);
 }

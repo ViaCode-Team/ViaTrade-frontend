@@ -8,8 +8,6 @@ import {
 	Title,
 } from '@mantine/core';
 
-import cls from './summary-card.module.css';
-
 export type SummaryCardProps = {
 	title: string;
 	value?: ReactNode;
@@ -26,7 +24,7 @@ export function SummaryCard({
 	isLoading,
 }: SummaryCardProps) {
 	return (
-		<Card withBorder p={{ base: 'sm', sm: 'md' }} className={cls.card}>
+		<Card withBorder p={{ base: 'sm', sm: 'md' }}>
 			<Stack gap={4} justify='center'>
 				<Text size='xs' c='dimmed' tt='uppercase' fw={700}>
 					{title}
@@ -44,7 +42,6 @@ export function SummaryCard({
 										fw='bold'
 										c={color !== 'gray' ? color : undefined}
 										ff='monospace'
-										fz={{ base: 'h4', sm: 'h3' }}
 									>
 										{value}
 									</Title>

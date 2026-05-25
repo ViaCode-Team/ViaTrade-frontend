@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
 	Flex,
 	type FlexProps,
@@ -6,12 +8,12 @@ import {
 } from '@mantine/core';
 
 export type EmptyStateProps = {
-	title?: React.ReactNode;
-	description?: React.ReactNode;
+	title?: ReactNode;
+	description?: ReactNode;
 } & FlexProps;
 
 export function EmptyState({
-	title = 'Нет данных',
+	title = 'Данные отсутствуют',
 	description,
 	...props
 }: EmptyStateProps) {

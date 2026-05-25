@@ -30,9 +30,8 @@ export function DashboardPage() {
 					subtitle={`Profit Factor: ${mockStats.profitFactor}`}
 				/>
 				<SummaryCard
-					title='Среднее время'
+					title='Среднее время на сделку'
 					value={mockStats.averageHoldTime}
-					subtitle='на сделку'
 				/>
 			</SummaryList>
 

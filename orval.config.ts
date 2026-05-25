@@ -83,38 +83,28 @@ function createApiConfig(
 	};
 }
 
-const authApiConfig = createApiConfig('Auth', 'auth', {
-	output: {
-		override: {
-			query: {
-				mutationInvalidates: authMutationInvalidates,
-			},
-
-			operations: {
-				'GetSessions': {
-					query: {
-						useInfinite: true,
-					},
+export default defineConfig({
+	authApi: createApiConfig('Auth', 'auth', {
+		output: {
+			override: {
+				query: {
+					mutationInvalidates: authMutationInvalidates,
 				},
 			},
 		},
-	},
-});
-
-const strategyApiConfig = createApiConfig('Strategy', 'strategy', {
-	output: {
-		override: {
-			query: {
-				mutationInvalidates: strategyMutationInvalidates,
-			},
-		},
-	},
-});
-
-export default defineConfig({
-	authApi: authApiConfig,
+	}),
 	usersApi: createApiConfig('User', 'user'),
 	signalApi: createApiConfig('Result', 'signal'),
+	statisticApi: createApiConfig('Statistic', 'statistic'),
+	strategyApi: createApiConfig('Strategy', 'strategy', {
+		output: {
+			override: {
+				query: {
+					mutationInvalidates: strategyMutationInvalidates,
+				},
+			},
+		},
+	}),
 	noteApi: createApiConfig('Note', 'note', {
 		output: {
 			override: {
@@ -124,5 +114,4 @@ export default defineConfig({
 			},
 		},
 	}),
-	strategyApi: strategyApiConfig,
 });

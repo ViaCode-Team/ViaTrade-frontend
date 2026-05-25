@@ -9,6 +9,7 @@
 export * from './createUserStrategyRequest';
 export * from './deleteInstrumentsLinkParams';
 export * from './deleteUsersStrategyParams';
+export * from './getByUserParams';
 export * from './getResultByStrategyAndTradeCodeParams';
 export * from './getResultParams';
 export * from './loginRequest';
@@ -21,6 +22,8 @@ export * from './strategyData';
 export * from './strategyResult';
 export * from './strategyResultResponse';
 export * from './tickerResults';
+export * from './trade';
+export * from './tradeRequest';
 export * from './tradeStrategy';
 export * from './userSessionDto';
 export * from './userStrategyTradeCodeDto';

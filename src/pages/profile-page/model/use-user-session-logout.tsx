@@ -33,6 +33,7 @@ function openLogoutConfirmation({
 		confirmProps: {
 			color: 'red',
 		},
+		withCloseButton: false,
 		onConfirm,
 	});
 }

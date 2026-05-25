@@ -6,7 +6,6 @@
  * OpenAPI spec version: v1
  */
 import {
-	useInfiniteQuery,
 	useMutation,
 	useQuery,
 	useQueryClient,
@@ -15,9 +14,7 @@ import {
 import type {
 	DataTag,
 	DefinedInitialDataOptions,
-	DefinedUseInfiniteQueryResult,
 	DefinedUseQueryResult,
-	InfiniteData,
 	InvalidateOptions,
 	MutationFunction,
 	MutationFunctionContext,
@@ -25,8 +22,6 @@ import type {
 	QueryFunction,
 	QueryKey,
 	UndefinedInitialDataOptions,
-	UseInfiniteQueryOptions,
-	UseInfiniteQueryResult,
 	UseMutationOptions,
 	UseMutationResult,
 	UseQueryOptions,
@@ -141,7 +136,6 @@ export function getLoginMutationOptions<TError = ErrorType<ProblemDetails>, TCon
 	const onSuccess = (data: Awaited<ReturnType<typeof login>>, variables: { data: LoginRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetSessionsInfiniteQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
@@ -244,7 +238,6 @@ export function getRegisterMutationOptions<TError = ErrorType<ProblemDetails>, T
 	const onSuccess = (data: Awaited<ReturnType<typeof register>>, variables: { data: RegisterRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetSessionsInfiniteQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
@@ -345,7 +338,6 @@ export function getRefreshMutationOptions<TError = ErrorType<ProblemDetails>, TC
 	const onSuccess = (data: Awaited<ReturnType<typeof refresh>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetSessionsInfiniteQueryKey() });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -445,7 +437,6 @@ export function getLogoutMutationOptions<TError = ErrorType<ProblemDetails>, TCo
 	const onSuccess = (data: Awaited<ReturnType<typeof logout>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.resetQueries({ queryKey: getGetSessionsQueryKey() });
-			queryClient.resetQueries({ queryKey: getGetSessionsInfiniteQueryKey() });
 			queryClient.resetQueries({ queryKey: getGetMeQueryKey() });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
@@ -546,7 +537,6 @@ export function getLogoutAllMutationOptions<TError = ErrorType<ProblemDetails>, 
 	const onSuccess = (data: Awaited<ReturnType<typeof logoutAll>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.resetQueries({ queryKey: getGetSessionsQueryKey() });
-			queryClient.resetQueries({ queryKey: getGetSessionsInfiniteQueryKey() });
 			queryClient.resetQueries({ queryKey: getGetMeQueryKey() });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
@@ -631,86 +621,10 @@ export async function getSessions(options?: RequestInit): Promise<getSessionsRes
 }
 
 
-export function getGetSessionsInfiniteQueryKey() {
-	return [
-		'infinite',
-		'getSessions',
-	] as const;
-}
-
 export function getGetSessionsQueryKey() {
 	return [
 		'getSessions',
 	] as const;
-}
-
-
-export function getGetSessionsInfiniteQueryOptions<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
-	const { query: queryOptions, request: requestOptions } = options ?? {};
-
-	const queryKey = queryOptions?.queryKey ?? getGetSessionsInfiniteQueryKey();
-
-
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSessions>>> = ({ signal }) => getSessions({ signal, ...requestOptions });
-
-
-	return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
-}
-
-export type GetSessionsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getSessions>>>;
-export type GetSessionsInfiniteQueryError = ErrorType<ProblemDetails>;
-
-
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
-	options: { query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>> & Pick<
-		DefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getSessions>>,
-			TError,
-			Awaited<ReturnType<typeof getSessions>>
-		>,
-		'initialData'
-	>; request?: SecondParameter<typeof customInstance>; },
-	queryClient?: QueryClient,
-): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
-	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>> & Pick<
-		UndefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getSessions>>,
-			TError,
-			Awaited<ReturnType<typeof getSessions>>
-		>,
-		'initialData'
-	>; request?: SecondParameter<typeof customInstance>; },
-	queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
-	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
-	queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-export function useGetSessionsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getSessions>>>, TError = ErrorType<ProblemDetails>>(
-	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
-	queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetSessionsInfiniteQueryOptions(options);
-
-	const query = useInfiniteQuery(queryOptions, queryClient) as UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	return { ...query, queryKey: queryOptions.queryKey };
-}
-
-export async function prefetchGetSessionsInfiniteQuery<TData = Awaited<ReturnType<typeof getSessions>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getSessions>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
-	const queryOptions = getGetSessionsInfiniteQueryOptions(options);
-
-	await queryClient.prefetchInfiniteQuery(queryOptions);
-
-	return queryClient;
-}
-
-export async function invalidateGetSessionsInfinite(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
-	await queryClient.invalidateQueries({ queryKey: getGetSessionsInfiniteQueryKey() }, options);
-
-	return queryClient;
 }
 
 

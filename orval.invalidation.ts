@@ -5,19 +5,17 @@ export const authMutationInvalidates = [
 		onMutations: ['login', 'register'],
 		invalidates: [
 			'getSessions',
-			'getSessionsInfinite',
 			{ query: 'getMe', file: '@/entities/user' },
 		],
 	},
 	{
 		onMutations: ['refresh'],
-		invalidates: ['getSessions', 'getSessionsInfinite'],
+		invalidates: ['getSessions'],
 	},
 	{
 		onMutations: ['logout', 'logoutAll'],
 		invalidates: [
 			{ query: 'getSessions', invalidateMode: 'reset' },
-			{ query: 'getSessionsInfinite', invalidateMode: 'reset' },
 			{ query: 'getMe', file: '@/entities/user', invalidateMode: 'reset' },
 		],
 	},

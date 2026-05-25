@@ -47,6 +47,10 @@ export const authorizedRoutes: RouteObject[] = [
 				path: ROUTES.EMAIL_CONFIRMATION,
 				lazy: () => import('@/pages/email-confirmation-page'),
 			},
+			{
+				path: ROUTES.STATISTICS,
+				lazy: () => import('@/pages/statistics-page'),
+			},
 		],
 	},
 ];

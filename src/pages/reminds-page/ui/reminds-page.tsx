@@ -18,7 +18,6 @@ export function RemindsPage() {
 
 			<RemindList
 				{...remindList}
-				emptyText='Напоминаний пока нет. Нажмите «+», чтобы добавить первое.'
 			/>
 		</>
 	);

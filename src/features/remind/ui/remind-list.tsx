@@ -44,7 +44,6 @@ export function RemindList({
 	onRemindDuplicate,
 	onRemindClearText,
 	onRemindDelete,
-	emptyText = 'Напоминаний пока нет',
 }: RemindListProps) {
 	const hasReminds = reminds.length > 0;
 
@@ -97,7 +96,7 @@ export function RemindList({
 							)}
 
 							{!hasReminds && (
-								<EmptyState title={emptyText} />
+								<EmptyState title='Напоминаний пока нет.' description='Нажмите «+», чтобы добавить первое.' />
 							)}
 						</>
 					)}

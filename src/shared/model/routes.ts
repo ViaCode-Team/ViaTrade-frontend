@@ -11,6 +11,7 @@ export const ROUTES = {
 	EMAIL_CONFIRMATION: '/confirm-email',
 	LOGIN: '/login',
 	REGISTER: '/register',
+	STATISTICS: '/statistics',
 } as const;
 
 export type PathParams = {

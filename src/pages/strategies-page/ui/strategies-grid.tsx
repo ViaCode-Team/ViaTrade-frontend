@@ -1,4 +1,4 @@
-import { Modal, SimpleGrid, Text } from '@mantine/core';
+import { Modal, SimpleGrid } from '@mantine/core';
 import { useSuspenseQueries } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
@@ -17,6 +17,7 @@ import {
 } from '@/entities/strategy';
 import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { StrategiesListSkeleton } from './strategies-grid.skeleton';
@@ -125,9 +126,9 @@ export function StrategiesList() {
 			</SimpleGrid>
 
 			{strategies.length === 0 && (
-				<Text size='sm' c='dimmed'>
-					Стратегии пока не доступны.
-				</Text>
+				<EmptyState
+					title='Стратегии пока не доступны'
+				/>
 			)}
 		</>
 	);

@@ -57,6 +57,12 @@ function StrategiesSummary() {
 
 export const StrategiesSummaryBoundary = withQueryBoundary(StrategiesSummary, {
 	suspenseProps: {
-		fallback: null,
+		fallback: (
+			<SummaryList>
+				<SummaryCard title='Всего' isLoading />
+				<SummaryCard title='Активные' isLoading color='green' />
+				<SummaryCard title='Отключены' isLoading color='gray' />
+			</SummaryList>
+		),
 	},
 });

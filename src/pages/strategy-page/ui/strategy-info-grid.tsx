@@ -8,6 +8,7 @@ import {
 import type { Strategy } from '@/entities/strategy';
 
 import { mapTradeStrategyToStrategy, useGetById } from '@/entities/strategy';
+import { EmptyState } from '@/shared/ui/empty-state';
 
 import { StrategyInfoCard } from './strategy-info-card';
 import { StrategyInfoGridSkeleton } from './strategy-info-grid.skeleton';
@@ -77,7 +78,7 @@ export function StrategyInfoGrid({ strategyId }: StrategyInfoGridProps) {
 		);
 
 	if (visibleSections.length === 0) {
-		return null;
+		return <EmptyState title='Информация о стратегии не заполнена' />;
 	}
 
 	return (

@@ -24,6 +24,7 @@ export function NotesControls({
 	return (
 		<Group gap='sm' align='center' justify='space-between'>
 			<TextInput
+				miw={300}
 				flex={1}
 				value={searchQuery}
 				onChange={(event) => onSearchQueryChange(event.currentTarget.value)}

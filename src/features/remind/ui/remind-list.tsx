@@ -10,6 +10,7 @@ import { IconPlus } from '@tabler/icons-react';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { brandGradient } from '@/shared/model/theme';
+import { EmptyState } from '@/shared/ui/empty-state';
 
 import type {
 	RemindEditableField,
@@ -96,9 +97,7 @@ export function RemindList({
 							)}
 
 							{!hasReminds && (
-								<Text size='sm' c='dimmed'>
-									{emptyText}
-								</Text>
+								<EmptyState title={emptyText} />
 							)}
 						</>
 					)}

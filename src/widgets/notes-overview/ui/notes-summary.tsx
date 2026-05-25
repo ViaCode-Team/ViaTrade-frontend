@@ -5,14 +5,15 @@ type NotesSummaryProps = {
 	total: number;
 	stock: number;
 	strategy: number;
+	isLoading?: boolean;
 };
 
-export function NotesSummary({ total, stock, strategy }: NotesSummaryProps) {
+export function NotesSummary({ total, stock, strategy, isLoading }: NotesSummaryProps) {
 	return (
 		<SummaryList>
-			<SummaryCard title='Всего' value={total} />
-			<SummaryCard title='По акциям' value={stock} />
-			<SummaryCard title='По стратегиям' value={strategy} />
+			<SummaryCard title='Всего' value={total} isLoading={isLoading} />
+			<SummaryCard title='По акциям' value={stock} isLoading={isLoading} />
+			<SummaryCard title='По стратегиям' value={strategy} isLoading={isLoading} />
 		</SummaryList>
 	);
 }

@@ -6,11 +6,11 @@ import {
 import { IconAlertTriangle } from '@tabler/icons-react';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { EmptyState } from '@/shared/ui/empty-state';
 
 import { useNotesOverview } from '../lib/use-notes-overview';
 import { NoteCard } from './note-card';
 import { NotesControls } from './notes-controls';
-import { EmptyNotesState } from './notes-empty-state';
 import { NotesListSkeleton } from './notes-list.skeleton';
 import cls from './notes-overview.module.css';
 import { NotesSummary } from './notes-summary';
@@ -32,9 +32,11 @@ export function NotesOverview() {
 		deleteNote,
 	} = useNotesOverview();
 
+	const hasNotes = notes.length > 0;
+
 	return (
 		<>
-			<NotesSummary {...summary} />
+			<NotesSummary {...summary} isLoading={isLoading} />
 
 			<Stack>
 				{hasError
@@ -81,7 +83,14 @@ export function NotesOverview() {
 								</Flex>
 							)
 						: (
-								<EmptyNotesState hasNotes={notes.length > 0} />
+								<>
+									<EmptyState
+										title={hasNotes ? 'По фильтрам ничего не найдено' : 'Заметок пока нет'}
+										description={hasNotes
+											? 'Измените поиск или тип источника.'
+											: 'Создайте заметку на странице акции или стратегии, и она появится здесь.'}
+									/>
+								</>
 							)}
 			</Stack>
 		</>

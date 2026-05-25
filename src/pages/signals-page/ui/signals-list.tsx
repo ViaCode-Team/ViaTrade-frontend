@@ -1,4 +1,4 @@
-import { SimpleGrid, Stack, Text, Title } from '@mantine/core';
+import { SimpleGrid, Stack, Text } from '@mantine/core';
 import { useMemo } from 'react';
 
 import type { Signal } from '@/entities/signal';
@@ -9,6 +9,7 @@ import {
 	useGetResultSuspense,
 } from '@/entities/signal';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import type { SignalFilters } from '../model/signal-filters';
@@ -67,14 +68,11 @@ export function SignalsList({
 			</SimpleGrid>
 
 			{filteredAndSortedSignals.length === 0 && (
-				<Stack gap='xs' justify='center' className={cls.emptyState}>
-					<Title order={4}>
-						Ничего не найдено
-					</Title>
-					<Text size='sm' c='dimmed'>
-						Попробуйте изменить параметры поиска или фильтры
-					</Text>
-				</Stack>
+				<EmptyState
+					className={cls.emptyState}
+					title='Ничего не найдено'
+					description='Попробуйте изменить параметры поиска или фильтры'
+				/>
 			)}
 		</Stack>
 	);

@@ -1,9 +1,10 @@
-import { SimpleGrid, Stack, Text } from '@mantine/core';
+import { SimpleGrid, Stack } from '@mantine/core';
 import { useState } from 'react';
 
 import type { Stock } from '@/entities/stock';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { EmptyState } from '@/shared/ui/empty-state';
 
 import {
 	getFilteredStocks,
@@ -91,9 +92,7 @@ export function StrategyStockBindingList({
 			</SimpleGrid>
 
 			{visibleStocks.length === 0 && (
-				<Text size='sm' c='dimmed'>
-					{emptyText}
-				</Text>
+				<EmptyState title={emptyText} />
 			)}
 		</Stack>
 	);

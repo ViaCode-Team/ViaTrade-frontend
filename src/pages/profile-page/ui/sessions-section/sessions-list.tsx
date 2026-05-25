@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
 import { getGetSessionsQueryKey, getSessions } from '@/entities/auth';
+import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { useUserSessionLogout } from '../../model/use-user-session-logout';
@@ -45,27 +46,35 @@ export function SessionsList() {
 
 	return (
 		<Stack gap='md'>
-			<Stack component='ul' m={0} p={0} gap='xs'>
-				{paginatedSessions.map((session) => (
-					<SessionListItem
-						key={session.id}
-						session={session}
-						isCurrent={session.id === currentSessionId}
-						onLogoutSession={handleLogoutSession}
-					/>
-				))}
-			</Stack>
+			{paginatedSessions.length === 0
+				? (
+						<EmptyState title='Активные сессии не найдены' />
+					)
+				: (
+						<>
+							<Stack component='ul' m={0} p={0} gap='xs'>
+								{paginatedSessions.map((session) => (
+									<SessionListItem
+										key={session.id}
+										session={session}
+										isCurrent={session.id === currentSessionId}
+										onLogoutSession={handleLogoutSession}
+									/>
+								))}
+							</Stack>
 
-			{totalPages > 1 && (
-				<Group justify='center' mt='sm'>
-					<Pagination
-						total={totalPages}
-						value={activePage}
-						onChange={setPage}
-						size='sm'
-					/>
-				</Group>
-			)}
+							{totalPages > 1 && (
+								<Group justify='center' mt='sm'>
+									<Pagination
+										total={totalPages}
+										value={activePage}
+										onChange={setPage}
+										size='sm'
+									/>
+								</Group>
+							)}
+						</>
+					)}
 		</Stack>
 	);
 }

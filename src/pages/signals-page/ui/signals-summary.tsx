@@ -38,6 +38,12 @@ function SignalsSummary() {
 
 export const SignalsSummaryBoundary = withQueryBoundary(SignalsSummary, {
 	suspenseProps: {
-		fallback: null,
+		fallback: (
+			<SummaryList>
+				<SummaryCard title='Всего' isLoading />
+				<SummaryCard title='Покупка' isLoading color='green' />
+				<SummaryCard title='Продажа' isLoading color='red' />
+			</SummaryList>
+		),
 	},
 });

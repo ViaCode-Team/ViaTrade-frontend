@@ -15,6 +15,7 @@ import {
 	mapStrategyResultResponseToTradeHistory,
 	useGetResultByStrategyAndTradeCodeSuspense,
 } from '@/entities/signal';
+import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { getSignalHistoryMock } from '../api/signal-results.mock';
@@ -93,18 +94,27 @@ export function HistoryTable({
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>
-
-						{paginatedHistory.map((row) => (
-							<Table.Tr key={row.id} className={getRowClass(row.signal)}>
-								<Table.Td>{row.date}</Table.Td>
-								<Table.Td className={cls.alignCenter}>
-									<NumberFormatter value={row.close} suffix=' ₽' decimalScale={3} thousandSeparator='&#8201;' />
-								</Table.Td>
-								<Table.Td className={cls.alignCenter}>
-									{getSignalBadge(row.signal)}
-								</Table.Td>
-							</Table.Tr>
-						))}
+						{history.length === 0
+							? (
+									<Table.Tr>
+										<Table.Td colSpan={3}>
+											<EmptyState title='История сигналов пуста' />
+										</Table.Td>
+									</Table.Tr>
+								)
+							: (
+									paginatedHistory.map((row) => (
+										<Table.Tr key={row.id} className={getRowClass(row.signal)}>
+											<Table.Td>{row.date}</Table.Td>
+											<Table.Td className={cls.alignCenter}>
+												<NumberFormatter value={row.close} suffix=' ₽' decimalScale={3} thousandSeparator='&#8201;' />
+											</Table.Td>
+											<Table.Td className={cls.alignCenter}>
+												{getSignalBadge(row.signal)}
+											</Table.Td>
+										</Table.Tr>
+									))
+								)}
 					</Table.Tbody>
 				</Table>
 			</div>

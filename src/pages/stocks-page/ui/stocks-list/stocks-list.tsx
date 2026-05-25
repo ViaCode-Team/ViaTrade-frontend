@@ -1,8 +1,9 @@
-import { SimpleGrid, Text } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { type Stock, StockCard } from '@/entities/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { stocksQueryOptions } from '../../model/stocks-query';
@@ -24,9 +25,10 @@ export function StocksList({
 
 	if (filteredStocks.length === 0) {
 		return (
-			<Text size='sm' c='dimmed'>
-				Акции не найдены. Измените запрос.
-			</Text>
+			<EmptyState
+				title='Акции не найдены'
+				description='Попробуйте изменить поисковый запрос'
+			/>
 		);
 	}
 

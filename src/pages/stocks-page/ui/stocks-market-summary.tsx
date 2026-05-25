@@ -9,6 +9,7 @@ type StocksMarketSummaryProps = {
 	gainersCount: number;
 	losersCount: number;
 	averageChange: number;
+	isLoading?: boolean;
 };
 
 export function StocksMarketSummary({
@@ -16,22 +17,26 @@ export function StocksMarketSummary({
 	gainersCount,
 	losersCount,
 	averageChange,
+	isLoading,
 }: StocksMarketSummaryProps) {
 	return (
 		<SummaryList>
 			<SummaryCard
 				title='Инструменты'
 				value={totalCount}
+				isLoading={isLoading}
 			/>
 			<SummaryCard
 				title='Растут сегодня'
 				value={gainersCount}
 				color='green'
+				isLoading={isLoading}
 			/>
 			<SummaryCard
 				title='Снижаются'
 				value={losersCount}
 				color='red'
+				isLoading={isLoading}
 			/>
 			<SummaryCard
 				title='Среднее изменение'
@@ -47,6 +52,7 @@ export function StocksMarketSummary({
 					</>
 				)}
 				color={getStockChangeColor(averageChange)}
+				isLoading={isLoading}
 			/>
 		</SummaryList>
 	);

@@ -5,27 +5,23 @@ import dayjs from 'dayjs';
 import { useGetByUserSuspense } from '@/entities/statistic/api/gen';
 import { mockTrades } from '@/entities/statistic/model/mock';
 import { EmptyState } from '@/shared/ui/empty-state';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-import { SummaryCard } from '@/shared/ui/summary-card';
 
-import classes from './statistics-dashboard.module.css';
-import { StatisticsDashboardSkeleton } from './statistics-dashboard.skeleton';
+import cls from './statistics-dashboard.module.css';
 
-function StatisticsDashboard() {
+export function StatisticsDashboard() {
 	const { data } = useGetByUserSuspense();
 
 	// Используем моковые данные, если с сервера пришел пустой массив (для проверки отображения)
-	const trades = data.data && data.data.length > 0 ? data.data : mockTrades;
+	const trades = data.data.length === 0 ? mockTrades : data.data;
 
-	if (trades.length === 0) {
+	const totalTrades = trades.length;
+
+	if (totalTrades === 0) {
 		return <EmptyState title='Статистика недоступна' description='Добавьте сделки, чтобы увидеть статистику.' />;
 	}
 
 	// Calculate metrics
-	const totalTrades = trades.length;
 	const profitableTrades = trades.filter((t) => (t.netIncome ?? 0) > 0).length;
-	const winRate = totalTrades > 0 ? (profitableTrades / totalTrades) * 100 : 0;
-	const totalNetIncome = trades.reduce((acc, t) => acc + (t.netIncome ?? 0), 0);
 
 	// PnL over time
 	const sortedTrades = [...trades].sort((a, b) => dayjs(a.dateClose ?? a.dateOpen).valueOf() - dayjs(b.dateClose ?? b.dateOpen).valueOf());
@@ -58,23 +54,10 @@ function StatisticsDashboard() {
 	}));
 
 	return (
-		<div className={classes.root}>
-			<div className={classes.metricsGrid}>
-				<SummaryCard title='Всего сделок' value={totalTrades} />
-				<SummaryCard
-					title='Винрейт'
-					value={`${winRate.toFixed(1)}%`}
-					color={winRate >= 50 ? 'teal' : 'red'}
-				/>
-				<SummaryCard
-					title='Общая прибыль (PnL)'
-					value={`$${totalNetIncome.toFixed(2)}`}
-					color={totalNetIncome >= 0 ? 'teal' : 'red'}
-				/>
-			</div>
+		<div className={cls.root}>
 
-			<div className={classes.chartsGrid}>
-				<Card withBorder className={classes.chartCard}>
+			<div className={cls.chartsGrid}>
+				<Card withBorder className={cls.chartCard}>
 					<Title order={4}>Накопительная прибыль</Title>
 					<Text size='sm' c='dimmed' mb='md'>Ваша прибыль и убытки с течением времени</Text>
 					<AreaChart
@@ -86,7 +69,7 @@ function StatisticsDashboard() {
 					/>
 				</Card>
 
-				<Card withBorder className={classes.chartCard}>
+				<Card withBorder className={cls.chartCard}>
 					<Title order={4}>Соотношение Прибыль / Убыток</Title>
 					<Text size='sm' c='dimmed' mb='md'>Прибыльные и убыточные сделки</Text>
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -100,7 +83,7 @@ function StatisticsDashboard() {
 					</div>
 				</Card>
 
-				<Card withBorder className={classes.chartCard}>
+				<Card withBorder className={cls.chartCard}>
 					<Title order={4}>Сделки по типам</Title>
 					<Text size='sm' c='dimmed' mb='md'>Распределение типов сделок (Long/Short)</Text>
 					<BarChart
@@ -114,9 +97,3 @@ function StatisticsDashboard() {
 		</div>
 	);
 }
-
-export const StatisticsDashboardBoundary = withQueryBoundary(StatisticsDashboard, {
-	suspenseProps: {
-		fallback: <StatisticsDashboardSkeleton />,
-	},
-});

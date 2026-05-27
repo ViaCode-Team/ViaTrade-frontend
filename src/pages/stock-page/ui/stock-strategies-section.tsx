@@ -8,8 +8,8 @@ import {
 	StrategyCard,
 	toStrategyCardStrategy,
 	useGetUsersStrategySuspense,
-	useToggleUserStrategy,
 } from '@/entities/strategy';
+import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
@@ -23,18 +23,10 @@ export function StockStrategiesSection({
 	stock,
 }: StockStrategiesSectionProps) {
 	const { data: userStrategies } = useGetUsersStrategySuspense();
-	const strategyToggle = useToggleUserStrategy();
 	const activeStrategyIds = useMemo(
 		() => getUserStrategyIdSet(userStrategies.data),
 		[userStrategies.data],
 	);
-	const pendingStrategyId = strategyToggle.isPending
-		? strategyToggle.variables?.strategyId
-		: undefined;
-
-	function handleStrategyActiveChange(strategyId: number, isActive: boolean) {
-		strategyToggle.mutate({ strategyId, isActive });
-	}
 
 	return (
 		<Section
@@ -51,10 +43,9 @@ export function StockStrategiesSection({
 								strategy,
 								activeStrategyIds.has(strategy.id),
 							)}
-							activation={{
-								isActiveChangePending: pendingStrategyId === strategy.id,
-								onActiveChange: handleStrategyActiveChange,
-							}}
+							actionSlot={
+								<StrategyToggleCheckbox strategyId={strategy.id} isActive={activeStrategyIds.has(strategy.id)} />
+							}
 						/>
 					</li>
 				))}

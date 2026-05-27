@@ -21,3 +21,5 @@ export type {
 	PersonalNote,
 	StoredPersonalNote,
 } from './model';
+export { NoteCharactersRemaining } from './ui/note-characters-remaining';
+export { NoteTextarea } from './ui/note-textarea';

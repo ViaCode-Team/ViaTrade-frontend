@@ -4,33 +4,29 @@ import {
 	StrategyCard,
 	toStrategyCardStrategy,
 } from '@/entities/strategy';
+import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 
 type StockLinkedStrategyCardProps = {
 	strategy: StockLinkedStrategy;
-	activeStrategyIds: Set<number>;
-	pendingStrategyId?: number;
-	onStrategyActiveChange: (strategyId: number, isActive: boolean) => void;
+	isActive: boolean;
 	onNavigate?: () => void;
 };
 
 export function StockLinkedStrategyCard({
 	strategy,
-	activeStrategyIds,
-	pendingStrategyId,
-	onStrategyActiveChange,
+	isActive,
 	onNavigate,
 }: StockLinkedStrategyCardProps) {
 	return (
 		<StrategyCard
 			strategy={toStrategyCardStrategy(
 				strategy,
-				activeStrategyIds.has(strategy.id),
+				isActive,
 			)}
 			onLinkClick={onNavigate}
-			activation={{
-				isActiveChangePending: pendingStrategyId === strategy.id,
-				onActiveChange: onStrategyActiveChange,
-			}}
+			actionSlot={
+				<StrategyToggleCheckbox strategyId={strategy.id} isActive={isActive} />
+			}
 		/>
 	);
 }

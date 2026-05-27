@@ -55,6 +55,7 @@ export function StocksPage() {
 				<StocksControls
 					searchQuery={searchQuery}
 					onSearchQueryChange={setSearchQuery}
+					disabled={mockStocks.length === 0}
 				/>
 
 				<StocksListBoundary

@@ -54,6 +54,7 @@ export function NotesOverview() {
 				<NotesControls
 					searchQuery={searchQuery}
 					sourceFilter={sourceFilter}
+					disabled={!hasNotes}
 					onSearchQueryChange={setSearchQuery}
 					onSourceFilterChange={setSourceFilter}
 				/>

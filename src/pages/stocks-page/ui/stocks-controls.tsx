@@ -1,25 +1,25 @@
-import { TextInput } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { SearchInput } from '@/shared/ui/search-input';
 
 type StocksControlsProps = {
 	searchQuery: string;
+	disabled?: boolean;
 	onSearchQueryChange: (searchQuery: string) => void;
 };
 
 export function StocksControls({
 	searchQuery,
+	disabled,
 	onSearchQueryChange,
 }: StocksControlsProps) {
 	return (
-		<TextInput
+		<SearchInput
 			value={searchQuery}
 			onChange={(event) => {
 				onSearchQueryChange(event.currentTarget.value);
 			}}
 			placeholder='Найти по тикеру или названию'
 			aria-label='Поиск акции'
-			leftSection={<IconSearch size={16} />}
-			w='100%'
+			disabled={disabled}
 		/>
 	);
 }

@@ -1,5 +1,5 @@
 import { AuthCard } from '@/entities/auth';
-import { LoginForm } from '@/features/login';
+import { LoginForm } from '@/features/auth/login';
 import { ROUTES } from '@/shared/model/routes';
 
 export function LoginPage() {

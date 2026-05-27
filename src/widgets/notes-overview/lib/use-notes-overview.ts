@@ -9,7 +9,7 @@ import {
 	useUpdateInstrumentNote,
 	useUpdateStrategyNote,
 } from '@/entities/note';
-import { useStoredPersonalNotesQuery } from '@/features/note';
+import { useStoredPersonalNotesQuery } from '@/features/note/manage-note';
 
 import type { NotesSourceFilter } from '../model/note-filters';
 

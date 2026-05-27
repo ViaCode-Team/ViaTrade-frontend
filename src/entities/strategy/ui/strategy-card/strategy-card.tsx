@@ -1,14 +1,11 @@
 import {
 	Badge,
 	Box,
-	Button,
 	Card,
-	Checkbox,
 	Flex,
 	Progress,
 	Text,
 	Title,
-	Tooltip,
 } from '@mantine/core';
 import { generatePath, Link as RouterLink } from 'react-router';
 
@@ -24,20 +21,15 @@ import cls from './strategy-card.module.css';
 type StrategyCardProps = {
 	strategy: StrategyCardStrategy;
 	onLinkClick?: () => void;
-	activation?: {
-		isActiveChangePending?: boolean;
-		onActiveChange: (strategyId: number, isActive: boolean) => void;
-	};
-	stockBinding?: {
-		onStockBindClick: (strategyId: number) => void;
-	};
+	actionSlot?: React.ReactNode;
+	bottomActionSlot?: React.ReactNode;
 };
 
 export function StrategyCard({
 	strategy,
 	onLinkClick,
-	activation,
-	stockBinding,
+	actionSlot,
+	bottomActionSlot,
 }: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
 		strategyName: strategy.name,
@@ -51,9 +43,6 @@ export function StrategyCard({
 			: 'var(--mantine-color-red-filled)',
 	});
 
-	const activeActionLabel = strategy.isActive
-		? 'Выключить сигналы'
-		: 'Включить сигналы';
 
 	return (
 		<Card
@@ -77,30 +66,11 @@ export function StrategyCard({
 						{strategy.name}
 					</Title>
 
-					{activation
-						? (
-								<Box className={cls.interactiveAction}>
-									<Tooltip label={activeActionLabel}>
-										<Checkbox
-											checked={strategy.isActive}
-											onChange={(event) => {
-												activation.onActiveChange(
-													strategy.id,
-													event.currentTarget.checked,
-												);
-											}}
-											size='md'
-											disabled={activation.isActiveChangePending}
-											aria-label={activeActionLabel}
-										/>
-									</Tooltip>
-								</Box>
-							)
-						: (
-								<Badge color={strategy.isActive ? 'green' : 'red'} variant='light' size='sm'>
-									{strategy.isActive ? 'Активна' : 'Выключена'}
-								</Badge>
-							)}
+					{actionSlot || (
+						<Badge color={strategy.isActive ? 'green' : 'red'} variant='light' size='sm'>
+							{strategy.isActive ? 'Активна' : 'Выключена'}
+						</Badge>
+					)}
 				</Flex>
 
 				<Text size='sm' c='dimmed' lineClamp={2}>
@@ -149,19 +119,7 @@ export function StrategyCard({
 					)
 				: <Box h={33}></Box>}
 
-			{stockBinding && (
-				<Button
-					mt='auto'
-					type='button'
-					variant='default'
-					className={cls.interactiveAction}
-					onClick={() => {
-						stockBinding.onStockBindClick(strategy.id);
-					}}
-				>
-					Связать с акцией
-				</Button>
-			)}
+			{bottomActionSlot}
 		</Card>
 	);
 }

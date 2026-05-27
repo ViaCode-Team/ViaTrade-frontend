@@ -1,11 +1,11 @@
 import { Stack } from '@mantine/core';
 
-import type { NoteFormData } from '@/features/note';
+import type { NoteFormData } from '@/features/note/manage-note';
 
 import {
 	NoteForm,
 	useNoteDraft,
-} from '@/features/note';
+} from '@/features/note/manage-note';
 
 import type { DraftedPersonalNote } from '../model/note-drafts';
 

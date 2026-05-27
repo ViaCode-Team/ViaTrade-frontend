@@ -1,5 +1,4 @@
 import { Stack } from '@mantine/core';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import {
 	useMemo,
 	useState,
@@ -10,9 +9,9 @@ import {
 } from 'react-router';
 
 import { mockStocks } from '@/entities/stock';
-import { getGetAllSuspenseQueryOptions } from '@/entities/strategy';
-import { NoteForm, usePersonalNote } from '@/features/note';
-import { StrategyStockBindingList } from '@/features/strategy-stock-binding';
+import { useGetAllSuspense } from '@/entities/strategy';
+import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
+import { StrategyStockBindingList } from '@/features/strategy/bind-stock';
 import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
 
@@ -23,7 +22,7 @@ import { StrategyNotFound } from './ui/strategy-not-found';
 
 export function StrategyPage() {
 	const { strategyName } = useParams();
-	const strategiesQuery = useSuspenseQuery(getGetAllSuspenseQueryOptions());
+	const strategiesQuery = useGetAllSuspense();
 	const decodedName = decodeURIComponent(strategyName || '').toLowerCase();
 	const strategy = strategiesQuery.data.data.find(
 		(s) => s.name.toLowerCase() === decodedName,

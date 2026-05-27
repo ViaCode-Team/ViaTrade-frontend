@@ -1,0 +1,14 @@
+.deviceIcon {
+	color: var(--mantine-color-dimmed);
+}
+
+.currentDeviceIcon {
+	color: var(--mantine-color-green-6);
+}
+
+.sessionMeta {
+	overflow-x: auto;
+	gap: 0 var(--mantine-spacing-xs);
+	flex-wrap: wrap;
+	text-wrap: nowrap;
+}

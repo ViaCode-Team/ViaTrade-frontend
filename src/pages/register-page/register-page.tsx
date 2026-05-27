@@ -1,5 +1,5 @@
 import { AuthCard } from '@/entities/auth';
-import { RegisterForm } from '@/features/register';
+import { RegisterForm } from '@/features/auth/register';
 import { ROUTES } from '@/shared/model/routes';
 
 export function RegisterPage() {

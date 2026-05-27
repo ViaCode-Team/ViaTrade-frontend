@@ -1,9 +1,7 @@
-import {
-	Group,
-	SegmentedControl,
-	TextInput,
-} from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { SegmentedControl } from '@mantine/core';
+
+import { FiltersGroup } from '@/shared/ui/filters-group';
+import { SearchInput } from '@/shared/ui/search-input';
 
 import type { NotesSourceFilter } from '../model/note-filters';
 
@@ -11,6 +9,7 @@ import type { NotesSourceFilter } from '../model/note-filters';
 type NotesControlsProps = {
 	searchQuery: string;
 	sourceFilter: NotesSourceFilter;
+	disabled?: boolean;
 	onSearchQueryChange: (value: string) => void;
 	onSourceFilterChange: (value: NotesSourceFilter) => void;
 };
@@ -18,19 +17,18 @@ type NotesControlsProps = {
 export function NotesControls({
 	searchQuery,
 	sourceFilter,
+	disabled,
 	onSearchQueryChange,
 	onSourceFilterChange,
 }: NotesControlsProps) {
 	return (
-		<Group gap='sm' align='center' justify='space-between'>
-			<TextInput
-				miw={300}
-				flex={1}
+		<FiltersGroup>
+			<SearchInput
 				value={searchQuery}
 				onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
 				placeholder='Поиск по заметкам и источникам'
-				leftSection={<IconSearch size={16} />}
 				size='sm'
+				disabled={disabled}
 			/>
 
 			<SegmentedControl
@@ -42,7 +40,8 @@ export function NotesControls({
 					{ label: 'Акции', value: 'stock' },
 					{ label: 'Стратегии', value: 'strategy' },
 				]}
+				disabled={disabled}
 			/>
-		</Group>
+		</FiltersGroup>
 	);
 }

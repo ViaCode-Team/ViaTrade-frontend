@@ -1,12 +1,7 @@
-import { RemindList } from '@/features/remind';
-import { useRemindList } from '@/features/remind';
 import { PageHeader } from '@/shared/ui/page-header';
-
-import { RemindsSummary } from './reminds-summary';
+import { RemindsOverview } from '@/widgets/reminds-overview';
 
 export function RemindsPage() {
-	const remindList = useRemindList();
-
 	return (
 		<>
 			<PageHeader
@@ -14,11 +9,7 @@ export function RemindsPage() {
 				description='Создавайте напоминания по акциям и стратегиям, чтобы не пропустить важные моменты.'
 			/>
 
-			<RemindsSummary reminds={remindList.reminds} />
-
-			<RemindList
-				{...remindList}
-			/>
+			<RemindsOverview />
 		</>
 	);
 }

@@ -1,6 +1,6 @@
 import { PageHeader } from '@/shared/ui/page-header';
+import { StrategiesOverview } from '@/widgets/strategies-overview';
 
-import { StrategiesListBoundary } from './ui/strategies-grid';
 import { StrategiesSummaryBoundary } from './ui/strategies-summary';
 
 export function StrategiesPage() {
@@ -13,7 +13,7 @@ export function StrategiesPage() {
 
 			<StrategiesSummaryBoundary />
 
-			<StrategiesListBoundary />
+			<StrategiesOverview />
 		</>
 	);
 }

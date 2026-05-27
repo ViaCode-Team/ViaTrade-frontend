@@ -4,6 +4,10 @@ import { useMemo, useState } from 'react';
 
 import type { Signal } from '@/entities/signal';
 
+import {
+	mapStrategyResultResponseToSignals,
+	useGetResult,
+} from '@/entities/signal';
 import { PageHeader } from '@/shared/ui/page-header';
 
 import type {
@@ -11,6 +15,7 @@ import type {
 	SortOption,
 } from './model/signal-filters';
 
+import { getSignalResultsMock } from './api/signal-results.mock';
 import { HistoryTableBoundary } from './ui/history-table';
 import { SignalsFilters } from './ui/signals-filters';
 import { SignalsListBoundary } from './ui/signals-list';
@@ -29,6 +34,15 @@ export function SignalsPage() {
 		}),
 		[searchQuery, sortOption, directionFilter],
 	);
+
+	const { data: signalsData, isLoading } = useGetResult(undefined, {
+		query: {
+			queryFn: getSignalResultsMock,
+			staleTime: Infinity,
+		},
+	});
+	const hasSignals = signalsData?.data ? mapStrategyResultResponseToSignals(signalsData.data).length > 0 : false;
+	const disabled = isLoading || !hasSignals;
 
 	function openSignalHistoryModal(signal: Signal) {
 		modals.open({
@@ -55,6 +69,7 @@ export function SignalsPage() {
 						searchQuery={searchQuery}
 						sortOption={sortOption}
 						directionFilter={directionFilter}
+						disabled={disabled}
 						onSearchQueryChange={setSearchQuery}
 						onSortOptionChange={setSortOption}
 						onDirectionFilterChange={setDirectionFilter}

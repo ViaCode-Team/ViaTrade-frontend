@@ -9,9 +9,9 @@ import {
 	Title,
 } from '@mantine/core';
 
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
-import { getStockChangeColor } from '@/entities/stock';
+import { getStockChangeColor } from '@/entities/trade-code/stock';
 
 import cls from '../stock-page.module.css';
 

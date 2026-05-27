@@ -1,4 +1,4 @@
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
 export type StockSortOption = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'change-desc' | 'change-asc';
 export type StockTrendFilter = 'all' | 'gainers' | 'losers';

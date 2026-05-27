@@ -4,7 +4,6 @@ import { StrategyCardSkeleton } from '@/entities/strategy';
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
-import cls from '../stocks-page.module.css';
 
 export function StockLinkedStrategiesModalContentSkeleton() {
 	return (
@@ -15,7 +14,6 @@ export function StockLinkedStrategiesModalContentSkeleton() {
 				minColWidth={300}
 				spacing={CONTENT_GRID_SPACING}
 				component='ul'
-				className={cls.grid}
 			>
 				{createSkeletons(3).map((item) => (
 					<li key={item.id}>

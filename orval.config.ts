@@ -6,6 +6,7 @@ import { defineConfig } from 'orval';
 import {
 	authMutationInvalidates,
 	noteMutationInvalidates,
+	remindMutationInvalidates,
 	strategyMutationInvalidates,
 } from './orval.invalidation';
 
@@ -96,6 +97,16 @@ export default defineConfig({
 	usersApi: createApiConfig('User', 'user'),
 	signalApi: createApiConfig('Result', 'signal'),
 	statisticApi: createApiConfig('Statistic', 'statistic'),
+	tradeCodeApi: createApiConfig('TradeCode', 'trade-code'),
+	remindApi: createApiConfig('TradeRemind', 'remind', {
+		output: {
+			override: {
+				query: {
+					mutationInvalidates: remindMutationInvalidates,
+				},
+			},
+		},
+	}),
 	strategyApi: createApiConfig('Strategy', 'strategy', {
 		output: {
 			override: {

@@ -8,8 +8,9 @@ import {
 	useParams,
 } from 'react-router';
 
-import { mockStocks } from '@/entities/stock';
 import { useGetAllSuspense } from '@/entities/strategy';
+import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
+import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StrategyStockBindingList } from '@/features/strategy/bind-stock';
 import { ROUTES } from '@/shared/model/routes';
@@ -29,6 +30,10 @@ export function StrategyPage() {
 	);
 	const strategyId = strategy ? strategy.id : null;
 	const hasStrategyId = strategyId !== null;
+
+	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
+	const stocks = useMemo(() => stocksResponse.data.map(mapTradeCodeToStock), [stocksResponse.data]);
+
 	const [selectedStockIds, setSelectedStockIds] = useState<string[]>([]);
 	const strategyNoteSource = useMemo(() => {
 		if (strategyId === null) {
@@ -71,7 +76,7 @@ export function StrategyPage() {
 			<StrategyInfoGrid strategyId={strategyId} />
 
 			<StrategyStockBindingList
-				stocks={mockStocks}
+				stocks={stocks}
 				selectedStockIds={selectedStockIds}
 				onSelectedStockIdsChange={handleLinkedStocksChange}
 			/>

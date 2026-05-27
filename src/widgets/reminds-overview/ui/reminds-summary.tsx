@@ -1,11 +1,15 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useRemindContext } from '@/entities/remind';
+import { mapTradeRemindToRemindItem } from '@/entities/remind';
+import { getGetAllByUserSuspenseQueryOptions } from '@/entities/remind/api/gen';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 
 export function RemindsSummary() {
-	const { reminds, isLoading } = useRemindContext();
+	const { data: response } = useSuspenseQuery(getGetAllByUserSuspenseQueryOptions());
+	const reminds = response.data.map(mapTradeRemindToRemindItem);
+
 	const total = reminds.length;
 	const [now] = useState(() => Date.now());
 
@@ -29,9 +33,9 @@ export function RemindsSummary() {
 
 	return (
 		<SummaryList>
-			<SummaryCard title='Всего' value={total} isLoading={isLoading} />
-			<SummaryCard title='Актуальные' value={upcoming} color='blue' isLoading={isLoading} />
-			<SummaryCard title='Прошедшие' value={past} color='gray' isLoading={isLoading} />
+			<SummaryCard title='Всего' value={total} />
+			<SummaryCard title='Актуальные' value={upcoming} color='blue' />
+			<SummaryCard title='Прошедшие' value={past} color='gray' />
 		</SummaryList>
 	);
 }

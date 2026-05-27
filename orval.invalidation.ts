@@ -56,3 +56,25 @@ export const noteMutationInvalidates = [
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
+
+export const remindMutationInvalidates = [
+	{
+		onMutations: [
+			'createInstrumentRemind',
+		],
+		invalidates: [
+			'getAllByUser',
+			{ query: 'getTradeRemindByUserInstrument', params: ['idInstrument'] },
+		],
+	},
+	{
+		onMutations: [
+			'updateRemind',
+			'deleteRemind',
+		],
+		invalidates: [
+			'getAllByUser',
+			'getTradeRemindByUserInstrument',
+		],
+	},
+] satisfies MutationInvalidatesConfig;

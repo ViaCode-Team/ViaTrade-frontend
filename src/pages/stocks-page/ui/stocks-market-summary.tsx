@@ -1,6 +1,6 @@
 import { NumberFormatter } from '@mantine/core';
 
-import { getStockChangeColor } from '@/entities/stock';
+import { getStockChangeColor } from '@/entities/trade-code/stock';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 

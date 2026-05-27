@@ -15,10 +15,7 @@ import {
 } from '@tabler/icons-react';
 import { generatePath, Link as RouterLink } from 'react-router';
 
-import type {
-	RemindEditableField,
-	RemindItem,
-} from '@/entities/remind';
+import type { RemindItem } from '@/entities/remind';
 
 import { ROUTES } from '@/shared/model/routes';
 
@@ -29,8 +26,7 @@ type RemindCardProps = {
 	remind: RemindItem;
 	onRemindChange: (
 		remindId: string,
-		field: RemindEditableField,
-		value: string,
+		updates: { text: string; date: string; time: string },
 	) => void;
 	actionSlot?: React.ReactNode;
 	hideSourceBadge?: boolean;

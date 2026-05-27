@@ -9,26 +9,18 @@ import {
 import { modals } from '@mantine/modals';
 import { useState } from 'react';
 
-import type { RemindSource } from '@/entities/remind';
+import { useCreateInstrumentRemind } from '@/entities/remind/api/gen';
+import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
+import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { mockStocks } from '@/entities/stock';
-
-type OpenAddRemindModalParams = {
-	onAdd: (source: RemindSource) => void;
-};
-
-export function openAddRemindModal({ onAdd }: OpenAddRemindModalParams) {
-	modals.open({
-		title: 'Выбор актива',
-		children: <AddRemindModalContent onAdd={onAdd} />,
-		size: 'md',
-	});
-}
-
-function AddRemindModalContent({ onAdd }: OpenAddRemindModalParams) {
+function AddRemindModalContent() {
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
+	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
+	const stocks = stocksResponse.data.map(mapTradeCodeToStock);
+	const createRemindMutation = useCreateInstrumentRemind();
 
-	const stockSelectData = mockStocks.map((stock) => ({
+	const stockSelectData = stocks.map((stock) => ({
 		value: stock.id,
 		label: `${stock.ticker} — ${stock.name}`,
 	}));
@@ -38,20 +30,27 @@ function AddRemindModalContent({ onAdd }: OpenAddRemindModalParams) {
 			return;
 		}
 
-		const stock = mockStocks.find((s) => s.id === selectedStockId);
+		const stock = stocks.find((s) => s.id === selectedStockId);
 
 		if (!stock) {
 			return;
 		}
 
-		const source: RemindSource = {
-			type: 'stock',
-			id: stock.id,
-			label: stock.name,
-		};
+		const now = new Date();
+		// Round down to the nearest minute to avoid seconds
+		now.setSeconds(0, 0);
 
-		onAdd(source);
-		modals.closeAll();
+		createRemindMutation.mutate({
+			idInstrument: stock.instrumentId,
+			data: {
+				textRemind: 'Новое напоминание',
+				dateTime: now.toISOString(),
+			},
+		}, {
+			onSuccess: () => {
+				modals.closeAll();
+			},
+		});
 	};
 
 	return (
@@ -69,16 +68,27 @@ function AddRemindModalContent({ onAdd }: OpenAddRemindModalParams) {
 				searchable
 				nothingFoundMessage='Акции не найдены'
 				withAsterisk
+				disabled={createRemindMutation.isPending}
 			/>
 
 			<Group justify='flex-end' mt='md'>
-				<Button variant='default' onClick={() => modals.closeAll()}>
+				<Button variant='default' onClick={() => modals.closeAll()} disabled={createRemindMutation.isPending}>
 					Отмена
 				</Button>
-				<Button onClick={handleAdd} disabled={!selectedStockId}>
+				<Button onClick={handleAdd} disabled={!selectedStockId || createRemindMutation.isPending} loading={createRemindMutation.isPending}>
 					Создать
 				</Button>
 			</Group>
 		</Stack>
 	);
+}
+
+const AddRemindModalContentBoundary = withQueryBoundary(AddRemindModalContent);
+
+export function openAddRemindModal() {
+	modals.open({
+		title: 'Выбор актива',
+		children: <AddRemindModalContentBoundary />,
+		size: 'md',
+	});
 }

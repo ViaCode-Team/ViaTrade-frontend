@@ -1,23 +1,47 @@
 import { SimpleGrid } from '@mantine/core';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
-import { RemindCard, useRemindContext } from '@/entities/remind';
+import { mapTradeRemindToRemindItem, RemindCard } from '@/entities/remind';
+import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind/api/gen';
 import { RemindCardActions } from '@/features/remind/manage-reminds';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 
-import { RemindListSkeleton } from './remind-list.skeleton';
-
-export function RemindList({ hideSourceBadge }: { hideSourceBadge?: boolean } = {}) {
+export function RemindList({
+	hideSourceBadge,
+	instrumentId,
+}: {
+	hideSourceBadge?: boolean;
+	instrumentId?: number;
+} = {}) {
 	const [searchParams] = useSearchParams();
 	const searchQuery = searchParams.get('rq')?.toLowerCase() || '';
 	const sortOption = searchParams.get('sort') || 'date-desc';
 
-	const {
-		reminds,
-		isLoading,
-		onRemindChange,
-	} = useRemindContext();
+	const queryOpts = instrumentId
+		? getGetTradeRemindByUserInstrumentSuspenseQueryOptions(instrumentId)
+		: getGetAllByUserSuspenseQueryOptions();
+
+	const { data: response } = useSuspenseQuery(queryOpts);
+	const reminds = response.data.map(mapTradeRemindToRemindItem);
+
+	const updateRemindMutation = useUpdateRemind();
+
+	const handleRemindChange = (remindId: string, updates: { text: string; date: string; time: string }) => {
+		const remind = reminds.find((r) => r.id === remindId);
+		if (!remind) {
+			return;
+		}
+
+		updateRemindMutation.mutate({
+			redindId: Number(remindId),
+			data: {
+				textRemind: updates.text,
+				dateTime: `${updates.date}T${updates.time}:00.000Z`,
+			},
+		});
+	};
 
 	const hasAnyReminds = reminds.length > 0;
 
@@ -37,10 +61,6 @@ export function RemindList({ hideSourceBadge }: { hideSourceBadge?: boolean } = 
 
 	const hasFilteredReminds = filteredReminds.length > 0;
 
-	if (isLoading && !hasAnyReminds) {
-		return <RemindListSkeleton />;
-	}
-
 	return (
 		<>
 			{hasFilteredReminds && (
@@ -53,7 +73,7 @@ export function RemindList({ hideSourceBadge }: { hideSourceBadge?: boolean } = 
 						<li key={remind.id}>
 							<RemindCard
 								remind={remind}
-								onRemindChange={onRemindChange}
+								onRemindChange={handleRemindChange}
 								actionSlot={<RemindCardActions remindId={remind.id} />}
 								hideSourceBadge={hideSourceBadge}
 							/>
@@ -66,7 +86,7 @@ export function RemindList({ hideSourceBadge }: { hideSourceBadge?: boolean } = 
 				<EmptyState title='По вашему запросу ничего не найдено' />
 			)}
 
-			{!hasAnyReminds && !isLoading && (
+			{!hasAnyReminds && (
 				<EmptyState title='Напоминаний пока нет.' description='Нажмите «Добавить», чтобы добавить первое.' />
 			)}
 		</>

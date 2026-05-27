@@ -2,7 +2,8 @@ import { ActionIcon, Group, Select, Tooltip } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useSearchParams } from 'react-router';
 
-import { useRemindContext } from '@/entities/remind';
+import { useCreateInstrumentRemind } from '@/entities/remind/api/gen';
+import { openAddRemindModal } from '@/features/remind/add-remind';
 import { brandGradient } from '@/shared/model/theme';
 import { FiltersGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
@@ -15,15 +16,33 @@ const remindSortOptions = [
 ];
 
 type RemindsControlsProps = {
-	onAddClick?: () => void;
+	instrumentId?: number;
 };
 
-export function RemindsControls({ onAddClick }: RemindsControlsProps = {}) {
+export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const searchQuery = searchParams.get('rq') || '';
 	const sortOption = (searchParams.get('sort') as RemindSortOption) || 'date-desc';
-	const { onRemindAdd, reminds } = useRemindContext();
-	const disabled = reminds.length === 0;
+
+	const createRemindMutation = useCreateInstrumentRemind();
+
+	const handleAddClick = () => {
+		if (instrumentId) {
+			const now = new Date();
+			now.setSeconds(0, 0);
+
+			createRemindMutation.mutate({
+				idInstrument: instrumentId,
+				data: {
+					textRemind: 'Новое напоминание',
+					dateTime: now.toISOString(),
+				},
+			});
+		}
+		else {
+			openAddRemindModal();
+		}
+	};
 
 	const updateSearchParams = (key: string, value: string | null) => {
 		setSearchParams((prev) => {
@@ -43,7 +62,6 @@ export function RemindsControls({ onAddClick }: RemindsControlsProps = {}) {
 				value={searchQuery}
 				onChange={(val) => updateSearchParams('rq', val)}
 				placeholder='Поиск напоминаний...'
-				disabled={disabled}
 			/>
 
 			<Select
@@ -51,7 +69,6 @@ export function RemindsControls({ onAddClick }: RemindsControlsProps = {}) {
 				value={sortOption}
 				onChange={(val) => updateSearchParams('sort', val)}
 				w={{ base: '100%', sm: 220 }}
-				disabled={disabled}
 			/>
 
 			<Group ml='auto'>
@@ -61,7 +78,8 @@ export function RemindsControls({ onAddClick }: RemindsControlsProps = {}) {
 						gradient={brandGradient}
 						size='input-sm'
 						aria-label='Добавить напоминание'
-						onClick={onAddClick || (() => onRemindAdd())}
+						onClick={handleAddClick}
+						loading={createRemindMutation.isPending}
 					>
 						<IconPlus size={18} />
 					</ActionIcon>

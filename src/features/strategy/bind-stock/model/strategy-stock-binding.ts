@@ -1,4 +1,4 @@
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
 type StockSelectionState = {
 	selectedCount: number;

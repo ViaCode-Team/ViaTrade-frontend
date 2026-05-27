@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import { generatePath, Link as RouterLink } from 'react-router';
 
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
 import { ROUTES } from '@/shared/model/routes';
 

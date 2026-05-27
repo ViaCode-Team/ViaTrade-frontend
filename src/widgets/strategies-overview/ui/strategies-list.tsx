@@ -1,10 +1,11 @@
 import { Button, Modal, SimpleGrid, Stack } from '@mantine/core';
 
-import { mockStocks } from '@/entities/stock';
 import {
 	StrategyCard,
 	toStrategyCardStrategy,
 } from '@/entities/strategy';
+import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
+import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { StrategyStockBindingList } from '@/features/strategy/bind-stock';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
@@ -24,6 +25,9 @@ export function StrategiesList() {
 		handleStockBindingChange,
 	} = useStrategiesOverview();
 
+	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
+	const stocks = stocksResponse.data.map(mapTradeCodeToStock);
+
 	return (
 		<>
 			<Modal
@@ -39,7 +43,7 @@ export function StrategiesList() {
 			>
 				{stockBindingStrategy && (
 					<StrategyStockBindingList
-						stocks={mockStocks}
+						stocks={stocks}
 						selectedStockIds={stockBindingSelectedIds}
 						onSelectedStockIdsChange={handleStockBindingChange}
 						title='Выберите акции'

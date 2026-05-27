@@ -9,6 +9,9 @@ import {
 	useUpdateInstrumentNote,
 	useUpdateStrategyNote,
 } from '@/entities/note';
+import { useGetAll as useGetAllStrategies } from '@/entities/strategy/api/gen';
+import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
+import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { useStoredPersonalNotesQuery } from '@/features/note/manage-note';
 
 import type { NotesSourceFilter } from '../model/note-filters';
@@ -36,6 +39,10 @@ export function useNotesOverview() {
 	const storedNotesQuery = useStoredPersonalNotesQuery();
 	const instrumentNotesQuery = useGetByUserInstrumentAll();
 	const strategyNotesQuery = useGetByUserStrategyAll();
+
+	const stocksQuery = useGetAllStocksCodes();
+	const strategiesQuery = useGetAllStrategies();
+
 	const updateInstrumentNoteMutation = useUpdateInstrumentNote();
 	const updateStrategyNoteMutation = useUpdateStrategyNote();
 	const deleteInstrumentNoteMutation = useDeleteInstrumentNote();
@@ -45,8 +52,15 @@ export function useNotesOverview() {
 		() => getApiPersonalNotes({
 			instrumentNotes: instrumentNotesQuery.data?.data ?? [],
 			strategyNotes: strategyNotesQuery.data?.data ?? [],
+			stocks: (stocksQuery.data?.data ?? []).map(mapTradeCodeToStock),
+			strategies: strategiesQuery.data?.data ?? [],
 		}),
-		[instrumentNotesQuery.data?.data, strategyNotesQuery.data?.data],
+		[
+			instrumentNotesQuery.data?.data,
+			strategyNotesQuery.data?.data,
+			stocksQuery.data?.data,
+			strategiesQuery.data?.data,
+		],
 	);
 
 	const notes = useMemo(
@@ -64,9 +78,15 @@ export function useNotesOverview() {
 
 	const summary = useMemo(() => getNotesSummary(notes), [notes]);
 
-	const isLoading = instrumentNotesQuery.isLoading || strategyNotesQuery.isLoading;
+	const isLoading = instrumentNotesQuery.isLoading
+		|| strategyNotesQuery.isLoading
+		|| stocksQuery.isLoading
+		|| strategiesQuery.isLoading;
+
 	const hasError = instrumentNotesQuery.isError
 		|| strategyNotesQuery.isError
+		|| stocksQuery.isError
+		|| strategiesQuery.isError
 		|| updateInstrumentNoteMutation.isError
 		|| updateStrategyNoteMutation.isError
 		|| deleteInstrumentNoteMutation.isError

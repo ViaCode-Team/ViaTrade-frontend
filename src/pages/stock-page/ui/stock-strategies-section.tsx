@@ -1,7 +1,7 @@
 import { SimpleGrid } from '@mantine/core';
 import { useMemo } from 'react';
 
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
 import {
 	getUserStrategyIdSet,

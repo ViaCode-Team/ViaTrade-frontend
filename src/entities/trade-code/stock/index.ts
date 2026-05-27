@@ -1,8 +1,6 @@
 export {
-	getStockById,
-	getStockByInstrumentId,
 	getStockChangeColor,
-	mockStocks,
+	mapTradeCodeToStock,
 } from './model';
 export type { Stock, StockLinkedStrategy } from './model';
 export { StockCard, StockCardSkeleton, StockLinkedStrategiesModal } from './ui';

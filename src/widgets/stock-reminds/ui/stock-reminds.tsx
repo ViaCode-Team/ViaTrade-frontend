@@ -1,22 +1,22 @@
 import { Stack } from '@mantine/core';
 
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
-import { RemindProvider } from '@/entities/remind';
 import { RemindList } from '@/features/remind/manage-reminds';
 import { RemindsControls } from '@/features/remind/search-reminds';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 type StockRemindsProps = {
 	stock: Stock;
 };
 
-export function StockReminds({ stock }: StockRemindsProps) {
+function StockRemindsContent({ stock }: StockRemindsProps) {
 	return (
-		<RemindProvider source={{ type: 'stock', id: stock.id.toString(), label: stock.name }}>
-			<Stack>
-				<RemindsControls />
-				<RemindList hideSourceBadge />
-			</Stack>
-		</RemindProvider>
+		<Stack>
+			<RemindsControls instrumentId={stock.instrumentId} />
+			<RemindList hideSourceBadge instrumentId={stock.instrumentId} />
+		</Stack>
 	);
 }
+
+export const StockReminds = withQueryBoundary(StockRemindsContent);

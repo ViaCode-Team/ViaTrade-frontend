@@ -1,3 +1,5 @@
+import type { TradeRemind } from '@/shared/api/types/gen';
+
 export type RemindSource = {
 	type: 'stock';
 	id: string;
@@ -14,22 +16,21 @@ export type RemindItem = {
 
 export type RemindEditableField = Exclude<keyof RemindItem, 'id'>;
 
-export function createRemindItem(source?: RemindSource): RemindItem {
-	const now = new Date();
+export function mapTradeRemindToRemindItem(tradeRemind: TradeRemind): RemindItem {
+	const dt = new Date(tradeRemind.dateTime);
+	const date = formatRemindDate(dt);
+	const time = formatRemindTime(dt);
 
 	return {
-		id: crypto.randomUUID(),
-		text: '',
-		date: formatRemindDate(now),
-		time: formatRemindTime(now),
-		source,
-	};
-}
-
-export function createRemindCopy(remind: RemindItem): RemindItem {
-	return {
-		...remind,
-		id: crypto.randomUUID(),
+		id: tradeRemind.id.toString(),
+		text: tradeRemind.textRemind,
+		date,
+		time,
+		source: {
+			type: 'stock',
+			id: tradeRemind.tradeCodeId.toString(),
+			label: `Инструмент #${tradeRemind.tradeCodeId}`, // Fallback label, might need joining with TradeCode data
+		},
 	};
 }
 

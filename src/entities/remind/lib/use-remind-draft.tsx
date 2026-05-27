@@ -5,12 +5,17 @@ import { useState } from 'react';
 
 import type { RemindEditableField, RemindItem } from '../model';
 
+type RemindUpdates = {
+	text: string;
+	date: string;
+	time: string;
+};
+
 type UseRemindDraftOptions = {
 	remind: RemindItem;
 	onRemindChange: (
 		remindId: string,
-		field: RemindEditableField,
-		value: string,
+		updates: RemindUpdates,
 	) => void;
 };
 
@@ -74,9 +79,11 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 		debouncedSaveToStorage.cancel();
 		localStorage.removeItem(`via-remind-draft-${remind.id}`);
 
-		onRemindChange(remind.id, 'text', localDraft.text);
-		onRemindChange(remind.id, 'date', localDraft.date);
-		onRemindChange(remind.id, 'time', localDraft.time);
+		onRemindChange(remind.id, {
+			text: localDraft.text,
+			date: localDraft.date,
+			time: localDraft.time,
+		});
 
 		notifications.show({
 			title: 'Сохранено',

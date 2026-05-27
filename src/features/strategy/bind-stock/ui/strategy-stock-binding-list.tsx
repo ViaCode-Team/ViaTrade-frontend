@@ -1,7 +1,7 @@
 import { SimpleGrid, Stack } from '@mantine/core';
 import { useState } from 'react';
 
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';

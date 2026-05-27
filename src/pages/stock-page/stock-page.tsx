@@ -5,9 +5,10 @@ import {
 	useParams,
 } from 'react-router';
 
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
 
-import { getStockById } from '@/entities/stock';
+import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
+import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
@@ -20,7 +21,15 @@ import { StockStrategiesSectionBoundary } from './ui/stock-strategies-section';
 
 export function StockPage() {
 	const { stockId } = useParams();
-	const stock = getStockById(stockId);
+	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
+
+	const normalizedStockId = stockId?.toLowerCase();
+	const tradeCode = stocksResponse.data.find((tc) =>
+		tc.id.toString() === normalizedStockId
+		|| tc.exchangeId.toLowerCase() === normalizedStockId,
+	);
+
+	const stock = tradeCode ? mapTradeCodeToStock(tradeCode) : null;
 
 	if (!stock) {
 		return <StockNotFound />;

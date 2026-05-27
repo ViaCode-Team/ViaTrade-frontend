@@ -1,7 +1,7 @@
 import { SimpleGrid } from '@mantine/core';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { type Stock, StockCard } from '@/entities/stock';
+import { type Stock, StockCard } from '@/entities/trade-code/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -9,7 +9,6 @@ import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import type { StockSortOption, StockTrendFilter } from '../../model/stock-filters';
 
 import { stocksQueryOptions } from '../../model/stocks-query';
-import cls from '../../stocks-page.module.css';
 import { StocksListSkeleton } from './stocks-list.skeleton';
 
 type StocksListProps = {
@@ -43,10 +42,9 @@ export function StocksList({
 			minColWidth={300}
 			spacing={CONTENT_GRID_SPACING}
 			component='ul'
-			className={cls.grid}
 		>
 			{filteredStocks.map((stock) => (
-				<li key={stock.id} className={cls.item}>
+				<li key={stock.id}>
 					<StockCard
 						stock={stock}
 						onLinkedStrategiesClick={() => {

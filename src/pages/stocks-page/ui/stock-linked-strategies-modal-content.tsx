@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 
-import type { Stock, StockLinkedStrategy } from '@/entities/stock';
+import type { Stock, StockLinkedStrategy } from '@/entities/trade-code/stock';
 
-import { StockLinkedStrategiesModal } from '@/entities/stock';
 import {
 	getUserStrategyIdSet,
 	useGetUsersStrategySuspense,
 } from '@/entities/strategy';
+import { StockLinkedStrategiesModal } from '@/entities/trade-code/stock';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { StockLinkedStrategiesModalContentSkeleton } from './stock-linked-strategies-modal-content.skeleton';

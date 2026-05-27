@@ -1,6 +1,5 @@
 export {
-	createRemindCopy,
-	createRemindItem,
+	mapTradeRemindToRemindItem,
 } from './remind';
 export type {
 	RemindEditableField,

@@ -1,4 +1,4 @@
-import type { StockLinkedStrategy } from '@/entities/stock';
+import type { StockLinkedStrategy } from '@/entities/trade-code/stock';
 
 import {
 	StrategyCard,

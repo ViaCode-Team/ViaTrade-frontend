@@ -2,12 +2,11 @@ import {
 	Stack,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
-import {
-	mockStocks,
-	type Stock,
-} from '@/entities/stock';
+import type { Stock } from '@/entities/trade-code/stock';
+
 import { PageHeader } from '@/shared/ui/page-header';
 
 import {
@@ -15,6 +14,7 @@ import {
 	type StockSortOption,
 	type StockTrendFilter,
 } from './model/stock-filters';
+import { stocksQueryOptions } from './model/stocks-query';
 import { StockLinkedStrategiesModalContentBoundary } from './ui/stock-linked-strategies-modal-content';
 import { StocksControls } from './ui/stocks-controls';
 import { StocksListBoundary } from './ui/stocks-list/stocks-list';
@@ -25,7 +25,8 @@ export function StocksPage() {
 	const [sortOption, setSortOption] = useState<StockSortOption>('name-asc');
 	const [trendFilter, setTrendFilter] = useState<StockTrendFilter>('all');
 
-	const summary = useMemo(() => getStocksSummary(mockStocks), []);
+	const { data: stocks } = useSuspenseQuery(stocksQueryOptions('', 'all', 'name-asc'));
+	const summary = useMemo(() => getStocksSummary(stocks), [stocks]);
 
 	function handleLinkedStrategyNavigate(modalId: string) {
 		modals.close(modalId);
@@ -66,7 +67,7 @@ export function StocksPage() {
 					onSearchQueryChange={setSearchQuery}
 					onSortOptionChange={setSortOption}
 					onTrendFilterChange={setTrendFilter}
-					disabled={mockStocks.length === 0}
+					disabled={stocks.length === 0}
 				/>
 
 				<StocksListBoundary

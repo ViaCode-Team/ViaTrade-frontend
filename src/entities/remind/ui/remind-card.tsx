@@ -45,6 +45,7 @@ export function RemindCard({
 	const {
 		localDraft,
 		isDirty,
+		isValid,
 		handleFieldChange,
 		handleDateTimeChange,
 		handleSave,
@@ -100,7 +101,7 @@ export function RemindCard({
 								variant='light'
 								size='md'
 								onClick={handleSave}
-								disabled={!isDirty}
+								disabled={!isDirty || !isValid}
 								aria-label='Сохранить изменения'
 							>
 								<IconDeviceFloppy size={18} />

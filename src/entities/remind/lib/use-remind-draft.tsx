@@ -1,6 +1,6 @@
 import { useDebouncedCallback } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
+import { IconCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 
 import type { RemindEditableField, RemindItem } from '../model';
@@ -64,24 +64,10 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 		debouncedSaveToStorage(nextDraft);
 	};
 
-	const handleSave = () => {
-		if (!localDraft.text.trim()) {
-			notifications.show({
-				title: 'Ошибка',
-				message: 'Текст напоминания не может быть пустым',
-				color: 'red',
-				icon: <IconAlertCircle size={18} />,
-			});
-			return;
-		}
+	const isValid = Boolean(localDraft.text.trim() && localDraft.date && localDraft.time);
 
-		if (!localDraft.date || !localDraft.time) {
-			notifications.show({
-				title: 'Ошибка',
-				message: 'Выберите дату и время напоминания',
-				color: 'red',
-				icon: <IconAlertCircle size={18} />,
-			});
+	const handleSave = () => {
+		if (!isValid) {
 			return;
 		}
 
@@ -109,6 +95,7 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 	return {
 		localDraft,
 		isDirty,
+		isValid,
 		handleFieldChange,
 		handleDateTimeChange,
 		handleSave,

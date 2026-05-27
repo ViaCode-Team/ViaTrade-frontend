@@ -1,18 +1,20 @@
 import {
+	Badge,
 	Card,
 	Group,
 	Stack,
 	Textarea,
 } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
-import {
-	IconCalendarTime,
-} from '@tabler/icons-react';
+import { IconCalendarTime } from '@tabler/icons-react';
+import { generatePath, Link as RouterLink } from 'react-router';
 
 import type {
 	RemindEditableField,
 	RemindItem,
 } from '@/entities/remind';
+
+import { ROUTES } from '@/shared/model/routes';
 
 import cls from './remind-card.module.css';
 
@@ -24,12 +26,14 @@ type RemindCardProps = {
 		value: string,
 	) => void;
 	actionSlot?: React.ReactNode;
+	hideSourceBadge?: boolean;
 };
 
 export function RemindCard({
 	remind,
 	onRemindChange,
 	actionSlot,
+	hideSourceBadge,
 }: RemindCardProps) {
 	const handleFieldChange = (field: RemindEditableField, value: string) => {
 		onRemindChange(remind.id, field, value);
@@ -57,6 +61,25 @@ export function RemindCard({
 			className={cls.card}
 		>
 			<Stack gap='xs'>
+				{!hideSourceBadge && remind.source?.label && (
+					<Group mb={-4}>
+						<Badge
+							variant='default'
+							size='sm'
+							autoContrast
+							component={RouterLink}
+							to={remind.source.type === 'stock'
+								? generatePath(ROUTES.STOCK, { stockId: remind.source.id })
+								: generatePath(ROUTES.STRATEGY, { strategyName: remind.source.id })}
+							style={{ cursor: 'pointer', textDecoration: 'none' }}
+						>
+							{remind.source.type === 'stock' ? 'Акция' : 'Стратегия'}
+							:
+							{remind.source.label}
+						</Badge>
+					</Group>
+				)}
+
 				<Group align='flex-start' gap='xs' wrap='nowrap'>
 					<Textarea
 						value={remind.text}

@@ -1,13 +1,20 @@
+export type RemindSource = {
+	type: 'stock' | 'strategy';
+	id: string;
+	label?: string;
+};
+
 export type RemindItem = {
 	id: string;
 	text: string;
 	date: string;
 	time: string;
+	source?: RemindSource;
 };
 
 export type RemindEditableField = Exclude<keyof RemindItem, 'id'>;
 
-export function createRemindItem(): RemindItem {
+export function createRemindItem(source?: RemindSource): RemindItem {
 	const now = new Date();
 
 	return {
@@ -15,6 +22,7 @@ export function createRemindItem(): RemindItem {
 		text: '',
 		date: formatRemindDate(now),
 		time: formatRemindTime(now),
+		source,
 	};
 }
 

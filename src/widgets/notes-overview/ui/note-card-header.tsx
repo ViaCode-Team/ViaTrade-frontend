@@ -9,6 +9,7 @@ import {
 	Tooltip,
 } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
+import { Link as RouterLink } from 'react-router';
 
 import type { StoredPersonalNote } from '@/entities/note';
 
@@ -53,7 +54,11 @@ export function NoteCardHeader({
 				</Group>
 			</Group>
 
-			<Box>
+			<Box
+				component={RouterLink}
+				to={note.source.path}
+				className={cls.sourceLink}
+			>
 				<Title order={2}>
 					{note.source.label}
 				</Title>

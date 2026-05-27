@@ -1,4 +1,4 @@
-import { Select } from '@mantine/core';
+import { SegmentedControl, Select } from '@mantine/core';
 
 import { FiltersGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
@@ -15,6 +15,7 @@ type SignalsFiltersProps = {
 	sortOption: SortOption;
 	directionFilter: DirectionFilter;
 	disabled?: boolean;
+	isLoading?: boolean;
 	onSearchQueryChange: (value: string) => void;
 	onSortOptionChange: (value: SortOption) => void;
 	onDirectionFilterChange: (value: DirectionFilter) => void;
@@ -25,6 +26,7 @@ export function SignalsFilters({
 	sortOption,
 	directionFilter,
 	disabled,
+	isLoading,
 	onSearchQueryChange,
 	onSortOptionChange,
 	onDirectionFilterChange,
@@ -34,8 +36,9 @@ export function SignalsFilters({
 			<SearchInput
 				placeholder='Поиск по активу или стратегии...'
 				value={searchQuery}
-				onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
+				onChange={onSearchQueryChange}
 				disabled={disabled}
+				isLoading={isLoading}
 			/>
 			<Select
 				data={sortOptions}
@@ -44,11 +47,10 @@ export function SignalsFilters({
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
-			<Select
+			<SegmentedControl
 				data={directionOptions}
 				value={directionFilter}
-				onChange={(value) => value && onDirectionFilterChange(value as DirectionFilter)}
-				w={{ base: '100%', sm: 200 }}
+				onChange={(value) => onDirectionFilterChange(value as DirectionFilter)}
 				disabled={disabled}
 			/>
 		</FiltersGroup>

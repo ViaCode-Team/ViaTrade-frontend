@@ -55,6 +55,7 @@ export function NotesOverview() {
 					searchQuery={searchQuery}
 					sourceFilter={sourceFilter}
 					disabled={!hasNotes}
+					isLoading={isLoading}
 					onSearchQueryChange={setSearchQuery}
 					onSourceFilterChange={setSourceFilter}
 				/>

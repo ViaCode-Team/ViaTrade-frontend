@@ -21,6 +21,7 @@ type StockBindingControlsProps = {
 	visibleStocksCount: number;
 	allChecked: boolean;
 	indeterminate: boolean;
+	isLoading?: boolean;
 	onSearchQueryChange: (searchQuery: string) => void;
 	onAllChange: () => void;
 };
@@ -34,6 +35,7 @@ export function StockBindingControls({
 	visibleStocksCount,
 	allChecked,
 	indeterminate,
+	isLoading,
 	onSearchQueryChange,
 	onAllChange,
 }: StockBindingControlsProps) {
@@ -47,12 +49,11 @@ export function StockBindingControls({
 				<FiltersGroup>
 					<SearchInput
 						value={searchQuery}
-						onChange={(event) => {
-							onSearchQueryChange(event.currentTarget.value);
-						}}
+						onChange={onSearchQueryChange}
 						placeholder={searchPlaceholder}
 						aria-label='Поиск акции'
 						disabled={stocksCount === 0}
+						isLoading={isLoading}
 					/>
 
 					<Flex align='center' gap={4} wrap='wrap'>

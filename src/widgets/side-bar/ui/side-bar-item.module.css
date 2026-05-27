@@ -36,3 +36,7 @@
 .link[data-collapsed] .section:where([data-position='left']) {
 	margin-inline-end: 0;
 }
+
+.link[data-active-icon] .section {
+	color: var(--mantine-primary-color-5);
+}

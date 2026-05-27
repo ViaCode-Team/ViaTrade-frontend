@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
 
 import { NavLink } from '@mantine/core';
-import { Link as RouterLink } from 'react-router';
+import { Link as RouterLink, useLocation } from 'react-router';
+
+import { ROUTES } from '@/shared/model/routes';
 
 import cls from './side-bar-item.module.css';
 
@@ -20,6 +22,11 @@ export function SideBarItem({
 	isCollapsed,
 	onClick,
 }: SideBarItemProps) {
+	const location = useLocation();
+	const isActive = path === ROUTES.HOME
+		? location.pathname === path
+		: location.pathname.startsWith(path);
+
 	return (
 		<NavLink
 			h={40}
@@ -36,6 +43,7 @@ export function SideBarItem({
 			component={RouterLink}
 			to={path}
 			onClick={onClick}
+			data-active-icon={isActive || undefined}
 		/>
 	);
 }

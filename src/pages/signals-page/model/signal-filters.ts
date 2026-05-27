@@ -1,7 +1,7 @@
 import type { Signal } from '@/entities/signal';
 
-export type SortOption = 'date-desc' | 'date-asc' | 'confidence-desc' | 'confidence-asc' | 'asset-asc';
-export type DirectionFilter = 'all' | 'buy' | 'sell' | 'hold';
+export type SortOption = 'date-desc' | 'date-asc' | 'asset-asc' | 'asset-desc' | 'confidence-desc' | 'confidence-asc';
+export type DirectionFilter = 'all' | 'buy' | 'sell';
 
 export type SignalFilters = {
 	searchQuery: string;
@@ -12,16 +12,16 @@ export type SignalFilters = {
 export const sortOptions: Array<{ value: SortOption; label: string }> = [
 	{ value: 'date-desc', label: 'Сначала новые' },
 	{ value: 'date-asc', label: 'Сначала старые' },
+	{ value: 'asset-asc', label: 'По активу (от А до Я)' },
+	{ value: 'asset-desc', label: 'По активу (от Я до А)' },
 	{ value: 'confidence-desc', label: 'По надёжности (убывание)' },
 	{ value: 'confidence-asc', label: 'По надёжности (возрастание)' },
-	{ value: 'asset-asc', label: 'По алфавиту' },
 ];
 
 export const directionOptions: Array<{ value: DirectionFilter; label: string }> = [
-	{ value: 'all', label: 'Все сигналы' },
+	{ value: 'all', label: 'Все' },
 	{ value: 'buy', label: 'Покупка' },
 	{ value: 'sell', label: 'Продажа' },
-	{ value: 'hold', label: 'Держать' },
 ];
 
 function filterSignalsByDirection(signals: Signal[], directionFilter: DirectionFilter) {
@@ -56,6 +56,8 @@ function sortSignals(signals: Signal[], sortOption: SortOption) {
 				return getConfidenceSortValue(a) - getConfidenceSortValue(b);
 			case 'asset-asc':
 				return a.asset.localeCompare(b.asset);
+			case 'asset-desc':
+				return b.asset.localeCompare(a.asset);
 			default:
 				return 0;
 		}

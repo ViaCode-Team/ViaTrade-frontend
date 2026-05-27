@@ -70,6 +70,7 @@ export function SignalsPage() {
 						sortOption={sortOption}
 						directionFilter={directionFilter}
 						disabled={disabled}
+						isLoading={isLoading}
 						onSearchQueryChange={setSearchQuery}
 						onSortOptionChange={setSortOption}
 						onDirectionFilterChange={setDirectionFilter}

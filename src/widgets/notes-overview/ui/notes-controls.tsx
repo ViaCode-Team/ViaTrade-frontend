@@ -5,11 +5,11 @@ import { SearchInput } from '@/shared/ui/search-input';
 
 import type { NotesSourceFilter } from '../model/note-filters';
 
-
 type NotesControlsProps = {
 	searchQuery: string;
 	sourceFilter: NotesSourceFilter;
 	disabled?: boolean;
+	isLoading?: boolean;
 	onSearchQueryChange: (value: string) => void;
 	onSourceFilterChange: (value: NotesSourceFilter) => void;
 };
@@ -18,6 +18,7 @@ export function NotesControls({
 	searchQuery,
 	sourceFilter,
 	disabled,
+	isLoading,
 	onSearchQueryChange,
 	onSourceFilterChange,
 }: NotesControlsProps) {
@@ -25,10 +26,11 @@ export function NotesControls({
 		<FiltersGroup>
 			<SearchInput
 				value={searchQuery}
-				onChange={(event) => onSearchQueryChange(event.currentTarget.value)}
+				onChange={onSearchQueryChange}
 				placeholder='Поиск по заметкам и источникам'
 				size='sm'
 				disabled={disabled}
+				isLoading={isLoading}
 			/>
 
 			<SegmentedControl

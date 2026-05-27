@@ -4,6 +4,7 @@ export {
 	createRemindItem,
 	type RemindEditableField,
 	type RemindItem,
+	type RemindSource,
 } from './model/remind';
 export { RemindProvider, useRemindContext } from './model/remind-context';
 export { RemindCard } from './ui/remind-card';

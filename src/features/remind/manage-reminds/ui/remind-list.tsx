@@ -8,9 +8,10 @@ import { EmptyState } from '@/shared/ui/empty-state';
 
 import { RemindListSkeleton } from './remind-list.skeleton';
 
-export function RemindList() {
+export function RemindList({ hideSourceBadge }: { hideSourceBadge?: boolean } = {}) {
 	const [searchParams] = useSearchParams();
 	const searchQuery = searchParams.get('rq')?.toLowerCase() || '';
+	const sortOption = searchParams.get('sort') || 'date-desc';
 
 	const {
 		reminds,
@@ -19,9 +20,21 @@ export function RemindList() {
 	} = useRemindContext();
 
 	const hasAnyReminds = reminds.length > 0;
+
 	const filteredReminds = reminds.filter((remind) =>
 		remind.text.toLowerCase().includes(searchQuery),
 	);
+
+	filteredReminds.sort((a, b) => {
+		const dateA = new Date(`${a.date}T${a.time}`).getTime();
+		const dateB = new Date(`${b.date}T${b.time}`).getTime();
+
+		if (sortOption === 'date-asc') {
+			return dateA - dateB;
+		}
+		return dateB - dateA;
+	});
+
 	const hasFilteredReminds = filteredReminds.length > 0;
 
 	if (isLoading && !hasAnyReminds) {
@@ -42,6 +55,7 @@ export function RemindList() {
 								remind={remind}
 								onRemindChange={onRemindChange}
 								actionSlot={<RemindCardActions remindId={remind.id} />}
+								hideSourceBadge={hideSourceBadge}
 							/>
 						</li>
 					))}

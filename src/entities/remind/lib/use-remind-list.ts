@@ -3,6 +3,7 @@ import { useEffect, useReducer, useRef } from 'react';
 import type {
 	RemindEditableField,
 	RemindItem,
+	RemindSource,
 } from '../model';
 
 import {
@@ -14,12 +15,13 @@ type UseRemindListOptions = {
 	defaultReminds?: RemindItem[];
 	loadedReminds?: RemindItem[];
 	isLoading?: boolean;
+	source?: RemindSource;
 };
 
 type UseRemindListReturn = {
 	reminds: RemindItem[];
 	isLoading: boolean;
-	onRemindAdd: () => void;
+	onRemindAdd: (customSource?: RemindSource) => void;
 	onRemindChange: (
 		remindId: string,
 		field: RemindEditableField,
@@ -37,6 +39,7 @@ type RemindListAction
 	}
 	| {
 		type: 'add';
+		source?: RemindSource;
 	}
 	| {
 		type: 'change';
@@ -61,6 +64,7 @@ export function useRemindList({
 	defaultReminds = [],
 	loadedReminds,
 	isLoading = false,
+	source,
 }: UseRemindListOptions = {}): UseRemindListReturn {
 	const [reminds, dispatch] = useReducer(
 		remindListReducer,
@@ -83,9 +87,9 @@ export function useRemindList({
 		hasUserChangesRef.current = true;
 	};
 
-	const handleRemindAdd = () => {
+	const handleRemindAdd = (customSource?: RemindSource) => {
 		markUserChanged();
-		dispatch({ type: 'add' });
+		dispatch({ type: 'add', source: customSource || source });
 	};
 
 	const handleRemindChange = (
@@ -148,7 +152,7 @@ function remindListReducer(
 		case 'add':
 			return [
 				...reminds,
-				createRemindItem(),
+				createRemindItem(action.source),
 			];
 
 		case 'change':

@@ -29,9 +29,10 @@ export function SessionsSearch() {
 		<FiltersGroup>
 			<SearchInput
 				value={searchQuery}
-				onChange={(event) => handleSearchChange(event.currentTarget.value)}
+				onChange={handleSearchChange}
 				placeholder='Поиск по устройству/браузеру...'
 				disabled={disabled}
+				isLoading={isLoading}
 			/>
 		</FiltersGroup>
 	);

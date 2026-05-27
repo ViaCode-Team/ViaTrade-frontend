@@ -11,7 +11,7 @@ import { getStockById } from '@/entities/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
-import { RemindsOverview } from '@/widgets/reminds-overview';
+import { StockReminds } from '@/widgets/stock-reminds';
 
 import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
@@ -63,7 +63,7 @@ function StockPageContent({ stock }: StockPageContentProps) {
 			</Section>
 
 			<Section header={{ title: 'Напоминания' }}>
-				<RemindsOverview />
+				<StockReminds stock={stock} />
 			</Section>
 		</>
 	);

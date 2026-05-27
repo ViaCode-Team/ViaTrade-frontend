@@ -16,7 +16,6 @@ import type { SignalFilters } from '../model/signal-filters';
 
 import { getSignalResultsMock } from '../api/signal-results.mock';
 import { getFilteredSignals } from '../model/signal-filters';
-import cls from '../signals-page.module.css';
 import { SignalsListSkeleton } from './signals-list.skeleton';
 
 type SignalsListProps = {
@@ -58,7 +57,7 @@ export function SignalsList({
 				component='ul'
 			>
 				{filteredAndSortedSignals.map((signal) => (
-					<li key={signal.id} className={cls.signalItem}>
+					<li key={signal.id}>
 						<SignalCard
 							signal={signal}
 							onClick={onSignalSelect}
@@ -69,7 +68,6 @@ export function SignalsList({
 
 			{filteredAndSortedSignals.length === 0 && (
 				<EmptyState
-					className={cls.emptyState}
 					title='Ничего не найдено'
 					description='Попробуйте изменить параметры поиска или фильтры'
 				/>

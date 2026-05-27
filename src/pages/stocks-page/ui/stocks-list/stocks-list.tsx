@@ -6,21 +6,27 @@ import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
+import type { StockSortOption, StockTrendFilter } from '../../model/stock-filters';
+
 import { stocksQueryOptions } from '../../model/stocks-query';
 import cls from '../../stocks-page.module.css';
 import { StocksListSkeleton } from './stocks-list.skeleton';
 
 type StocksListProps = {
 	searchQuery: string;
+	trendFilter: StockTrendFilter;
+	sortOption: StockSortOption;
 	onLinkedStrategiesClick: (stock: Stock) => void;
 };
 
 export function StocksList({
 	searchQuery,
+	trendFilter,
+	sortOption,
 	onLinkedStrategiesClick,
 }: StocksListProps) {
 	const { data: filteredStocks } = useSuspenseQuery(
-		stocksQueryOptions(searchQuery),
+		stocksQueryOptions(searchQuery, trendFilter, sortOption),
 	);
 
 	if (filteredStocks.length === 0) {

@@ -1,0 +1,65 @@
+import dayjs from 'dayjs';
+import { useMemo } from 'react';
+
+import { useGetByUserSuspense } from '@/entities/statistic/api/gen';
+import { mockTrades } from '@/entities/statistic/model/mock';
+
+export function useStatisticsDashboard() {
+	const { data } = useGetByUserSuspense();
+
+	// Используем моковые данные, если с сервера пришел пустой массив (для проверки отображения)
+	const trades = data.data.length === 0 ? mockTrades : data.data;
+
+	const totalTrades = trades.length;
+
+	const profitableTrades = useMemo(
+		() => trades.filter((t) => (t.netIncome ?? 0) > 0).length,
+		[trades],
+	);
+
+	const lossTrades = totalTrades - profitableTrades;
+
+	const pnlData = useMemo(() => {
+		const sortedTrades = [...trades].sort(
+			(a, b) =>
+				dayjs(a.dateClose ?? a.dateOpen).valueOf()
+				- dayjs(b.dateClose ?? b.dateOpen).valueOf(),
+		);
+
+		let cumulativePnL = 0;
+		return sortedTrades.map((t) => {
+			cumulativePnL += t.netIncome ?? 0;
+			return {
+				date: dayjs(t.dateClose ?? t.dateOpen).format('MMM D, YYYY'),
+				PnL: Number(cumulativePnL.toFixed(2)),
+			};
+		});
+	}, [trades]);
+
+	const winLossData = useMemo(
+		() => [
+			{ name: 'Прибыльные', value: profitableTrades, color: 'teal.6' },
+			{ name: 'Убыточные', value: lossTrades, color: 'red.6' },
+		],
+		[profitableTrades, lossTrades],
+	);
+
+	const barData = useMemo(() => {
+		const tradesByType = trades.reduce<Record<number, number>>((acc, t) => {
+			acc[t.tradeTypeId] = (acc[t.tradeTypeId] ?? 0) + 1;
+			return acc;
+		}, {});
+
+		return Object.entries(tradesByType).map(([typeId, count]) => ({
+			type: typeId === '1' ? 'Long' : typeId === '2' ? 'Short' : `Тип ${typeId}`,
+			Count: count,
+		}));
+	}, [trades]);
+
+	return {
+		totalTrades,
+		pnlData,
+		winLossData,
+		barData,
+	};
+}

@@ -1,12 +1,18 @@
 import {
+	ActionIcon,
 	Badge,
 	Card,
 	Group,
 	Stack,
 	Textarea,
+	Tooltip,
 } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
-import { IconCalendarTime } from '@tabler/icons-react';
+import {
+	IconArrowBackUp,
+	IconCalendarTime,
+	IconDeviceFloppy,
+} from '@tabler/icons-react';
 import { generatePath, Link as RouterLink } from 'react-router';
 
 import type {
@@ -16,6 +22,7 @@ import type {
 
 import { ROUTES } from '@/shared/model/routes';
 
+import { useRemindDraft } from '../lib/use-remind-draft';
 import cls from './remind-card.module.css';
 
 type RemindCardProps = {
@@ -35,21 +42,14 @@ export function RemindCard({
 	actionSlot,
 	hideSourceBadge,
 }: RemindCardProps) {
-	const handleFieldChange = (field: RemindEditableField, value: string) => {
-		onRemindChange(remind.id, field, value);
-	};
-	const handleDateTimeChange = (value: string | null) => {
-		if (value === null) {
-			handleFieldChange('date', '');
-			handleFieldChange('time', '');
-			return;
-		}
-
-		const [date = '', timeWithSeconds = ''] = value.split(' ');
-
-		handleFieldChange('date', date);
-		handleFieldChange('time', timeWithSeconds.slice(0, 5));
-	};
+	const {
+		localDraft,
+		isDirty,
+		handleFieldChange,
+		handleDateTimeChange,
+		handleSave,
+		handleReset,
+	} = useRemindDraft({ remind, onRemindChange });
 
 	return (
 		<Card
@@ -80,7 +80,7 @@ export function RemindCard({
 
 				<Group align='flex-start' gap='xs' wrap='nowrap'>
 					<Textarea
-						value={remind.text}
+						value={localDraft.text}
 						onChange={(event) => {
 							handleFieldChange('text', event.currentTarget.value);
 						}}
@@ -94,32 +94,59 @@ export function RemindCard({
 						withAsterisk
 					/>
 
-					{actionSlot && (
-						<Stack gap='xs' className={cls.cardActions}>
-							{actionSlot}
-						</Stack>
-					)}
+					<Stack gap='xs' className={cls.cardActions}>
+						<Tooltip label='Сохранить изменения'>
+							<ActionIcon
+								variant='light'
+								size='md'
+								onClick={handleSave}
+								disabled={!isDirty}
+								aria-label='Сохранить изменения'
+							>
+								<IconDeviceFloppy size={18} />
+							</ActionIcon>
+						</Tooltip>
+
+						<Tooltip label='Сбросить изменения'>
+							<ActionIcon
+								variant='subtle'
+								color='gray'
+								size='md'
+								onClick={handleReset}
+								disabled={!isDirty}
+								aria-label='Сбросить изменения'
+							>
+								<IconArrowBackUp size={18} />
+							</ActionIcon>
+						</Tooltip>
+
+						{actionSlot}
+					</Stack>
 				</Group>
 
-				<DateTimePicker
-					placeholder='Выберите дату и время'
-					value={getDateTimePickerValue(remind)}
-					onChange={handleDateTimeChange}
-					valueFormat='DD.MM.YYYY HH:mm'
-					defaultTimeValue={remind.time || '09:00'}
-					leftSection={<IconCalendarTime size={16} />}
-					leftSectionPointerEvents='none'
-					timePickerProps={{ withDropdown: true }}
-				/>
+				<Group align='flex-start' gap='xs' wrap='nowrap'>
+					<DateTimePicker
+						style={{ flex: 1 }}
+						placeholder='Выберите дату и время'
+						value={getDateTimePickerValue(localDraft)}
+						onChange={handleDateTimeChange}
+						valueFormat='DD.MM.YYYY HH:mm'
+						defaultTimeValue={localDraft.time || '09:00'}
+						leftSection={<IconCalendarTime size={16} />}
+						leftSectionPointerEvents='none'
+						timePickerProps={{ withDropdown: true }}
+					/>
+
+				</Group>
 			</Stack>
 		</Card>
 	);
 }
 
-function getDateTimePickerValue(remind: RemindItem) {
-	if (!remind.date || !remind.time) {
+function getDateTimePickerValue(draft: { date: string; time: string }) {
+	if (!draft.date || !draft.time) {
 		return null;
 	}
 
-	return `${remind.date} ${remind.time}:00`;
+	return `${draft.date} ${draft.time}:00`;
 }

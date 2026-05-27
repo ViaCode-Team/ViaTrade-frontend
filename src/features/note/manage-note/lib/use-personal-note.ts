@@ -1,3 +1,4 @@
+import { useDebouncedCallback } from '@mantine/hooks';
 import { useState } from 'react';
 
 import {
@@ -13,6 +14,12 @@ import {
 	useUpdateInstrumentNote,
 	useUpdateStrategyNote,
 } from '@/entities/note';
+
+import {
+	useDeleteStoredPersonalNoteMutation,
+	useSaveStoredPersonalNoteMutation,
+	useStoredPersonalNotesQuery,
+} from './use-stored-personal-notes';
 
 type UsePersonalNoteOptions = {
 	source?: NoteSource;
@@ -48,6 +55,11 @@ export function usePersonalNote({
 	const isStockNote = source?.type === 'stock';
 	const isStrategyNote = source?.type === 'strategy';
 	const isApiSource = apiSourceId !== null;
+
+	const storedNotesQuery = useStoredPersonalNotesQuery();
+	const storedDraftNote = source
+		? storedNotesQuery.data?.find((note) => note.id === sourceId)
+		: undefined;
 
 	const instrumentNotesQuery = useGetByUserInstrumentAll({
 		query: {
@@ -94,13 +106,16 @@ export function usePersonalNote({
 		|| updateStrategyNoteMutation.isPending;
 	const [localDraft, setLocalDraft] = useState(() => ({
 		sourceId: source ? getNoteId(source) : null,
-		value: defaultValue,
+		value: storedDraftNote?.text ?? defaultValue,
 		isDirty: false,
 	}));
 	const [localSavedNote, setLocalSavedNote] = useState(() => ({
 		sourceId: null as string | null,
 		value: defaultValue,
 	}));
+	const saveDraftMutation = useSaveStoredPersonalNoteMutation();
+	const deleteDraftMutation = useDeleteStoredPersonalNoteMutation();
+
 	const savedValue = source
 		? (
 				localSavedNote.sourceId === sourceId
@@ -113,10 +128,23 @@ export function usePersonalNote({
 		? (
 				localDraft.sourceId === sourceId && localDraft.isDirty
 					? localDraft.value
-					: savedValue
+					: (storedDraftNote?.text ?? savedValue)
 			)
 		: localDraft.value;
 	const noteText = value ?? uncontrolledValue;
+
+	const debouncedSaveDraft = useDebouncedCallback((text: string) => {
+		if (!source || sourceId === null) {
+			return;
+		}
+
+		if (text.trim() === savedValue.trim()) {
+			deleteDraftMutation.mutate(sourceId);
+		}
+		else {
+			saveDraftMutation.mutate({ source, text });
+		}
+	}, 600);
 
 	const handleNoteTextChange = (nextValue: string) => {
 		if (value === undefined) {
@@ -128,6 +156,7 @@ export function usePersonalNote({
 		}
 
 		onValueChange?.(nextValue);
+		debouncedSaveDraft(nextValue);
 	};
 
 	const saveApiNote = ({
@@ -143,6 +172,7 @@ export function usePersonalNote({
 	}) => {
 		const requestData = { noteText: text };
 		const onSuccess = () => {
+			debouncedSaveDraft.cancel();
 			const nextNote = createPersonalNote({ text });
 
 			setLocalSavedNote({
@@ -154,6 +184,9 @@ export function usePersonalNote({
 				value: nextNote.text,
 				isDirty: false,
 			});
+			if (sourceId) {
+				deleteDraftMutation.mutate(getNoteId(source));
+			}
 			onNoteSave?.(nextNote);
 		};
 
@@ -191,6 +224,7 @@ export function usePersonalNote({
 			return;
 		}
 
+		debouncedSaveDraft.cancel();
 		const nextNote = createPersonalNote(formData);
 
 		setLocalSavedNote({
@@ -202,6 +236,9 @@ export function usePersonalNote({
 			value: nextNote.text,
 			isDirty: false,
 		});
+		if (sourceId) {
+			deleteDraftMutation.mutate(sourceId);
+		}
 		onNoteSave?.(nextNote);
 	};
 

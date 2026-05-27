@@ -5,11 +5,12 @@ import {
 } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import type { StoredPersonalNote } from '@/entities/note';
+import type { NoteSource, StoredPersonalNote } from '@/entities/note';
 
 import {
 	deleteStoredPersonalNote,
 	getStoredPersonalNotes,
+	saveStoredPersonalNote,
 	subscribeStoredPersonalNotes,
 	upsertStoredPersonalNote,
 } from '@/entities/note';
@@ -49,6 +50,26 @@ export function useUpsertStoredPersonalNoteMutation() {
 			note: StoredPersonalNote;
 			text: string;
 		}) => upsertStoredPersonalNote(note, text),
+		onSuccess: () => {
+			queryClient.setQueryData(
+				STORED_PERSONAL_NOTES_QUERY_KEY,
+				getStoredPersonalNotes(),
+			);
+		},
+	});
+}
+
+export function useSaveStoredPersonalNoteMutation() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async ({
+			source,
+			text,
+		}: {
+			source: NoteSource;
+			text: string;
+		}) => saveStoredPersonalNote(source, text),
 		onSuccess: () => {
 			queryClient.setQueryData(
 				STORED_PERSONAL_NOTES_QUERY_KEY,

@@ -1,5 +1,5 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconCopy, IconEraser, IconTrash } from '@tabler/icons-react';
+import { IconTrash } from '@tabler/icons-react';
 
 import { useRemindContext } from '@/entities/remind';
 
@@ -8,7 +8,7 @@ type RemindCardActionsProps = {
 };
 
 export function RemindCardActions({ remindId }: RemindCardActionsProps) {
-	const { onRemindDuplicate, onRemindClearText, onRemindDelete } = useRemindContext();
+	const { onRemindDelete } = useRemindContext();
 
 	return (
 		<>
@@ -26,33 +26,6 @@ export function RemindCardActions({ remindId }: RemindCardActionsProps) {
 				</ActionIcon>
 			</Tooltip>
 
-			<Tooltip label='Дублировать напоминание'>
-				<ActionIcon
-					variant='subtle'
-					color='gray'
-					size='md'
-					aria-label='Дублировать напоминание'
-					onClick={() => {
-						onRemindDuplicate(remindId);
-					}}
-				>
-					<IconCopy size={18} />
-				</ActionIcon>
-			</Tooltip>
-
-			<Tooltip label='Очистить текст'>
-				<ActionIcon
-					variant='subtle'
-					color='gray'
-					size='md'
-					aria-label='Очистить текст напоминания'
-					onClick={() => {
-						onRemindClearText(remindId);
-					}}
-				>
-					<IconEraser size={18} />
-				</ActionIcon>
-			</Tooltip>
 		</>
 	);
 }

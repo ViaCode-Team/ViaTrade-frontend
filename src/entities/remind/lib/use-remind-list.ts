@@ -28,7 +28,6 @@ type UseRemindListReturn = {
 		value: string,
 	) => void;
 	onRemindDuplicate: (remindId: string) => void;
-	onRemindClearText: (remindId: string) => void;
 	onRemindDelete: (remindId: string) => void;
 };
 
@@ -49,10 +48,6 @@ type RemindListAction
 	}
 	| {
 		type: 'duplicate';
-		remindId: string;
-	}
-	| {
-		type: 'clearText';
 		remindId: string;
 	}
 	| {
@@ -114,14 +109,6 @@ export function useRemindList({
 		});
 	};
 
-	const handleRemindClearText = (remindId: string) => {
-		markUserChanged();
-		dispatch({
-			type: 'clearText',
-			remindId,
-		});
-	};
-
 	const handleRemindDelete = (remindId: string) => {
 		markUserChanged();
 		dispatch({
@@ -136,7 +123,6 @@ export function useRemindList({
 		onRemindAdd: handleRemindAdd,
 		onRemindChange: handleRemindChange,
 		onRemindDuplicate: handleRemindDuplicate,
-		onRemindClearText: handleRemindClearText,
 		onRemindDelete: handleRemindDelete,
 	};
 }
@@ -187,18 +173,6 @@ function remindListReducer(
 
 			return nextReminds;
 		}
-
-		case 'clearText':
-			return reminds.map((remind) => {
-				if (remind.id !== action.remindId) {
-					return remind;
-				}
-
-				return {
-					...remind,
-					text: '',
-				};
-			});
 
 		case 'delete':
 			return reminds.filter(

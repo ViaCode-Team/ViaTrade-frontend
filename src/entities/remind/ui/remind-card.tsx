@@ -68,13 +68,11 @@ export function RemindCard({
 							size='sm'
 							autoContrast
 							component={RouterLink}
-							to={remind.source.type === 'stock'
-								? generatePath(ROUTES.STOCK, { stockId: remind.source.id })
-								: generatePath(ROUTES.STRATEGY, { strategyName: remind.source.id })}
+							to={generatePath(ROUTES.STOCK, { stockId: remind.source.id })}
 							style={{ cursor: 'pointer', textDecoration: 'none' }}
 						>
-							{remind.source.type === 'stock' ? 'Акция' : 'Стратегия'}
-							:
+							Акция:
+							{' '}
 							{remind.source.label}
 						</Badge>
 					</Group>

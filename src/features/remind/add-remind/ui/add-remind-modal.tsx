@@ -57,7 +57,7 @@ function AddRemindModalContent({ onAdd }: OpenAddRemindModalParams) {
 	return (
 		<Stack gap='md'>
 			<Text size='sm' c='dimmed'>
-				Выберите акцию, к которой будет привязано напоминание. В будущем здесь также появится возможность выбора стратегий.
+				Выберите акцию, к которой будет привязано напоминание.
 			</Text>
 
 			<Select

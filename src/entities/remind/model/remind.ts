@@ -1,5 +1,5 @@
 export type RemindSource = {
-	type: 'stock' | 'strategy';
+	type: 'stock';
 	id: string;
 	label?: string;
 };

@@ -59,7 +59,7 @@ export function StockHero({ stock }: StockHeroProps) {
 						<Title order={3}>
 							<NumberFormatter
 								value={stock.price}
-								prefix='$'
+								suffix=' ₽'
 								decimalScale={2}
 								fixedDecimalScale
 								thousandSeparator

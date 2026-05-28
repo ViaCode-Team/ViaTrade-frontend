@@ -90,7 +90,7 @@ export function StockCard({
 				<Text fw={700} size='lg'>
 					<NumberFormatter
 						value={stock.price}
-						prefix='$'
+						suffix=' ₽'
 						decimalScale={2}
 						fixedDecimalScale
 						thousandSeparator

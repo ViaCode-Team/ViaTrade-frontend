@@ -1,5 +1,6 @@
 import { PageHeader } from '@/shared/ui/page-header';
 import { StatisticsDashboard } from '@/widgets/statistics-dashboard';
+import { TradesHistory } from '@/widgets/trades-history';
 
 import { StatisticsSummary } from './ui/statistics-summary/statistics-summary';
 
@@ -13,6 +14,7 @@ export function StatisticsPage() {
 			<StatisticsSummary />
 
 			<StatisticsDashboard />
+			<TradesHistory />
 		</>
 	);
 }

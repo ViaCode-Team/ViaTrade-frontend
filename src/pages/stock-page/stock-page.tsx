@@ -51,7 +51,7 @@ function StockPageContent({ stock }: StockPageContentProps) {
 			description: stock.name,
 			path: generatePath(ROUTES.STOCK, { stockId: stock.ticker.toLowerCase() }),
 		}),
-		[stock.id, stock.instrumentId, stock.name, stock.ticker],
+		[stock.instrumentId, stock.name, stock.ticker],
 	);
 	const stockNote = usePersonalNote({ source: stockNoteSource });
 

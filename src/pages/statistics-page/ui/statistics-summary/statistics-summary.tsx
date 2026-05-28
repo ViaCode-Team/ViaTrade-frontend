@@ -27,7 +27,7 @@ export function StatisticsSummary() {
 			/>
 			<SummaryCard
 				title='Общая прибыль (PnL)'
-				value={`$${totalNetIncome.toFixed(2)}`}
+				value={`${totalNetIncome.toFixed(2)} ₽`}
 				color={totalNetIncome >= 0 ? 'teal' : 'red'}
 			/>
 		</SummaryList>

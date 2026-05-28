@@ -21,8 +21,8 @@ export function DashboardPage() {
 				/>
 				<SummaryCard
 					title='Общая прибыль'
-					value={`$${mockStats.totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
-					description={`Средняя: $${mockStats.averageProfit.toFixed(2)}`}
+					value={`${mockStats.totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })} ₽`}
+					description={`Средняя: ${mockStats.averageProfit.toFixed(2)} ₽`}
 				/>
 				<SummaryCard
 					title='Win Rate'

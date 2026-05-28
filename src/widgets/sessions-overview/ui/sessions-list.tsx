@@ -42,6 +42,7 @@ export function SessionsList() {
 								<ListStatusBar
 									totalCount={sessions.length}
 									filteredCount={filteredSessions.length}
+									refreshIntervalText='Автообновление: 1 мин'
 								/>
 								<Stack component='ul' gap='xs'>
 									{paginatedSessions.map((session) => {

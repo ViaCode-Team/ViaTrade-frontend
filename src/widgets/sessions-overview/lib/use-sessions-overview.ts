@@ -24,7 +24,7 @@ export function useSessionsOverview() {
 
 	const sessionLogout = useUserSessionLogout();
 
-	const { data: sessionsData } = useGetSessionsSuspense();
+	const { data: sessionsData } = useGetSessionsSuspense({ query: { refetchInterval: 60000 } });
 
 	const sessions = useMemo(() => normalizeUserSessions(sessionsData.data), [sessionsData.data]);
 	const currentSessionId = useMemo(() => getCurrentSessionId(sessions), [sessions]);

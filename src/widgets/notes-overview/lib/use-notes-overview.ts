@@ -37,11 +37,11 @@ export function useNotesOverview() {
 	const [sourceFilter, setSourceFilter] = useState<NotesSourceFilter>('all');
 
 	const storedNotesQuery = useStoredPersonalNotesQuery();
-	const instrumentNotesQuery = useGetByUserInstrumentAll();
-	const strategyNotesQuery = useGetByUserStrategyAll();
+	const instrumentNotesQuery = useGetByUserInstrumentAll({ query: { refetchInterval: 60000 } });
+	const strategyNotesQuery = useGetByUserStrategyAll({ query: { refetchInterval: 60000 } });
 
-	const stocksQuery = useGetAllStocksCodes();
-	const strategiesQuery = useGetAllStrategies();
+	const stocksQuery = useGetAllStocksCodes({ query: { refetchInterval: 60000 } });
+	const strategiesQuery = useGetAllStrategies({ query: { refetchInterval: 60000 } });
 
 	const updateInstrumentNoteMutation = useUpdateInstrumentNote();
 	const updateStrategyNoteMutation = useUpdateStrategyNote();

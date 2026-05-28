@@ -27,7 +27,10 @@ export function RemindList({
 		? getGetTradeRemindByUserInstrumentSuspenseQueryOptions(instrumentId)
 		: getGetAllByUserSuspenseQueryOptions();
 
-	const { data: response } = useSuspenseQuery(queryOpts);
+	const { data: response } = useSuspenseQuery({
+		...queryOpts,
+		refetchInterval: 60000,
+	});
 	const reminds = response.data.map(mapTradeRemindToRemindItem);
 
 	const updateRemindMutation = useUpdateRemind();
@@ -75,6 +78,7 @@ export function RemindList({
 				<ListStatusBar
 					totalCount={reminds.length}
 					filteredCount={filteredReminds.length}
+					refreshIntervalText='Автообновление: 1 мин'
 					badges={(
 						<>
 							<Badge variant='dot' color='blue' size='sm'>

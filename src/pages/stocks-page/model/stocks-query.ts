@@ -10,6 +10,7 @@ export function stocksQueryOptions(searchQuery: string, trendFilter: StockTrendF
 
 	return queryOptions({
 		...baseOptions,
+		refetchInterval: 60000,
 		select: (data) => {
 			const mappedStocks = data.data.map(mapTradeCodeToStock);
 			return getFilteredStocks({ stocks: mappedStocks, searchQuery, trendFilter, sortOption });

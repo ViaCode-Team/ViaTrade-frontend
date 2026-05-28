@@ -93,6 +93,7 @@ export function StrategiesList() {
 			<ListStatusBar
 				totalCount={strategies.length}
 				filteredCount={filteredStrategies.length}
+				refreshIntervalText='Автообновление: 1 мин'
 				badges={(
 					<>
 						<Badge variant='dot' color='green' size='sm'>

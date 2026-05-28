@@ -65,6 +65,7 @@ export function NotesOverview() {
 				<ListStatusBar
 					totalCount={notes.length}
 					filteredCount={filteredNotes.length}
+					refreshIntervalText='Автообновление: 1 мин'
 					badges={(
 						<>
 							<Badge variant='dot' color='blue' size='sm'>

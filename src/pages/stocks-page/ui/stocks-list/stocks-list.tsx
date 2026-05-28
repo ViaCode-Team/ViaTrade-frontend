@@ -37,6 +37,7 @@ export function StocksList({
 				<ListStatusBar
 					totalCount={totalCount}
 					filteredCount={0}
+					refreshIntervalText='Автообновление: 1 мин'
 				/>
 				<EmptyState
 					title='Акции не найдены'
@@ -54,6 +55,7 @@ export function StocksList({
 			<ListStatusBar
 				totalCount={totalCount}
 				filteredCount={filteredStocks.length}
+				refreshIntervalText='Автообновление: 1 мин'
 				badges={(
 					<>
 						<Badge variant='dot' color='green' size='sm'>

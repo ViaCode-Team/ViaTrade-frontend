@@ -26,8 +26,8 @@ type StrategiesQueries = [
 export function useStrategiesOverview() {
 	const [strategiesQuery, userStrategiesQuery] = useSuspenseQueries<StrategiesQueries>({
 		queries: [
-			getGetAllSuspenseQueryOptions(),
-			getGetUsersStrategySuspenseQueryOptions(),
+			{ ...getGetAllSuspenseQueryOptions(), refetchInterval: 60000 },
+			{ ...getGetUsersStrategySuspenseQueryOptions(), refetchInterval: 60000 },
 		],
 	});
 	const [searchParams] = useSearchParams();

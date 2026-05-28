@@ -12,9 +12,9 @@ type DashboardSignalCardProps = {
 function getDirectionProps(direction: DashboardSignal['direction']) {
 	switch (direction) {
 		case 'buy':
-			return { color: 'green' as const, icon: <IconTrendingUp size={14} />, label: 'Покупка' };
+			return { color: 'green' as const, icon: <IconTrendingUp size={14} />, label: 'Покупать' };
 		case 'sell':
-			return { color: 'red' as const, icon: <IconTrendingDown size={14} />, label: 'Продажа' };
+			return { color: 'red' as const, icon: <IconTrendingDown size={14} />, label: 'Продавать' };
 		case 'hold':
 			return { color: 'gray' as const, icon: <IconMinus size={14} />, label: 'Держать' };
 		default:

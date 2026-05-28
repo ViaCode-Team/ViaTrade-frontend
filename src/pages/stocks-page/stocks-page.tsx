@@ -74,6 +74,7 @@ export function StocksPage() {
 					searchQuery={searchQuery}
 					sortOption={sortOption}
 					trendFilter={trendFilter}
+					totalCount={stocks.length}
 					onLinkedStrategiesClick={openLinkedStrategiesModal}
 				/>
 			</Stack>

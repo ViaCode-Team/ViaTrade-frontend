@@ -29,7 +29,6 @@ export type TradeHistory = {
 const BUY_SIGNAL_VALUES = new Set([
 	'buy',
 	'long',
-	'покупка',
 	'покупать',
 	'купить',
 ]);
@@ -37,7 +36,6 @@ const BUY_SIGNAL_VALUES = new Set([
 const SELL_SIGNAL_VALUES = new Set([
 	'sell',
 	'short',
-	'продажа',
 	'продавать',
 	'продать',
 ]);

@@ -1,4 +1,4 @@
-import { SimpleGrid, Stack, Text } from '@mantine/core';
+import { SimpleGrid, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 
 import type { Signal } from '@/entities/signal';
@@ -43,13 +43,6 @@ export function SignalsList({
 
 	return (
 		<Stack>
-			<Text size='sm' c='dimmed'>
-				Найдено сигналов:
-				<Text span fw='bold' c='var(--mantine-color-text)'>
-					{' '}
-					{filteredAndSortedSignals.length}
-				</Text>
-			</Text>
 
 			<SimpleGrid
 				minColWidth={300}

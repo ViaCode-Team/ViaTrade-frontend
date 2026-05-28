@@ -30,8 +30,8 @@ function SignalsSummary() {
 	return (
 		<SummaryList>
 			<SummaryCard title='Всего' value={total} />
-			<SummaryCard title='Покупка' value={buy} color='green' />
-			<SummaryCard title='Продажа' value={sell} color='red' />
+			<SummaryCard title='Покупать' value={buy} color='green' />
+			<SummaryCard title='Продавать' value={sell} color='red' />
 		</SummaryList>
 	);
 }
@@ -41,8 +41,8 @@ export const SignalsSummaryBoundary = withQueryBoundary(SignalsSummary, {
 		fallback: (
 			<SummaryList>
 				<SummaryCard title='Всего' isLoading />
-				<SummaryCard title='Покупка' isLoading color='green' />
-				<SummaryCard title='Продажа' isLoading color='red' />
+				<SummaryCard title='Покупать' isLoading color='green' />
+				<SummaryCard title='Продавать' isLoading color='red' />
 			</SummaryList>
 		),
 	},

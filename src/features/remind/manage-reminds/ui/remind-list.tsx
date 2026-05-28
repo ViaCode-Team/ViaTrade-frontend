@@ -1,5 +1,6 @@
-import { SimpleGrid } from '@mantine/core';
+import { Badge, SimpleGrid, Stack } from '@mantine/core';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { mapTradeRemindToRemindItem, RemindCard } from '@/entities/remind';
@@ -7,6 +8,7 @@ import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentS
 import { RemindCardActions } from '@/features/remind/manage-reminds';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
+import { ListStatusBar } from '@/shared/ui/list-status-bar';
 
 import cls from './remind-list.module.css';
 
@@ -63,8 +65,31 @@ export function RemindList({
 
 	const hasFilteredReminds = filteredReminds.length > 0;
 
+	const [now] = useState(Date.now);
+	const activeCount = filteredReminds.filter((r) => new Date(`${r.date}T${r.time}`).getTime() >= now).length;
+	const pastCount = filteredReminds.filter((r) => new Date(`${r.date}T${r.time}`).getTime() < now).length;
+
 	return (
-		<>
+		<Stack gap='md'>
+			{hasAnyReminds && (
+				<ListStatusBar
+					totalCount={reminds.length}
+					filteredCount={filteredReminds.length}
+					badges={(
+						<>
+							<Badge variant='dot' color='blue' size='sm'>
+								Актуальные:
+								{activeCount}
+							</Badge>
+							<Badge variant='dot' color='gray' size='sm'>
+								Прошедшие:
+								{pastCount}
+							</Badge>
+						</>
+					)}
+				/>
+			)}
+
 			{hasFilteredReminds && (
 				<div className={cls.container}>
 					<SimpleGrid
@@ -95,7 +120,7 @@ export function RemindList({
 			{!hasAnyReminds && (
 				<EmptyState title='Напоминаний пока нет.' description='Нажмите «Добавить», чтобы добавить первое.' />
 			)}
-		</>
+		</Stack>
 	);
 }
 

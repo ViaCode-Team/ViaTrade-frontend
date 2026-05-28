@@ -36,9 +36,9 @@ function getConfidenceColor(confidence: number | null) {
 function getSignalDirectionLabel(signal: Signal) {
 	switch (signal.direction) {
 		case 'buy':
-			return 'Покупка';
+			return 'Покупать';
 		case 'sell':
-			return 'Продажа';
+			return 'Продавать';
 		case 'hold':
 			return 'Держать';
 	}

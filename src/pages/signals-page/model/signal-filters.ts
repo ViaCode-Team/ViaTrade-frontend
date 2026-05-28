@@ -20,8 +20,8 @@ export const sortOptions: Array<{ value: SortOption; label: string }> = [
 
 export const directionOptions: Array<{ value: DirectionFilter; label: string }> = [
 	{ value: 'all', label: 'Все' },
-	{ value: 'buy', label: 'Покупка' },
-	{ value: 'sell', label: 'Продажа' },
+	{ value: 'buy', label: 'Покупать' },
+	{ value: 'sell', label: 'Продавать' },
 ];
 
 function filterSignalsByDirection(signals: Signal[], directionFilter: DirectionFilter) {

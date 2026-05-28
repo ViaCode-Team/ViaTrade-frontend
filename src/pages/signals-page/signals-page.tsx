@@ -19,6 +19,7 @@ import { getSignalResultsMock } from './api/signal-results.mock';
 import { HistoryTableBoundary } from './ui/history-table';
 import { SignalsFilters } from './ui/signals-filters';
 import { SignalsListBoundary } from './ui/signals-list';
+import { SignalsStatusBarBoundary } from './ui/signals-status-bar';
 import { SignalsSummaryBoundary } from './ui/signals-summary';
 
 export function SignalsPage() {
@@ -75,6 +76,7 @@ export function SignalsPage() {
 						onSortOptionChange={setSortOption}
 						onDirectionFilterChange={setDirectionFilter}
 					/>
+					<SignalsStatusBarBoundary filters={filters} />
 				</Stack>
 
 				<SignalsListBoundary

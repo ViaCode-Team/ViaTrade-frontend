@@ -1,5 +1,6 @@
 import {
 	Alert,
+	Badge,
 	Flex,
 	Stack,
 } from '@mantine/core';
@@ -7,6 +8,7 @@ import { IconAlertTriangle } from '@tabler/icons-react';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
+import { ListStatusBar } from '@/shared/ui/list-status-bar';
 
 import { useNotesOverview } from '../lib/use-notes-overview';
 import { NoteCard } from './note-card';
@@ -58,6 +60,25 @@ export function NotesOverview() {
 					isLoading={isLoading}
 					onSearchQueryChange={setSearchQuery}
 					onSourceFilterChange={setSourceFilter}
+				/>
+
+				<ListStatusBar
+					totalCount={notes.length}
+					filteredCount={filteredNotes.length}
+					badges={(
+						<>
+							<Badge variant='dot' color='blue' size='sm'>
+								К акциям:
+								{' '}
+								{filteredNotes.filter((n) => n.source.type === 'stock').length}
+							</Badge>
+							<Badge variant='dot' color='violet' size='sm'>
+								К стратегиям:
+								{' '}
+								{filteredNotes.filter((n) => n.source.type === 'strategy').length}
+							</Badge>
+						</>
+					)}
 				/>
 
 				{isLoading

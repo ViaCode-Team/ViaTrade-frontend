@@ -58,6 +58,7 @@ export function useSessionsOverview() {
 
 	return {
 		sessions,
+		filteredSessions,
 		paginatedSessions,
 		currentSessionId,
 		activePage,

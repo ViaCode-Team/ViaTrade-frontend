@@ -19,7 +19,7 @@ export function CloseTradeButton({ trade }: CloseTradeButtonProps) {
 	};
 
 	return (
-		<Button onClick={openModal} size='compact-xs' variant='light'>
+		<Button onClick={openModal} size='compact-sm' variant='light'>
 			Закрыть
 		</Button>
 	);

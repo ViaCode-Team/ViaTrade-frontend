@@ -20,8 +20,7 @@ export function DeleteTradeButton({ trade }: DeleteTradeButtonProps) {
 		modals.openConfirmModal({
 			title: 'Удаление сделки',
 			centered: true,
-			closeOnClickOutside: false,
-			closeOnEscape: false,
+			withCloseButton: false,
 			children: 'Вы уверены, что хотите удалить эту сделку? Это действие необратимо.',
 			labels: { confirm: 'Удалить', cancel: 'Отмена' },
 			confirmProps: { color: 'red', loading: isPending },

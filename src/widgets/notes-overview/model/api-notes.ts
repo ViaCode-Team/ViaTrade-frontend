@@ -75,7 +75,7 @@ function getStockNoteSource(instrumentId: number | undefined, stocks: Stock[]): 
 		label: stock?.ticker ?? `Инструмент #${instrumentId}`,
 		description: stock?.name,
 		path: stock
-			? generatePath(ROUTES.STOCK, { stockId: stock.id })
+			? generatePath(ROUTES.STOCK, { stockId: stock.ticker.toLowerCase() })
 			: ROUTES.STOCKS,
 	};
 }

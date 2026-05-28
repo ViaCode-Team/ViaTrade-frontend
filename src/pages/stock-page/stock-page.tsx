@@ -49,7 +49,7 @@ function StockPageContent({ stock }: StockPageContentProps) {
 			id: String(stock.instrumentId),
 			label: stock.ticker,
 			description: stock.name,
-			path: generatePath(ROUTES.STOCK, { stockId: stock.id }),
+			path: generatePath(ROUTES.STOCK, { stockId: stock.ticker.toLowerCase() }),
 		}),
 		[stock.id, stock.instrumentId, stock.name, stock.ticker],
 	);

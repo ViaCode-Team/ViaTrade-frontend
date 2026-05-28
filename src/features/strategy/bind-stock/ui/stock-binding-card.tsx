@@ -25,7 +25,7 @@ export function StockBindingCard({
 	onSelectedChange,
 }: StockBindingCardProps) {
 	const stockPath = generatePath(ROUTES.STOCK, {
-		stockId: stock.id,
+		stockId: stock.ticker.toLowerCase(),
 	});
 
 	return (

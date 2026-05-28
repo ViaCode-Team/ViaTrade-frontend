@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router';
 
 import { mapTradeRemindToRemindItem, RemindCard } from '@/entities/remind';
 import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind/api/gen';
+import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 import { RemindCardActions } from '@/features/remind/manage-reminds';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
@@ -31,7 +32,16 @@ export function RemindList({
 		...queryOpts,
 		refetchInterval: 60000,
 	});
-	const reminds = response.data.map(mapTradeRemindToRemindItem);
+	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
+	const reminds = response.data.map((r) => {
+		const item = mapTradeRemindToRemindItem(r);
+		const tradeCode = stocksResponse.data.find((tc) => tc.id === r.tradeCodeId);
+		if (item.source && tradeCode) {
+			item.source.label = tradeCode.exchangeId;
+			item.source.id = tradeCode.exchangeId.toLowerCase();
+		}
+		return item;
+	});
 
 	const updateRemindMutation = useUpdateRemind();
 

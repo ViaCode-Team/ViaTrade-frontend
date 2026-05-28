@@ -35,7 +35,6 @@ export function StockLinkedStrategiesModal({
 				minColWidth={300}
 				spacing={CONTENT_GRID_SPACING}
 				component='ul'
-				className={cls.modalStrategiesGrid}
 			>
 				{stock.linkedStrategies.map((strategy) => (
 					<li key={strategy.id} className={cls.modalStrategyItem}>

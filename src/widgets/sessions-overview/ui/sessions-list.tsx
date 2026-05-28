@@ -37,7 +37,7 @@ export function SessionsList() {
 						)
 					: (
 							<>
-								<Stack component='ul' m={0} p={0} gap='xs'>
+								<Stack component='ul' gap='xs'>
 									{paginatedSessions.map((session) => {
 										const isCurrent = session.id === currentSessionId;
 										const logoutLabel = isCurrent ? 'Завершить текущую сессию' : 'Завершить сессию';

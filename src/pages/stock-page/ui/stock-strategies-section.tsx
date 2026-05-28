@@ -35,7 +35,7 @@ export function StockStrategiesSection({
 				description: `Стратегии, которые привязаны к ${stock.ticker}.`,
 			}}
 		>
-			<SimpleGrid minColWidth={300} component='ul' m={0} p={0}>
+			<SimpleGrid minColWidth={300} component='ul'>
 				{stock.linkedStrategies.map((strategy) => (
 					<li key={strategy.id}>
 						<StrategyCard

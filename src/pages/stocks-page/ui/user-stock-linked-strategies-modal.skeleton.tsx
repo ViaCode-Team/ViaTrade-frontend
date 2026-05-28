@@ -5,7 +5,7 @@ import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
 
-export function StockLinkedStrategiesModalContentSkeleton() {
+export function UserStockLinkedStrategiesModalSkeleton() {
 	return (
 		<Stack gap='md'>
 			<Skeleton h={20} w={140} />

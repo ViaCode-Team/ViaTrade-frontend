@@ -8,6 +8,8 @@ import { RemindCardActions } from '@/features/remind/manage-reminds';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 
+import cls from './remind-list.module.css';
+
 export function RemindList({
 	hideSourceBadge,
 	instrumentId,
@@ -64,22 +66,26 @@ export function RemindList({
 	return (
 		<>
 			{hasFilteredReminds && (
-				<SimpleGrid
-					minColWidth={300}
-					spacing={CONTENT_GRID_SPACING}
-					component='ul'
-				>
-					{filteredReminds.map((remind) => (
-						<li key={remind.id}>
-							<RemindCard
-								remind={remind}
-								onRemindChange={handleRemindChange}
-								actionSlot={<RemindCardActions remindId={remind.id} />}
-								hideSourceBadge={hideSourceBadge}
-							/>
-						</li>
-					))}
-				</SimpleGrid>
+				<div className={cls.container}>
+					<SimpleGrid
+						className={cls.grid}
+						minColWidth='var(--list-min-col-width)'
+						spacing={CONTENT_GRID_SPACING}
+						autoFlow='auto-fit'
+						component='ul'
+					>
+						{filteredReminds.map((remind) => (
+							<li key={remind.id}>
+								<RemindCard
+									remind={remind}
+									onRemindChange={handleRemindChange}
+									actionSlot={<RemindCardActions remindId={remind.id} />}
+									hideSourceBadge={hideSourceBadge}
+								/>
+							</li>
+						))}
+					</SimpleGrid>
+				</div>
 			)}
 
 			{!hasFilteredReminds && hasAnyReminds && (
@@ -92,3 +98,15 @@ export function RemindList({
 		</>
 	);
 }
+
+import type { ComponentProps } from 'react';
+
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import { RemindListSkeleton } from './remind-list.skeleton';
+
+export const RemindListBoundary = withQueryBoundary<NonNullable<ComponentProps<typeof RemindList>>>(RemindList, {
+	suspenseProps: {
+		fallback: <RemindListSkeleton />,
+	},
+});

@@ -1,11 +1,11 @@
 import { Skeleton } from '@mantine/core';
 
-import classes from './statistics-dashboard.module.css';
+import cls from './statistics-dashboard.module.css';
 
 export function StatisticsDashboardSkeleton() {
 	return (
-		<div className={classes.root}>
-			<div className={classes.chartsGrid}>
+		<div className={cls.root}>
+			<div className={cls.chartsGrid}>
 				<Skeleton height={300} radius='md' />
 				<Skeleton height={300} radius='md' />
 				<Skeleton height={300} radius='md' />

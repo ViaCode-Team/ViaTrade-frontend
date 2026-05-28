@@ -16,8 +16,6 @@ export function StockStrategiesSectionSkeleton() {
 				minColWidth={300}
 				spacing={CONTENT_GRID_SPACING}
 				component='ul'
-				m={0}
-				p={0}
 			>
 				{createSkeletons(3).map((item) => (
 					<li key={item.id}>

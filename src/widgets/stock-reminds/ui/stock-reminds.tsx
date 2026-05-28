@@ -2,7 +2,7 @@ import { Stack } from '@mantine/core';
 
 import type { Stock } from '@/entities/trade-code/stock';
 
-import { RemindList } from '@/features/remind/manage-reminds';
+import { RemindListBoundary } from '@/features/remind/manage-reminds';
 import { RemindsControls } from '@/features/remind/search-reminds';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -14,7 +14,7 @@ function StockRemindsContent({ stock }: StockRemindsProps) {
 	return (
 		<Stack>
 			<RemindsControls instrumentId={stock.instrumentId} />
-			<RemindList hideSourceBadge instrumentId={stock.instrumentId} />
+			<RemindListBoundary hideSourceBadge instrumentId={stock.instrumentId} />
 		</Stack>
 	);
 }

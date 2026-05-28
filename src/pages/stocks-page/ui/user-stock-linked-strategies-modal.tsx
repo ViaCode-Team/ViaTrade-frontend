@@ -9,20 +9,20 @@ import {
 import { StockLinkedStrategiesModal } from '@/entities/trade-code/stock';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { StockLinkedStrategiesModalContentSkeleton } from './stock-linked-strategies-modal-content.skeleton';
 import { StockLinkedStrategyCard } from './stock-linked-strategy-card';
+import { UserStockLinkedStrategiesModalSkeleton } from './user-stock-linked-strategies-modal.skeleton';
 
-type StockLinkedStrategiesModalContentProps = {
+type UserStockLinkedStrategiesModalProps = {
 	stock: Stock;
 	modalId: string;
 	onNavigate: (modalId: string) => void;
 };
 
-export function StockLinkedStrategiesModalContent({
+export function UserStockLinkedStrategiesModal({
 	stock,
 	modalId,
 	onNavigate,
-}: StockLinkedStrategiesModalContentProps) {
+}: UserStockLinkedStrategiesModalProps) {
 	const { data: userStrategies } = useGetUsersStrategySuspense();
 
 	const activeStrategyIds = useMemo(
@@ -49,11 +49,11 @@ export function StockLinkedStrategiesModalContent({
 	);
 }
 
-export const StockLinkedStrategiesModalContentBoundary = withQueryBoundary(
-	StockLinkedStrategiesModalContent,
+export const UserStockLinkedStrategiesModalBoundary = withQueryBoundary(
+	UserStockLinkedStrategiesModal,
 	{
 		suspenseProps: {
-			fallback: <StockLinkedStrategiesModalContentSkeleton />,
+			fallback: <UserStockLinkedStrategiesModalSkeleton />,
 		},
 	},
 );

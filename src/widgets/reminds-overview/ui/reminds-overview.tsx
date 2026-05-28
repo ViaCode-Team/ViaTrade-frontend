@@ -1,22 +1,19 @@
 import { Stack } from '@mantine/core';
 
-import { RemindList } from '@/features/remind/manage-reminds';
+import { RemindListBoundary } from '@/features/remind/manage-reminds';
 import { RemindsControls } from '@/features/remind/search-reminds';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { RemindsSummary } from './reminds-summary';
+import { RemindsSummaryBoundary } from './reminds-summary';
 
-function RemindsOverviewContent() {
+export function RemindsOverview() {
 	return (
 		<>
-			<RemindsSummary />
+			<RemindsSummaryBoundary />
 
 			<Stack>
 				<RemindsControls />
-				<RemindList />
+				<RemindListBoundary />
 			</Stack>
 		</>
 	);
 }
-
-export const RemindsOverview = withQueryBoundary(RemindsOverviewContent);

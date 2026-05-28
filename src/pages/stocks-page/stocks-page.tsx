@@ -15,10 +15,10 @@ import {
 	type StockTrendFilter,
 } from './model/stock-filters';
 import { stocksQueryOptions } from './model/stocks-query';
-import { StockLinkedStrategiesModalContentBoundary } from './ui/stock-linked-strategies-modal-content';
 import { StocksControls } from './ui/stocks-controls';
 import { StocksListBoundary } from './ui/stocks-list/stocks-list';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
+import { UserStockLinkedStrategiesModalBoundary } from './ui/user-stock-linked-strategies-modal';
 
 export function StocksPage() {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -41,7 +41,7 @@ export function StocksPage() {
 			size: 'xl',
 			centered: true,
 			children: (
-				<StockLinkedStrategiesModalContentBoundary
+				<UserStockLinkedStrategiesModalBoundary
 					stock={stock}
 					modalId={modalId}
 					onNavigate={handleLinkedStrategyNavigate}

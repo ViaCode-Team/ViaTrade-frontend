@@ -39,3 +39,13 @@ export function RemindsSummary() {
 		</SummaryList>
 	);
 }
+
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import { RemindsSummarySkeleton } from './reminds-summary.skeleton';
+
+export const RemindsSummaryBoundary = withQueryBoundary(RemindsSummary, {
+	suspenseProps: {
+		fallback: <RemindsSummarySkeleton />,
+	},
+});

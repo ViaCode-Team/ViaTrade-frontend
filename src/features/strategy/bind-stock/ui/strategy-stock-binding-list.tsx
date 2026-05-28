@@ -78,7 +78,6 @@ export function StrategyStockBindingList({
 				minColWidth={300}
 				spacing={CONTENT_GRID_SPACING}
 				component='ul'
-				className={cls.grid}
 			>
 				{visibleStocks.map((stock) => (
 					<li key={stock.id} className={cls.item}>

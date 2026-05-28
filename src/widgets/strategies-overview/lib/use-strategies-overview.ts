@@ -35,7 +35,6 @@ export function useStrategiesOverview() {
 	const sortOption = searchParams.get('sort') || 'name-asc';
 	const statusFilter = searchParams.get('filter') || 'all';
 
-	const [stockBindingStrategyId, setStockBindingStrategyId] = useState<number | null>(null);
 	const [selectedStockIdsByStrategyId, setSelectedStockIdsByStrategyId] = useState<
 		Record<number, string[]>
 	>({});
@@ -82,32 +81,21 @@ export function useStrategiesOverview() {
 		return result;
 	}, [strategies, searchQuery, sortOption, statusFilter]);
 
-	const stockBindingStrategy = strategies.find(
-		(strategy) => strategy.id === stockBindingStrategyId,
-	);
+	function getStockBindingSelectedIds(strategyId: number): string[] {
+		return selectedStockIdsByStrategyId[strategyId] ?? [];
+	}
 
-	const stockBindingSelectedIds = stockBindingStrategyId
-		? (selectedStockIdsByStrategyId[stockBindingStrategyId] ?? [])
-		: [];
-
-	function handleStockBindingChange(nextStockIds: string[]) {
-		if (!stockBindingStrategyId) {
-			return;
-		}
-
+	function handleStockBindingChange(strategyId: number, nextStockIds: string[]) {
 		setSelectedStockIdsByStrategyId((currentSelectedStockIds) => ({
 			...currentSelectedStockIds,
-			[stockBindingStrategyId]: nextStockIds,
+			[strategyId]: nextStockIds,
 		}));
 	}
 
 	return {
 		strategies,
 		filteredStrategies,
-		stockBindingStrategy,
-		stockBindingStrategyId,
-		stockBindingSelectedIds,
-		setStockBindingStrategyId,
+		getStockBindingSelectedIds,
 		handleStockBindingChange,
 	};
 }

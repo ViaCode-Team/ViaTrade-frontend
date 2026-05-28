@@ -14,7 +14,7 @@ import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-function AddRemindModalContent() {
+function AddRemindModal() {
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 	const stocks = stocksResponse.data.map(mapTradeCodeToStock);
@@ -83,12 +83,12 @@ function AddRemindModalContent() {
 	);
 }
 
-const AddRemindModalContentBoundary = withQueryBoundary(AddRemindModalContent);
+const AddRemindModalBoundary = withQueryBoundary(AddRemindModal);
 
 export function openAddRemindModal() {
 	modals.open({
 		title: 'Выбор актива',
-		children: <AddRemindModalContentBoundary />,
+		children: <AddRemindModalBoundary />,
 		size: 'md',
 	});
 }

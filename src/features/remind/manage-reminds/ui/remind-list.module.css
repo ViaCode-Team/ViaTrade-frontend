@@ -1,9 +1,13 @@
-.grid {
-	list-style: none;
-	padding: 0;
-	margin: 0;
+.container {
+	container-type: inline-size;
 }
 
-.item {
-	display: contents;
+.grid {
+	--list-min-col-width: 300px;
+}
+
+@container (min-width: 57em) {
+	.grid {
+		--list-min-col-width: 450px;
+	}
 }

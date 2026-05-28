@@ -1,6 +1,4 @@
 import { useDebouncedCallback } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 
 import type { RemindEditableField, RemindItem } from '../model';
@@ -83,13 +81,6 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 			text: localDraft.text,
 			date: localDraft.date,
 			time: localDraft.time,
-		});
-
-		notifications.show({
-			title: 'Сохранено',
-			message: 'Напоминание успешно сохранено',
-			color: 'green',
-			icon: <IconCheck size={18} />,
 		});
 	};
 

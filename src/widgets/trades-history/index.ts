@@ -1,1 +1,1 @@
-export { TradesHistoryBoundary as TradesHistory } from './ui/trades-history';
+export { TradesHistory } from './ui/trades-history';

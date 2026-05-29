@@ -13,6 +13,7 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 
 import type { Trade } from '@/shared/api/types/gen/trade';
 import type { TradeRequest } from '@/shared/api/types/gen/tradeRequest';
@@ -46,13 +47,15 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 		label: `${tc.exchangeId} — ${tc.description || 'Нет описания'}`,
 	}));
 
+	const [initialDate] = useState(() => trade.dateOpen ? dayjs(trade.dateOpen).toDate() : new Date());
+
 	const form = useForm<FormValues>({
 		initialValues: {
 			tradeTypeId: String(trade.tradeTypeId),
 			tradeCodeId: String(trade.tradeCodeId),
 			count: trade.count,
 			tradeOpen: trade.tradeOpen,
-			dateOpen: trade.dateOpen ? dayjs(trade.dateOpen).toDate() : new Date(),
+			dateOpen: initialDate,
 			isClosed: !!trade.dateClose,
 			tradeClose: trade.tradeClose,
 			dateClose: trade.dateClose ? dayjs(trade.dateClose).toDate() : undefined,

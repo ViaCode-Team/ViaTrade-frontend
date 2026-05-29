@@ -1,4 +1,4 @@
-import { ActionIcon } from '@mantine/core';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
@@ -49,14 +49,16 @@ export function DeleteTradeButton({ trade }: DeleteTradeButtonProps) {
 		});
 
 	return (
-		<ActionIcon
-			color='red'
-			variant='subtle'
-			onClick={openDeleteModal}
-			loading={isPending}
-			aria-label='Удалить сделку'
-		>
-			<IconTrash size={16} />
-		</ActionIcon>
+		<Tooltip label='Удалить сделку'>
+			<ActionIcon
+				color='red'
+				variant='subtle'
+				onClick={openDeleteModal}
+				loading={isPending}
+				aria-label='Удалить сделку'
+			>
+				<IconTrash size={16} />
+			</ActionIcon>
+		</Tooltip>
 	);
 }

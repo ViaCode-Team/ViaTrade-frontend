@@ -1,4 +1,4 @@
-import { ActionIcon } from '@mantine/core';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { IconPencil } from '@tabler/icons-react';
 
@@ -20,8 +20,10 @@ export function EditTradeButton({ trade }: EditTradeButtonProps) {
 	};
 
 	return (
-		<ActionIcon onClick={openModal} variant='subtle' aria-label='Изменить сделку'>
-			<IconPencil size={16} />
-		</ActionIcon>
+		<Tooltip label='Изменить сделку'>
+			<ActionIcon onClick={openModal} variant='subtle' aria-label='Изменить сделку'>
+				<IconPencil size={16} />
+			</ActionIcon>
+		</Tooltip>
 	);
 }

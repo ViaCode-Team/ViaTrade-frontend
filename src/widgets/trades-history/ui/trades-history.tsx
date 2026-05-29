@@ -138,6 +138,20 @@ function TradesHistoryTable({
 								<Text c='dimmed'>—</Text>
 							)}
 				</Table.Td>
+				<Table.Td style={{ whiteSpace: 'nowrap' }}>
+					{trade.netIncome !== undefined && trade.netIncome !== null
+						? (
+								<Text c={isWin ? 'teal' : isLoss ? 'red' : 'dimmed'} fw={500}>
+									{trade.percent > 0 ? '+' : ''}
+									{trade.percent.toFixed(2)}
+									{' '}
+									%
+								</Text>
+							)
+						: (
+								<Text c='dimmed'>—</Text>
+							)}
+				</Table.Td>
 				<Table.Td>
 					<Group gap='xs' wrap='nowrap' justify='flex-end' align='center'>
 						{!trade.dateClose && <CloseTradeButton trade={trade} />}
@@ -162,7 +176,8 @@ function TradesHistoryTable({
 							<Th sorted={sortField === 'tradeOpen'} reversed={sortDirection === 'desc'} onSort={() => setSorting('tradeOpen')} disabled={isFetching}>Цена откр.</Th>
 							<Th sorted={sortField === 'tradeClose'} reversed={sortDirection === 'desc'} onSort={() => setSorting('tradeClose')} disabled={isFetching}>Цена закр.</Th>
 							<Th sorted={sortField === 'count'} reversed={sortDirection === 'desc'} onSort={() => setSorting('count')} disabled={isFetching}>Кол-во</Th>
-							<Th sorted={sortField === 'pnl'} reversed={sortDirection === 'desc'} onSort={() => setSorting('pnl')} disabled={isFetching}>PnL</Th>
+							<Th sorted={sortField === 'sum'} reversed={sortDirection === 'desc'} onSort={() => setSorting('sum')} disabled={isFetching}>Сумма</Th>
+							<Th sorted={sortField === 'percent'} reversed={sortDirection === 'desc'} onSort={() => setSorting('percent')} disabled={isFetching}>Прибыль, %</Th>
 							<Table.Th />
 						</Table.Tr>
 					</Table.Thead>
@@ -171,7 +186,7 @@ function TradesHistoryTable({
 							? rows
 							: (
 									<Table.Tr>
-										<Table.Td colSpan={9}>
+										<Table.Td colSpan={10}>
 											<EmptyState
 												title='Сделки не найдены'
 												description='Попробуйте изменить параметры поиска или фильтры'

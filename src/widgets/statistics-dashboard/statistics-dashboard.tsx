@@ -24,7 +24,7 @@ export function StatisticsDashboard() {
 						h={300}
 						data={pnlData}
 						dataKey='date'
-						series={[{ name: 'PnL', color: 'indigo.6' }]}
+						series={[{ name: 'Сумма', color: 'indigo.6' }]}
 						curveType='monotone'
 					/>
 				</Card>

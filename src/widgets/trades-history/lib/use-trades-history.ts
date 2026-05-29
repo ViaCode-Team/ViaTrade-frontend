@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { getGetByUserQueryKey, useGetByUserSuspense } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 
-export type SortField = 'ticker' | 'type' | 'dateOpen' | 'dateClose' | 'tradeOpen' | 'tradeClose' | 'count' | 'pnl';
+export type SortField = 'ticker' | 'type' | 'dateOpen' | 'dateClose' | 'tradeOpen' | 'tradeClose' | 'count' | 'sum' | 'percent';
 export type SortDirection = 'asc' | 'desc';
 
 export function useTradesHistoryFilters() {
@@ -87,6 +87,7 @@ export function useTradesHistoryData({
 				ticker: stock?.exchangeId || 'Unknown',
 				isLong: trade.tradeTypeId === 1,
 				income: trade.netIncome ?? 0,
+				percent: trade.tradeOpen && trade.count > 0 ? ((trade.netIncome ?? 0) / (trade.tradeOpen * trade.count)) * 100 : 0,
 			};
 		});
 
@@ -97,7 +98,8 @@ export function useTradesHistoryData({
 				const dateCloseStr = t.dateClose ? dayjs(t.dateClose).format('DD.MM.YYYY HH:mm') : '—';
 				const tradeOpenStr = `${t.tradeOpen.toFixed(2)} ₽`;
 				const tradeCloseStr = t.tradeClose ? `${t.tradeClose.toFixed(2)} ₽` : '—';
-				const pnlStr = t.income > 0 ? `+${t.income.toFixed(2)} ₽` : `${t.income.toFixed(2)} ₽`;
+				const sumStr = t.income > 0 ? `+${t.income.toFixed(2)} ₽` : `${t.income.toFixed(2)} ₽`;
+				const percentStr = t.percent > 0 ? `+${t.percent.toFixed(2)}%` : `${t.percent.toFixed(2)}%`;
 				const typeStr = t.isLong ? 'Long' : 'Short';
 
 				const searchableString = [
@@ -108,7 +110,8 @@ export function useTradesHistoryData({
 					tradeOpenStr,
 					tradeCloseStr,
 					String(t.count),
-					pnlStr,
+					sumStr,
+					percentStr,
 				].join(' ').toLowerCase();
 
 				return searchableString.includes(lowerSearch);
@@ -154,9 +157,13 @@ export function useTradesHistoryData({
 					aVal = a.count;
 					bVal = b.count;
 					break;
-				case 'pnl':
+				case 'sum':
 					aVal = a.income;
 					bVal = b.income;
+					break;
+				case 'percent':
+					aVal = a.percent;
+					bVal = b.percent;
 					break;
 				default:
 					aVal = dayjs(a.dateOpen).valueOf();

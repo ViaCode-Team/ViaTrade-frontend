@@ -26,7 +26,7 @@ export function StatisticsSummary() {
 				color={winRate >= 50 ? 'teal' : 'red'}
 			/>
 			<SummaryCard
-				title='Общая прибыль (PnL)'
+				title='Общая прибыль (Сумма)'
 				value={`${totalNetIncome.toFixed(2)} ₽`}
 				color={totalNetIncome >= 0 ? 'teal' : 'red'}
 			/>

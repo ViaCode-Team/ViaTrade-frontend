@@ -6,7 +6,7 @@ export function StatisticsSummarySkeleton() {
 		<SummaryList>
 			<SummaryCard title='Всего сделок' isLoading />
 			<SummaryCard title='Винрейт' isLoading />
-			<SummaryCard title='Общая прибыль (PnL)' isLoading />
+			<SummaryCard title='Общая прибыль (Сумма)' isLoading />
 		</SummaryList>
 	);
 }

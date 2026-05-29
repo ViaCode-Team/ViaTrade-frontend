@@ -2,13 +2,11 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
 import { useGetByUserSuspense } from '@/entities/statistic/api/gen';
-import { mockTrades } from '@/entities/statistic/model/mock';
 
 export function useStatisticsDashboard() {
 	const { data } = useGetByUserSuspense();
 
-	// Используем моковые данные, если с сервера пришел пустой массив (для проверки отображения)
-	const trades = data.data.length === 0 ? mockTrades : data.data;
+	const trades = data.data;
 
 	const totalTrades = trades.length;
 
@@ -31,7 +29,7 @@ export function useStatisticsDashboard() {
 			cumulativePnL += t.netIncome ?? 0;
 			return {
 				date: dayjs(t.dateClose ?? t.dateOpen).format('MMM D, YYYY'),
-				PnL: Number(cumulativePnL.toFixed(2)),
+				Сумма: Number(cumulativePnL.toFixed(2)),
 			};
 		});
 	}, [trades]);

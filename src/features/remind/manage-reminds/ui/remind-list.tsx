@@ -1,4 +1,4 @@
-import { Badge, SimpleGrid, Stack } from '@mantine/core';
+import { SimpleGrid, Stack } from '@mantine/core';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
@@ -33,15 +33,19 @@ export function RemindList({
 		refetchInterval: 60000,
 	});
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
-	const reminds = response.data.map((r) => {
-		const item = mapTradeRemindToRemindItem(r);
-		const tradeCode = stocksResponse.data.find((tc) => tc.id === r.tradeCodeId);
-		if (item.source && tradeCode) {
-			item.source.label = tradeCode.exchangeId;
-			item.source.id = tradeCode.exchangeId.toLowerCase();
-		}
-		return item;
-	});
+	const [now] = useState(Date.now);
+
+	const reminds = response.data
+		.map((r) => {
+			const item = mapTradeRemindToRemindItem(r);
+			const tradeCode = stocksResponse.data.find((tc) => tc.id === r.tradeCodeId);
+			if (item.source && tradeCode) {
+				item.source.label = tradeCode.exchangeId;
+				item.source.id = tradeCode.exchangeId.toLowerCase();
+			}
+			return item;
+		})
+		.filter((r) => new Date(`${r.date}T${r.time}`).getTime() >= now);
 
 	const updateRemindMutation = useUpdateRemind();
 
@@ -78,10 +82,6 @@ export function RemindList({
 
 	const hasFilteredReminds = filteredReminds.length > 0;
 
-	const [now] = useState(Date.now);
-	const activeCount = filteredReminds.filter((r) => new Date(`${r.date}T${r.time}`).getTime() >= now).length;
-	const pastCount = filteredReminds.filter((r) => new Date(`${r.date}T${r.time}`).getTime() < now).length;
-
 	return (
 		<Stack gap='md'>
 			{hasAnyReminds && (
@@ -89,18 +89,6 @@ export function RemindList({
 					totalCount={reminds.length}
 					filteredCount={filteredReminds.length}
 					refreshIntervalText='Автообновление: 1 мин'
-					badges={(
-						<>
-							<Badge variant='dot' color='blue' size='sm'>
-								Актуальные:
-								{activeCount}
-							</Badge>
-							<Badge variant='dot' color='gray' size='sm'>
-								Прошедшие:
-								{pastCount}
-							</Badge>
-						</>
-					)}
 				/>
 			)}
 

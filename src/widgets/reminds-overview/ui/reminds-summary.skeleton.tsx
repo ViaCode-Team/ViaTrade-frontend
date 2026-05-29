@@ -6,7 +6,6 @@ export function RemindsSummarySkeleton() {
 		<SummaryList>
 			<SummaryCard title='Всего' isLoading />
 			<SummaryCard title='Актуальные' isLoading />
-			<SummaryCard title='Прошедшие' isLoading />
 		</SummaryList>
 	);
 }

@@ -7,6 +7,7 @@ import {
 	Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { useCreateInstrumentRemind } from '@/entities/remind/api/gen';
@@ -39,12 +40,13 @@ function AddRemindModal() {
 		const now = new Date();
 		// Round down to the nearest minute to avoid seconds
 		now.setSeconds(0, 0);
+		now.setHours(now.getHours() + 3);
 
 		createRemindMutation.mutate({
 			idInstrument: stock.instrumentId,
 			data: {
 				textRemind: 'Новое напоминание',
-				dateTime: now.toISOString(),
+				dateTime: dayjs(now).format('YYYY-MM-DDTHH:mm:ss'),
 			},
 		}, {
 			onSuccess: () => {

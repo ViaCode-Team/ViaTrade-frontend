@@ -57,17 +57,66 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 		}
 
 		const [date = '', timeWithSeconds = ''] = value.split(' ');
+		let time = timeWithSeconds.slice(0, 5);
+
+		// Не даем поставить время в прошлом, если выбран сегодняшний день
+		const now = new Date();
+		const [year, month, day] = date.split('-');
+
+		if (year && month && day) {
+			const isToday
+				= Number(year) === now.getFullYear()
+					&& Number(month) - 1 === now.getMonth()
+					&& Number(day) === now.getDate();
+
+			if (isToday) {
+				const [hours, minutes] = time.split(':');
+				const selectedDateTime = new Date(now.getTime());
+				selectedDateTime.setHours(Number(hours), Number(minutes), 0, 0);
+
+				if (selectedDateTime < now) {
+					const currentHours = String(now.getHours()).padStart(2, '0');
+					const currentMinutes = String(now.getMinutes()).padStart(2, '0');
+					time = `${currentHours}:${currentMinutes}`;
+				}
+			}
+		}
 
 		const nextDraft = {
 			...localDraft,
 			date,
-			time: timeWithSeconds.slice(0, 5),
+			time,
 		};
 		setLocalDraft(nextDraft);
 		debouncedSaveToStorage(nextDraft);
 	};
 
-	const isValid = Boolean(localDraft.text.trim() && localDraft.date && localDraft.time);
+	const isFutureDate = () => {
+		if (!localDraft.date || !localDraft.time)
+			return false;
+
+		const now = new Date();
+		// remind.date is YYYY-MM-DD
+		const [year, month, day] = localDraft.date.split('-');
+		const [hours, minutes] = localDraft.time.split(':');
+
+		if (!year || !month || !day || !hours || !minutes)
+			return false;
+
+		const selectedDate = new Date(
+			Number(year),
+			Number(month) - 1,
+			Number(day),
+			Number(hours),
+			Number(minutes),
+		);
+
+		return selectedDate > now;
+	};
+
+	const isValid = Boolean(
+		localDraft.text.trim() && localDraft.date && localDraft.time && isFutureDate(),
+	);
 
 	const handleSave = () => {
 		if (!isValid) {

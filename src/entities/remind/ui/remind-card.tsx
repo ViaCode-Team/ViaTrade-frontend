@@ -13,6 +13,7 @@ import {
 	IconCalendarTime,
 	IconDeviceFloppy,
 } from '@tabler/icons-react';
+import { useState } from 'react';
 import { generatePath, Link as RouterLink } from 'react-router';
 
 import type { RemindItem } from '@/entities/remind';
@@ -38,6 +39,7 @@ export function RemindCard({
 	actionSlot,
 	hideSourceBadge,
 }: RemindCardProps) {
+	const [today] = useState(() => new Date());
 	const {
 		localDraft,
 		isDirty,
@@ -132,6 +134,7 @@ export function RemindCard({
 						leftSection={<IconCalendarTime size={16} />}
 						leftSectionPointerEvents='none'
 						timePickerProps={{ withDropdown: true }}
+						minDate={today}
 					/>
 
 				</Group>

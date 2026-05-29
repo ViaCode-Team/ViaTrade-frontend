@@ -1,5 +1,6 @@
 import { ActionIcon, Group, Select, Tooltip } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
+import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router';
 
 import { useCreateInstrumentRemind } from '@/entities/remind/api/gen';
@@ -30,12 +31,13 @@ export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
 		if (instrumentId) {
 			const now = new Date();
 			now.setSeconds(0, 0);
+			now.setHours(now.getHours() + 3);
 
 			createRemindMutation.mutate({
 				idInstrument: instrumentId,
 				data: {
 					textRemind: 'Новое напоминание',
-					dateTime: now.toISOString(),
+					dateTime: dayjs(now).format('YYYY-MM-DDTHH:mm:ss'),
 				},
 			});
 		}

@@ -2,7 +2,6 @@ import {
 	Stack,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
 import type { Stock } from '@/entities/trade-code/stock';
@@ -14,7 +13,7 @@ import {
 	type StockSortOption,
 	type StockTrendFilter,
 } from './model/stock-filters';
-import { stocksQueryOptions } from './model/stocks-query';
+import { useStocksQuery } from './model/stocks-query';
 import { StocksControls } from './ui/stocks-controls';
 import { StocksListBoundary } from './ui/stocks-list/stocks-list';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
@@ -25,7 +24,7 @@ export function StocksPage() {
 	const [sortOption, setSortOption] = useState<StockSortOption>('name-asc');
 	const [trendFilter, setTrendFilter] = useState<StockTrendFilter>('all');
 
-	const { data: stocks } = useSuspenseQuery(stocksQueryOptions('', 'all', 'name-asc'));
+	const { data: stocks } = useStocksQuery('', 'all', 'name-asc');
 	const summary = useMemo(() => getStocksSummary(stocks), [stocks]);
 
 	function handleLinkedStrategyNavigate(modalId: string) {

@@ -1,15 +1,15 @@
-import { Badge, SimpleGrid, Stack } from '@mantine/core';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { SimpleGrid, Stack } from '@mantine/core';
 
 import { type Stock, StockCard } from '@/entities/trade-code/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { ValueBadge } from '@/shared/ui/value-badge';
 
 import type { StockSortOption, StockTrendFilter } from '../../model/stock-filters';
 
-import { stocksQueryOptions } from '../../model/stocks-query';
+import { useStocksQuery } from '../../model/stocks-query';
 import { StocksListSkeleton } from './stocks-list.skeleton';
 
 type StocksListProps = {
@@ -27,9 +27,7 @@ export function StocksList({
 	totalCount,
 	onLinkedStrategiesClick,
 }: StocksListProps) {
-	const { data: filteredStocks } = useSuspenseQuery(
-		stocksQueryOptions(searchQuery, trendFilter, sortOption),
-	);
+	const { data: filteredStocks } = useStocksQuery(searchQuery, trendFilter, sortOption);
 
 	if (filteredStocks.length === 0) {
 		return (
@@ -58,14 +56,8 @@ export function StocksList({
 				refreshIntervalText='Автообновление: 1 мин'
 				badges={(
 					<>
-						<Badge variant='dot' color='green' size='sm'>
-							Растут:
-							{gainersCount}
-						</Badge>
-						<Badge variant='dot' color='red' size='sm'>
-							Падают:
-							{losersCount}
-						</Badge>
+						<ValueBadge variant='dot' color='green' size='sm' label='Растут' value={gainersCount} />
+						<ValueBadge variant='dot' color='red' size='sm' label='Падают' value={losersCount} />
 					</>
 				)}
 			/>

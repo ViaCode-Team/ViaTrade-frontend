@@ -1,4 +1,4 @@
-import { Badge, Button, SimpleGrid, Stack } from '@mantine/core';
+import { Button, SimpleGrid, Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useState } from 'react';
 
@@ -14,6 +14,7 @@ import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { ValueBadge } from '@/shared/ui/value-badge';
 
 import { useStrategiesOverview } from '../lib/use-strategies-overview';
 import { StrategiesListSkeleton } from './strategies-list.skeleton';
@@ -96,14 +97,8 @@ export function StrategiesList() {
 				refreshIntervalText='Автообновление: 1 мин'
 				badges={(
 					<>
-						<Badge variant='dot' color='green' size='sm'>
-							Активные:
-							{activeCount}
-						</Badge>
-						<Badge variant='dot' color='gray' size='sm'>
-							Неактивные:
-							{inactiveCount}
-						</Badge>
+						<ValueBadge variant='dot' color='green' size='sm' label='Активные' value={activeCount} />
+						<ValueBadge variant='dot' color='gray' size='sm' label='Неактивные' value={inactiveCount} />
 					</>
 				)}
 			/>

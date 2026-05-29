@@ -13,6 +13,7 @@ import {
 	useGetResultSuspense,
 } from '@/entities/signal';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { ValueBadge } from '@/shared/ui/value-badge';
 
 import type { SignalFilters } from '../model/signal-filters';
 
@@ -71,16 +72,8 @@ export function SignalsStatusBar({ filters }: SignalsStatusBarProps) {
 
 			{filteredCount > 0 && (
 				<Group gap='sm'>
-					<Badge variant='dot' color='green' size='sm'>
-						Покупать:
-						{' '}
-						{buyCount}
-					</Badge>
-					<Badge variant='dot' color='red' size='sm'>
-						Продавать:
-						{' '}
-						{sellCount}
-					</Badge>
+					<ValueBadge variant='dot' color='green' size='sm' label='Покупать' value={buyCount} />
+					<ValueBadge variant='dot' color='red' size='sm' label='Продавать' value={sellCount} />
 				</Group>
 			)}
 		</Group>

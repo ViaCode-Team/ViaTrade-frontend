@@ -1,12 +1,10 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-
 import { mapTradeRemindToRemindItem } from '@/entities/remind';
-import { getGetAllByUserSuspenseQueryOptions } from '@/entities/remind/api/gen';
+import { useGetAllByUserSuspense } from '@/entities/remind/api/gen';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 
 export function RemindsSummary() {
-	const { data: response } = useSuspenseQuery(getGetAllByUserSuspenseQueryOptions());
+	const { data: response } = useGetAllByUserSuspense();
 	const reminds = response.data
 		.map(mapTradeRemindToRemindItem)
 		.filter((remind) => {

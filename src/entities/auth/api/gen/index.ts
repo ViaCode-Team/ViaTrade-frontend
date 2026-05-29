@@ -623,7 +623,7 @@ export async function getSessions(options?: RequestInit): Promise<getSessionsRes
 
 export function getGetSessionsQueryKey() {
 	return [
-		'getSessions',
+		`/api/Auth/sessions`,
 	] as const;
 }
 

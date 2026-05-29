@@ -132,7 +132,7 @@ export async function getAll(options?: RequestInit): Promise<getAllResponseSucce
 
 export function getGetAllQueryKey() {
 	return [
-		'getAll',
+		`/api/Strategy`,
 	] as const;
 }
 
@@ -310,8 +310,7 @@ export async function getById(strategyId: number, options?: RequestInit): Promis
 
 export function getGetByIdQueryKey(strategyId: number) {
 	return [
-		'getById',
-		...(strategyId ? [strategyId] : []),
+		`/api/Strategy/${strategyId}`,
 	] as const;
 }
 
@@ -491,7 +490,7 @@ export async function getAllInstrumentsLink(options?: RequestInit): Promise<getA
 
 export function getGetAllInstrumentsLinkQueryKey() {
 	return [
-		'getAllInstrumentsLink',
+		`/api/Strategy/byuser/instrumentslink`,
 	] as const;
 }
 
@@ -881,7 +880,7 @@ export async function getUsersStrategy(options?: RequestInit): Promise<getUsersS
 
 export function getGetUsersStrategyQueryKey() {
 	return [
-		'getUsersStrategy',
+		`/api/Strategy/byuser`,
 	] as const;
 }
 

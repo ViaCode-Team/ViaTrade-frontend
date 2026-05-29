@@ -124,7 +124,7 @@ export async function getByUser(params?: GetByUserParams, options?: RequestInit)
 
 export function getGetByUserQueryKey(params?: GetByUserParams) {
 	return [
-		'getByUser',
+		`/api/Statistic/byuser`,
 		...(params ? [params] : []),
 	] as const;
 }
@@ -398,8 +398,7 @@ export async function getTradeById(id: number, options?: RequestInit): Promise<g
 
 export function getGetTradeByIdQueryKey(id: number) {
 	return [
-		'getTradeById',
-		...(id ? [id] : []),
+		`/api/Statistic/${id}`,
 	] as const;
 }
 

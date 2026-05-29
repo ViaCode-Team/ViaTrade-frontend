@@ -48,7 +48,6 @@ const defaultOutput = {
 			useSuspenseQuery: true,
 			usePrefetch: true,
 			useInvalidate: true,
-			useOperationIdAsQueryKey: true,
 			signal: true,
 		},
 

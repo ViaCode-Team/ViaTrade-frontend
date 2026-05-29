@@ -106,7 +106,7 @@ export async function getAllStocksCodes(options?: RequestInit): Promise<getAllSt
 
 export function getGetAllStocksCodesQueryKey() {
 	return [
-		'getAllStocksCodes',
+		`/api/TradeCode/stocks`,
 	] as const;
 }
 
@@ -284,7 +284,7 @@ export async function getSysAllStocksCodes(options?: RequestInit): Promise<getSy
 
 export function getGetSysAllStocksCodesQueryKey() {
 	return [
-		'getSysAllStocksCodes',
+		`/api/TradeCode/sys/stocks`,
 	] as const;
 }
 
@@ -462,8 +462,7 @@ export async function getSysCodeById(tradeIdString: string, options?: RequestIni
 
 export function getGetSysCodeByIdQueryKey(tradeIdString: string) {
 	return [
-		'getSysCodeById',
-		...(tradeIdString ? [tradeIdString] : []),
+		`/api/TradeCode/sys/stocks/${tradeIdString}`,
 	] as const;
 }
 

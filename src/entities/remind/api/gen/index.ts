@@ -112,7 +112,7 @@ export async function getAllByUser(options?: RequestInit): Promise<getAllByUserR
 
 export function getGetAllByUserQueryKey() {
 	return [
-		'getAllByUser',
+		`/api/TradeRemind/byuser`,
 	] as const;
 }
 
@@ -290,8 +290,7 @@ export async function getTradeRemindByUserInstrument(idInstrument: number, optio
 
 export function getGetTradeRemindByUserInstrumentQueryKey(idInstrument: number) {
 	return [
-		'getTradeRemindByUserInstrument',
-		...(idInstrument ? [idInstrument] : []),
+		`/api/TradeRemind/byuser/instrument/${idInstrument}`,
 	] as const;
 }
 
@@ -573,8 +572,7 @@ export async function getTradeRemindById(remindId: number, options?: RequestInit
 
 export function getGetTradeRemindByIdQueryKey(remindId: number) {
 	return [
-		'getTradeRemindById',
-		...(remindId ? [remindId] : []),
+		`/api/TradeRemind/byuser/${remindId}`,
 	] as const;
 }
 

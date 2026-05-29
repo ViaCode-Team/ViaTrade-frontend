@@ -112,7 +112,7 @@ export async function getByUserInstrumentAll(options?: RequestInit): Promise<get
 
 export function getGetByUserInstrumentAllQueryKey() {
 	return [
-		'getByUserInstrumentAll',
+		`/api/Note/byuser/instrument`,
 	] as const;
 }
 
@@ -290,8 +290,7 @@ export async function getByUserInstrument(idInstrument: number, options?: Reques
 
 export function getGetByUserInstrumentQueryKey(idInstrument: number) {
 	return [
-		'getByUserInstrument',
-		...(idInstrument ? [idInstrument] : []),
+		`/api/Note/byuser/instrument/${idInstrument}`,
 	] as const;
 }
 
@@ -777,7 +776,7 @@ export async function getByUserStrategyAll(options?: RequestInit): Promise<getBy
 
 export function getGetByUserStrategyAllQueryKey() {
 	return [
-		'getByUserStrategyAll',
+		`/api/Note/byuser/strategy`,
 	] as const;
 }
 
@@ -955,8 +954,7 @@ export async function getByUserStrategy(idStrategy: number, options?: RequestIni
 
 export function getGetByUserStrategyQueryKey(idStrategy: number) {
 	return [
-		'getByUserStrategy',
-		...(idStrategy ? [idStrategy] : []),
+		`/api/Note/byuser/strategy/${idStrategy}`,
 	] as const;
 }
 

@@ -120,7 +120,7 @@ export async function getResult(params?: GetResultParams, options?: RequestInit)
 
 export function getGetResultQueryKey(params?: GetResultParams) {
 	return [
-		'getResult',
+		`/api/Result/strategy`,
 		...(params ? [params] : []),
 	] as const;
 }
@@ -311,9 +311,7 @@ export async function getResultByStrategyAndTradeCode(strategyName: string, trad
 
 export function getGetResultByStrategyAndTradeCodeQueryKey(strategyName: string, tradeCode: string, params?: GetResultByStrategyAndTradeCodeParams) {
 	return [
-		'getResultByStrategyAndTradeCode',
-		...(tradeCode ? [tradeCode] : []),
-		...(strategyName ? [strategyName] : []),
+		`/api/Result/strategy/${strategyName}/${tradeCode}`,
 		...(params ? [params] : []),
 	] as const;
 }

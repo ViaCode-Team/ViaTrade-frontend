@@ -102,7 +102,7 @@ export async function getMe(options?: RequestInit): Promise<getMeResponseSuccess
 
 export function getGetMeQueryKey() {
 	return [
-		'getMe',
+		`/api/User/me`,
 	] as const;
 }
 

@@ -4,8 +4,7 @@ import {
 	mapStrategyResultResponseToTradeHistory,
 	useGetResultByStrategyAndTradeCodeSuspense,
 } from '@/entities/signal';
-
-import { getSignalHistoryMock } from '../api/signal-results.mock';
+import { getSignalHistoryMock } from '@/entities/signal';
 
 type UseHistoryTableOptions = {
 	strategyName: string;

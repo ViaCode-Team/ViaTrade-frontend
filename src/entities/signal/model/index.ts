@@ -1,3 +1,4 @@
+export { mockSignals } from './mock-data';
 export {
 	mapStrategyResultResponseToSignals,
 	mapStrategyResultResponseToTradeHistory,

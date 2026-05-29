@@ -8,15 +8,15 @@ import {
 	mapStrategyResultResponseToSignals,
 	useGetResult,
 } from '@/entities/signal';
+import { getSignalResultsMock } from '@/entities/signal';
 import { PageHeader } from '@/shared/ui/page-header';
+import { HistoryTableBoundary } from '@/widgets/signal-history-table';
 
 import type {
 	DirectionFilter,
 	SortOption,
 } from './model/signal-filters';
 
-import { getSignalResultsMock } from './api/signal-results.mock';
-import { HistoryTableBoundary } from './ui/history-table';
 import { SignalsFilters } from './ui/signals-filters';
 import { SignalsListBoundary } from './ui/signals-list';
 import { SignalsStatusBarBoundary } from './ui/signals-status-bar';

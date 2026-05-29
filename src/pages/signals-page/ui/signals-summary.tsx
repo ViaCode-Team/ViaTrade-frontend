@@ -4,11 +4,10 @@ import {
 	mapStrategyResultResponseToSignals,
 	useGetResultSuspense,
 } from '@/entities/signal';
+import { getSignalResultsMock } from '@/entities/signal';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
-
-import { getSignalResultsMock } from '../api/signal-results.mock';
 
 function SignalsSummary() {
 	const { data: signalsData } = useGetResultSuspense(undefined, {

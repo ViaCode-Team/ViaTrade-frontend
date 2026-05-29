@@ -12,12 +12,12 @@ import {
 	mapStrategyResultResponseToSignals,
 	useGetResultSuspense,
 } from '@/entities/signal';
+import { getSignalResultsMock } from '@/entities/signal';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
 import type { SignalFilters } from '../model/signal-filters';
 
-import { getSignalResultsMock } from '../api/signal-results.mock';
 import { getFilteredSignals } from '../model/signal-filters';
 
 type SignalsStatusBarProps = {

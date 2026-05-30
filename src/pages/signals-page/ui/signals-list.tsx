@@ -1,4 +1,4 @@
-import { SimpleGrid, Stack } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import { useMemo } from 'react';
 
 import type { Signal } from '@/entities/signal';
@@ -43,8 +43,7 @@ export function SignalsList({
 	}, [signals, filters]);
 
 	return (
-		<Stack>
-
+		<>
 			<SimpleGrid
 				minColWidth={300}
 				spacing={CONTENT_GRID_SPACING}
@@ -66,7 +65,7 @@ export function SignalsList({
 					description='Попробуйте изменить параметры поиска или фильтры'
 				/>
 			)}
-		</Stack>
+		</>
 	);
 }
 

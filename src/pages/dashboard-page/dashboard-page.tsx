@@ -40,7 +40,7 @@ export function DashboardPage() {
 				</Stack>
 
 				<Stack gap='sm'>
-					<Title order={3}>Последние заметки</Title>
+					<Title order={2}>Последние заметки</Title>
 					<DashboardNotesBoundary />
 				</Stack>
 			</Stack>

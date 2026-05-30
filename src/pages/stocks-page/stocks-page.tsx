@@ -17,6 +17,7 @@ import { useStocksQuery } from './model/stocks-query';
 import { StocksControls } from './ui/stocks-controls';
 import { StocksListBoundary } from './ui/stocks-list/stocks-list';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
+import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
 import { UserStockLinkedStrategiesModalBoundary } from './ui/user-stock-linked-strategies-modal';
 
 export function StocksPage() {
@@ -59,21 +60,29 @@ export function StocksPage() {
 			<StocksMarketSummary {...summary} />
 
 			<Stack>
-				<StocksControls
-					searchQuery={searchQuery}
-					sortOption={sortOption}
-					trendFilter={trendFilter}
-					onSearchQueryChange={setSearchQuery}
-					onSortOptionChange={setSortOption}
-					onTrendFilterChange={setTrendFilter}
-					disabled={stocks.length === 0}
-				/>
+				<Stack gap='xs'>
+					<StocksControls
+						searchQuery={searchQuery}
+						sortOption={sortOption}
+						trendFilter={trendFilter}
+						onSearchQueryChange={setSearchQuery}
+						onSortOptionChange={setSortOption}
+						onTrendFilterChange={setTrendFilter}
+						disabled={stocks.length === 0}
+					/>
+
+					<StocksStatusBarBoundary
+						searchQuery={searchQuery}
+						sortOption={sortOption}
+						trendFilter={trendFilter}
+						totalCount={stocks.length}
+					/>
+				</Stack>
 
 				<StocksListBoundary
 					searchQuery={searchQuery}
 					sortOption={sortOption}
 					trendFilter={trendFilter}
-					totalCount={stocks.length}
 					onLinkedStrategiesClick={openLinkedStrategiesModal}
 				/>
 			</Stack>

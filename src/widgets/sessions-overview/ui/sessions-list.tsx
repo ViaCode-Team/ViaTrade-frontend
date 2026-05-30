@@ -9,7 +9,6 @@ import { IconLogout } from '@tabler/icons-react';
 
 import { SessionListItem } from '@/entities/session';
 import { EmptyState } from '@/shared/ui/empty-state';
-import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { useSessionsOverview } from '../lib/use-sessions-overview';
@@ -18,7 +17,6 @@ import { SessionsListSkeleton } from './sessions-list.skeleton';
 export function SessionsList() {
 	const {
 		sessions,
-		filteredSessions,
 		paginatedSessions,
 		currentSessionId,
 		activePage,
@@ -39,11 +37,6 @@ export function SessionsList() {
 						)
 					: (
 							<>
-								<ListStatusBar
-									totalCount={sessions.length}
-									filteredCount={filteredSessions.length}
-									refreshIntervalText='Автообновление: 1 мин'
-								/>
 								<Stack component='ul' gap='xs'>
 									{paginatedSessions.map((session) => {
 										const isCurrent = session.id === currentSessionId;

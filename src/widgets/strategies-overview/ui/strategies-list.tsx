@@ -12,9 +12,7 @@ import { StrategyStockBindingList } from '@/features/strategy/bind-stock';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
-import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-import { ValueBadge } from '@/shared/ui/value-badge';
 
 import { useStrategiesOverview } from '../lib/use-strategies-overview';
 import { StrategiesListSkeleton } from './strategies-list.skeleton';
@@ -86,23 +84,8 @@ export function StrategiesList() {
 		});
 	}
 
-	const activeCount = filteredStrategies.filter((s) => s.isActive).length;
-	const inactiveCount = filteredStrategies.filter((s) => !s.isActive).length;
-
 	return (
 		<Stack gap='md'>
-			<ListStatusBar
-				totalCount={strategies.length}
-				filteredCount={filteredStrategies.length}
-				refreshIntervalText='Автообновление: 1 мин'
-				badges={(
-					<>
-						<ValueBadge variant='dot' color='green' size='sm' label='Активные' value={activeCount} />
-						<ValueBadge variant='dot' color='gray' size='sm' label='Неактивные' value={inactiveCount} />
-					</>
-				)}
-			/>
-
 			<SimpleGrid
 				minColWidth={300}
 				spacing={CONTENT_GRID_SPACING}

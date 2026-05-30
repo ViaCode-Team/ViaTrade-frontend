@@ -65,7 +65,7 @@ export function SignalsPage() {
 			<SignalsSummaryBoundary />
 
 			<Stack>
-				<Stack gap='sm'>
+				<Stack gap='xs'>
 					<SignalsFilters
 						searchQuery={searchQuery}
 						sortOption={sortOption}

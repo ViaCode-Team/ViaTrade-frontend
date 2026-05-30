@@ -1,20 +1,14 @@
 import {
 	Alert,
-	Flex,
 	Stack,
 } from '@mantine/core';
 import { IconAlertTriangle } from '@tabler/icons-react';
 
-import { NoteCard } from '@/features/note/manage-note';
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
-import { EmptyState } from '@/shared/ui/empty-state';
-import { ListStatusBar } from '@/shared/ui/list-status-bar';
-import { ValueBadge } from '@/shared/ui/value-badge';
-
 import { useNotesOverview } from '../lib/use-notes-overview';
 import { NotesControls } from './notes-controls';
+import { NotesList } from './notes-list';
 import { NotesListSkeleton } from './notes-list.skeleton';
-import cls from './notes-overview.module.css';
+import { NotesStatusBar } from './notes-status-bar';
 import { NotesSummary } from './notes-summary';
 
 export function NotesOverview() {
@@ -53,61 +47,38 @@ export function NotesOverview() {
 						)
 					: null}
 
-				<NotesControls
-					searchQuery={searchQuery}
-					sourceFilter={sourceFilter}
-					disabled={!hasNotes}
-					isLoading={isLoading}
-					onSearchQueryChange={setSearchQuery}
-					onSourceFilterChange={setSourceFilter}
-				/>
+				<Stack gap='xs'>
+					<NotesControls
+						searchQuery={searchQuery}
+						sourceFilter={sourceFilter}
+						disabled={!hasNotes}
+						isLoading={isLoading}
+						onSearchQueryChange={setSearchQuery}
+						onSourceFilterChange={setSourceFilter}
+					/>
 
-				<ListStatusBar
-					totalCount={notes.length}
-					filteredCount={filteredNotes.length}
-					refreshIntervalText='Автообновление: 1 мин'
-					badges={(
-						<>
-							<ValueBadge variant='dot' color='blue' size='sm' label='К акциям' value={filteredNotes.filter((n) => n.source.type === 'stock').length} />
-							<ValueBadge variant='dot' color='violet' size='sm' label='К стратегиям' value={filteredNotes.filter((n) => n.source.type === 'strategy').length} />
-						</>
+					{!isLoading && (
+						<NotesStatusBar
+							notesCount={notes.length}
+							filteredNotes={filteredNotes}
+						/>
 					)}
-				/>
+				</Stack>
 
 				{isLoading
 					? (
 							<NotesListSkeleton />
 						)
-					: filteredNotes.length > 0
-						? (
-								<Flex
-									direction='column'
-									component='ul'
-									gap={CONTENT_GRID_SPACING}
-								>
-									{filteredNotes.map((note) => (
-										<li key={note.id} className={cls.item}>
-											<NoteCard
-												note={note}
-												isSaving={isSaving}
-												isDeleting={isDeleting}
-												onSave={updateNote}
-												onDelete={deleteNote}
-											/>
-										</li>
-									))}
-								</Flex>
-							)
-						: (
-								<>
-									<EmptyState
-										title={hasNotes ? 'По фильтрам ничего не найдено' : 'Заметок пока нет'}
-										description={hasNotes
-											? 'Измените поиск или тип источника.'
-											: 'Создайте заметку на странице акции или стратегии, и она появится здесь.'}
-									/>
-								</>
-							)}
+					: (
+							<NotesList
+								filteredNotes={filteredNotes}
+								hasNotes={hasNotes}
+								isSaving={isSaving}
+								isDeleting={isDeleting}
+								updateNote={updateNote}
+								deleteNote={deleteNote}
+							/>
+						)}
 			</Stack>
 		</>
 	);

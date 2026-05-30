@@ -14,7 +14,7 @@ export function ProfilePage() {
 					<ProfileInfoBoundary />
 				</Section>
 
-				<Section header={{ title: 'Связанные аккаунты' }}>
+				<Section header={{ title: 'Сторонние сервисы' }}>
 					<ThirdPartyService />
 				</Section>
 			</Stack>

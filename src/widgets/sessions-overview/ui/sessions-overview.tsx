@@ -3,6 +3,7 @@ import {
 	Group,
 	Skeleton,
 	Stack,
+	Text,
 } from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
 import { useMemo } from 'react';
@@ -22,11 +23,11 @@ function SessionsCount({ isLoading, total }: { isLoading: boolean; total: number
 		return <Skeleton component='span' h={16} w={22} display='inline-block' />;
 
 	return (
-		<>
+		<Text span c='dimmed'>
 			(
 			{total}
 			)
-		</>
+		</Text>
 	);
 }
 

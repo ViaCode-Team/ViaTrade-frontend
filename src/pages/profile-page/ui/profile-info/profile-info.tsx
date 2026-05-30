@@ -7,6 +7,7 @@ import {
 	Title,
 } from '@mantine/core';
 import { IconUser } from '@tabler/icons-react';
+import dayjs from 'dayjs';
 
 import { useGetMeSuspense } from '@/entities/user';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -34,7 +35,11 @@ export function ProfileInfo() {
 					<Title order={2} ta='center' textWrap='balance' className={cls.loginTitle}>
 						{user.login}
 					</Title>
-					<Text c='dimmed' ta='center'>Дата регистрации: 10.03.2026</Text>
+					<Text c='dimmed' ta='center'>
+						Дата регистрации:
+						{' '}
+						{dayjs(user.registerDate).format('DD.MM.YYYY')}
+					</Text>
 				</Flex>
 			</Stack>
 		</Card>

@@ -1,10 +1,10 @@
 import { Skeleton } from '@mantine/core';
 
+import type { StockSortOption, StockTrendFilter } from '@/features/stock/filter-stocks';
+
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
-
-import type { StockSortOption, StockTrendFilter } from '../model/stock-filters';
 
 import { useStocksQuery } from '../model/stocks-query';
 

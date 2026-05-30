@@ -1,7 +1,7 @@
 import { SegmentedControl, Select } from '@mantine/core';
-import { useSearchParams } from 'react-router';
 
 import { useGetAll } from '@/entities/strategy';
+import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
@@ -15,32 +15,23 @@ const strategySortOptions = [
 	{ value: 'accuracy-asc', label: 'По точности (возрастание)' },
 ];
 
-export function StrategiesSearch() {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const searchQuery = searchParams.get('q') || '';
-	const sortOption = (searchParams.get('sort') as StrategySortOption) || 'name-asc';
-	const statusFilter = (searchParams.get('filter') as StrategyStatusFilter) || 'all';
+const defaultFilters = {
+	q: '',
+	sort: 'name-asc' as StrategySortOption,
+	filter: 'all' as StrategyStatusFilter,
+};
+
+export function StrategiesControls() {
+	const { filters, setFilter } = useUrlFilters(defaultFilters);
 
 	const { data, isLoading } = useGetAll();
 	const disabled = isLoading || (data?.data.length === 0);
 
-	const updateSearchParams = (key: string, value: string | null) => {
-		setSearchParams((prev) => {
-			if (value && value !== 'name-asc' && value !== 'all') {
-				prev.set(key, value);
-			}
-			else {
-				prev.delete(key);
-			}
-			return prev;
-		});
-	};
-
 	return (
 		<ControlsGroup>
 			<SearchInput
-				value={searchQuery}
-				onChange={(val) => updateSearchParams('q', val)}
+				value={filters.q}
+				onChange={(val) => setFilter('q', val)}
 				placeholder='Поиск по названию стратегии'
 				disabled={disabled}
 				isLoading={isLoading}
@@ -48,15 +39,15 @@ export function StrategiesSearch() {
 
 			<Select
 				data={strategySortOptions}
-				value={sortOption}
-				onChange={(val) => updateSearchParams('sort', val)}
+				value={filters.sort}
+				onChange={(val) => setFilter('sort', val)}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
 
 			<SegmentedControl
-				value={statusFilter}
-				onChange={(val) => updateSearchParams('filter', val)}
+				value={filters.filter}
+				onChange={(val) => setFilter('filter', val)}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

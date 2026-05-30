@@ -2,15 +2,14 @@ import { Stack } from '@mantine/core';
 
 import type { Stock } from '@/entities/trade-code/stock';
 
+import { RemindsControls } from '@/features/remind/filter-reminds';
 import { RemindListBoundary, RemindStatusBarBoundary } from '@/features/remind/manage-reminds';
-import { RemindsControls } from '@/features/remind/search-reminds';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 type StockRemindsProps = {
 	stock: Stock;
 };
 
-function StockRemindsContent({ stock }: StockRemindsProps) {
+export function StockReminds({ stock }: StockRemindsProps) {
 	return (
 		<Stack>
 			<Stack gap='xs'>
@@ -21,5 +20,3 @@ function StockRemindsContent({ stock }: StockRemindsProps) {
 		</Stack>
 	);
 }
-
-export const StockReminds = withQueryBoundary(StockRemindsContent);

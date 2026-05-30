@@ -3,31 +3,25 @@ import { SegmentedControl } from '@mantine/core';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-type TradesHistoryControlsProps = {
-	search: string;
-	onSearchChange: (val: string) => void;
-	typeFilter: 'all' | 'long' | 'short';
-	onTypeFilterChange: (val: 'all' | 'long' | 'short') => void;
-	statusFilter: 'all' | 'open' | 'closed';
-	onStatusFilterChange: (val: 'all' | 'open' | 'closed') => void;
-	isFetching: boolean;
-};
+import { useTradesHistoryControls } from '../lib/use-trades-history-controls';
 
-export function TradesHistoryControls({
-	search,
-	onSearchChange,
-	typeFilter,
-	onTypeFilterChange,
-	statusFilter,
-	onStatusFilterChange,
-	isFetching,
-}: TradesHistoryControlsProps) {
+export function TradesHistoryControls() {
+	const {
+		search,
+		handleSearch,
+		typeFilter,
+		handleTypeFilter,
+		statusFilter,
+		handleStatusFilter,
+		isFetching,
+	} = useTradesHistoryControls();
+
 	return (
 		<ControlsGroup align='flex-end'>
 			<SearchInput
 				placeholder='Поиск...'
 				value={search}
-				onChange={onSearchChange}
+				onChange={handleSearch}
 				miw={{ base: '100%', sm: 250 }}
 				isLoading={isFetching}
 				disabled={isFetching}
@@ -39,7 +33,7 @@ export function TradesHistoryControls({
 					{ value: 'short', label: 'Short' },
 				]}
 				value={typeFilter}
-				onChange={(val) => onTypeFilterChange(val as any)}
+				onChange={(val) => handleTypeFilter(val)}
 				w={{ base: '100%', sm: 'auto' }}
 				disabled={isFetching}
 			/>
@@ -50,7 +44,7 @@ export function TradesHistoryControls({
 					{ value: 'closed', label: 'Закрытые' },
 				]}
 				value={statusFilter}
-				onChange={(val) => onStatusFilterChange(val as any)}
+				onChange={(val) => handleStatusFilter(val)}
 				w={{ base: '100%', sm: 'auto' }}
 				disabled={isFetching}
 			/>

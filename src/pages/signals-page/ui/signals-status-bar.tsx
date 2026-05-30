@@ -13,12 +13,9 @@ import {
 	useGetResultSuspense,
 } from '@/entities/signal';
 import { getSignalResultsMock } from '@/entities/signal';
+import { getFilteredSignals, type SignalFilters } from '@/features/signal/filter-signals';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
-
-import type { SignalFilters } from '../model/signal-filters';
-
-import { getFilteredSignals } from '../model/signal-filters';
 
 type SignalsStatusBarProps = {
 	filters: SignalFilters;

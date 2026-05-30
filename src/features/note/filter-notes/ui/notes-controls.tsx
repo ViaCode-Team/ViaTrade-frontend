@@ -3,30 +3,24 @@ import { SegmentedControl } from '@mantine/core';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import type { NotesSourceFilter } from '../model/note-filters';
+import { useNotesControls } from '../lib/use-notes-controls';
 
 type NotesControlsProps = {
-	searchQuery: string;
-	sourceFilter: NotesSourceFilter;
 	disabled?: boolean;
 	isLoading?: boolean;
-	onSearchQueryChange: (value: string) => void;
-	onSourceFilterChange: (value: NotesSourceFilter) => void;
 };
 
 export function NotesControls({
-	searchQuery,
-	sourceFilter,
 	disabled,
 	isLoading,
-	onSearchQueryChange,
-	onSourceFilterChange,
 }: NotesControlsProps) {
+	const { filters, setFilter } = useNotesControls();
+
 	return (
 		<ControlsGroup>
 			<SearchInput
-				value={searchQuery}
-				onChange={onSearchQueryChange}
+				value={filters.searchQuery}
+				onChange={(val) => setFilter('q', val)}
 				placeholder='Поиск по заметкам и источникам'
 				size='sm'
 				disabled={disabled}
@@ -34,8 +28,8 @@ export function NotesControls({
 			/>
 
 			<SegmentedControl
-				value={sourceFilter}
-				onChange={(value) => onSourceFilterChange(value as NotesSourceFilter)}
+				value={filters.sourceFilter}
+				onChange={(val) => setFilter('source', val)}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

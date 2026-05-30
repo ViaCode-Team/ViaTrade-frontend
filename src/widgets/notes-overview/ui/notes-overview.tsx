@@ -4,8 +4,9 @@ import {
 } from '@mantine/core';
 import { IconAlertTriangle } from '@tabler/icons-react';
 
+import { NotesControls } from '@/features/note/filter-notes';
+
 import { useNotesOverview } from '../lib/use-notes-overview';
-import { NotesControls } from './notes-controls';
 import { NotesList } from './notes-list';
 import { NotesListSkeleton } from './notes-list.skeleton';
 import { NotesStatusBar } from './notes-status-bar';
@@ -20,10 +21,6 @@ export function NotesOverview() {
 		hasError,
 		isSaving,
 		isDeleting,
-		searchQuery,
-		sourceFilter,
-		setSearchQuery,
-		setSourceFilter,
 		updateNote,
 		deleteNote,
 	} = useNotesOverview();
@@ -49,12 +46,8 @@ export function NotesOverview() {
 
 				<Stack gap='xs'>
 					<NotesControls
-						searchQuery={searchQuery}
-						sourceFilter={sourceFilter}
 						disabled={!hasNotes}
 						isLoading={isLoading}
-						onSearchQueryChange={setSearchQuery}
-						onSourceFilterChange={setSourceFilter}
 					/>
 
 					{!isLoading && (

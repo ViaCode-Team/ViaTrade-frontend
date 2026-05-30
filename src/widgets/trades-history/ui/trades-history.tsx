@@ -1,24 +1,16 @@
 import { Card, Stack } from '@mantine/core';
 
-import { useTradesHistoryFilters } from '../lib/use-trades-history';
-import { TradesHistoryControls } from './trades-history-controls';
+import { TradesHistoryControls, useTradesHistoryControls } from '@/features/trade/filter-trades';
+
 import { TradesHistoryTableBoundary } from './trades-history-table';
 
 export function TradesHistory() {
-	const filters = useTradesHistoryFilters();
+	const filters = useTradesHistoryControls();
 
 	return (
 		<Card withBorder radius='md' p={{ base: 'xs', sm: 'md' }}>
 			<Stack gap='xs'>
-				<TradesHistoryControls
-					search={filters.search}
-					onSearchChange={filters.handleSearch}
-					typeFilter={filters.typeFilter}
-					onTypeFilterChange={filters.handleTypeFilter}
-					statusFilter={filters.statusFilter}
-					onStatusFilterChange={filters.handleStatusFilter}
-					isFetching={filters.isFetching}
-				/>
+				<TradesHistoryControls />
 
 				<TradesHistoryTableBoundary
 					search={filters.search}

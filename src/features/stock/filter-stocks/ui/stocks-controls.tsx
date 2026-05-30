@@ -3,38 +3,22 @@ import { SegmentedControl, Select } from '@mantine/core';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import {
-	type StockSortOption,
-	stockSortOptions,
-	type StockTrendFilter,
-} from '../model/stock-filters';
+import { useStocksControls } from '../lib/use-stocks-controls';
+import { stockSortOptions } from '../model/stock-filters';
 
 type StocksControlsProps = {
-	searchQuery: string;
-	sortOption: StockSortOption;
-	trendFilter: StockTrendFilter;
 	disabled?: boolean;
 	isLoading?: boolean;
-	onSearchQueryChange: (searchQuery: string) => void;
-	onSortOptionChange: (sortOption: StockSortOption) => void;
-	onTrendFilterChange: (trendFilter: StockTrendFilter) => void;
 };
 
-export function StocksControls({
-	searchQuery,
-	sortOption,
-	trendFilter,
-	disabled,
-	isLoading,
-	onSearchQueryChange,
-	onSortOptionChange,
-	onTrendFilterChange,
-}: StocksControlsProps) {
+export function StocksControls({ disabled, isLoading }: StocksControlsProps) {
+	const { filters, setFilter } = useStocksControls();
+
 	return (
 		<ControlsGroup>
 			<SearchInput
-				value={searchQuery}
-				onChange={onSearchQueryChange}
+				value={filters.searchQuery}
+				onChange={(val) => setFilter('q', val)}
 				placeholder='Найти по тикеру или названию'
 				aria-label='Поиск акции'
 				disabled={disabled}
@@ -43,15 +27,15 @@ export function StocksControls({
 
 			<Select
 				data={stockSortOptions}
-				value={sortOption}
-				onChange={(value) => value && onSortOptionChange(value as StockSortOption)}
+				value={filters.sortOption}
+				onChange={(value) => value && setFilter('sort', value)}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
 
 			<SegmentedControl
-				value={trendFilter}
-				onChange={(value) => onTrendFilterChange(value as StockTrendFilter)}
+				value={filters.trendFilter}
+				onChange={(value) => setFilter('trend', value)}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

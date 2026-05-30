@@ -1,29 +1,24 @@
-import {
-	Stack,
-} from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import type { Stock } from '@/entities/trade-code/stock';
 
-import { PageHeader } from '@/shared/ui/page-header';
-
 import {
 	getStocksSummary,
-	type StockSortOption,
-	type StockTrendFilter,
-} from './model/stock-filters';
+	StocksControls,
+	useStocksControls,
+} from '@/features/stock/filter-stocks';
+import { PageHeader } from '@/shared/ui/page-header';
+
 import { useStocksQuery } from './model/stocks-query';
-import { StocksControls } from './ui/stocks-controls';
 import { StocksListBoundary } from './ui/stocks-list/stocks-list';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
 import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
 import { UserStockLinkedStrategiesModalBoundary } from './ui/user-stock-linked-strategies-modal';
 
 export function StocksPage() {
-	const [searchQuery, setSearchQuery] = useState('');
-	const [sortOption, setSortOption] = useState<StockSortOption>('name-asc');
-	const [trendFilter, setTrendFilter] = useState<StockTrendFilter>('all');
+	const { filters } = useStocksControls();
 
 	const { data: stocks } = useStocksQuery('', 'all', 'name-asc');
 	const summary = useMemo(() => getStocksSummary(stocks), [stocks]);
@@ -61,28 +56,20 @@ export function StocksPage() {
 
 			<Stack>
 				<Stack gap='xs'>
-					<StocksControls
-						searchQuery={searchQuery}
-						sortOption={sortOption}
-						trendFilter={trendFilter}
-						onSearchQueryChange={setSearchQuery}
-						onSortOptionChange={setSortOption}
-						onTrendFilterChange={setTrendFilter}
-						disabled={stocks.length === 0}
-					/>
+					<StocksControls disabled={stocks.length === 0} />
 
 					<StocksStatusBarBoundary
-						searchQuery={searchQuery}
-						sortOption={sortOption}
-						trendFilter={trendFilter}
+						searchQuery={filters.searchQuery}
+						sortOption={filters.sortOption}
+						trendFilter={filters.trendFilter}
 						totalCount={stocks.length}
 					/>
 				</Stack>
 
 				<StocksListBoundary
-					searchQuery={searchQuery}
-					sortOption={sortOption}
-					trendFilter={trendFilter}
+					searchQuery={filters.searchQuery}
+					sortOption={filters.sortOption}
+					trendFilter={filters.trendFilter}
 					onLinkedStrategiesClick={openLinkedStrategiesModal}
 				/>
 			</Stack>

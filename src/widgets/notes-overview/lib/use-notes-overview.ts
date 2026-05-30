@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import {
 	useDeleteInstrumentNote,
@@ -12,6 +12,11 @@ import {
 import { useGetAll as useGetAllStrategies } from '@/entities/strategy/api/gen';
 import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
+import {
+	getFilteredNotes,
+	getNotesSummary,
+	useNotesControls,
+} from '@/features/note/filter-notes';
 import { useStoredPersonalNotesQuery } from '@/features/note/manage-note';
 import {
 	type DraftedPersonalNote,
@@ -19,22 +24,15 @@ import {
 	mergeApiNotesWithDrafts,
 } from '@/features/note/manage-note';
 
-import type { NotesSourceFilter } from '../model/note-filters';
-
 import {
 	deleteApiNoteFromCache,
 	setApiNoteTextInCache,
 } from '../model/api-note-cache';
 import { getApiPersonalNotes } from '../model/api-notes';
-import {
-	getFilteredNotes,
-	getNotesSummary,
-} from '../model/note-filters';
 
 export function useNotesOverview() {
 	const queryClient = useQueryClient();
-	const [searchQuery, setSearchQuery] = useState('');
-	const [sourceFilter, setSourceFilter] = useState<NotesSourceFilter>('all');
+	const { filters } = useNotesControls();
 
 	const storedNotesQuery = useStoredPersonalNotesQuery();
 	const instrumentNotesQuery = useGetByUserInstrumentAll({ query: { refetchInterval: 60000 } });
@@ -72,8 +70,8 @@ export function useNotesOverview() {
 	);
 
 	const filteredNotes = useMemo(
-		() => getFilteredNotes({ notes, searchQuery, sourceFilter }),
-		[notes, searchQuery, sourceFilter],
+		() => getFilteredNotes({ notes, searchQuery: filters.searchQuery, sourceFilter: filters.sourceFilter }),
+		[notes, filters.searchQuery, filters.sourceFilter],
 	);
 
 	const summary = useMemo(() => getNotesSummary(notes), [notes]);
@@ -168,10 +166,8 @@ export function useNotesOverview() {
 		hasError,
 		isSaving,
 		isDeleting,
-		searchQuery,
-		sourceFilter,
-		setSearchQuery,
-		setSourceFilter,
+		searchQuery: filters.searchQuery,
+		sourceFilter: filters.sourceFilter,
 		updateNote,
 		deleteNote,
 	};

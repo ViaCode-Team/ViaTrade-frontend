@@ -1,4 +1,4 @@
-import { useGlobalLoaderEffect } from '../../lib/use-global-loader-effect';
+import { useGlobalLoaderEffect } from '../../lib/hooks/use-global-loader-effect';
 
 export function GlobalLoader() {
 	useGlobalLoaderEffect();

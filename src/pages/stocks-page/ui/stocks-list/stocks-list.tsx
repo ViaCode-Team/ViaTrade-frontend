@@ -1,11 +1,11 @@
 import { SimpleGrid, Stack } from '@mantine/core';
 
+import type { StockSortOption, StockTrendFilter } from '@/features/stock/filter-stocks';
+
 import { type Stock, StockCard } from '@/entities/trade-code/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-
-import type { StockSortOption, StockTrendFilter } from '../../model/stock-filters';
 
 import { useStocksQuery } from '../../model/stocks-query';
 import { StocksListSkeleton } from './stocks-list.skeleton';

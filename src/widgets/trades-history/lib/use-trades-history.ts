@@ -1,60 +1,10 @@
-import { useIsFetching } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
-import { getGetByUserQueryKey, useGetByUserSuspense } from '@/entities/statistic/api/gen';
+import type { SortDirection, SortField } from '@/features/trade/filter-trades';
+
+import { useGetByUserSuspense } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
-
-export type SortField = 'ticker' | 'type' | 'dateOpen' | 'dateClose' | 'tradeOpen' | 'tradeClose' | 'count' | 'sum' | 'percent';
-export type SortDirection = 'asc' | 'desc';
-
-export function useTradesHistoryFilters() {
-	const isFetchingTrades = useIsFetching({ queryKey: getGetByUserQueryKey() });
-
-	const [search, setSearch] = useState('');
-	const [typeFilter, setTypeFilter] = useState<'all' | 'long' | 'short'>('all');
-	const [statusFilter, setStatusFilter] = useState<'all' | 'open' | 'closed'>('all');
-	const [sortField, setSortField] = useState<SortField>('dateOpen');
-	const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-	const [page, setPage] = useState(1);
-
-	const handleSearch = (val: string) => {
-		setSearch(val);
-		setPage(1);
-	};
-
-	const handleTypeFilter = (val: 'all' | 'long' | 'short') => {
-		setTypeFilter(val);
-		setPage(1);
-	};
-
-	const handleStatusFilter = (val: 'all' | 'open' | 'closed') => {
-		setStatusFilter(val);
-		setPage(1);
-	};
-
-	const setSorting = (field: SortField) => {
-		const reversed = field === sortField ? sortDirection === 'desc' : false;
-		setSortDirection(reversed ? 'asc' : 'desc');
-		setSortField(field);
-		setPage(1);
-	};
-
-	return {
-		search,
-		handleSearch,
-		typeFilter,
-		handleTypeFilter,
-		statusFilter,
-		handleStatusFilter,
-		sortField,
-		sortDirection,
-		setSorting,
-		page,
-		setPage,
-		isFetching: isFetchingTrades > 0,
-	};
-}
 
 export type UseTradesHistoryDataProps = {
 	search: string;

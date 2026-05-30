@@ -1,41 +1,27 @@
 import { Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useMemo, useState } from 'react';
 
 import type { Signal } from '@/entities/signal';
 
 import {
+	getSignalResultsMock,
 	mapStrategyResultResponseToSignals,
 	useGetResult,
 } from '@/entities/signal';
-import { getSignalResultsMock } from '@/entities/signal';
+import {
+	SignalsControls,
+	useSignalsControls,
+} from '@/features/signal/filter-signals';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { HistoryTableBoundary } from '@/widgets/signal-history-table';
 
-import type {
-	DirectionFilter,
-	SortOption,
-} from './model/signal-filters';
-
-import { SignalsFilters } from './ui/signals-filters';
 import { SignalsListBoundary } from './ui/signals-list';
 import { SignalsStatusBarBoundary } from './ui/signals-status-bar';
 import { SignalsSummaryBoundary } from './ui/signals-summary';
 
 export function SignalsPage() {
-	const [searchQuery, setSearchQuery] = useState('');
-	const [sortOption, setSortOption] = useState<SortOption>('date-desc');
-	const [directionFilter, setDirectionFilter] = useState<DirectionFilter>('all');
-
-	const filters = useMemo(
-		() => ({
-			searchQuery,
-			sortOption,
-			directionFilter,
-		}),
-		[searchQuery, sortOption, directionFilter],
-	);
+	const { filters } = useSignalsControls();
 
 	const { data: signalsData, isLoading } = useGetResult(undefined, {
 		query: {
@@ -69,15 +55,9 @@ export function SignalsPage() {
 
 			<Stack>
 				<Stack gap='xs'>
-					<SignalsFilters
-						searchQuery={searchQuery}
-						sortOption={sortOption}
-						directionFilter={directionFilter}
+					<SignalsControls
 						disabled={disabled}
 						isLoading={isLoading}
-						onSearchQueryChange={setSearchQuery}
-						onSortOptionChange={setSortOption}
-						onDirectionFilterChange={setDirectionFilter}
 					/>
 
 					<SignalsStatusBarBoundary filters={filters} />

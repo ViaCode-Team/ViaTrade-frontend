@@ -9,13 +9,11 @@ import {
 	useGetResultSuspense,
 } from '@/entities/signal';
 import { getSignalResultsMock } from '@/entities/signal';
+import { getFilteredSignals, type SignalFilters } from '@/features/signal/filter-signals';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import type { SignalFilters } from '../model/signal-filters';
-
-import { getFilteredSignals } from '../model/signal-filters';
 import { SignalsListSkeleton } from './signals-list.skeleton';
 
 type SignalsListProps = {

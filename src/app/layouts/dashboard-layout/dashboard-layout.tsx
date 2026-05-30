@@ -9,7 +9,7 @@ import {
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Outlet } from 'react-router';
 
-import { useLockDocumentScroll } from '@/shared/lib/use-lock-document-scroll';
+import { useLockDocumentScroll } from '@/shared/lib/hooks';
 import {
 	APP_SHELL_PADDING,
 	PAGE_CONTAINER_SIZE,

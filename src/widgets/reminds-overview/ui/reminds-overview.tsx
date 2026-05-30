@@ -1,7 +1,7 @@
 import { Stack } from '@mantine/core';
 
+import { RemindsControls } from '@/features/remind/filter-reminds';
 import { RemindListBoundary, RemindStatusBarBoundary } from '@/features/remind/manage-reminds';
-import { RemindsControls } from '@/features/remind/search-reminds';
 
 import { RemindsSummaryBoundary } from './reminds-summary';
 

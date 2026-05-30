@@ -1,6 +1,6 @@
 import { Stack } from '@mantine/core';
 
-import { SessionsSearch } from '@/features/session/search-sessions';
+import { SessionsControls } from '@/features/session/filter-sessions';
 
 import { SessionsListBoundary } from './sessions-list';
 import { SessionsListHeader } from './sessions-list-header';
@@ -12,7 +12,7 @@ export function SessionsOverview() {
 			<SessionsListHeader />
 
 			<Stack gap='xs'>
-				<SessionsSearch />
+				<SessionsControls />
 				<SessionsStatusBarBoundary />
 			</Stack>
 

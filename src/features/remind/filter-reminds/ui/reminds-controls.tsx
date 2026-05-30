@@ -1,10 +1,10 @@
 import { ActionIcon, Group, Select, Tooltip } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import { useSearchParams } from 'react-router';
 
 import { useCreateInstrumentRemind } from '@/entities/remind/api/gen';
 import { openAddRemindModal } from '@/features/remind/add-remind';
+import { useUrlFilters } from '@/shared/lib/hooks';
 import { brandGradient } from '@/shared/model/theme';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
@@ -16,14 +16,17 @@ const remindSortOptions = [
 	{ value: 'date-asc', label: 'Сначала старые' },
 ];
 
+const defaultFilters = {
+	rq: '',
+	sort: 'date-desc' as RemindSortOption,
+};
+
 type RemindsControlsProps = {
 	instrumentId?: number;
 };
 
 export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const searchQuery = searchParams.get('rq') || '';
-	const sortOption = (searchParams.get('sort') as RemindSortOption) || 'date-desc';
+	const { filters, setFilter } = useUrlFilters(defaultFilters);
 
 	const createRemindMutation = useCreateInstrumentRemind();
 
@@ -46,30 +49,18 @@ export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
 		}
 	};
 
-	const updateSearchParams = (key: string, value: string | null) => {
-		setSearchParams((prev) => {
-			if (value && value !== 'date-desc') {
-				prev.set(key, value);
-			}
-			else {
-				prev.delete(key);
-			}
-			return prev;
-		});
-	};
-
 	return (
 		<ControlsGroup>
 			<SearchInput
-				value={searchQuery}
-				onChange={(val) => updateSearchParams('rq', val)}
+				value={filters.rq}
+				onChange={(val) => setFilter('rq', val)}
 				placeholder='Поиск напоминаний...'
 			/>
 
 			<Select
 				data={remindSortOptions}
-				value={sortOption}
-				onChange={(val) => updateSearchParams('sort', val)}
+				value={filters.sort}
+				onChange={(val) => setFilter('sort', val)}
 				w={{ base: '100%', sm: 220 }}
 			/>
 

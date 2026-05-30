@@ -1,35 +1,25 @@
-import { useSearchParams } from 'react-router';
-
 import { useGetSessions } from '@/entities/auth';
 import { normalizeUserSessions } from '@/features/session/manage-sessions';
+import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-export function SessionsSearch() {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const searchQuery = searchParams.get('sq') || '';
+const defaultFilters = {
+	sq: '',
+};
+
+export function SessionsControls() {
+	const { filters, setFilter } = useUrlFilters(defaultFilters);
 
 	const { data, isLoading } = useGetSessions();
 	const sessions = data?.data ? normalizeUserSessions(data.data) : [];
 	const disabled = isLoading || (sessions.length === 0);
 
-	const handleSearchChange = (query: string) => {
-		setSearchParams((prev) => {
-			if (query) {
-				prev.set('sq', query);
-			}
-			else {
-				prev.delete('sq');
-			}
-			return prev;
-		});
-	};
-
 	return (
 		<ControlsGroup>
 			<SearchInput
-				value={searchQuery}
-				onChange={handleSearchChange}
+				value={filters.sq}
+				onChange={(val) => setFilter('sq', val)}
 				placeholder='Поиск по устройству/браузеру...'
 				disabled={disabled}
 				isLoading={isLoading}

@@ -8,7 +8,7 @@ export function StrategiesPage() {
 		<>
 			<PageHeader
 				title='Стратегии'
-				description='Подберите стратегию под свой стиль торговли и горизонт инвестирования.'
+				description='Выберите стратегию под свой стиль торговли'
 			/>
 
 			<StrategiesSummaryBoundary />

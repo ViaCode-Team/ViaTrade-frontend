@@ -8,8 +8,8 @@ import {
 	getSessionsPagesCount,
 	normalizeUserSessions,
 	sortUserSessionsByActivity,
-	useUserSessionLogout,
-} from '@/features/session/manage-sessions';
+} from '@/entities/session';
+import { useUserSessionLogout } from '@/features/session/manage-sessions';
 
 export function useSessionsOverview() {
 	const [searchParams] = useSearchParams();

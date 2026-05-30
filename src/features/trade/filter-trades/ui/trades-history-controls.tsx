@@ -19,7 +19,7 @@ export function TradesHistoryControls() {
 	return (
 		<ControlsGroup align='flex-end'>
 			<SearchInput
-				placeholder='Поиск...'
+				placeholder='Поиск'
 				value={search}
 				onChange={handleSearch}
 				miw={{ base: '100%', sm: 250 }}

@@ -63,7 +63,7 @@ function AddRemindModal() {
 
 			<Select
 				label='Акция'
-				placeholder='Выберите акцию...'
+				placeholder='Акция...'
 				data={stockSelectData}
 				value={selectedStockId}
 				onChange={setSelectedStockId}

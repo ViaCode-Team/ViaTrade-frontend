@@ -49,7 +49,7 @@ export function StocksPage() {
 		<>
 			<PageHeader
 				title='Акции'
-				description='Следите за инструментами, динамикой дня и стратегиями, которые подходят под выбранный тикер.'
+				description='Динамика инструментов и связанные стратегии'
 			/>
 
 			<StocksMarketSummary {...summary} />

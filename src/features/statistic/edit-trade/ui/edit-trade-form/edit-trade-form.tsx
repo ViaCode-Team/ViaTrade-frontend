@@ -126,7 +126,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 
 				<Select
 					label='Инструмент'
-					placeholder='Выберите тикер'
+					placeholder='Тикер'
 					data={selectOptions}
 					searchable
 					disabled={isLoadingCodes}
@@ -137,14 +137,14 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 				<Group grow>
 					<NumberInput
 						label='Количество'
-						placeholder='Например, 10'
+						placeholder='10'
 						min={1}
 						withAsterisk
 						{...form.getInputProps('count')}
 					/>
 					<NumberInput
 						label='Цена открытия'
-						placeholder='Цена в ₽'
+						placeholder='Цена, ₽'
 						min={0}
 						decimalScale={2}
 						withAsterisk
@@ -154,7 +154,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 
 				<DateTimePicker
 					label='Дата открытия'
-					placeholder='Выберите дату и время'
+					placeholder='Дата и время'
 					withAsterisk
 					maxDate={maxDate}
 					{...form.getInputProps('dateOpen')}
@@ -169,7 +169,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 					<>
 						<NumberInput
 							label='Цена закрытия'
-							placeholder='Цена в ₽'
+							placeholder='Цена, ₽'
 							min={0}
 							decimalScale={2}
 							withAsterisk
@@ -177,7 +177,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 						/>
 						<DateTimePicker
 							label='Дата закрытия'
-							placeholder='Выберите дату и время'
+							placeholder='Дата и время'
 							withAsterisk
 							minDate={form.values.dateOpen || undefined}
 							maxDate={maxDate}

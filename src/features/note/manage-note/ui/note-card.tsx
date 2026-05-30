@@ -51,7 +51,7 @@ export function NoteCard({
 				<NoteForm
 					value={noteDraft.value}
 					savedValue={note.apiText}
-					placeholder='Текст заметки'
+					placeholder='Текст заметки...'
 					minRows={4}
 					maxRows={7}
 					isSubmitting={isSaving}

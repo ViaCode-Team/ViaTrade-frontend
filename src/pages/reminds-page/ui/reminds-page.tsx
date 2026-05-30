@@ -6,7 +6,7 @@ export function RemindsPage() {
 		<>
 			<PageHeader
 				title='Напоминания'
-				description='Создавайте напоминания по акциям и стратегиям, чтобы не пропустить важные моменты.'
+				description='Ваши напоминания по акциям и стратегиям'
 			/>
 
 			<RemindsOverview />

@@ -4,7 +4,7 @@ import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
 import { NoteCardSkeleton } from './note-card.skeleton';
-import cls from './notes-overview.module.css';
+import cls from './notes-list.module.css';
 
 export function NotesListSkeleton() {
 	return (

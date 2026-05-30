@@ -4,27 +4,34 @@ import { NoteCard } from '@/features/note/manage-note';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 
-import type { useNotesOverview } from '../lib/use-notes-overview';
+import type { useNotesList } from '../lib/use-notes-list';
 
-import cls from './notes-overview.module.css';
+import cls from './notes-list.module.css';
+import { NotesListSkeleton } from './notes-list.skeleton';
 
 type NotesListProps = {
-	filteredNotes: ReturnType<typeof useNotesOverview>['filteredNotes'];
+	filteredNotes: ReturnType<typeof useNotesList>['filteredNotes'];
 	hasNotes: boolean;
+	isLoading?: boolean;
 	isSaving: boolean;
 	isDeleting: boolean;
-	updateNote: ReturnType<typeof useNotesOverview>['updateNote'];
-	deleteNote: ReturnType<typeof useNotesOverview>['deleteNote'];
+	updateNote: ReturnType<typeof useNotesList>['updateNote'];
+	deleteNote: ReturnType<typeof useNotesList>['deleteNote'];
 };
 
 export function NotesList({
 	filteredNotes,
 	hasNotes,
+	isLoading,
 	isSaving,
 	isDeleting,
 	updateNote,
 	deleteNote,
 }: NotesListProps) {
+	if (isLoading) {
+		return <NotesListSkeleton />;
+	}
+
 	if (filteredNotes.length === 0) {
 		return (
 			<EmptyState

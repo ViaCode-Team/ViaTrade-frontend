@@ -32,7 +32,7 @@ export function StrategiesControls() {
 			<SearchInput
 				value={filters.q}
 				onChange={(val) => setFilter('q', val)}
-				placeholder='Поиск по названию стратегии'
+				placeholder='Найти стратегию...'
 				disabled={disabled}
 				isLoading={isLoading}
 			/>

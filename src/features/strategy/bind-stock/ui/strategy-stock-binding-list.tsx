@@ -14,7 +14,10 @@ import {
 } from '../model';
 import { StockBindingCard } from './stock-binding-card';
 import { StockBindingControls } from './stock-binding-controls';
+import { StockBindingStatusBar } from './stock-binding-status-bar';
 import cls from './strategy-stock-binding-list.module.css';
+
+const ITEMS_PER_PAGE = 12;
 
 type StrategyStockBindingListProps = {
 	stocks: Stock[];
@@ -34,19 +37,25 @@ export function StrategyStockBindingList({
 	emptyText = 'Акции не найдены',
 }: StrategyStockBindingListProps) {
 	const [searchQuery, setSearchQuery] = useState('');
+	const [page, setPage] = useState(1);
+
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
+
+	const totalPages = Math.ceil(visibleStocks.length / ITEMS_PER_PAGE);
+	const paginatedStocks = visibleStocks.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
 	const selectedStockIdSet = new Set(selectedStockIds);
 	const {
 		selectedCount,
 		allChecked,
 		indeterminate,
-	} = getStockSelectionState(stocks, visibleStocks, selectedStockIds);
+	} = getStockSelectionState(stocks, paginatedStocks, selectedStockIds);
 
 	const handleAllChange = () => {
 		onSelectedStockIdsChange(
 			getNextStockIdsAfterVisibleToggle({
 				stocks,
-				visibleStocks,
+				visibleStocks: paginatedStocks,
 				selectedStockIds,
 				allChecked,
 			}),
@@ -65,13 +74,24 @@ export function StrategyStockBindingList({
 				title={title}
 				searchPlaceholder={searchPlaceholder}
 				searchQuery={searchQuery}
-				selectedCount={selectedCount}
 				stocksCount={stocks.length}
-				visibleStocksCount={visibleStocks.length}
+				visibleStocksCount={paginatedStocks.length}
 				allChecked={allChecked}
 				indeterminate={indeterminate}
-				onSearchQueryChange={setSearchQuery}
+				onSearchQueryChange={(query) => {
+					setSearchQuery(query);
+					setPage(1);
+				}}
 				onAllChange={handleAllChange}
+			/>
+
+			<StockBindingStatusBar
+				totalCount={stocks.length}
+				filteredCount={visibleStocks.length}
+				selectedCount={selectedCount}
+				page={page}
+				totalPages={totalPages}
+				onPageChange={setPage}
 			/>
 
 			<SimpleGrid
@@ -79,7 +99,7 @@ export function StrategyStockBindingList({
 				spacing={CONTENT_GRID_SPACING}
 				component='ul'
 			>
-				{visibleStocks.map((stock) => (
+				{paginatedStocks.map((stock) => (
 					<li key={stock.id} className={cls.item}>
 						<StockBindingCard
 							stock={stock}
@@ -90,7 +110,7 @@ export function StrategyStockBindingList({
 				))}
 			</SimpleGrid>
 
-			{visibleStocks.length === 0 && (
+			{paginatedStocks.length === 0 && (
 				<EmptyState title={emptyText} />
 			)}
 		</Stack>

@@ -1,7 +1,5 @@
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-import { useNotesOverview } from '@/widgets/notes-overview/lib/use-notes-overview';
-import { NotesList } from '@/widgets/notes-overview/ui/notes-list';
-import { NotesListSkeleton } from '@/widgets/notes-overview/ui/notes-list.skeleton';
+import { NotesList, NotesListSkeleton, useNotesList } from '@/widgets/notes-list';
 
 export function DashboardNotes() {
 	const {
@@ -10,7 +8,7 @@ export function DashboardNotes() {
 		isDeleting,
 		updateNote,
 		deleteNote,
-	} = useNotesOverview();
+	} = useNotesList();
 
 	const recentNotes = filteredNotes.slice(0, 4);
 

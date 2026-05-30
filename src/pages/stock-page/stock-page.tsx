@@ -67,7 +67,7 @@ function StockPageContent({ stock }: StockPageContentProps) {
 			<Section header={{ title: 'Заметка к акции' }}>
 				<NoteForm
 					{...stockNote.noteFormProps}
-					placeholder='Запишите уровни, сценарии и условия входа'
+					placeholder='Условия входа, сценарии, риски...'
 				/>
 			</Section>
 

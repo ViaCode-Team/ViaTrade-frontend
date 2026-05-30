@@ -11,7 +11,7 @@ export function SignalsListSkeleton() {
 			spacing={CONTENT_GRID_SPACING}
 			component='ul'
 		>
-			{createSkeletons(6).map((item) => (
+			{createSkeletons(4).map((item) => (
 				<li key={item.id}>
 					<SignalCardSkeleton />
 				</li>

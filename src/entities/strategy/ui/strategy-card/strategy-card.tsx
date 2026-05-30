@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
 	Badge,
 	Box,
@@ -21,8 +23,8 @@ import cls from './strategy-card.module.css';
 type StrategyCardProps = {
 	strategy: StrategyCardStrategy;
 	onLinkClick?: () => void;
-	actionSlot?: React.ReactNode;
-	bottomActionSlot?: React.ReactNode;
+	actionSlot?: ReactNode;
+	bottomActionSlot?: ReactNode;
 };
 
 export function StrategyCard({

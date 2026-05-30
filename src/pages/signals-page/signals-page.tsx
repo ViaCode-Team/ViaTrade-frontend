@@ -4,7 +4,6 @@ import { modals } from '@mantine/modals';
 import type { Signal } from '@/entities/signal';
 
 import {
-	getSignalResultsMock,
 	mapStrategyResultResponseToSignals,
 	useGetResult,
 } from '@/entities/signal';
@@ -15,8 +14,8 @@ import {
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { HistoryTableBoundary } from '@/widgets/signal-history-table';
+import { SignalsListBoundary } from '@/widgets/signals-list';
 
-import { SignalsListBoundary } from './ui/signals-list';
 import { SignalsStatusBarBoundary } from './ui/signals-status-bar';
 import { SignalsSummaryBoundary } from './ui/signals-summary';
 
@@ -25,7 +24,6 @@ export function SignalsPage() {
 
 	const { data: signalsData, isLoading } = useGetResult(undefined, {
 		query: {
-			queryFn: getSignalResultsMock,
 			staleTime: Infinity,
 		},
 	});

@@ -56,7 +56,7 @@ export function RemindList({
 			)}
 
 			{!hasAnyReminds && (
-				<EmptyState title='Напоминаний пока нет.' description='Нажмите «Добавить», чтобы добавить первое.' />
+				<EmptyState title='Нет напоминаний' description='Нажмите «Добавить», чтобы создать первое' />
 			)}
 		</Stack>
 	);

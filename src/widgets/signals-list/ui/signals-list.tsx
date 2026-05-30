@@ -8,7 +8,6 @@ import {
 	SignalCard,
 	useGetResultSuspense,
 } from '@/entities/signal';
-import { getSignalResultsMock } from '@/entities/signal';
 import { getFilteredSignals, type SignalFilters } from '@/features/signal/filter-signals';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
@@ -29,7 +28,6 @@ export function SignalsList({
 }: SignalsListProps) {
 	const { data: signalsData } = useGetResultSuspense(undefined, {
 		query: {
-			queryFn: getSignalResultsMock,
 			staleTime: Infinity,
 			refetchInterval: 300000,
 		},

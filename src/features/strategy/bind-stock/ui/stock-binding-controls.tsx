@@ -2,21 +2,18 @@ import {
 	Checkbox,
 	Flex,
 	Stack,
-	Text,
 	Title,
 } from '@mantine/core';
 
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import { getNormalizedStockSearchQuery } from '../model';
 import cls from './strategy-stock-binding-list.module.css';
 
 type StockBindingControlsProps = {
 	title: string;
 	searchPlaceholder: string;
 	searchQuery: string;
-	selectedCount: number;
 	stocksCount: number;
 	visibleStocksCount: number;
 	allChecked: boolean;
@@ -30,7 +27,6 @@ export function StockBindingControls({
 	title,
 	searchPlaceholder,
 	searchQuery,
-	selectedCount,
 	stocksCount,
 	visibleStocksCount,
 	allChecked,
@@ -39,8 +35,6 @@ export function StockBindingControls({
 	onSearchQueryChange,
 	onAllChange,
 }: StockBindingControlsProps) {
-	const normalizedSearchQuery = getNormalizedStockSearchQuery(searchQuery);
-
 	return (
 		<Flex justify='space-between' gap='md' wrap='wrap' className={cls.header}>
 			<Stack gap='md' w='100%'>
@@ -61,22 +55,10 @@ export function StockBindingControls({
 							checked={allChecked}
 							indeterminate={indeterminate}
 							onChange={onAllChange}
-							label={normalizedSearchQuery ? 'Все найденные' : 'Все акции'}
+							label={searchQuery.trim() ? 'Выбрать все найденные на странице' : 'Выбрать все на странице'}
 							size='md'
 							disabled={visibleStocksCount === 0}
 						/>
-
-						<Text size='sm' c='dimmed'>
-							Выбрано
-							{' '}
-							<Text span fw='bold' c='var(--mantine-color-text)'>
-								{selectedCount}
-							</Text>
-							{' '}
-							из
-							{' '}
-							{stocksCount}
-						</Text>
 					</Flex>
 				</ControlsGroup>
 			</Stack>

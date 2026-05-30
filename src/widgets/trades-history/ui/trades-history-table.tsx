@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
 	Box,
 	Center,
@@ -19,7 +21,7 @@ import { TradesHistoryTableRow } from './trades-history-table-row';
 import { TradesHistoryTableSkeleton } from './trades-history-table.skeleton';
 
 type ThProps = {
-	children: React.ReactNode;
+	children: ReactNode;
 	reversed: boolean;
 	sorted: boolean;
 	onSort: () => void;
@@ -80,7 +82,7 @@ function TradesHistoryTable({
 	if (trades.length === 0) {
 		return (
 			<Box p='xl'>
-				<EmptyState title='Нет сделок' description='Вы еще не добавили ни одной сделки.' />
+				<EmptyState title='Нет сделок' description='Добавьте свою первую сделку' />
 			</Box>
 		);
 	}

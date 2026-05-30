@@ -4,7 +4,6 @@ import {
 	mapStrategyResultResponseToTradeHistory,
 	useGetResultByStrategyAndTradeCodeSuspense,
 } from '@/entities/signal';
-import { getSignalHistoryMock } from '@/entities/signal';
 
 type UseHistoryTableOptions = {
 	strategyName: string;
@@ -21,7 +20,6 @@ export function useHistoryTable({ strategyName, tradeCode }: UseHistoryTableOpti
 		undefined,
 		{
 			query: {
-				queryFn: () => getSignalHistoryMock(strategyName, tradeCode),
 				staleTime: Infinity,
 			},
 		},

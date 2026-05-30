@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
 	ActionIcon,
 	Badge,
@@ -29,7 +31,7 @@ type RemindCardProps = {
 		remindId: string,
 		updates: { text: string; date: string; time: string },
 	) => void;
-	actionSlot?: React.ReactNode;
+	actionSlot?: ReactNode;
 	hideSourceBadge?: boolean;
 };
 
@@ -83,7 +85,7 @@ export function RemindCard({
 						onChange={(event) => {
 							handleFieldChange('text', event.currentTarget.value);
 						}}
-						placeholder='Что нужно напомнить'
+						placeholder='Текст напоминания...'
 						aria-label='Текст напоминания'
 						autosize
 						minRows={4}
@@ -126,7 +128,7 @@ export function RemindCard({
 				<Group align='flex-start' gap='xs' wrap='nowrap'>
 					<DateTimePicker
 						style={{ flex: 1 }}
-						placeholder='Выберите дату и время'
+						placeholder='Дата и время'
 						value={getDateTimePickerValue(localDraft)}
 						onChange={handleDateTimeChange}
 						valueFormat='DD.MM.YYYY HH:mm'

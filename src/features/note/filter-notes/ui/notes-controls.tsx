@@ -21,7 +21,7 @@ export function NotesControls({
 			<SearchInput
 				value={filters.searchQuery}
 				onChange={(val) => setFilter('q', val)}
-				placeholder='Поиск по заметкам и источникам'
+				placeholder='Поиск заметок...'
 				size='sm'
 				disabled={disabled}
 				isLoading={isLoading}

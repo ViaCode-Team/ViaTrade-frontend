@@ -1,5 +1,5 @@
 import { useGetSessions } from '@/entities/auth';
-import { normalizeUserSessions } from '@/features/session/manage-sessions';
+import { normalizeUserSessions } from '@/entities/session';
 import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
@@ -20,7 +20,7 @@ export function SessionsControls() {
 			<SearchInput
 				value={filters.sq}
 				onChange={(val) => setFilter('sq', val)}
-				placeholder='Поиск по устройству/браузеру...'
+				placeholder='Поиск сессии...'
 				disabled={disabled}
 				isLoading={isLoading}
 			/>

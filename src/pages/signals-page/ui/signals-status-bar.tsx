@@ -7,7 +7,6 @@ import {
 	mapStrategyResultResponseToSignals,
 	useGetResultSuspense,
 } from '@/entities/signal';
-import { getSignalResultsMock } from '@/entities/signal';
 import { getFilteredSignals, type SignalFilters } from '@/features/signal/filter-signals';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -20,7 +19,6 @@ type SignalsStatusBarProps = {
 export function SignalsStatusBar({ filters }: SignalsStatusBarProps) {
 	const { data: signalsData, refetch } = useGetResultSuspense(undefined, {
 		query: {
-			queryFn: getSignalResultsMock,
 			staleTime: Infinity,
 			refetchInterval: 300000,
 		},

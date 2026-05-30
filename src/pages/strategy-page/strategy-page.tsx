@@ -84,7 +84,7 @@ export function StrategyPage() {
 			<Section header={{ title: 'Заметка к стратегии' }}>
 				<NoteForm
 					{...strategyNote.noteFormProps}
-					placeholder='Запишите важные условия, риски и наблюдения'
+					placeholder='Условия, риски, наблюдения...'
 				/>
 			</Section>
 		</>

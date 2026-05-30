@@ -17,7 +17,7 @@ export function SignalsControls({ disabled, isLoading }: SignalsControlsProps) {
 	return (
 		<ControlsGroup>
 			<SearchInput
-				placeholder='Поиск по активу или стратегии...'
+				placeholder='Поиск сигнала...'
 				value={filters.searchQuery}
 				onChange={(val) => setFilter('q', val)}
 				disabled={disabled}

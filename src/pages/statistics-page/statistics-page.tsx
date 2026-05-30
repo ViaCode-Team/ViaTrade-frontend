@@ -11,7 +11,7 @@ export function StatisticsPage() {
 		<>
 			<PageHeader
 				title='Статистика'
-				description='Аналитика и графики по вашим сделкам и доходу.'
+				description='Аналитика по сделкам и доходу'
 			/>
 			<Section>
 				<StatisticsSummary />

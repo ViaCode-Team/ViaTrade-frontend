@@ -1,11 +1,11 @@
+import type { useNotesList } from '@/widgets/notes-list';
+
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
-import type { useNotesOverview } from '../lib/use-notes-overview';
-
 type NotesStatusBarProps = {
 	notesCount: number;
-	filteredNotes: ReturnType<typeof useNotesOverview>['filteredNotes'];
+	filteredNotes: ReturnType<typeof useNotesList>['filteredNotes'];
 	onRefresh?: () => void;
 };
 

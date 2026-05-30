@@ -81,7 +81,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 			<Stack gap='md'>
 				<NumberInput
 					label='Цена закрытия'
-					placeholder='Цена в ₽'
+					placeholder='Цена, ₽'
 					min={0}
 					decimalScale={2}
 					withAsterisk
@@ -90,7 +90,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 
 				<DateTimePicker
 					label='Дата закрытия'
-					placeholder='Выберите дату и время'
+					placeholder='Дата и время'
 					withAsterisk
 					minDate={minDate}
 					maxDate={initialDate}

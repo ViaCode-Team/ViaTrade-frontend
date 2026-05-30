@@ -1,11 +1,8 @@
-import { ActionIcon, Group, Select, Tooltip } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
-import dayjs from 'dayjs';
+import type { ReactNode } from 'react';
 
-import { useCreateInstrumentRemind } from '@/entities/remind/api/gen';
-import { openAddRemindModal } from '@/features/remind/add-remind';
+import { Group, Select } from '@mantine/core';
+
 import { useUrlFilters } from '@/shared/lib/hooks';
-import { brandGradient } from '@/shared/model/theme';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
@@ -22,32 +19,11 @@ const defaultFilters = {
 };
 
 type RemindsControlsProps = {
-	instrumentId?: number;
+	actionSlot?: ReactNode;
 };
 
-export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
+export function RemindsControls({ actionSlot }: RemindsControlsProps = {}) {
 	const { filters, setFilter } = useUrlFilters(defaultFilters);
-
-	const createRemindMutation = useCreateInstrumentRemind();
-
-	const handleAddClick = () => {
-		if (instrumentId) {
-			const now = new Date();
-			now.setSeconds(0, 0);
-			now.setHours(now.getHours() + 3);
-
-			createRemindMutation.mutate({
-				idInstrument: instrumentId,
-				data: {
-					textRemind: 'Новое напоминание',
-					dateTime: dayjs(now).format('YYYY-MM-DDTHH:mm:ss'),
-				},
-			});
-		}
-		else {
-			openAddRemindModal();
-		}
-	};
 
 	return (
 		<ControlsGroup>
@@ -64,20 +40,11 @@ export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
 				w={{ base: '100%', sm: 220 }}
 			/>
 
-			<Group ml='auto'>
-				<Tooltip label='Добавить напоминание'>
-					<ActionIcon
-						variant='gradient'
-						gradient={brandGradient}
-						size='input-sm'
-						aria-label='Добавить напоминание'
-						onClick={handleAddClick}
-						loading={createRemindMutation.isPending}
-					>
-						<IconPlus size={18} />
-					</ActionIcon>
-				</Tooltip>
-			</Group>
+			{actionSlot && (
+				<Group ml='auto'>
+					{actionSlot}
+				</Group>
+			)}
 		</ControlsGroup>
 	);
 }

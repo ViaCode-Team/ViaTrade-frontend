@@ -30,7 +30,7 @@ import {
 } from '../model/api-note-cache';
 import { getApiPersonalNotes } from '../model/api-notes';
 
-export function useNotesOverview() {
+export function useNotesList() {
 	const queryClient = useQueryClient();
 	const { filters } = useNotesControls();
 

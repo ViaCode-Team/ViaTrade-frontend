@@ -11,7 +11,8 @@ import { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router';
 
 import { useGetSessions } from '@/entities/auth';
-import { normalizeUserSessions, useUserSessionLogout } from '@/features/session/manage-sessions';
+import { normalizeUserSessions } from '@/entities/session';
+import { useUserSessionLogout } from '@/features/session/manage-sessions';
 
 import cls from './sessions-list.module.css';
 

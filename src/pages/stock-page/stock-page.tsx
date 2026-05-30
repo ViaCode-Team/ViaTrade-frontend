@@ -12,7 +12,7 @@ import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
-import { StockLinkedStrategiesWidgetBoundary } from '@/widgets/stock-linked-strategies';
+import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
 import { StockReminds } from '@/widgets/stock-reminds';
 
 import { BackToStocksLink } from './ui/back-to-stocks-link';
@@ -68,7 +68,7 @@ function StockPageContent({ stock }: StockPageContentProps) {
 					description: stock.ticker ? `Стратегии, которые привязаны к ${stock.ticker}.` : undefined,
 				}}
 			>
-				<StockLinkedStrategiesWidgetBoundary stockId={stock.instrumentId} />
+				<StockLinkedStrategies stockId={stock.instrumentId} />
 			</Section>
 
 			<Section header={{ title: 'Заметка к акции' }}>

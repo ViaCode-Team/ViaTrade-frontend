@@ -1,18 +1,12 @@
-import { SimpleGrid, Skeleton, Stack } from '@mantine/core';
+import { SimpleGrid, Stack } from '@mantine/core';
 
 import { StrategyCardSkeleton } from '@/entities/strategy';
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 
-export function StockLinkedStrategiesWidgetSkeleton() {
+export function StockLinkedStrategiesListSkeleton() {
 	return (
 		<Stack gap='md'>
-			{/* Controls skeleton */}
-			<Stack gap='xs'>
-				<Skeleton height={36} />
-				<Skeleton height={20} width='40%' />
-			</Stack>
-
 			{/* List skeleton */}
 			<SimpleGrid
 				minColWidth={300}

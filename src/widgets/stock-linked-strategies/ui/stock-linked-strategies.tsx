@@ -8,12 +8,12 @@ import {
 import { StockLinkedStrategiesListBoundary } from './stock-linked-strategies-list';
 import { StockLinkedStrategiesStatusBarBoundary } from './stock-linked-strategies-status-bar';
 
-type StockLinkedStrategiesWidgetProps = {
+type StockLinkedStrategiesProps = {
 	stockId: number;
 	onNavigate?: () => void;
 };
 
-export function StockLinkedStrategies({ stockId, onNavigate }: StockLinkedStrategiesWidgetProps) {
+export function StockLinkedStrategies({ stockId, onNavigate }: StockLinkedStrategiesProps) {
 	const { filters, setFilter, page, setPage } = useLinkedStrategiesControls();
 
 	return (

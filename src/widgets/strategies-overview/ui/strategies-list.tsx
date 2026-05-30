@@ -1,4 +1,4 @@
-import { Button, SimpleGrid, Stack } from '@mantine/core';
+import { Button, SimpleGrid, Stack, Title } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useState } from 'react';
 
@@ -6,9 +6,7 @@ import {
 	StrategyCard,
 	toStrategyCardStrategy,
 } from '@/entities/strategy';
-import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
-import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
-import { StrategyStockBindingList } from '@/features/strategy/bind-stock';
+import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
@@ -18,14 +16,11 @@ import { useStrategiesOverview } from '../lib/use-strategies-overview';
 import { StrategiesListSkeleton } from './strategies-list.skeleton';
 
 type Strategy = ReturnType<typeof useStrategiesOverview>['strategies'][number];
-type Stock = ReturnType<typeof mapTradeCodeToStock>;
 
 function StrategyStockBindingModalWrapper({
-	stocks,
 	initialSelectedStockIds,
 	onSave,
 }: {
-	stocks: Stock[];
 	initialSelectedStockIds: string[];
 	onSave: (nextStockIds: string[]) => void;
 }) {
@@ -33,11 +28,9 @@ function StrategyStockBindingModalWrapper({
 
 	return (
 		<Stack gap='md'>
-			<StrategyStockBindingList
-				stocks={stocks}
+			<StrategyStockBinding
 				selectedStockIds={selectedStockIds}
 				onSelectedStockIdsChange={setSelectedStockIds}
-				title='Выберите акции'
 				emptyText='Акции не найдены'
 			/>
 			<Stack mt='md' align='flex-end'>
@@ -70,19 +63,21 @@ export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActi
 		filteredStrategies = filteredStrategies.slice(0, limit);
 	}
 
-	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
-	const stocks = stocksResponse.data.map(mapTradeCodeToStock);
-
 	function openStockBindingModal(strategy: Strategy) {
 		const initialIds = getStockBindingSelectedIds(strategy.id);
 
 		modals.open({
-			title: `Привязать акции к ${strategy.name}`,
+			title: (
+				<Title order={2}>
+					Привязать акции к
+					{' '}
+					{strategy.name}
+				</Title>
+			),
 			size: 'xl',
 			centered: true,
 			children: (
 				<StrategyStockBindingModalWrapper
-					stocks={stocks}
 					initialSelectedStockIds={initialIds}
 					onSave={(nextStockIds) => {
 						handleStockBindingChange(strategy.id, nextStockIds);
@@ -133,9 +128,7 @@ export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActi
 	);
 }
 
-import type { ComponentProps } from 'react';
-
-export const StrategiesListBoundary = withQueryBoundary<NonNullable<ComponentProps<typeof StrategiesList>>>(StrategiesList, {
+export const StrategiesListBoundary = withQueryBoundary(StrategiesList, {
 	suspenseProps: {
 		fallback: <StrategiesListSkeleton />,
 	},

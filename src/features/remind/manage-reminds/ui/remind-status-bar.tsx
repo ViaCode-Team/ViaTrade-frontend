@@ -1,5 +1,3 @@
-import type { ComponentProps } from 'react';
-
 import { Skeleton } from '@mantine/core';
 
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
@@ -26,7 +24,7 @@ export function RemindStatusBar({ instrumentId }: { instrumentId?: number }) {
 	);
 }
 
-export const RemindStatusBarBoundary = withQueryBoundary<NonNullable<ComponentProps<typeof RemindStatusBar>>>(RemindStatusBar, {
+export const RemindStatusBarBoundary = withQueryBoundary(RemindStatusBar, {
 	suspenseProps: {
 		fallback: <Skeleton height={40} radius='md' />,
 	},

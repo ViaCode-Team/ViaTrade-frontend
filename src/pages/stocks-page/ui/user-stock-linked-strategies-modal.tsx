@@ -20,5 +20,3 @@ export function UserStockLinkedStrategiesModal({
 		/>
 	);
 }
-
-export const UserStockLinkedStrategiesModalBoundary = UserStockLinkedStrategiesModal;

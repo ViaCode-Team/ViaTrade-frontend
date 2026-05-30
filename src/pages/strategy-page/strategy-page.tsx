@@ -11,10 +11,8 @@ import {
 	useDeleteInstrumentsLink,
 	useGetAllInstrumentsLinkSuspense,
 } from '@/entities/strategy/api/gen';
-import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
-import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
-import { StrategyStockBindingList } from '@/features/strategy/bind-stock';
+import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { ROUTES } from '@/shared/model/routes';
 import { Section } from '@/shared/ui/section';
 
@@ -32,9 +30,6 @@ export function StrategyPage() {
 	);
 	const strategyId = strategy ? strategy.id : null;
 	const hasStrategyId = strategyId !== null;
-
-	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
-	const stocks = useMemo(() => stocksResponse.data.map(mapTradeCodeToStock), [stocksResponse.data]);
 
 	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
 	const serverSelectedStockIds = useMemo(
@@ -93,11 +88,12 @@ export function StrategyPage() {
 
 			<StrategyInfoGrid strategyId={strategyId} />
 
-			<StrategyStockBindingList
-				stocks={stocks}
-				selectedStockIds={serverSelectedStockIds}
-				onSelectedStockIdsChange={handleLinkedStocksChange}
-			/>
+			<Section header={{ title: 'Связанные акции' }}>
+				<StrategyStockBinding
+					selectedStockIds={serverSelectedStockIds}
+					onSelectedStockIdsChange={handleLinkedStocksChange}
+				/>
+			</Section>
 
 			<Section header={{ title: 'Заметка к стратегии' }}>
 				<NoteForm

@@ -16,7 +16,7 @@ import { useStocksQuery } from './model/stocks-query';
 import { StocksListBoundary } from './ui/stocks-list/stocks-list';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
 import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
-import { UserStockLinkedStrategiesModalBoundary } from './ui/user-stock-linked-strategies-modal';
+import { UserStockLinkedStrategiesModal } from './ui/user-stock-linked-strategies-modal';
 
 export function StocksPage() {
 	const { filters } = useStocksControls();
@@ -43,7 +43,7 @@ export function StocksPage() {
 			size: 'xl',
 			centered: true,
 			children: (
-				<UserStockLinkedStrategiesModalBoundary
+				<UserStockLinkedStrategiesModal
 					stock={stock}
 					modalId={modalId}
 					onNavigate={handleLinkedStrategyNavigate}

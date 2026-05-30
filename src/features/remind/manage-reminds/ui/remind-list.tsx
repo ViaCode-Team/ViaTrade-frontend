@@ -60,9 +60,8 @@ export function RemindList({
 	);
 }
 
-import type { ComponentProps } from 'react';
 
-export const RemindListBoundary = withQueryBoundary<NonNullable<ComponentProps<typeof RemindList>>>(RemindList, {
+export const RemindListBoundary = withQueryBoundary(RemindList, {
 	suspenseProps: {
 		fallback: <RemindListSkeleton />,
 	},

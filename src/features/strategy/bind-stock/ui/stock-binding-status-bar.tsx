@@ -1,28 +1,29 @@
-import { Badge, Pagination } from '@mantine/core';
+import { Badge, Skeleton } from '@mantine/core';
 
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import { getFilteredStocks, getStockSelectionState } from '../model';
+import { useStrategyStockBindingData } from '../model/use-strategy-stock-binding';
 
 type StockBindingStatusBarProps = {
-	totalCount: number;
-	filteredCount: number;
-	selectedCount: number;
-	page: number;
-	totalPages: number;
-	onPageChange: (page: number) => void;
+	searchQuery: string;
+	selectedStockIds: string[];
 };
 
 export function StockBindingStatusBar({
-	totalCount,
-	filteredCount,
-	selectedCount,
-	page,
-	totalPages,
-	onPageChange,
+	searchQuery,
+	selectedStockIds,
 }: StockBindingStatusBarProps) {
+	const { stocks } = useStrategyStockBindingData();
+	const visibleStocks = getFilteredStocks(stocks, searchQuery);
+
+	const { selectedCount } = getStockSelectionState(stocks, visibleStocks, selectedStockIds);
+
 	return (
 		<ListStatusBar
-			totalCount={totalCount}
-			filteredCount={filteredCount}
+			totalCount={stocks.length}
+			filteredCount={visibleStocks.length}
 			badges={(
 				<>
 					{selectedCount > 0 && (
@@ -32,18 +33,15 @@ export function StockBindingStatusBar({
 							{selectedCount}
 						</Badge>
 					)}
-					{totalPages > 1 && (
-						<Pagination
-							value={page}
-							onChange={onPageChange}
-							total={totalPages}
-							size='sm'
-							radius='md'
-							withEdges
-						/>
-					)}
 				</>
 			)}
 		/>
 	);
 }
+
+export const StockBindingStatusBarBoundary = withQueryBoundary(StockBindingStatusBar, {
+	suspenseProps: {
+		fallback: <Skeleton height={20} width='100%' />,
+
+	},
+});

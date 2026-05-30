@@ -1,1 +1,1 @@
-export { StockLinkedStrategies } from './ui/stock-linked-strategies-widget';
+export { StockLinkedStrategies } from './ui/stock-linked-strategies';

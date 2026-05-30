@@ -1,103 +1,45 @@
-import { SimpleGrid } from '@mantine/core';
-import { useState } from 'react';
-
-import type { Stock } from '@/entities/trade-code/stock';
+import { Group, Pagination, SimpleGrid, Stack } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
-import { Section } from '@/shared/ui/section';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import {
-	getFilteredStocks,
-	getNextStockIdsAfterStockToggle,
-	getNextStockIdsAfterVisibleToggle,
-	getStockSelectionState,
-} from '../model';
+import { getFilteredStocks, getNextStockIdsAfterStockToggle } from '../model';
+import { ITEMS_PER_PAGE, useStrategyStockBindingData } from '../model/use-strategy-stock-binding';
 import { StockBindingCard } from './stock-binding-card';
-import { StockBindingControls } from './stock-binding-controls';
-import { StockBindingStatusBar } from './stock-binding-status-bar';
 import cls from './strategy-stock-binding-list.module.css';
-
-const ITEMS_PER_PAGE = 12;
+import { StrategyStockBindingListSkeleton } from './strategy-stock-binding-list.skeleton';
 
 type StrategyStockBindingListProps = {
-	stocks: Stock[];
+	searchQuery: string;
+	page: number;
 	selectedStockIds: string[];
-	onSelectedStockIdsChange: (stockIds: string[]) => void;
-	title?: string;
-	searchPlaceholder?: string;
+	onStockChange: (stockIds: string[]) => void;
+	onPageChange: (page: number) => void;
 	emptyText?: string;
 };
 
 export function StrategyStockBindingList({
-	stocks,
+	searchQuery,
+	page,
 	selectedStockIds,
-	onSelectedStockIdsChange,
-	title = 'Связанные акции',
-	searchPlaceholder = 'Найти по коду или названию',
+	onStockChange,
+	onPageChange,
 	emptyText = 'Акции не найдены',
 }: StrategyStockBindingListProps) {
-	const [searchQuery, setSearchQuery] = useState('');
-	const [page, setPage] = useState(1);
-
+	const { stocks } = useStrategyStockBindingData();
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
-
 	const totalPages = Math.ceil(visibleStocks.length / ITEMS_PER_PAGE);
 	const paginatedStocks = visibleStocks.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
 	const selectedStockIdSet = new Set(selectedStockIds);
-	const {
-		selectedCount,
-		allChecked,
-		indeterminate,
-	} = getStockSelectionState(stocks, paginatedStocks, selectedStockIds);
 
-	const handleAllChange = () => {
-		onSelectedStockIdsChange(
-			getNextStockIdsAfterVisibleToggle({
-				stocks,
-				visibleStocks: paginatedStocks,
-				selectedStockIds,
-				allChecked,
-			}),
-		);
-	};
-
-	const handleStockChange = (stockId: string, checked: boolean) => {
-		onSelectedStockIdsChange(
-			getNextStockIdsAfterStockToggle(stocks, selectedStockIds, stockId, checked),
-		);
-	};
-
-	if (stocks.length === 0) {
-		return <EmptyState title='Нет акций' description='Список доступных акций пуст.' />;
+	if (paginatedStocks.length === 0) {
+		return <EmptyState title={emptyText} />;
 	}
 
 	return (
-		<Section header={{ title }}>
-			<StockBindingControls
-				searchPlaceholder={searchPlaceholder}
-				searchQuery={searchQuery}
-				stocksCount={stocks.length}
-				visibleStocksCount={paginatedStocks.length}
-				allChecked={allChecked}
-				indeterminate={indeterminate}
-				onSearchQueryChange={(query) => {
-					setSearchQuery(query);
-					setPage(1);
-				}}
-				onAllChange={handleAllChange}
-			/>
-
-			<StockBindingStatusBar
-				totalCount={stocks.length}
-				filteredCount={visibleStocks.length}
-				selectedCount={selectedCount}
-				page={page}
-				totalPages={totalPages}
-				onPageChange={setPage}
-			/>
-
+		<Stack gap='md'>
 			<SimpleGrid
 				minColWidth={300}
 				spacing={CONTENT_GRID_SPACING}
@@ -108,15 +50,30 @@ export function StrategyStockBindingList({
 						<StockBindingCard
 							stock={stock}
 							isSelected={selectedStockIdSet.has(stock.id)}
-							onSelectedChange={handleStockChange}
+							onSelectedChange={(stockId, checked) => {
+								onStockChange(getNextStockIdsAfterStockToggle(stocks, selectedStockIds, stockId, checked));
+							}}
 						/>
 					</li>
 				))}
 			</SimpleGrid>
 
-			{paginatedStocks.length === 0 && (
-				<EmptyState title={emptyText} />
+			{totalPages > 1 && (
+				<Group justify='center' mt='sm'>
+					<Pagination
+						total={totalPages}
+						value={page}
+						onChange={onPageChange}
+						size='sm'
+					/>
+				</Group>
 			)}
-		</Section>
+		</Stack>
 	);
 }
+
+export const StrategyStockBindingListBoundary = withQueryBoundary(StrategyStockBindingList, {
+	suspenseProps: {
+		fallback: <StrategyStockBindingListSkeleton />,
+	},
+});

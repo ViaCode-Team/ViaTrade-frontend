@@ -26,38 +26,36 @@ export function RemindList({
 	const hasAnyReminds = reminds.length > 0;
 	const hasFilteredReminds = filteredReminds.length > 0;
 
+	if (!hasAnyReminds) {
+		return <EmptyState title='Напоминаний нет' description='Создайте первое напоминание, чтобы ничего не пропустить.' />;
+	}
+
+	if (!hasFilteredReminds) {
+		return <EmptyState title='Ничего не найдено' description='Очистите строку поиска или измените фильтры.' />;
+	}
+
 	return (
 		<Stack gap='md'>
-			{hasFilteredReminds && (
-				<div className={cls.container}>
-					<SimpleGrid
-						className={cls.grid}
-						minColWidth='var(--list-min-col-width)'
-						spacing={CONTENT_GRID_SPACING}
-						autoFlow='auto-fit'
-						component='ul'
-					>
-						{filteredReminds.map((remind) => (
-							<li key={remind.id}>
-								<RemindCard
-									remind={remind}
-									onRemindChange={handleRemindChange}
-									actionSlot={<RemindCardActions remindId={remind.id} />}
-									hideSourceBadge={hideSourceBadge}
-								/>
-							</li>
-						))}
-					</SimpleGrid>
-				</div>
-			)}
-
-			{!hasFilteredReminds && hasAnyReminds && (
-				<EmptyState title='По вашему запросу ничего не найдено' />
-			)}
-
-			{!hasAnyReminds && (
-				<EmptyState title='Нет напоминаний' description='Нажмите «Добавить», чтобы создать первое' />
-			)}
+			<div className={cls.container}>
+				<SimpleGrid
+					className={cls.grid}
+					minColWidth='var(--list-min-col-width)'
+					spacing={CONTENT_GRID_SPACING}
+					autoFlow='auto-fit'
+					component='ul'
+				>
+					{filteredReminds.map((remind) => (
+						<li key={remind.id}>
+							<RemindCard
+								remind={remind}
+								onRemindChange={handleRemindChange}
+								actionSlot={<RemindCardActions remindId={remind.id} />}
+								hideSourceBadge={hideSourceBadge}
+							/>
+						</li>
+					))}
+				</SimpleGrid>
+			</div>
 		</Stack>
 	);
 }

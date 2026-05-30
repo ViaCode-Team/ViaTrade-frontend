@@ -1,10 +1,11 @@
-import { SimpleGrid, Stack } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import { useState } from 'react';
 
 import type { Stock } from '@/entities/trade-code/stock';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
+import { Section } from '@/shared/ui/section';
 
 import {
 	getFilteredStocks,
@@ -68,10 +69,13 @@ export function StrategyStockBindingList({
 		);
 	};
 
+	if (stocks.length === 0) {
+		return <EmptyState title='Нет акций' description='Список доступных акций пуст.' />;
+	}
+
 	return (
-		<Stack gap='md' component='section'>
+		<Section header={{ title }}>
 			<StockBindingControls
-				title={title}
 				searchPlaceholder={searchPlaceholder}
 				searchQuery={searchQuery}
 				stocksCount={stocks.length}
@@ -113,6 +117,6 @@ export function StrategyStockBindingList({
 			{paginatedStocks.length === 0 && (
 				<EmptyState title={emptyText} />
 			)}
-		</Stack>
+		</Section>
 	);
 }

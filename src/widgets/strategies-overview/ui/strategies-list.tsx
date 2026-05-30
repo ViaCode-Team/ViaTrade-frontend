@@ -92,6 +92,14 @@ export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActi
 		});
 	}
 
+	if (strategies.length === 0) {
+		return <EmptyState title='Стратегий пока нет' description='Нажмите «Создать», чтобы добавить первую стратегию.' />;
+	}
+
+	if (filteredStrategies.length === 0) {
+		return <EmptyState title='Стратегии не найдены' description='Очистите поиск или измените параметры фильтрации.' />;
+	}
+
 	return (
 		<Stack gap='md'>
 			<SimpleGrid
@@ -121,16 +129,6 @@ export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActi
 					</li>
 				))}
 			</SimpleGrid>
-
-			{filteredStrategies.length === 0 && (
-				<EmptyState
-					title={
-						strategies.length === 0
-							? 'Стратегии пока не доступны'
-							: 'По вашему запросу ничего не найдено'
-					}
-				/>
-			)}
 		</Stack>
 	);
 }

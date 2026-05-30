@@ -82,7 +82,7 @@ function TradesHistoryTable({
 	if (trades.length === 0) {
 		return (
 			<Box p='xl'>
-				<EmptyState title='Нет сделок' description='Добавьте свою первую сделку' />
+				<EmptyState title='Нет сделок' description='Запишите вашу первую сделку в дневник.' />
 			</Box>
 		);
 	}
@@ -113,7 +113,7 @@ function TradesHistoryTable({
 										<Table.Td colSpan={10}>
 											<EmptyState
 												title='Сделки не найдены'
-												description='Попробуйте изменить параметры поиска или фильтры'
+												description='Попробуйте изменить параметры поиска или сбросить фильтры.'
 											/>
 										</Table.Td>
 									</Table.Tr>

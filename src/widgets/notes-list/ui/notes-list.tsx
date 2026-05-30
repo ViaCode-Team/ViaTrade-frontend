@@ -32,13 +32,20 @@ export function NotesList({
 		return <NotesListSkeleton />;
 	}
 
+	if (!hasNotes) {
+		return (
+			<EmptyState
+				title='Нет заметок'
+				description='Оставляйте заметки к акциям, они появятся здесь.'
+			/>
+		);
+	}
+
 	if (filteredNotes.length === 0) {
 		return (
 			<EmptyState
-				title={hasNotes ? 'По фильтрам ничего не найдено' : 'Заметок пока нет'}
-				description={hasNotes
-					? 'Измените поиск или тип источника.'
-					: 'Создайте заметку на странице акции или стратегии, и она появится здесь.'}
+				title='Ничего не найдено'
+				description='Попробуйте изменить параметры поиска или фильтры.'
 			/>
 		);
 	}

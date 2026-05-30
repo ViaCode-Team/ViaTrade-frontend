@@ -5,6 +5,7 @@ import { openAddRemindModal } from '@/features/remind/add-remind';
 import { RemindsControls } from '@/features/remind/filter-reminds';
 import { RemindListBoundary, RemindStatusBarBoundary } from '@/features/remind/manage-reminds';
 import { brandGradient } from '@/shared/model/theme';
+import { Section } from '@/shared/ui/section';
 
 import { RemindsSummaryBoundary } from './reminds-summary';
 
@@ -25,15 +26,17 @@ export function RemindsOverview() {
 
 	return (
 		<>
-			<RemindsSummaryBoundary />
+			<Section header={{ title: 'Сводка' }}>
+				<RemindsSummaryBoundary />
+			</Section>
 
-			<Stack>
+			<Section header={{ title: 'Список напоминаний' }}>
 				<Stack gap='xs'>
 					<RemindsControls actionSlot={actionSlot} />
 					<RemindStatusBarBoundary />
 				</Stack>
 				<RemindListBoundary />
-			</Stack>
+			</Section>
 		</>
 	);
 }

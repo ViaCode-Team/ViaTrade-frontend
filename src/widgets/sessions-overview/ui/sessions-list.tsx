@@ -25,58 +25,54 @@ export function SessionsList() {
 		handleLogoutSession,
 	} = useSessionsOverview();
 
+	if (sessions.length === 0) {
+		return <EmptyState title='Нет активных сессий' description='Вы авторизованы только на этом устройстве.' />;
+	}
+
+	if (paginatedSessions.length === 0) {
+		return <EmptyState title='Сессии не найдены' description='На этой странице нет активных сессий.' />;
+	}
+
 	return (
 		<Stack gap='md'>
-			{sessions.length === 0
-				? (
-						<EmptyState title='Активные сессии не найдены' />
-					)
-				: paginatedSessions.length === 0
-					? (
-							<EmptyState title='По вашему запросу ничего не найдено' />
-						)
-					: (
-							<>
-								<Stack component='ul' gap='xs'>
-									{paginatedSessions.map((session) => {
-										const isCurrent = session.id === currentSessionId;
-										const logoutLabel = isCurrent ? 'Завершить текущую сессию' : 'Завершить сессию';
+			<Stack component='ul' gap='xs'>
+				{paginatedSessions.map((session) => {
+					const isCurrent = session.id === currentSessionId;
+					const logoutLabel = isCurrent ? 'Завершить текущую сессию' : 'Завершить сессию';
 
-										return (
-											<SessionListItem
-												key={session.id}
-												session={session}
-												isCurrent={isCurrent}
-												actionSlot={(
-													<Tooltip label={logoutLabel}>
-														<ActionIcon
-															size='lg'
-															variant='subtle'
-															color='red'
-															aria-label={logoutLabel}
-															onClick={() => handleLogoutSession(session.id)}
-														>
-															<IconLogout size={20} />
-														</ActionIcon>
-													</Tooltip>
-												)}
-											/>
-										);
-									})}
-								</Stack>
+					return (
+						<SessionListItem
+							key={session.id}
+							session={session}
+							isCurrent={isCurrent}
+							actionSlot={(
+								<Tooltip label={logoutLabel}>
+									<ActionIcon
+										size='lg'
+										variant='subtle'
+										color='red'
+										aria-label={logoutLabel}
+										onClick={() => handleLogoutSession(session.id)}
+									>
+										<IconLogout size={20} />
+									</ActionIcon>
+								</Tooltip>
+							)}
+						/>
+					);
+				})}
+			</Stack>
 
-								{totalPages > 1 && (
-									<Group justify='center' mt='sm'>
-										<Pagination
-											total={totalPages}
-											value={activePage}
-											onChange={setPage}
-											size='sm'
-										/>
-									</Group>
-								)}
-							</>
-						)}
+			{totalPages > 1 && (
+				<Group justify='center' mt='sm'>
+					<Pagination
+						total={totalPages}
+						value={activePage}
+						onChange={setPage}
+						size='sm'
+					/>
+				</Group>
+			)}
 		</Stack>
 	);
 }

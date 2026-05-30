@@ -2,7 +2,6 @@ import {
 	Checkbox,
 	Flex,
 	Stack,
-	Title,
 } from '@mantine/core';
 
 import { ControlsGroup } from '@/shared/ui/filters-group';
@@ -11,34 +10,31 @@ import { SearchInput } from '@/shared/ui/search-input';
 import cls from './strategy-stock-binding-list.module.css';
 
 type StockBindingControlsProps = {
-	title: string;
-	searchPlaceholder: string;
+	searchPlaceholder?: string;
 	searchQuery: string;
+	onSearchQueryChange: (query: string) => void;
 	stocksCount: number;
 	visibleStocksCount: number;
 	allChecked: boolean;
 	indeterminate: boolean;
 	isLoading?: boolean;
-	onSearchQueryChange: (searchQuery: string) => void;
 	onAllChange: () => void;
 };
 
 export function StockBindingControls({
-	title,
-	searchPlaceholder,
+	searchPlaceholder = 'Найти акцию',
 	searchQuery,
+	onSearchQueryChange,
 	stocksCount,
 	visibleStocksCount,
 	allChecked,
 	indeterminate,
 	isLoading,
-	onSearchQueryChange,
 	onAllChange,
 }: StockBindingControlsProps) {
 	return (
 		<Flex justify='space-between' gap='md' wrap='wrap' className={cls.header}>
 			<Stack gap='md' w='100%'>
-				<Title order={2} className={cls.summary}>{title}</Title>
 
 				<ControlsGroup>
 					<SearchInput

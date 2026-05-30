@@ -10,6 +10,7 @@ import {
 	useStocksControls,
 } from '@/features/stock/filter-stocks';
 import { PageHeader } from '@/shared/ui/page-header';
+import { Section } from '@/shared/ui/section';
 
 import { useStocksQuery } from './model/stocks-query';
 import { StocksListBoundary } from './ui/stocks-list/stocks-list';
@@ -52,27 +53,31 @@ export function StocksPage() {
 				description='Динамика инструментов и связанные стратегии'
 			/>
 
-			<StocksMarketSummary {...summary} />
+			<Section header={{ title: 'Сводка рынка' }}>
+				<StocksMarketSummary {...summary} />
+			</Section>
 
-			<Stack>
-				<Stack gap='xs'>
-					<StocksControls disabled={stocks.length === 0} />
+			<Section header={{ title: 'Список акций' }}>
+				<Stack>
+					<Stack gap='xs'>
+						<StocksControls disabled={stocks.length === 0} />
 
-					<StocksStatusBarBoundary
+						<StocksStatusBarBoundary
+							searchQuery={filters.searchQuery}
+							sortOption={filters.sortOption}
+							trendFilter={filters.trendFilter}
+							totalCount={stocks.length}
+						/>
+					</Stack>
+
+					<StocksListBoundary
 						searchQuery={filters.searchQuery}
 						sortOption={filters.sortOption}
 						trendFilter={filters.trendFilter}
-						totalCount={stocks.length}
+						onLinkedStrategiesClick={openLinkedStrategiesModal}
 					/>
 				</Stack>
-
-				<StocksListBoundary
-					searchQuery={filters.searchQuery}
-					sortOption={filters.sortOption}
-					trendFilter={filters.trendFilter}
-					onLinkedStrategiesClick={openLinkedStrategiesModal}
-				/>
-			</Stack>
+			</Section>
 		</>
 	);
 }

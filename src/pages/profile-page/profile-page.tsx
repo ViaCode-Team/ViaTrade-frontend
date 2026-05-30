@@ -1,5 +1,6 @@
 import { Stack } from '@mantine/core';
 
+import { Section } from '@/shared/ui/section';
 import { SessionsOverview } from '@/widgets/sessions-overview';
 
 import { ProfileInfoBoundary } from './ui/profile-info';
@@ -9,9 +10,13 @@ export function ProfilePage() {
 	return (
 		<>
 			<Stack>
-				<ProfileInfoBoundary />
+				<Section header={{ title: 'Личные данные' }}>
+					<ProfileInfoBoundary />
+				</Section>
 
-				<ThirdPartyService />
+				<Section header={{ title: 'Связанные аккаунты' }}>
+					<ThirdPartyService />
+				</Section>
 			</Stack>
 
 			<SessionsOverview />

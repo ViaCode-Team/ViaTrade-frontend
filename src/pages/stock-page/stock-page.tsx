@@ -17,7 +17,7 @@ import { StockReminds } from '@/widgets/stock-reminds';
 import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
 import { StockNotFound } from './ui/stock-not-found';
-import { StockStrategiesSectionBoundary } from './ui/stock-strategies-section';
+import { StockStrategiesListBoundary } from './ui/stock-strategies-list';
 
 export function StockPage() {
 	const { stockId } = useParams();
@@ -62,7 +62,14 @@ function StockPageContent({ stock }: StockPageContentProps) {
 				<StockHero stock={stock} />
 			</Stack>
 
-			<StockStrategiesSectionBoundary stock={stock} />
+			<Section
+				header={{
+					title: 'Привязанные стратегии',
+					description: stock.ticker ? `Стратегии, которые привязаны к ${stock.ticker}.` : undefined,
+				}}
+			>
+				<StockStrategiesListBoundary stock={stock} />
+			</Section>
 
 			<Section header={{ title: 'Заметка к акции' }}>
 				<NoteForm
@@ -71,7 +78,7 @@ function StockPageContent({ stock }: StockPageContentProps) {
 				/>
 			</Section>
 
-			<Section header={{ title: 'Напоминания' }}>
+			<Section header={{ title: 'Напоминания к акции' }}>
 				<StockReminds stock={stock} />
 			</Section>
 		</>

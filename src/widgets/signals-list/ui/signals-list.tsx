@@ -41,30 +41,34 @@ export function SignalsList({
 		return limit ? filtered.slice(0, limit) : filtered;
 	}, [signals, filters, limit]);
 
-	return (
-		<>
-			<SimpleGrid
-				minColWidth={300}
-				spacing={CONTENT_GRID_SPACING}
-				component='ul'
-			>
-				{filteredAndSortedSignals.map((signal) => (
-					<li key={signal.id}>
-						<SignalCard
-							signal={signal}
-							onClick={onSignalSelect}
-						/>
-					</li>
-				))}
-			</SimpleGrid>
+	if (signals.length === 0) {
+		return <EmptyState title='Сигналы отсутствуют' description='Привяжите акции к стратегии, чтобы начать получать сигналы.' />;
+	}
 
-			{filteredAndSortedSignals.length === 0 && (
-				<EmptyState
-					title='Ничего не найдено'
-					description='Попробуйте изменить параметры поиска или фильтры'
-				/>
-			)}
-		</>
+	if (filteredAndSortedSignals.length === 0) {
+		return (
+			<EmptyState
+				title='Ничего не найдено'
+				description='Измените параметры поиска или сбросьте фильтры.'
+			/>
+		);
+	}
+
+	return (
+		<SimpleGrid
+			minColWidth={300}
+			spacing={CONTENT_GRID_SPACING}
+			component='ul'
+		>
+			{filteredAndSortedSignals.map((signal) => (
+				<li key={signal.id}>
+					<SignalCard
+						signal={signal}
+						onClick={onSignalSelect}
+					/>
+				</li>
+			))}
+		</SimpleGrid>
 	);
 }
 

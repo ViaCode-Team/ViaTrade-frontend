@@ -30,11 +30,24 @@ export function StocksList({
 	const filteredStocks = limit ? stocks.slice(0, limit) : stocks;
 
 	if (filteredStocks.length === 0) {
+		const hasFilters = Boolean(searchQuery) || trendFilter !== 'all';
+
+		if (!hasFilters) {
+			return (
+				<Stack gap='md'>
+					<EmptyState
+						title='Нет акций'
+						description='В системе пока нет доступных акций.'
+					/>
+				</Stack>
+			);
+		}
+
 		return (
 			<Stack gap='md'>
 				<EmptyState
-					title='Акции не найдены'
-					description='Попробуйте изменить поисковый запрос'
+					title='Ничего не найдено'
+					description='Попробуйте изменить поисковый запрос или фильтры.'
 				/>
 			</Stack>
 		);

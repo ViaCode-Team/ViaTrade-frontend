@@ -91,7 +91,7 @@ export function HistoryTable({
 							? (
 									<Table.Tr>
 										<Table.Td colSpan={3}>
-											<EmptyState title='История сигналов пуста' />
+											<EmptyState title='История пуста' description='Для этой акции еще не было сигналов.' />
 										</Table.Td>
 									</Table.Tr>
 								)

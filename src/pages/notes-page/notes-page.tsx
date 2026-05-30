@@ -6,6 +6,7 @@ import { IconAlertTriangle } from '@tabler/icons-react';
 
 import { NotesControls } from '@/features/note/filter-notes';
 import { PageHeader } from '@/shared/ui/page-header';
+import { Section } from '@/shared/ui/section';
 import { NotesList, useNotesList } from '@/widgets/notes-list';
 
 import { NotesStatusBar } from './ui/notes-status-bar';
@@ -34,46 +35,50 @@ export function NotesPage() {
 				description='Ваши заметки по акциям и стратегиям'
 			/>
 
-			<NotesSummary {...summary} isLoading={isLoading} />
+			<Section header={{ title: 'Сводка' }}>
+				<NotesSummary {...summary} isLoading={isLoading} />
+			</Section>
 
-			<Stack>
-				{hasError
-					? (
-							<Alert
-								color='red'
-								variant='outline'
-								icon={<IconAlertTriangle size={18} />}
-							>
-								Не удалось синхронизировать заметки с API.
-							</Alert>
-						)
-					: null}
+			<Section header={{ title: 'Список заметок' }}>
+				<Stack>
+					{hasError
+						? (
+								<Alert
+									color='red'
+									variant='outline'
+									icon={<IconAlertTriangle size={18} />}
+								>
+									Не удалось синхронизировать заметки с API.
+								</Alert>
+							)
+						: null}
 
-				<Stack gap='xs'>
-					<NotesControls
-						disabled={!hasNotes}
-						isLoading={isLoading}
-					/>
-
-					{!isLoading && (
-						<NotesStatusBar
-							notesCount={notes.length}
-							filteredNotes={filteredNotes}
-							onRefresh={refetch}
+					<Stack gap='xs'>
+						<NotesControls
+							disabled={!hasNotes}
+							isLoading={isLoading}
 						/>
-					)}
-				</Stack>
 
-				<NotesList
-					filteredNotes={filteredNotes}
-					hasNotes={hasNotes}
-					isLoading={isLoading}
-					isSaving={isSaving}
-					isDeleting={isDeleting}
-					updateNote={updateNote}
-					deleteNote={deleteNote}
-				/>
-			</Stack>
+						{!isLoading && (
+							<NotesStatusBar
+								notesCount={notes.length}
+								filteredNotes={filteredNotes}
+								onRefresh={refetch}
+							/>
+						)}
+					</Stack>
+
+					<NotesList
+						filteredNotes={filteredNotes}
+						hasNotes={hasNotes}
+						isLoading={isLoading}
+						isSaving={isSaving}
+						isDeleting={isDeleting}
+						updateNote={updateNote}
+						deleteNote={deleteNote}
+					/>
+				</Stack>
+			</Section>
 		</>
 	);
 }

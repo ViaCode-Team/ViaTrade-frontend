@@ -1,21 +1,26 @@
 import {
+	ActionIcon,
 	Button,
 	Group,
+	Input,
 	NumberInput,
 	SegmentedControl,
 	Select,
 	Stack,
 	Switch,
+	Tooltip,
 } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
+import { IconHelpCircle } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import type { TradeRequest } from '@/shared/api/types/gen/tradeRequest';
+import type { TradeSignal } from '@/shared/api/types/gen/tradeSignal';
 
 import { getGetByUserQueryKey, useCreateTrade } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
@@ -23,6 +28,7 @@ import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
 type FormValues = {
 	tradeTypeId: string;
 	tradeCodeId: string;
+	tradeSignal: string;
 	count: number;
 	tradeOpen: number;
 	dateOpen: Date | null;
@@ -48,6 +54,7 @@ export function AddTradeForm() {
 		initialValues: {
 			tradeTypeId: '1',
 			tradeCodeId: '',
+			tradeSignal: '1',
 			count: 1,
 			tradeOpen: 0,
 			dateOpen: initialDate,
@@ -73,6 +80,7 @@ export function AddTradeForm() {
 		const request: TradeRequest = {
 			tradeTypeId: Number(values.tradeTypeId),
 			tradeCodeId: Number(values.tradeCodeId),
+			tradeSignal: Number(values.tradeSignal) as TradeSignal,
 			count: values.count,
 			tradeOpen: values.tradeOpen,
 			dateOpen: dayjs(values.dateOpen).toISOString(),
@@ -110,14 +118,48 @@ export function AddTradeForm() {
 
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>
-			<Stack gap='md'>
+			<Stack>
 				<SegmentedControl
 					data={[
-						{ label: 'Long', value: '1' },
-						{ label: 'Short', value: '2' },
+						{ label: 'Акция', value: '1' },
+						{ label: 'Фьючерс', value: '2' },
 					]}
 					{...form.getInputProps('tradeTypeId')}
 				/>
+
+				<Input.Wrapper
+					label={(
+						<Group gap={4}>
+							Направление сделки
+							<Tooltip
+								label='Long — покупка актива с расчетом на его рост. Short — продажа актива с расчетом на его падение.'
+								multiline
+								w={280}
+								withArrow
+								openDelay={150}
+								events={{ hover: true, focus: true, touch: true }}
+							>
+								<ActionIcon
+									size={18}
+									aria-label='Что означает направление сделки'
+									variant='transparent'
+									c='dimmed'
+								>
+									<IconHelpCircle size={16} />
+								</ActionIcon>
+							</Tooltip>
+						</Group>
+					)}
+				>
+					<SegmentedControl
+						data={[
+							{ label: 'Long', value: '1' },
+							{ label: 'Short', value: '-1' },
+						]}
+						fullWidth
+						{...form.getInputProps('tradeSignal')}
+					/>
+				</Input.Wrapper>
 
 				<Select
 					label='Инструмент'

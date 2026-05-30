@@ -42,7 +42,7 @@ export function ErrorPage({ statusCode = 404 }: ErrorPageProps) {
 	else if (error instanceof Error) {
 		status = 'Ошибка';
 		title = 'Системный сбой';
-		description = error.message || 'Произошла критическая ошибка в работе приложения.';
+		description = 'Произошла критическая ошибка в работе приложения.';
 	}
 
 	return (

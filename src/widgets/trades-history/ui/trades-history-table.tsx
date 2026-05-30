@@ -81,9 +81,7 @@ function TradesHistoryTable({
 
 	if (trades.length === 0) {
 		return (
-			<Box p='xl'>
-				<EmptyState title='Нет сделок' description='Запишите вашу первую сделку в дневник.' />
-			</Box>
+			<EmptyState title='Нет сделок' description='Запишите вашу первую сделку в дневник.' />
 		);
 	}
 

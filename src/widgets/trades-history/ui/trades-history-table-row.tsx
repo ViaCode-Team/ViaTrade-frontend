@@ -17,6 +17,9 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 		<Table.Tr>
 			<Table.Td>
 				<Text size='sm' fw={500}>{trade.ticker}</Text>
+				<Text size='xs' c='dimmed'>
+					{trade.tradeTypeId === 1 ? 'Акция' : trade.tradeTypeId === 2 ? 'Фьючерс' : null}
+				</Text>
 			</Table.Td>
 			<Table.Td>
 				<Badge

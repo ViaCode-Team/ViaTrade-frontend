@@ -1,4 +1,4 @@
-import { Stack, Title } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useMemo } from 'react';
 
@@ -33,13 +33,7 @@ export function StocksPage() {
 
 		modals.open({
 			modalId,
-			title: (
-				<Title order={2}>
-					Привязанные стратегии
-					{' '}
-					{stock.ticker}
-				</Title>
-			),
+			title: `Привязанные стратегии ${stock.ticker}`,
 			size: 'xl',
 			centered: true,
 			children: (

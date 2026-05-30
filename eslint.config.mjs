@@ -78,6 +78,7 @@ export default antfu(
 			'perfectionist/sort-named-exports': 'off',
 			'perfectionist/sort-imports': 'off',
 			'perfectionist/sort-exports': 'off',
+			'ts/no-redeclare': 'off',
 		},
 	},
 );

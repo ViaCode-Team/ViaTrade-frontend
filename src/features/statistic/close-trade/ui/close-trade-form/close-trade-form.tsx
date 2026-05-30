@@ -44,6 +44,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 		const request: TradeRequest = {
 			tradeTypeId: trade.tradeTypeId,
 			tradeCodeId: trade.tradeCodeId,
+			tradeSignal: trade.tradeSignal ?? 0,
 			count: trade.count,
 			tradeOpen: trade.tradeOpen,
 			dateOpen: trade.dateOpen,

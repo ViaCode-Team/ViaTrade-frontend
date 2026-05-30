@@ -17,6 +17,7 @@ import { useState } from 'react';
 
 import type { Trade } from '@/shared/api/types/gen/trade';
 import type { TradeRequest } from '@/shared/api/types/gen/tradeRequest';
+import type { TradeSignal } from '@/shared/api/types/gen/tradeSignal';
 
 import { getGetByUserQueryKey, useUpdateTrade } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
@@ -28,6 +29,7 @@ type EditTradeFormProps = {
 type FormValues = {
 	tradeTypeId: string;
 	tradeCodeId: string;
+	tradeSignal: string;
 	count: number;
 	tradeOpen: number;
 	dateOpen: Date | null;
@@ -53,6 +55,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 		initialValues: {
 			tradeTypeId: String(trade.tradeTypeId),
 			tradeCodeId: String(trade.tradeCodeId),
+			tradeSignal: String(trade.tradeSignal ?? 0),
 			count: trade.count,
 			tradeOpen: trade.tradeOpen,
 			dateOpen: initialDate,
@@ -78,6 +81,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 		const request: TradeRequest = {
 			tradeTypeId: Number(values.tradeTypeId),
 			tradeCodeId: Number(values.tradeCodeId),
+			tradeSignal: Number(values.tradeSignal) as TradeSignal,
 			count: values.count,
 			tradeOpen: values.tradeOpen,
 			dateOpen: dayjs(values.dateOpen).toISOString(),
@@ -118,8 +122,8 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 			<Stack gap='md'>
 				<SegmentedControl
 					data={[
-						{ label: 'Long', value: '1' },
-						{ label: 'Short', value: '2' },
+						{ label: 'Акция', value: '1' },
+						{ label: 'Фьючерс', value: '2' },
 					]}
 					{...form.getInputProps('tradeTypeId')}
 				/>
@@ -132,6 +136,17 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 					disabled={isLoadingCodes}
 					withAsterisk
 					{...form.getInputProps('tradeCodeId')}
+				/>
+
+				<Select
+					label='Направление сделки'
+					data={[
+						{ label: 'Long (1)', value: '1' },
+						{ label: 'Short (-1)', value: '-1' },
+						{ label: 'Hold (0)', value: '0' },
+					]}
+					withAsterisk
+					{...form.getInputProps('tradeSignal')}
 				/>
 
 				<Group grow>

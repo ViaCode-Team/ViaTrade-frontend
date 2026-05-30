@@ -44,7 +44,6 @@ const defaultOutput = {
 		},
 
 		query: {
-			useMutation: true,
 			useSuspenseQuery: true,
 			usePrefetch: true,
 			useInvalidate: true,

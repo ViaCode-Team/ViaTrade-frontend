@@ -1,4 +1,4 @@
-import { Button, SimpleGrid, Stack, Title } from '@mantine/core';
+import { Button, SimpleGrid, Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useState } from 'react';
 
@@ -67,13 +67,7 @@ export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActi
 		const initialIds = getStockBindingSelectedIds(strategy.id);
 
 		modals.open({
-			title: (
-				<Title order={2}>
-					Привязать акции к
-					{' '}
-					{strategy.name}
-				</Title>
-			),
+			title: `Привязать акции к ${strategy.name}`,
 			size: 'xl',
 			centered: true,
 			children: (

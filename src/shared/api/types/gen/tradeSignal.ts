@@ -6,7 +6,11 @@
  * OpenAPI spec version: v1
  */
 
-export type GetResultByStrategyAndTradeCodeParams = {
-	startDate?: string;
-	endTime?: string;
-};
+export type TradeSignal = typeof TradeSignal[keyof typeof TradeSignal];
+
+
+export const TradeSignal = {
+	NUMBER_0: 0,
+	NUMBER_1: 1,
+	NUMBER_MINUS_1: -1,
+} as const;

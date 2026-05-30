@@ -43,13 +43,14 @@ export function useStatisticsDashboard() {
 	);
 
 	const barData = useMemo(() => {
-		const tradesByType = trades.reduce<Record<number, number>>((acc, t) => {
-			acc[t.tradeTypeId] = (acc[t.tradeTypeId] ?? 0) + 1;
+		const tradesBySignal = trades.reduce<Record<string, number>>((acc, t) => {
+			const signal = t.tradeSignal === -1 ? 'Short' : 'Long';
+			acc[signal] = (acc[signal] ?? 0) + 1;
 			return acc;
 		}, {});
 
-		return Object.entries(tradesByType).map(([typeId, count]) => ({
-			type: typeId === '1' ? 'Long' : typeId === '2' ? 'Short' : `Тип ${typeId}`,
+		return Object.entries(tradesBySignal).map(([type, count]) => ({
+			type,
 			Count: count,
 		}));
 	}, [trades]);

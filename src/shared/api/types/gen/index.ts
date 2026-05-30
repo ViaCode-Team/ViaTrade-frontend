@@ -28,6 +28,7 @@ export * from './tradeCodeFileDto';
 export * from './tradeRemind';
 export * from './tradeRemindRequest';
 export * from './tradeRequest';
+export * from './tradeSignal';
 export * from './tradeStrategy';
 export * from './userSessionDto';
 export * from './userStrategyTradeCodeDto';

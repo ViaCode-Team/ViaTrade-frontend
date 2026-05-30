@@ -35,7 +35,7 @@ export function useTradesHistoryData({
 			return {
 				...trade,
 				ticker: stock?.exchangeId || 'Unknown',
-				isLong: trade.tradeTypeId === 1,
+				isLong: trade.tradeSignal !== -1,
 				income: trade.netIncome ?? 0,
 				percent: trade.tradeOpen && trade.count > 0 ? ((trade.netIncome ?? 0) / (trade.tradeOpen * trade.count)) * 100 : 0,
 			};

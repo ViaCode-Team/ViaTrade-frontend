@@ -5,13 +5,15 @@ import { CloseTradeButton } from '@/features/statistic/close-trade';
 import { DeleteTradeButton } from '@/features/statistic/delete-trade';
 import { EditTradeButton } from '@/features/statistic/edit-trade';
 
+import type { ProcessedTrade } from '../lib/use-trades-history';
+
 export type TradesHistoryTableRowProps = {
-	trade: any;
+	trade: ProcessedTrade;
 };
 
 export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
-	const isWin = trade.income > 0;
-	const isLoss = trade.income < 0;
+	const isWin = trade.percent > 0;
+	const isLoss = trade.percent < 0;
 
 	return (
 		<Table.Tr>
@@ -40,18 +42,7 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.tradeClose ? `${trade.tradeClose.toFixed(2)} ₽` : '—'}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.count}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
-				{trade.netIncome !== undefined && trade.netIncome !== null
-					? (
-							<Text c={isWin ? 'teal' : isLoss ? 'red' : 'dimmed'} fw={500}>
-								{trade.income > 0 ? '+' : ''}
-								{trade.income.toFixed(2)}
-								{' '}
-								₽
-							</Text>
-						)
-					: (
-							<Text c='dimmed'>—</Text>
-						)}
+				<Text fw={500}>{trade.income.toFixed(2)}</Text>
 			</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
 				{trade.netIncome !== undefined && trade.netIncome !== null

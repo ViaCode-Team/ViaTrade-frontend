@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
 import type { SortDirection, SortField } from '@/features/trade/filter-trades';
+import type { Trade } from '@/shared/api/types/gen/trade';
 
 import { useGetByUserSuspense } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
@@ -13,6 +14,13 @@ export type UseTradesHistoryDataProps = {
 	sortField: SortField;
 	sortDirection: SortDirection;
 	page: number;
+};
+
+export type ProcessedTrade = Trade & {
+	ticker: string;
+	isLong: boolean;
+	income: number;
+	percent: number;
 };
 
 export function useTradesHistoryData({
@@ -34,10 +42,10 @@ export function useTradesHistoryData({
 			const stock = stocks.find((s) => s.id === trade.tradeCodeId);
 			return {
 				...trade,
-				ticker: stock?.exchangeId || 'Unknown',
+				ticker: stock?.exchangeId || '-',
 				isLong: trade.tradeSignal !== -1,
-				income: trade.netIncome ?? 0,
-				percent: trade.tradeOpen && trade.count > 0 ? ((trade.netIncome ?? 0) / (trade.tradeOpen * trade.count)) * 100 : 0,
+				income: trade.price ?? 0,
+				percent: trade.netIncome ?? 0,
 			};
 		});
 

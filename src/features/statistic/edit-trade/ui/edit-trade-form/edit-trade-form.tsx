@@ -1,16 +1,20 @@
 import {
+	ActionIcon,
 	Button,
 	Group,
+	Input,
 	NumberInput,
 	SegmentedControl,
 	Select,
 	Stack,
 	Switch,
+	Tooltip,
 } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
+import { IconHelpCircle } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -119,7 +123,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>
-			<Stack gap='md'>
+			<Stack>
 				<SegmentedControl
 					data={[
 						{ label: 'Акция', value: '1' },
@@ -127,6 +131,40 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 					]}
 					{...form.getInputProps('tradeTypeId')}
 				/>
+
+				<Input.Wrapper
+					label={(
+						<Group gap={4}>
+							Направление сделки
+							<Tooltip
+								label='Long — покупка актива с расчетом на его рост. Short — продажа актива с расчетом на его падение.'
+								multiline
+								w={280}
+								withArrow
+								openDelay={150}
+								events={{ hover: true, focus: true, touch: true }}
+							>
+								<ActionIcon
+									size={18}
+									aria-label='Что означает направление сделки'
+									variant='transparent'
+									c='dimmed'
+								>
+									<IconHelpCircle size={16} />
+								</ActionIcon>
+							</Tooltip>
+						</Group>
+					)}
+				>
+					<SegmentedControl
+						data={[
+							{ label: 'Long', value: '1' },
+							{ label: 'Short', value: '-1' },
+						]}
+						fullWidth
+						{...form.getInputProps('tradeSignal')}
+					/>
+				</Input.Wrapper>
 
 				<Select
 					label='Инструмент'
@@ -136,17 +174,6 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 					disabled={isLoadingCodes}
 					withAsterisk
 					{...form.getInputProps('tradeCodeId')}
-				/>
-
-				<Select
-					label='Направление сделки'
-					data={[
-						{ label: 'Long (1)', value: '1' },
-						{ label: 'Short (-1)', value: '-1' },
-						{ label: 'Hold (0)', value: '0' },
-					]}
-					withAsterisk
-					{...form.getInputProps('tradeSignal')}
 				/>
 
 				<Group grow>

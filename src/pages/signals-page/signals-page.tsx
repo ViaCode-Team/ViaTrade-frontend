@@ -45,7 +45,10 @@ export function SignalsPage() {
 
 	return (
 		<>
-			<PageHeader title='Сигналы' />
+			<PageHeader
+				title='Сигналы'
+				description='Актуальные торговые сигналы по вашим стратегиям'
+			/>
 
 			<Section>
 				<SignalsSummaryBoundary />

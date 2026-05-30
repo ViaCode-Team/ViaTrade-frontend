@@ -26,7 +26,7 @@ export function RemindsOverview() {
 
 	return (
 		<>
-			<Section header={{ title: 'Сводка' }}>
+			<Section>
 				<RemindsSummaryBoundary />
 			</Section>
 

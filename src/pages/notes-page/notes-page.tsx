@@ -35,7 +35,7 @@ export function NotesPage() {
 				description='Ваши заметки по акциям и стратегиям'
 			/>
 
-			<Section header={{ title: 'Сводка' }}>
+			<Section>
 				<NotesSummary {...summary} isLoading={isLoading} />
 			</Section>
 

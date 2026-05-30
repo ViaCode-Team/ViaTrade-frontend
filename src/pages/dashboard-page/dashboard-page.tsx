@@ -31,7 +31,7 @@ export function DashboardPage() {
 		<>
 			<PageHeader title='Главная' description='Сводка по портфелю, сигналам и инструментам' />
 
-			<Section header={{ title: 'Общая статистика' }}>
+			<Section>
 				<DashboardStatisticsBoundary />
 			</Section>
 

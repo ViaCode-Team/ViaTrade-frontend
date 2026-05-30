@@ -53,7 +53,7 @@ export function StocksPage() {
 				description='Динамика инструментов и связанные стратегии'
 			/>
 
-			<Section header={{ title: 'Сводка рынка' }}>
+			<Section>
 				<StocksMarketSummary {...summary} />
 			</Section>
 

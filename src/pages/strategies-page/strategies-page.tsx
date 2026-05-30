@@ -12,7 +12,7 @@ export function StrategiesPage() {
 				description='Выберите стратегию под свой стиль торговли'
 			/>
 
-			<Section header={{ title: 'Сводка' }}>
+			<Section>
 				<StrategiesSummaryBoundary />
 			</Section>
 

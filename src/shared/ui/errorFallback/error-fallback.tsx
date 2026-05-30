@@ -4,6 +4,7 @@ import {
 	Alert,
 	Button,
 	Group,
+	Text,
 	useMantineTheme,
 } from '@mantine/core';
 import { IconAlertTriangle, IconRefresh, IconWorld } from '@tabler/icons-react';
@@ -23,7 +24,9 @@ export function ErrorFallback({
 			title='Что-то пошло не так'
 			variant='default'
 		>
-			{/* todo: сообщение нормальное понятное для пользователя  */}
+			<Text size='sm' mb='md'>
+				Произошла непредвиденная ошибка. Пожалуйста, попробуйте еще раз позже.
+			</Text>
 
 			<Group gap='xs'>
 				<Button

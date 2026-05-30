@@ -1,5 +1,5 @@
 import { AreaChart, BarChart, DonutChart } from '@mantine/charts';
-import { Card, Text, Title } from '@mantine/core';
+import { Card, Flex, Text, Title } from '@mantine/core';
 
 import { EmptyState } from '@/shared/ui/empty-state';
 
@@ -18,8 +18,11 @@ export function StatisticsDashboard() {
 
 			<div className={cls.chartsGrid}>
 				<Card withBorder className={cls.chartCard}>
-					<Title order={4}>Накопительная прибыль</Title>
-					<Text size='sm' c='dimmed' mb='md'>Ваша прибыль и убытки с течением времени</Text>
+					<Flex direction='column'>
+						<Title order={4}>Накопительная прибыль</Title>
+						<Text size='sm' c='dimmed'>Ваша прибыль и убытки с течением времени</Text>
+					</Flex>
+
 					<AreaChart
 						h={300}
 						data={pnlData}
@@ -30,8 +33,11 @@ export function StatisticsDashboard() {
 				</Card>
 
 				<Card withBorder className={cls.chartCard}>
-					<Title order={4}>Соотношение Прибыль / Убыток</Title>
-					<Text size='sm' c='dimmed' mb='md'>Прибыльные и убыточные сделки</Text>
+					<Flex direction='column'>
+						<Title order={4}>Соотношение Прибыль / Убыток</Title>
+						<Text size='sm' c='dimmed'>Прибыльные и убыточные сделки</Text>
+					</Flex>
+
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
 						<DonutChart
 							h={250}
@@ -44,8 +50,11 @@ export function StatisticsDashboard() {
 				</Card>
 
 				<Card withBorder className={cls.chartCard}>
-					<Title order={4}>Сделки по типам</Title>
-					<Text size='sm' c='dimmed' mb='md'>Распределение типов сделок (Long/Short)</Text>
+					<Flex direction='column'>
+						<Title order={4}>Сделки по типам</Title>
+						<Text size='sm' c='dimmed'>Распределение типов сделок (Long/Short)</Text>
+					</Flex>
+
 					<BarChart
 						h={300}
 						data={barData}

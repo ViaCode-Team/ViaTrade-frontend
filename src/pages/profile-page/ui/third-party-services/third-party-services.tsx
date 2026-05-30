@@ -2,9 +2,7 @@ import type { ReactNode } from 'react';
 
 import { SimpleGrid, Text, Title } from '@mantine/core';
 import { IconBrandTelegram, IconMail } from '@tabler/icons-react';
-import { useNavigate } from 'react-router';
 
-import { ROUTES } from '@/shared/model/routes';
 import { InfoRow } from '@/shared/ui/info-row';
 
 type ThirdPartyServicesProps = {
@@ -13,15 +11,13 @@ type ThirdPartyServicesProps = {
 };
 
 export function ThirdPartyService({ email, tgId }: ThirdPartyServicesProps) {
-	const navigate = useNavigate();
-
 	return (
 		<SimpleGrid minColWidth={300} spacing='sm' autoFlow='auto-fit'>
 			<ThirdPartyServiceRow
 				icon={<IconMail size={22} color='var(--mantine-color-brand-5)' />}
 				title='Электронная почта'
-				description={email ? `ID: ${email}` : 'Не подтверждена'}
-				onClick={() => navigate(ROUTES.EMAIL_CONFIRMATION)}
+				description={email ? `ID: ${email}` : 'Не привязана'}
+				onClick={() => {}}
 			/>
 
 			<ThirdPartyServiceRow

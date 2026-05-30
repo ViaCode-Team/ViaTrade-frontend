@@ -1,7 +1,0 @@
-.root {
-	padding: var(--mantine-spacing-lg);
-
-	@container (max-width: 48em) {
-		padding: var(--mantine-spacing-sm);
-	}
-}

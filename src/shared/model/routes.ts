@@ -8,7 +8,6 @@ export const ROUTES = {
 	NOTES: '/notes',
 	REMINDERS: '/reminders',
 	PROFILE: '/profile',
-	EMAIL_CONFIRMATION: '/confirm-email',
 	LOGIN: '/login',
 	REGISTER: '/register',
 	STATISTICS: '/statistics',

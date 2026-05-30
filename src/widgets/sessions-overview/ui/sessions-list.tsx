@@ -45,19 +45,21 @@ export function SessionsList() {
 							key={session.id}
 							session={session}
 							isCurrent={isCurrent}
-							actionSlot={(
-								<Tooltip label={logoutLabel}>
-									<ActionIcon
-										size='lg'
-										variant='subtle'
-										color='red'
-										aria-label={logoutLabel}
-										onClick={() => handleLogoutSession(session.id)}
-									>
-										<IconLogout size={20} />
-									</ActionIcon>
-								</Tooltip>
-							)}
+							actionSlot={isCurrent
+								? (
+										<Tooltip label={logoutLabel}>
+											<ActionIcon
+												size='lg'
+												variant='subtle'
+												color='red'
+												aria-label={logoutLabel}
+												onClick={() => handleLogoutSession(session.id)}
+											>
+												<IconLogout size={20} />
+											</ActionIcon>
+										</Tooltip>
+									)
+								: null}
 						/>
 					);
 				})}

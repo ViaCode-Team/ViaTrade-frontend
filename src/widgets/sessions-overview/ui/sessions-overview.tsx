@@ -1,5 +1,4 @@
 import {
-	Anchor,
 	Button,
 	Group,
 	Skeleton,
@@ -7,7 +6,6 @@ import {
 } from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
 import { useMemo } from 'react';
-import { Link as RouterLink } from 'react-router';
 
 import { useGetSessions } from '@/entities/auth';
 import { normalizeUserSessions } from '@/entities/session';
@@ -39,16 +37,6 @@ export function SessionsOverview() {
 
 	const headerActions = (
 		<Group gap='sm' className={cls.actions}>
-			<Anchor
-				component={RouterLink}
-				to='/reset-password'
-				size='sm'
-				fw={500}
-				className={cls.actionLink}
-			>
-				Сбросить пароль
-			</Anchor>
-
 			<Button
 				className={cls.logoutButton}
 				variant='outline'

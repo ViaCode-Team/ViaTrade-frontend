@@ -20,11 +20,13 @@ import cls from './stock-card.module.css';
 
 type StockCardProps = {
 	stock: Stock;
+	linkedStrategiesCount?: number;
 	onLinkedStrategiesClick: () => void;
 };
 
 export function StockCard({
 	stock,
+	linkedStrategiesCount = 0,
 	onLinkedStrategiesClick,
 }: StockCardProps) {
 	const stockPath = generatePath(ROUTES.STOCK, {
@@ -32,7 +34,6 @@ export function StockCard({
 	});
 	const changeColor = getStockChangeColor(stock.dayChangePercent);
 	const isGrowth = stock.dayChangePercent >= 0;
-	const linkedStrategiesCount = stock.linkedStrategies.length;
 	const leftBorderStyle = getLeftBorderCardStyle({
 		color: isGrowth
 			? 'var(--mantine-color-green-light)'

@@ -1,14 +1,16 @@
 import { Stack } from '@mantine/core';
-import {
-	useMemo,
-	useState,
-} from 'react';
+import { useMemo } from 'react';
 import {
 	generatePath,
 	useParams,
 } from 'react-router';
 
 import { useGetAllSuspense } from '@/entities/strategy';
+import {
+	useCreateInstrumentsLink,
+	useDeleteInstrumentsLink,
+	useGetAllInstrumentsLinkSuspense,
+} from '@/entities/strategy/api/gen';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
@@ -34,7 +36,18 @@ export function StrategyPage() {
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 	const stocks = useMemo(() => stocksResponse.data.map(mapTradeCodeToStock), [stocksResponse.data]);
 
-	const [selectedStockIds, setSelectedStockIds] = useState<string[]>([]);
+	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
+	const serverSelectedStockIds = useMemo(
+		() =>
+			instrumentsLinkResponse.data
+				.filter((link) => link.strategyId === strategyId)
+				.map((link) => String(link.tradeCodeId)),
+		[instrumentsLinkResponse.data, strategyId],
+	);
+
+	const { mutate: createLink } = useCreateInstrumentsLink();
+	const { mutate: deleteLink } = useDeleteInstrumentsLink();
+
 	const strategyNoteSource = useMemo(() => {
 		if (strategyId === null) {
 			return undefined;
@@ -55,13 +68,18 @@ export function StrategyPage() {
 	}
 
 	const handleLinkedStocksChange = (nextStockIds: string[]) => {
-		setSelectedStockIds(nextStockIds);
+		if (!hasStrategyId)
+			return;
 
-		// TODO: replace with a real strategy-stock binding mutation.
-		// eslint-disable-next-line no-console
-		console.info('strategy-stock-binding:update', {
-			strategyId,
-			stockIds: nextStockIds,
+		const added = nextStockIds.filter((id) => !serverSelectedStockIds.includes(id));
+		const removed = serverSelectedStockIds.filter((id) => !nextStockIds.includes(id));
+
+		added.forEach((id) => {
+			createLink({ data: { strategyId, tradeCodeId: Number(id) } });
+		});
+
+		removed.forEach((id) => {
+			deleteLink({ params: { strategyId, tradeCodeId: Number(id) } });
 		});
 	};
 
@@ -77,7 +95,7 @@ export function StrategyPage() {
 
 			<StrategyStockBindingList
 				stocks={stocks}
-				selectedStockIds={selectedStockIds}
+				selectedStockIds={serverSelectedStockIds}
 				onSelectedStockIdsChange={handleLinkedStocksChange}
 			/>
 

@@ -1,15 +1,12 @@
 import { Stack } from '@mantine/core';
 
-import type { NoteFormData } from '@/features/note/manage-note';
-
-import {
-	NoteForm,
-	useNoteDraft,
-} from '@/features/note/manage-note';
+import type { NoteFormData } from '@/entities/note';
 
 import type { DraftedPersonalNote } from '../model/note-drafts';
 
+import { useNoteDraft } from '../lib/use-note-draft';
 import { NoteCardHeader } from './note-card-header';
+import { NoteForm } from './note-form';
 
 type NoteCardProps = {
 	note: DraftedPersonalNote;

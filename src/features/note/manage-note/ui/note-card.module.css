@@ -1,0 +1,15 @@
+.noteActions {
+	position: relative;
+	z-index: 2;
+}
+
+.sourceLink {
+	text-decoration: none;
+	color: inherit;
+	display: block;
+	transition: opacity 200ms ease;
+}
+
+.sourceLink:hover {
+	opacity: 0.7;
+}

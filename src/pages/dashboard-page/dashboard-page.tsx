@@ -14,34 +14,34 @@ export function DashboardPage() {
 			<PageHeader title='Панель управления' />
 
 			<Stack gap='sm'>
-				<Title order={3}>Общая статистика</Title>
+				<Title order={2}>Общая статистика</Title>
 				<DashboardStatisticsBoundary />
 			</Stack>
 
 			<Stack gap='xl'>
 				<Stack gap='sm'>
-					<Title order={3}>Последние сигналы</Title>
+					<Title order={2}>Последние сигналы</Title>
 					<DashboardSignals />
 				</Stack>
 
 				<Stack gap='sm'>
-					<Title order={3}>Активные стратегии</Title>
+					<Title order={2}>Активные стратегии</Title>
 					<DashboardStrategiesBoundary />
 				</Stack>
 
 				<Stack gap='sm'>
-					<Title order={3}>Лучшие акции</Title>
+					<Title order={2}>Лучшие акции</Title>
 					<DashboardStocksBoundary />
+				</Stack>
+
+				<Stack gap='sm'>
+					<Title order={2}>Последние напоминания</Title>
+					<DashboardRemindersBoundary />
 				</Stack>
 
 				<Stack gap='sm'>
 					<Title order={3}>Последние заметки</Title>
 					<DashboardNotesBoundary />
-				</Stack>
-
-				<Stack gap='sm'>
-					<Title order={3}>Напоминания</Title>
-					<DashboardRemindersBoundary />
 				</Stack>
 			</Stack>
 		</Stack>

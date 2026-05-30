@@ -13,6 +13,11 @@ import { useGetAll as useGetAllStrategies } from '@/entities/strategy/api/gen';
 import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { useStoredPersonalNotesQuery } from '@/features/note/manage-note';
+import {
+	type DraftedPersonalNote,
+	getApiSourceId,
+	mergeApiNotesWithDrafts,
+} from '@/features/note/manage-note';
 
 import type { NotesSourceFilter } from '../model/note-filters';
 
@@ -21,11 +26,6 @@ import {
 	setApiNoteTextInCache,
 } from '../model/api-note-cache';
 import { getApiPersonalNotes } from '../model/api-notes';
-import {
-	type DraftedPersonalNote,
-	getApiSourceId,
-	mergeApiNotesWithDrafts,
-} from '../model/note-drafts';
 import {
 	getFilteredNotes,
 	getNotesSummary,

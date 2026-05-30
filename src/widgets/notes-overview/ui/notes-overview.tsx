@@ -5,13 +5,13 @@ import {
 } from '@mantine/core';
 import { IconAlertTriangle } from '@tabler/icons-react';
 
+import { NoteCard } from '@/features/note/manage-note';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
 import { useNotesOverview } from '../lib/use-notes-overview';
-import { NoteCard } from './note-card';
 import { NotesControls } from './notes-controls';
 import { NotesListSkeleton } from './notes-list.skeleton';
 import cls from './notes-overview.module.css';

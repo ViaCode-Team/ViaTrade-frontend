@@ -13,7 +13,7 @@ import { Link as RouterLink } from 'react-router';
 
 import type { StoredPersonalNote } from '@/entities/note';
 
-import cls from './notes-overview.module.css';
+import cls from './note-card.module.css';
 
 type NoteCardHeaderProps = {
 	note: StoredPersonalNote;

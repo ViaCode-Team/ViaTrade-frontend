@@ -1,15 +1,21 @@
-import { SimpleGrid } from '@mantine/core';
+import { Flex } from '@mantine/core';
 
+import { NoteCard } from '@/features/note/manage-note';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { useNotesOverview } from '@/widgets/notes-overview/lib/use-notes-overview';
 
-import { DashboardNoteCard } from './dashboard-note-card';
 import { DashboardNotesSkeleton } from './dashboard-notes.skeleton';
 
 export function DashboardNotes() {
-	const { filteredNotes } = useNotesOverview();
+	const {
+		filteredNotes,
+		isSaving,
+		isDeleting,
+		updateNote,
+		deleteNote,
+	} = useNotesOverview();
 
 	const recentNotes = filteredNotes.slice(0, 4);
 
@@ -18,11 +24,23 @@ export function DashboardNotes() {
 	}
 
 	return (
-		<SimpleGrid minColWidth={300} spacing={CONTENT_GRID_SPACING}>
+		<Flex
+			direction='column'
+			component='ul'
+			gap={CONTENT_GRID_SPACING}
+		>
 			{recentNotes.map((note) => (
-				<DashboardNoteCard key={note.id} note={note} />
+				<li key={note.id} style={{ minWidth: 0, height: '100%' }}>
+					<NoteCard
+						note={note}
+						isSaving={isSaving}
+						isDeleting={isDeleting}
+						onSave={updateNote}
+						onDelete={deleteNote}
+					/>
+				</li>
 			))}
-		</SimpleGrid>
+		</Flex>
 	);
 }
 

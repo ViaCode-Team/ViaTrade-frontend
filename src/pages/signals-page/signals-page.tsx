@@ -76,6 +76,7 @@ export function SignalsPage() {
 						onSortOptionChange={setSortOption}
 						onDirectionFilterChange={setDirectionFilter}
 					/>
+
 					<SignalsStatusBarBoundary filters={filters} />
 				</Stack>
 

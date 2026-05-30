@@ -4,13 +4,12 @@ import type {
 	getByUserInstrumentAllResponseSuccess,
 	getByUserStrategyAllResponseSuccess,
 } from '@/entities/note';
+import type { DraftedPersonalNote } from '@/features/note/manage-note';
 
 import {
 	getGetByUserInstrumentAllQueryKey,
 	getGetByUserStrategyAllQueryKey,
 } from '@/entities/note';
-
-import type { DraftedPersonalNote } from './note-drafts';
 
 export function setApiNoteTextInCache({
 	queryClient,

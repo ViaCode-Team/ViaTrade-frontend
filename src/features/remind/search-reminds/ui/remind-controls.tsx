@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router';
 import { useCreateInstrumentRemind } from '@/entities/remind/api/gen';
 import { openAddRemindModal } from '@/features/remind/add-remind';
 import { brandGradient } from '@/shared/model/theme';
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 export type RemindSortOption = 'date-asc' | 'date-desc';
@@ -59,7 +59,7 @@ export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
 	};
 
 	return (
-		<FiltersGroup>
+		<ControlsGroup>
 			<SearchInput
 				value={searchQuery}
 				onChange={(val) => updateSearchParams('rq', val)}
@@ -87,6 +87,6 @@ export function RemindsControls({ instrumentId }: RemindsControlsProps = {}) {
 					</ActionIcon>
 				</Tooltip>
 			</Group>
-		</FiltersGroup>
+		</ControlsGroup>
 	);
 }

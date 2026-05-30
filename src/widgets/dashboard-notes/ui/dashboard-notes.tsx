@@ -1,12 +1,7 @@
-import { Flex } from '@mantine/core';
-
-import { NoteCard } from '@/features/note/manage-note';
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
-import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { useNotesOverview } from '@/widgets/notes-overview/lib/use-notes-overview';
-
-import { DashboardNotesSkeleton } from './dashboard-notes.skeleton';
+import { NotesList } from '@/widgets/notes-overview/ui/notes-list';
+import { NotesListSkeleton } from '@/widgets/notes-overview/ui/notes-list.skeleton';
 
 export function DashboardNotes() {
 	const {
@@ -19,33 +14,20 @@ export function DashboardNotes() {
 
 	const recentNotes = filteredNotes.slice(0, 4);
 
-	if (recentNotes.length === 0) {
-		return <EmptyState title='Нет заметок' />;
-	}
-
 	return (
-		<Flex
-			direction='column'
-			component='ul'
-			gap={CONTENT_GRID_SPACING}
-		>
-			{recentNotes.map((note) => (
-				<li key={note.id} style={{ minWidth: 0, height: '100%' }}>
-					<NoteCard
-						note={note}
-						isSaving={isSaving}
-						isDeleting={isDeleting}
-						onSave={updateNote}
-						onDelete={deleteNote}
-					/>
-				</li>
-			))}
-		</Flex>
+		<NotesList
+			filteredNotes={recentNotes}
+			hasNotes={recentNotes.length > 0}
+			isSaving={isSaving}
+			isDeleting={isDeleting}
+			updateNote={updateNote}
+			deleteNote={deleteNote}
+		/>
 	);
 }
 
 export const DashboardNotesBoundary = withQueryBoundary(DashboardNotes, {
 	suspenseProps: {
-		fallback: <DashboardNotesSkeleton />,
+		fallback: <NotesListSkeleton />,
 	},
 });

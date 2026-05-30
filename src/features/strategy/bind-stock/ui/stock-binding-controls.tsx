@@ -6,7 +6,7 @@ import {
 	Title,
 } from '@mantine/core';
 
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 import { getNormalizedStockSearchQuery } from '../model';
@@ -46,7 +46,7 @@ export function StockBindingControls({
 			<Stack gap='md' w='100%'>
 				<Title order={2} className={cls.summary}>{title}</Title>
 
-				<FiltersGroup>
+				<ControlsGroup>
 					<SearchInput
 						value={searchQuery}
 						onChange={onSearchQueryChange}
@@ -78,7 +78,7 @@ export function StockBindingControls({
 							{stocksCount}
 						</Text>
 					</Flex>
-				</FiltersGroup>
+				</ControlsGroup>
 			</Stack>
 		</Flex>
 	);

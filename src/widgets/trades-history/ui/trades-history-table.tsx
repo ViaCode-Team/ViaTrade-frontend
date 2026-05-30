@@ -4,6 +4,7 @@ import {
 	Group,
 	Pagination,
 	ScrollArea,
+	Stack,
 	Table,
 	Text,
 	UnstyledButton,
@@ -33,6 +34,7 @@ function Th({
 	disabled,
 }: ThProps) {
 	const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
+
 	return (
 		<Table.Th>
 			<UnstyledButton onClick={onSort} disabled={disabled} style={{ width: '100%', padding: 'var(--mantine-spacing-xs) 0', opacity: disabled ? 0.5 : 1 }}>
@@ -84,9 +86,9 @@ function TradesHistoryTable({
 	}
 
 	return (
-		<>
+		<Stack gap='xs'>
 			<ScrollArea>
-				<Table verticalSpacing='sm' striped highlightOnHover miw={800}>
+				<Table highlightOnHover>
 					<Table.Thead>
 						<Table.Tr>
 							<Th sorted={sortField === 'ticker'} reversed={sortDirection === 'desc'} onSort={() => setSorting('ticker')} disabled={isFetching}>Тикер</Th>
@@ -120,12 +122,12 @@ function TradesHistoryTable({
 
 			{totalPages > 1 && (
 				<ScrollArea>
-					<Box p={{ base: 'xs', sm: 'md' }} w='max-content' mx='auto'>
+					<Box w='max-content' mx='auto'>
 						<Pagination total={totalPages} value={page} onChange={setPage} withEdges disabled={isFetching} />
 					</Box>
 				</ScrollArea>
 			)}
-		</>
+		</Stack>
 	);
 }
 

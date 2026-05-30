@@ -1,1 +1,1 @@
-export * from './filters-group';
+export { ControlsGroup } from './filters-group';

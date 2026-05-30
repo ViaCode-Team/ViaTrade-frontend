@@ -1,49 +1,46 @@
-import { Stack, Title } from '@mantine/core';
-
+import { RemindListBoundary } from '@/features/remind/manage-reminds';
+import { StocksListBoundary } from '@/pages/stocks-page/ui/stocks-list/stocks-list';
 import { PageHeader } from '@/shared/ui/page-header';
+import { Section } from '@/shared/ui/section';
 import { DashboardNotesBoundary } from '@/widgets/dashboard-notes';
-import { DashboardRemindersBoundary } from '@/widgets/dashboard-reminders';
 import { DashboardSignals } from '@/widgets/dashboard-signals';
 import { DashboardStatisticsBoundary } from '@/widgets/dashboard-statistics';
-import { DashboardStocksBoundary } from '@/widgets/dashboard-stocks';
-import { DashboardStrategiesBoundary } from '@/widgets/dashboard-strategies';
+import { StrategiesListBoundary } from '@/widgets/strategies-overview/ui/strategies-list';
 
 export function DashboardPage() {
 	return (
-		<Stack gap='xl'>
-			<PageHeader title='Панель управления' />
+		<>
+			<PageHeader title='Главная' description='Краткая сводка по ключевым показателям портфеля, сигналам и инструментам' />
 
-			<Stack gap='sm'>
-				<Title order={2}>Общая статистика</Title>
+			<Section header={{ title: 'Общая статистика' }}>
 				<DashboardStatisticsBoundary />
-			</Stack>
+			</Section>
 
-			<Stack gap='xl'>
-				<Stack gap='sm'>
-					<Title order={2}>Последние сигналы</Title>
-					<DashboardSignals />
-				</Stack>
+			<Section header={{ title: 'Последние сигналы' }}>
+				<DashboardSignals />
+			</Section>
 
-				<Stack gap='sm'>
-					<Title order={2}>Активные стратегии</Title>
-					<DashboardStrategiesBoundary />
-				</Stack>
+			<Section header={{ title: 'Активные стратегии' }}>
+				<StrategiesListBoundary limit={4} onlyActive={true} />
+			</Section>
 
-				<Stack gap='sm'>
-					<Title order={2}>Лучшие акции</Title>
-					<DashboardStocksBoundary />
-				</Stack>
+			<Section header={{ title: 'Лучшие акции' }}>
+				<StocksListBoundary
+					searchQuery=''
+					sortOption='name-asc'
+					trendFilter='all'
+					limit={4}
+					onLinkedStrategiesClick={() => {}}
+				/>
+			</Section>
 
-				<Stack gap='sm'>
-					<Title order={2}>Последние напоминания</Title>
-					<DashboardRemindersBoundary />
-				</Stack>
+			<Section header={{ title: 'Последние напоминания' }}>
+				<RemindListBoundary limit={4} />
+			</Section>
 
-				<Stack gap='sm'>
-					<Title order={2}>Последние заметки</Title>
-					<DashboardNotesBoundary />
-				</Stack>
-			</Stack>
-		</Stack>
+			<Section header={{ title: 'Последние заметки' }}>
+				<DashboardNotesBoundary />
+			</Section>
+		</>
 	);
 }

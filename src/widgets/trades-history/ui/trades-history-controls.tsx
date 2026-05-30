@@ -1,6 +1,6 @@
 import { SegmentedControl } from '@mantine/core';
 
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 type TradesHistoryControlsProps = {
@@ -23,7 +23,7 @@ export function TradesHistoryControls({
 	isFetching,
 }: TradesHistoryControlsProps) {
 	return (
-		<FiltersGroup p={{ base: 'xs', sm: 'md' }} pb={{ base: 'xs', sm: 'sm' }} align='flex-end'>
+		<ControlsGroup align='flex-end'>
 			<SearchInput
 				placeholder='Поиск...'
 				value={search}
@@ -54,6 +54,6 @@ export function TradesHistoryControls({
 				w={{ base: '100%', sm: 'auto' }}
 				disabled={isFetching}
 			/>
-		</FiltersGroup>
+		</ControlsGroup>
 	);
 }

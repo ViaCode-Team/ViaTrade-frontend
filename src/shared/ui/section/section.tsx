@@ -21,7 +21,7 @@ type SectionProps = SectionStackProps & {
 export function Section({
 	children,
 	header,
-	gap = 'md',
+	gap = 'sm',
 	component = 'section',
 	...stackProps
 }: SectionProps) {

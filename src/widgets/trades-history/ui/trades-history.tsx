@@ -1,7 +1,4 @@
-import { Card } from '@mantine/core';
-
-import { AddTradeButton } from '@/features/statistic/add-trade';
-import { Section } from '@/shared/ui/section';
+import { Card, Stack } from '@mantine/core';
 
 import { useTradesHistoryFilters } from '../lib/use-trades-history';
 import { TradesHistoryControls } from './trades-history-controls';
@@ -11,8 +8,8 @@ export function TradesHistory() {
 	const filters = useTradesHistoryFilters();
 
 	return (
-		<Section header={{ title: 'История сделок', actions: <AddTradeButton /> }}>
-			<Card withBorder radius='md' p={0}>
+		<Card withBorder radius='md' p={{ base: 'xs', sm: 'md' }}>
+			<Stack gap='xs'>
 				<TradesHistoryControls
 					search={filters.search}
 					onSearchChange={filters.handleSearch}
@@ -34,7 +31,7 @@ export function TradesHistory() {
 					setSorting={filters.setSorting}
 					setPage={filters.setPage}
 				/>
-			</Card>
-		</Section>
+			</Stack>
+		</Card>
 	);
 }

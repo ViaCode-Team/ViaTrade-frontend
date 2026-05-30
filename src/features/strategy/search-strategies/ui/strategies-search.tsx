@@ -2,7 +2,7 @@ import { SegmentedControl, Select } from '@mantine/core';
 import { useSearchParams } from 'react-router';
 
 import { useGetAll } from '@/entities/strategy';
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 export type StrategySortOption = 'name-asc' | 'name-desc' | 'accuracy-desc' | 'accuracy-asc';
@@ -37,7 +37,7 @@ export function StrategiesSearch() {
 	};
 
 	return (
-		<FiltersGroup>
+		<ControlsGroup>
 			<SearchInput
 				value={searchQuery}
 				onChange={(val) => updateSearchParams('q', val)}
@@ -65,6 +65,6 @@ export function StrategiesSearch() {
 				]}
 				disabled={disabled}
 			/>
-		</FiltersGroup>
+		</ControlsGroup>
 	);
 }

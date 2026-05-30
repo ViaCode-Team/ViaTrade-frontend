@@ -1,6 +1,6 @@
 import { SegmentedControl } from '@mantine/core';
 
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 import type { NotesSourceFilter } from '../model/note-filters';
@@ -23,7 +23,7 @@ export function NotesControls({
 	onSourceFilterChange,
 }: NotesControlsProps) {
 	return (
-		<FiltersGroup>
+		<ControlsGroup>
 			<SearchInput
 				value={searchQuery}
 				onChange={onSearchQueryChange}
@@ -44,6 +44,6 @@ export function NotesControls({
 				]}
 				disabled={disabled}
 			/>
-		</FiltersGroup>
+		</ControlsGroup>
 	);
 }

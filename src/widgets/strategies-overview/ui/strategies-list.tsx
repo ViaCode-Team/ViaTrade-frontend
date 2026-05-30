@@ -54,13 +54,21 @@ function StrategyStockBindingModalWrapper({
 	);
 }
 
-export function StrategiesList() {
+export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActive?: boolean } = {}) {
 	const {
 		strategies,
-		filteredStrategies,
+		filteredStrategies: allFilteredStrategies,
 		getStockBindingSelectedIds,
 		handleStockBindingChange,
 	} = useStrategiesOverview();
+
+	let filteredStrategies = onlyActive
+		? allFilteredStrategies.filter((s) => s.isActive)
+		: allFilteredStrategies;
+
+	if (limit) {
+		filteredStrategies = filteredStrategies.slice(0, limit);
+	}
 
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 	const stocks = stocksResponse.data.map(mapTradeCodeToStock);
@@ -127,7 +135,9 @@ export function StrategiesList() {
 	);
 }
 
-export const StrategiesListBoundary = withQueryBoundary(StrategiesList, {
+import type { ComponentProps } from 'react';
+
+export const StrategiesListBoundary = withQueryBoundary<NonNullable<ComponentProps<typeof StrategiesList>>>(StrategiesList, {
 	suspenseProps: {
 		fallback: <StrategiesListSkeleton />,
 	},

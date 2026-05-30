@@ -1,4 +1,6 @@
+import { AddTradeButton } from '@/features/statistic/add-trade';
 import { PageHeader } from '@/shared/ui/page-header';
+import { Section } from '@/shared/ui/section';
 import { StatisticsDashboard } from '@/widgets/statistics-dashboard';
 import { TradesHistory } from '@/widgets/trades-history';
 
@@ -11,10 +13,15 @@ export function StatisticsPage() {
 				title='Статистика'
 				description='Аналитика и графики по вашим сделкам и доходу.'
 			/>
-			<StatisticsSummary />
+			<Section>
+				<StatisticsSummary />
+			</Section>
 
 			<StatisticsDashboard />
-			<TradesHistory />
+
+			<Section header={{ title: 'История сделок', actions: <AddTradeButton /> }}>
+				<TradesHistory />
+			</Section>
 		</>
 	);
 }

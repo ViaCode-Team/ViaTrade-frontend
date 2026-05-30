@@ -10,8 +10,10 @@ export function StrategiesOverview() {
 		<Stack gap='md'>
 			<Stack gap='xs'>
 				<StrategiesSearch />
+
 				<StrategiesStatusBarBoundary />
 			</Stack>
+
 			<StrategiesListBoundary />
 		</Stack>
 	);

@@ -19,12 +19,14 @@ import { getFilteredSignals } from '../model/signal-filters';
 import { SignalsListSkeleton } from './signals-list.skeleton';
 
 type SignalsListProps = {
-	filters: SignalFilters;
+	filters?: SignalFilters;
+	limit?: number;
 	onSignalSelect: (signal: Signal) => void;
 };
 
 export function SignalsList({
 	filters,
+	limit,
 	onSignalSelect,
 }: SignalsListProps) {
 	const { data: signalsData } = useGetResultSuspense(undefined, {
@@ -39,8 +41,9 @@ export function SignalsList({
 		[signalsData.data],
 	);
 	const filteredAndSortedSignals = useMemo(() => {
-		return getFilteredSignals(signals, filters);
-	}, [signals, filters]);
+		const filtered = filters ? getFilteredSignals(signals, filters) : signals;
+		return limit ? filtered.slice(0, limit) : filtered;
+	}, [signals, filters, limit]);
 
 	return (
 		<>

@@ -1,6 +1,6 @@
 import { SegmentedControl, Select } from '@mantine/core';
 
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 import {
@@ -31,7 +31,7 @@ export function StocksControls({
 	onTrendFilterChange,
 }: StocksControlsProps) {
 	return (
-		<FiltersGroup>
+		<ControlsGroup>
 			<SearchInput
 				value={searchQuery}
 				onChange={onSearchQueryChange}
@@ -60,6 +60,6 @@ export function StocksControls({
 				]}
 				disabled={disabled}
 			/>
-		</FiltersGroup>
+		</ControlsGroup>
 	);
 }

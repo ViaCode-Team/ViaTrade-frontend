@@ -1,6 +1,6 @@
 import { SegmentedControl, Select } from '@mantine/core';
 
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 import {
@@ -32,7 +32,7 @@ export function SignalsFilters({
 	onDirectionFilterChange,
 }: SignalsFiltersProps) {
 	return (
-		<FiltersGroup>
+		<ControlsGroup>
 			<SearchInput
 				placeholder='Поиск по активу или стратегии...'
 				value={searchQuery}
@@ -53,6 +53,6 @@ export function SignalsFilters({
 				onChange={(value) => onDirectionFilterChange(value as DirectionFilter)}
 				disabled={disabled}
 			/>
-		</FiltersGroup>
+		</ControlsGroup>
 	);
 }

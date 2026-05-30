@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router';
 
 import { useGetSessions } from '@/entities/auth';
 import { normalizeUserSessions } from '@/features/session/manage-sessions';
-import { FiltersGroup } from '@/shared/ui/filters-group';
+import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 export function SessionsSearch() {
@@ -26,7 +26,7 @@ export function SessionsSearch() {
 	};
 
 	return (
-		<FiltersGroup>
+		<ControlsGroup>
 			<SearchInput
 				value={searchQuery}
 				onChange={handleSearchChange}
@@ -34,6 +34,6 @@ export function SessionsSearch() {
 				disabled={disabled}
 				isLoading={isLoading}
 			/>
-		</FiltersGroup>
+		</ControlsGroup>
 	);
 }

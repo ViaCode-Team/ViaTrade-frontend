@@ -2,7 +2,7 @@ import { Flex, type FlexProps } from '@mantine/core';
 
 export type FiltersGroupProps = FlexProps;
 
-export function FiltersGroup({
+export function ControlsGroup({
 	children,
 	gap = 'md',
 	wrap = 'wrap',

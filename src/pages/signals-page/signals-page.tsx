@@ -10,6 +10,7 @@ import {
 } from '@/entities/signal';
 import { getSignalResultsMock } from '@/entities/signal';
 import { PageHeader } from '@/shared/ui/page-header';
+import { Section } from '@/shared/ui/section';
 import { HistoryTableBoundary } from '@/widgets/signal-history-table';
 
 import type {
@@ -62,7 +63,9 @@ export function SignalsPage() {
 		<>
 			<PageHeader title='Сигналы' />
 
-			<SignalsSummaryBoundary />
+			<Section>
+				<SignalsSummaryBoundary />
+			</Section>
 
 			<Stack>
 				<Stack gap='xs'>

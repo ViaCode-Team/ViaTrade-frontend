@@ -14,6 +14,7 @@ type StocksListProps = {
 	searchQuery: string;
 	trendFilter: StockTrendFilter;
 	sortOption: StockSortOption;
+	limit?: number;
 	onLinkedStrategiesClick: (stock: Stock) => void;
 };
 
@@ -21,9 +22,12 @@ export function StocksList({
 	searchQuery,
 	trendFilter,
 	sortOption,
+	limit,
 	onLinkedStrategiesClick,
 }: StocksListProps) {
-	const { data: filteredStocks } = useStocksQuery(searchQuery, trendFilter, sortOption);
+	const { data: stocks } = useStocksQuery(searchQuery, trendFilter, sortOption);
+
+	const filteredStocks = limit ? stocks.slice(0, limit) : stocks;
 
 	if (filteredStocks.length === 0) {
 		return (

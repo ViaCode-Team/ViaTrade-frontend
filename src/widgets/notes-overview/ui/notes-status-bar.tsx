@@ -6,9 +6,10 @@ import type { useNotesOverview } from '../lib/use-notes-overview';
 type NotesStatusBarProps = {
 	notesCount: number;
 	filteredNotes: ReturnType<typeof useNotesOverview>['filteredNotes'];
+	onRefresh?: () => void;
 };
 
-export function NotesStatusBar({ notesCount, filteredNotes }: NotesStatusBarProps) {
+export function NotesStatusBar({ notesCount, filteredNotes, onRefresh }: NotesStatusBarProps) {
 	if (notesCount === 0) {
 		return null;
 	}
@@ -17,7 +18,8 @@ export function NotesStatusBar({ notesCount, filteredNotes }: NotesStatusBarProp
 		<ListStatusBar
 			totalCount={notesCount}
 			filteredCount={filteredNotes.length}
-			refreshIntervalText='Автообновление: 1 мин'
+			refreshIntervalText='Автообновление: 5 мин'
+			onRefresh={onRefresh}
 			badges={(
 				<>
 					<ValueBadge

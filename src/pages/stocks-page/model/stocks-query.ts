@@ -5,7 +5,7 @@ import { getFilteredStocks, type StockSortOption, type StockTrendFilter } from '
 export function useStocksQuery(searchQuery: string, trendFilter: StockTrendFilter = 'all', sortOption: StockSortOption = 'name-asc') {
 	return useGetAllStocksCodesSuspense({
 		query: {
-			refetchInterval: 60000,
+			refetchInterval: 300000,
 			select: (data): Stock[] => {
 				const mappedStocks = data.data.map(mapTradeCodeToStock);
 				return getFilteredStocks({ stocks: mappedStocks, searchQuery, trendFilter, sortOption });

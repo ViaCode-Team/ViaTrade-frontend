@@ -2,12 +2,14 @@ import type { ReactNode } from 'react';
 
 import { Badge, Group, Text, Tooltip } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
+import { useCallback, useEffect, useState } from 'react';
 
 type ListStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
 	badges?: ReactNode;
 	refreshIntervalText?: string;
+	onRefresh?: () => void;
 };
 
 export function ListStatusBar({
@@ -15,8 +17,41 @@ export function ListStatusBar({
 	filteredCount,
 	badges,
 	refreshIntervalText,
+	onRefresh,
 }: ListStatusBarProps) {
 	const isFiltered = totalCount !== filteredCount;
+
+	const [throttleSeconds, setThrottleSeconds] = useState(0);
+
+	useEffect(() => {
+		if (throttleSeconds > 0) {
+			const timer = setInterval(() => {
+				setThrottleSeconds((prev) => prev - 1);
+			}, 1000);
+			return () => clearInterval(timer);
+		}
+	}, [throttleSeconds]);
+
+	const handleRefresh = useCallback(() => {
+		if (throttleSeconds > 0)
+			return;
+
+		onRefresh?.();
+		setThrottleSeconds(5);
+	}, [onRefresh, throttleSeconds]);
+
+	const isThrottled = throttleSeconds > 0;
+	const isInteractive = Boolean(onRefresh) && !isThrottled;
+
+	const labelTooltipText = isInteractive
+		? 'Нажмите, чтобы обновить данные прямо сейчас. Данные также обновляются автоматически.'
+		: isThrottled
+			? `Ручное обновление будет доступно через ${throttleSeconds} сек.`
+			: 'Данные обновляются автоматически';
+
+	const displayText = isThrottled
+		? `Обновление через ${throttleSeconds}с`
+		: refreshIntervalText;
 
 	return (
 		<Group justify='space-between' align='center'>
@@ -31,14 +66,22 @@ export function ListStatusBar({
 				</Text>
 
 				{refreshIntervalText && (
-					<Tooltip label='Данные обновляются автоматически'>
+					<Tooltip label={labelTooltipText}>
 						<Badge
-							variant='default'
+							variant={isThrottled ? 'light' : 'default'}
 							size='sm'
+							color={isThrottled ? 'gray' : undefined}
 							leftSection={<IconRefresh size={12} />}
-							style={{ textTransform: 'none' }}
+							style={{
+								textTransform: 'none',
+								cursor: isInteractive ? 'pointer' : 'default',
+								opacity: isThrottled ? 0.7 : 1,
+							}}
+							component={onRefresh ? 'button' : 'div'}
+							onClick={isInteractive ? handleRefresh : undefined}
+							disabled={isThrottled}
 						>
-							{refreshIntervalText}
+							{displayText}
 						</Badge>
 					</Tooltip>
 				)}

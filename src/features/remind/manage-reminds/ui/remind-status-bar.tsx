@@ -8,7 +8,7 @@ import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { useRemindList } from '../lib/use-remind-list';
 
 export function RemindStatusBar({ instrumentId }: { instrumentId?: number }) {
-	const { reminds, filteredReminds } = useRemindList(instrumentId);
+	const { reminds, filteredReminds, refetch } = useRemindList(instrumentId);
 
 	const hasAnyReminds = reminds.length > 0;
 
@@ -20,7 +20,8 @@ export function RemindStatusBar({ instrumentId }: { instrumentId?: number }) {
 		<ListStatusBar
 			totalCount={reminds.length}
 			filteredCount={filteredReminds.length}
-			refreshIntervalText='Автообновление: 1 мин'
+			refreshIntervalText='Автообновление: 5 мин'
+			onRefresh={refetch}
 		/>
 	);
 }

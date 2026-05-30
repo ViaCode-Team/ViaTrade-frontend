@@ -1,11 +1,6 @@
 import {
-	Badge,
-	Group,
 	Skeleton,
-	Text,
-	Tooltip,
 } from '@mantine/core';
-import { IconRefresh } from '@tabler/icons-react';
 import { useMemo } from 'react';
 
 import {
@@ -14,6 +9,7 @@ import {
 } from '@/entities/signal';
 import { getSignalResultsMock } from '@/entities/signal';
 import { getFilteredSignals, type SignalFilters } from '@/features/signal/filter-signals';
+import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
@@ -22,11 +18,11 @@ type SignalsStatusBarProps = {
 };
 
 export function SignalsStatusBar({ filters }: SignalsStatusBarProps) {
-	const { data: signalsData } = useGetResultSuspense(undefined, {
+	const { data: signalsData, refetch } = useGetResultSuspense(undefined, {
 		query: {
 			queryFn: getSignalResultsMock,
 			staleTime: Infinity,
-			refetchInterval: 60000,
+			refetchInterval: 300000,
 		},
 	});
 	const signals = useMemo(
@@ -39,41 +35,22 @@ export function SignalsStatusBar({ filters }: SignalsStatusBarProps) {
 
 	const totalCount = signals.length;
 	const filteredCount = filteredAndSortedSignals.length;
-	const isFiltered = totalCount !== filteredCount;
 	const buyCount = filteredAndSortedSignals.filter((s) => s.direction === 'buy').length;
 	const sellCount = filteredAndSortedSignals.filter((s) => s.direction === 'sell').length;
 
 	return (
-		<Group justify='space-between' align='center'>
-			<Group gap='md'>
-				<Text size='sm' c='dimmed'>
-					Показано:
-					{' '}
-					<Text span fw={500} c='var(--mantine-color-text)'>
-						{filteredCount}
-					</Text>
-					{isFiltered && ` из ${totalCount}`}
-				</Text>
-
-				<Tooltip label='Данные обновляются автоматически каждую минуту'>
-					<Badge
-						variant='default'
-						size='sm'
-						leftSection={<IconRefresh size={12} />}
-						style={{ textTransform: 'none' }}
-					>
-						Автообновление: 1 мин
-					</Badge>
-				</Tooltip>
-			</Group>
-
-			{filteredCount > 0 && (
-				<Group gap='sm'>
+		<ListStatusBar
+			totalCount={totalCount}
+			filteredCount={filteredCount}
+			refreshIntervalText='Автообновление: 5 мин'
+			onRefresh={refetch}
+			badges={(
+				<>
 					<ValueBadge variant='dot' color='green' size='sm' label='Покупать' value={buyCount} />
 					<ValueBadge variant='dot' color='red' size='sm' label='Продавать' value={sellCount} />
-				</Group>
+				</>
 			)}
-		</Group>
+		/>
 	);
 }
 

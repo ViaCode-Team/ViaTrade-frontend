@@ -31,7 +31,7 @@ export function SignalsList({
 		query: {
 			queryFn: getSignalResultsMock,
 			staleTime: Infinity,
-			refetchInterval: 60000,
+			refetchInterval: 300000,
 		},
 	});
 	const signals = useMemo(

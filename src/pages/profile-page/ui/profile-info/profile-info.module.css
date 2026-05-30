@@ -70,7 +70,6 @@
 
 .loginTitle {
 	width: min(100%, 520px);
-	overflow-wrap: anywhere;
 }
 
 .editField {

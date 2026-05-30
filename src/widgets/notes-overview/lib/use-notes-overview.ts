@@ -35,11 +35,11 @@ export function useNotesOverview() {
 	const { filters } = useNotesControls();
 
 	const storedNotesQuery = useStoredPersonalNotesQuery();
-	const instrumentNotesQuery = useGetByUserInstrumentAll({ query: { refetchInterval: 60000 } });
-	const strategyNotesQuery = useGetByUserStrategyAll({ query: { refetchInterval: 60000 } });
+	const instrumentNotesQuery = useGetByUserInstrumentAll({ query: { refetchInterval: 300000 } });
+	const strategyNotesQuery = useGetByUserStrategyAll({ query: { refetchInterval: 300000 } });
 
-	const stocksQuery = useGetAllStocksCodes({ query: { refetchInterval: 60000 } });
-	const strategiesQuery = useGetAllStrategies({ query: { refetchInterval: 60000 } });
+	const stocksQuery = useGetAllStocksCodes({ query: { refetchInterval: 300000 } });
+	const strategiesQuery = useGetAllStrategies({ query: { refetchInterval: 300000 } });
 
 	const updateInstrumentNoteMutation = useUpdateInstrumentNote();
 	const updateStrategyNoteMutation = useUpdateStrategyNote();
@@ -158,6 +158,11 @@ export function useNotesOverview() {
 		);
 	}
 
+	const refetch = () => {
+		void instrumentNotesQuery.refetch();
+		void strategyNotesQuery.refetch();
+	};
+
 	return {
 		notes,
 		filteredNotes,
@@ -170,5 +175,6 @@ export function useNotesOverview() {
 		sourceFilter: filters.sourceFilter,
 		updateNote,
 		deleteNote,
+		refetch,
 	};
 }

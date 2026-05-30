@@ -10,6 +10,7 @@ export function StrategiesStatusBar() {
 	const {
 		strategies,
 		filteredStrategies,
+		refetch,
 	} = useStrategiesOverview();
 
 	const activeCount = filteredStrategies.filter((s) => s.isActive).length;
@@ -19,7 +20,8 @@ export function StrategiesStatusBar() {
 		<ListStatusBar
 			totalCount={strategies.length}
 			filteredCount={filteredStrategies.length}
-			refreshIntervalText='Автообновление: 1 мин'
+			refreshIntervalText='Автообновление: 5 мин'
+			onRefresh={refetch}
 			badges={(
 				<>
 					<ValueBadge variant='dot' color='green' size='sm' label='Активные' value={activeCount} />

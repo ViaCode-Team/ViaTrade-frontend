@@ -15,9 +15,9 @@ export function useRemindList(instrumentId?: number) {
 		? getGetTradeRemindByUserInstrumentSuspenseQueryOptions(instrumentId)
 		: getGetAllByUserSuspenseQueryOptions();
 
-	const { data: response } = useSuspenseQuery({
+	const { data: response, refetch } = useSuspenseQuery({
 		...queryOpts,
-		refetchInterval: 60000,
+		refetchInterval: 300000,
 	});
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 	const [now] = useState(Date.now);
@@ -69,5 +69,6 @@ export function useRemindList(instrumentId?: number) {
 		reminds,
 		filteredReminds,
 		handleRemindChange,
+		refetch,
 	};
 }

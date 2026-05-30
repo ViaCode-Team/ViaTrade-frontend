@@ -21,7 +21,7 @@ export function StocksStatusBar({
 	sortOption,
 	totalCount,
 }: StocksStatusBarProps) {
-	const { data: filteredStocks } = useStocksQuery(searchQuery, trendFilter, sortOption);
+	const { data: filteredStocks, refetch } = useStocksQuery(searchQuery, trendFilter, sortOption);
 
 	const gainersCount = filteredStocks.filter((s) => s.dayChangePercent > 0).length;
 	const losersCount = filteredStocks.filter((s) => s.dayChangePercent < 0).length;
@@ -30,7 +30,8 @@ export function StocksStatusBar({
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredStocks.length}
-			refreshIntervalText='Автообновление: 1 мин'
+			refreshIntervalText='Автообновление: 5 мин'
+			onRefresh={refetch}
 			badges={(
 				<>
 					<ValueBadge variant='dot' color='green' size='sm' label='Растут' value={gainersCount} />

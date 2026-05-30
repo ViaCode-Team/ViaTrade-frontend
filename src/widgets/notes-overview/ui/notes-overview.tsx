@@ -23,6 +23,7 @@ export function NotesOverview() {
 		isDeleting,
 		updateNote,
 		deleteNote,
+		refetch,
 	} = useNotesOverview();
 
 	const hasNotes = notes.length > 0;
@@ -54,6 +55,7 @@ export function NotesOverview() {
 						<NotesStatusBar
 							notesCount={notes.length}
 							filteredNotes={filteredNotes}
+							onRefresh={refetch}
 						/>
 					)}
 				</Stack>

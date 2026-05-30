@@ -58,6 +58,13 @@ export const theme = createTheme({
 				variant: 'filled',
 			},
 		},
+		Title: {
+			styles: {
+				root: {
+					overflowWrap: 'anywhere',
+				},
+			},
+		},
 		Card: Card.extend({
 			classNames: {
 				root: cls.card,

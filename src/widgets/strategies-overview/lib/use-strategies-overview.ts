@@ -26,8 +26,8 @@ type StrategiesQueries = [
 export function useStrategiesOverview() {
 	const [strategiesQuery, userStrategiesQuery] = useSuspenseQueries<StrategiesQueries>({
 		queries: [
-			{ ...getGetAllSuspenseQueryOptions(), refetchInterval: 60000 },
-			{ ...getGetUsersStrategySuspenseQueryOptions(), refetchInterval: 60000 },
+			{ ...getGetAllSuspenseQueryOptions(), refetchInterval: 300000 },
+			{ ...getGetUsersStrategySuspenseQueryOptions(), refetchInterval: 300000 },
 		],
 	});
 	const [searchParams] = useSearchParams();
@@ -92,10 +92,16 @@ export function useStrategiesOverview() {
 		}));
 	}
 
+	const refetch = () => {
+		void strategiesQuery.refetch();
+		void userStrategiesQuery.refetch();
+	};
+
 	return {
 		strategies,
 		filteredStrategies,
 		getStockBindingSelectedIds,
 		handleStockBindingChange,
+		refetch,
 	};
 }

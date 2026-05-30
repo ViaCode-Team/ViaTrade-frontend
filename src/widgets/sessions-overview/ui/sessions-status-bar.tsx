@@ -9,6 +9,7 @@ export function SessionsStatusBar() {
 	const {
 		sessions,
 		filteredSessions,
+		refetch,
 	} = useSessionsOverview();
 
 	if (sessions.length === 0 || filteredSessions.length === 0) {
@@ -19,7 +20,8 @@ export function SessionsStatusBar() {
 		<ListStatusBar
 			totalCount={sessions.length}
 			filteredCount={filteredSessions.length}
-			refreshIntervalText='Автообновление: 1 мин'
+			refreshIntervalText='Автообновление: 5 мин'
+			onRefresh={refetch}
 		/>
 	);
 }

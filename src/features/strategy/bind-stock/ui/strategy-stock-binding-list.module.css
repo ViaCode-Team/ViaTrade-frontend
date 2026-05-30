@@ -60,7 +60,6 @@
 
 .ticker {
 	letter-spacing: 0;
-	overflow-wrap: anywhere;
 }
 
 @media (max-width: 30em) {

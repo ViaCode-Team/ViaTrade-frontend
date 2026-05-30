@@ -17,7 +17,7 @@ import { StrategiesListSkeleton } from './strategies-list.skeleton';
 
 type Strategy = ReturnType<typeof useStrategiesOverview>['strategies'][number];
 
-function StrategyStockBindingModalWrapper({
+function StrategyStockBindingModal({
 	initialSelectedStockIds,
 	onSave,
 }: {
@@ -27,23 +27,13 @@ function StrategyStockBindingModalWrapper({
 	const [selectedStockIds, setSelectedStockIds] = useState(initialSelectedStockIds);
 
 	return (
-		<Stack gap='md'>
-			<StrategyStockBinding
-				selectedStockIds={selectedStockIds}
-				onSelectedStockIdsChange={setSelectedStockIds}
-				emptyText='Акции не найдены'
-			/>
-			<Stack mt='md' align='flex-end'>
-				<Button
-					onClick={() => {
-						onSave(selectedStockIds);
-						modals.closeAll();
-					}}
-				>
-					Сохранить
-				</Button>
-			</Stack>
-		</Stack>
+		<StrategyStockBinding
+			selectedStockIds={selectedStockIds}
+			onSelectedStockIdsChange={(nextStockIds) => {
+				setSelectedStockIds(nextStockIds);
+				onSave(nextStockIds);
+			}}
+		/>
 	);
 }
 
@@ -71,7 +61,7 @@ export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActi
 			size: 'xl',
 			centered: true,
 			children: (
-				<StrategyStockBindingModalWrapper
+				<StrategyStockBindingModal
 					initialSelectedStockIds={initialIds}
 					onSave={(nextStockIds) => {
 						handleStockBindingChange(strategy.id, nextStockIds);

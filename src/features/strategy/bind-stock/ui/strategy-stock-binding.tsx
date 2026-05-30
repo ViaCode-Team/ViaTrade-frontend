@@ -9,14 +9,12 @@ type StrategyStockBindingProps = {
 	selectedStockIds: string[];
 	onSelectedStockIdsChange: (stockIds: string[]) => void;
 	searchPlaceholder?: string;
-	emptyText?: string;
 };
 
 export function StrategyStockBinding({
 	selectedStockIds,
 	onSelectedStockIdsChange,
 	searchPlaceholder = 'Найти по коду или названию',
-	emptyText = 'Акции не найдены',
 }: StrategyStockBindingProps) {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [page, setPage] = useState(1);
@@ -49,7 +47,6 @@ export function StrategyStockBinding({
 				page={page}
 				selectedStockIds={selectedStockIds}
 				onStockChange={onSelectedStockIdsChange}
-				emptyText={emptyText}
 				onPageChange={setPage}
 			/>
 		</Stack>

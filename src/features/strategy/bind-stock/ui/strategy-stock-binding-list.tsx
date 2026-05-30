@@ -16,7 +16,6 @@ type StrategyStockBindingListProps = {
 	selectedStockIds: string[];
 	onStockChange: (stockIds: string[]) => void;
 	onPageChange: (page: number) => void;
-	emptyText?: string;
 };
 
 export function StrategyStockBindingList({
@@ -25,7 +24,6 @@ export function StrategyStockBindingList({
 	selectedStockIds,
 	onStockChange,
 	onPageChange,
-	emptyText = 'Акции не найдены',
 }: StrategyStockBindingListProps) {
 	const { stocks } = useStrategyStockBindingData();
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
@@ -35,7 +33,7 @@ export function StrategyStockBindingList({
 	const selectedStockIdSet = new Set(selectedStockIds);
 
 	if (paginatedStocks.length === 0) {
-		return <EmptyState title={emptyText} />;
+		return <EmptyState title='Акции не найдены' />;
 	}
 
 	return (

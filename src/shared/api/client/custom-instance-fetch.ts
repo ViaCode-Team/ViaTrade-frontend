@@ -1,3 +1,7 @@
+import { notifications } from '@mantine/notifications';
+import { IconWifiOff } from '@tabler/icons-react';
+import React from 'react';
+
 import { buildApiUrl } from '@/shared/lib/config';
 
 import { createApiError, parseBody } from './body';
@@ -11,7 +15,25 @@ export async function customInstance<T>(
 ): Promise<T> {
 	[url, options] = await runRequestInterceptors(buildApiUrl(url), options);
 
-	let response = await fetch(url, options);
+	if (!navigator.onLine && options.method && options.method !== 'GET') {
+		notifications.show({
+			title: 'Нет сети',
+			message: 'Это действие недоступно в автономном режиме',
+			color: 'yellow',
+			icon: React.createElement(IconWifiOff, { size: 18 }),
+		});
+	}
+
+	let response: Response;
+	try {
+		response = await fetch(url, options);
+	}
+	catch (error) {
+		if (error instanceof TypeError) {
+			throw new NetworkError('Failed to fetch due to network issues');
+		}
+		throw error;
+	}
 
 	response = await runResponseInterceptors(response, url, options);
 
@@ -34,5 +56,12 @@ export class ApiError<T> extends Error {
 	constructor(details: T) {
 		super('API error');
 		this.details = details;
+	}
+}
+
+export class NetworkError extends Error {
+	constructor(message: string = 'Network error') {
+		super(message);
+		this.name = 'NetworkError';
 	}
 }

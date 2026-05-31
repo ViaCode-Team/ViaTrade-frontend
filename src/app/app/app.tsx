@@ -1,10 +1,12 @@
 import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router';
 
+import { SecurityProvider } from '@/entities/security';
+import { InactivityLock } from '@/features/security/inactivity-lock';
 import { releaseBootLoader } from '@/shared/lib/global-loader';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
-import { QueryProvider, ThemeProvider } from '../providers';
+import { PwaProvider, QueryProvider, ThemeProvider } from '../providers';
 import { router } from '../router';
 
 export function App() {
@@ -13,12 +15,17 @@ export function App() {
 	}, []);
 
 	return (
-		<QueryProvider>
-			<ThemeProvider>
-				<Suspense fallback={<GlobalLoader />}>
-					<RouterProvider router={router} />
-				</Suspense>
-			</ThemeProvider>
-		</QueryProvider>
+		<PwaProvider>
+			<SecurityProvider>
+				<QueryProvider>
+					<ThemeProvider>
+						<Suspense fallback={<GlobalLoader />}>
+							<InactivityLock />
+							<RouterProvider router={router} />
+						</Suspense>
+					</ThemeProvider>
+				</QueryProvider>
+			</SecurityProvider>
+		</PwaProvider>
 	);
 }

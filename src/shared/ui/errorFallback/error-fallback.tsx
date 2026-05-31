@@ -9,14 +9,25 @@ import {
 } from '@mantine/core';
 import { IconAlertTriangle, IconRefresh, IconWorld } from '@tabler/icons-react';
 
+import { NetworkError } from '@/shared/api/client/custom-instance-fetch';
+
+import { OfflineFallback } from './offline-fallback';
+
 export function ErrorFallback({
+	error,
 	resetErrorBoundary,
 }: FallbackProps) {
 	const theme = useMantineTheme();
 
+	const isOfflineError = !navigator.onLine || error instanceof NetworkError;
+
 	const handleReload = () => {
 		window.location.reload();
 	};
+
+	if (isOfflineError) {
+		return <OfflineFallback handleReload={handleReload} resetErrorBoundary={resetErrorBoundary} />;
+	}
 
 	return (
 		<Alert

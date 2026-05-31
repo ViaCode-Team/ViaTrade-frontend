@@ -16,6 +16,7 @@ import {
 	PAGE_STACK_GAP,
 } from '@/shared/model/layout';
 import { AppHeader } from '@/widgets/header';
+import { OfflineBanner } from '@/widgets/offline-banner';
 import { SideBar } from '@/widgets/side-bar';
 
 import cls from './dashboard-layout.module.css';
@@ -56,6 +57,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 					onToggleDesktopSidebar={desktopHandlers.toggle}
 					onToggleMobileSidebar={mobileHandlers.toggle}
 				/>
+
 			</AppShell.Header>
 
 			<AppShell.Navbar className={cls.navbar}>
@@ -67,6 +69,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 			</AppShell.Navbar>
 
 			<AppShell.Main>
+				<OfflineBanner />
+
 				<Container size={PAGE_CONTAINER_SIZE} p={0}>
 					<Flex direction='column' gap={PAGE_STACK_GAP}>
 						{children ?? <Outlet />}

@@ -3,6 +3,9 @@ import { modals } from '@mantine/modals';
 import { useNavigate } from 'react-router';
 
 import { useLogout, useLogoutAll } from '@/entities/auth';
+import { useSecurity } from '@/entities/security';
+import { idbClear } from '@/shared/lib/idb';
+import { lockApp } from '@/shared/lib/secure-storage';
 import { ROUTES } from '@/shared/model/routes';
 
 type LogoutConfirmationContent = {
@@ -40,8 +43,16 @@ function openLogoutConfirmation({
 
 export function useUserSessionLogout() {
 	const navigate = useNavigate();
+	const { checkSecurityState } = useSecurity();
 
-	const onLogoutSuccess = () => navigate(ROUTES.LOGIN);
+	const onLogoutSuccess = async () => {
+		lockApp();
+		await idbClear();
+		localStorage.clear();
+		sessionStorage.clear();
+		await checkSecurityState();
+		navigate(ROUTES.LOGIN);
+	};
 
 	const { mutate: logoutAll, isPending: isLoggingOutAll } = useLogoutAll({
 		mutation: { onSuccess: onLogoutSuccess },

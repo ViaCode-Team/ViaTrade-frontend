@@ -42,7 +42,6 @@ export function LoginForm() {
 						value={formData.password}
 						onChange={(e) => setField('password', e.currentTarget.value)}
 						error={errors.password}
-
 					/>
 				</Stack>
 

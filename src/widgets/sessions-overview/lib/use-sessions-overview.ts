@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router';
 
 import { useGetSessionsSuspense } from '@/entities/auth';
 import {
@@ -9,11 +8,13 @@ import {
 	normalizeUserSessions,
 	sortUserSessionsByActivity,
 } from '@/entities/session';
+import { defaultFilters } from '@/features/session/filter-sessions/model/filters';
 import { useUserSessionLogout } from '@/features/session/manage-sessions';
+import { useUrlFilters } from '@/shared/lib/hooks';
 
 export function useSessionsOverview() {
-	const [searchParams] = useSearchParams();
-	const searchQuery = searchParams.get('sq') || '';
+	const { filters } = useUrlFilters(defaultFilters);
+	const searchQuery = filters.sq;
 	const [page, setPage] = useState(1);
 	const [prevSearchQuery, setPrevSearchQuery] = useState(searchQuery);
 

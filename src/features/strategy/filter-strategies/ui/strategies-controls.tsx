@@ -5,21 +5,7 @@ import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-export type StrategySortOption = 'name-asc' | 'name-desc' | 'accuracy-desc' | 'accuracy-asc';
-export type StrategyStatusFilter = 'all' | 'active' | 'inactive';
-
-const strategySortOptions = [
-	{ value: 'name-asc', label: 'По названию (от А до Я)' },
-	{ value: 'name-desc', label: 'По названию (от Я до А)' },
-	{ value: 'accuracy-desc', label: 'По точности (убывание)' },
-	{ value: 'accuracy-asc', label: 'По точности (возрастание)' },
-];
-
-const defaultFilters = {
-	q: '',
-	sort: 'name-asc' as StrategySortOption,
-	filter: 'all' as StrategyStatusFilter,
-};
+import { defaultFilters, strategySortOptions } from '../model/filters';
 
 export function StrategiesControls() {
 	const { filters, setFilter } = useUrlFilters(defaultFilters);

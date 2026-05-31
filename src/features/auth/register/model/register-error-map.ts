@@ -1,7 +1,11 @@
 import type { RegisterMutationError } from '@/entities/auth';
 
 export function mapRegisterApiError(error: RegisterMutationError): string {
-	const status = error.details?.status;
+	if (error.name === 'NetworkError') {
+		return 'Ошибка сети, проверьте подключение';
+	}
+
+	const status = 'details' in error ? error.details?.status : undefined;
 
 	switch (status) {
 		case 409:

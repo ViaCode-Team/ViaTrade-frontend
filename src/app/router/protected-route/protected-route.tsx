@@ -26,8 +26,15 @@ export function ProtectedRoute({
 }: ProtectedRouteProps) {
 	const location = useLocation();
 	const isRestoring = useIsRestoring();
-	const { data, isLoading } = useGetMe();
 	const { hasPin, isLocked, isReady } = useSecurity();
+
+	const isCanFetch = isReady && (!hasPin || !isLocked) && !isRestoring;
+
+	const { data, isPending } = useGetMe({
+		query: {
+			enabled: isCanFetch,
+		},
+	});
 
 	if (!isReady || isRestoring)
 		return <GlobalLoader />;
@@ -38,7 +45,7 @@ export function ProtectedRoute({
 		return <PinUnlock />;
 	}
 
-	const isAuthChecked = !isLoading;
+	const isAuthChecked = !isPending;
 	const user = data?.data;
 	const isExistUser = Boolean(user);
 

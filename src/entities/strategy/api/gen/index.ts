@@ -62,6 +62,10 @@ import type {
 	UserTradeStrategyDto,
 } from '../../../../shared/api/types/gen/userTradeStrategyDto';
 
+import {
+	getGetResultQueryKey,
+} from '@/entities/signal';
+
 import { customInstance } from '../../../../shared/api/client/custom-instance-fetch';
 import type { ErrorType } from '../../../../shared/api/client/custom-instance-fetch';
 
@@ -684,6 +688,8 @@ export function getCreateInstrumentsLinkMutationOptions<TError = ErrorType<Probl
 	const onSuccess = (data: Awaited<ReturnType<typeof createInstrumentsLink>>, variables: { data: UserStrategyTradeCodeRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });
+			queryClient.resetQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/Result/strategy/') });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -795,6 +801,8 @@ export function getDeleteInstrumentsLinkMutationOptions<TError = ErrorType<Probl
 	const onSuccess = (data: Awaited<ReturnType<typeof deleteInstrumentsLink>>, variables: { params: DeleteInstrumentsLinkParams }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });
+			queryClient.resetQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/Result/strategy/') });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -1075,6 +1083,8 @@ export function getCreateUsersStrategyMutationOptions<TError = ErrorType<Problem
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetUsersStrategyQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });
+			queryClient.resetQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/Result/strategy/') });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -1187,6 +1197,8 @@ export function getDeleteUsersStrategyMutationOptions<TError = ErrorType<Problem
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetUsersStrategyQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
+			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });
+			queryClient.resetQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/Result/strategy/') });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};

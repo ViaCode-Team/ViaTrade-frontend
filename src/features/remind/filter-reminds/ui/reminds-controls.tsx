@@ -6,17 +6,7 @@ import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-export type RemindSortOption = 'date-asc' | 'date-desc';
-
-const remindSortOptions = [
-	{ value: 'date-desc', label: 'Сначала новые' },
-	{ value: 'date-asc', label: 'Сначала старые' },
-];
-
-const defaultFilters = {
-	rq: '',
-	sort: 'date-desc' as RemindSortOption,
-};
+import { defaultFilters, remindSortOptions } from '../model/filters';
 
 type RemindsControlsProps = {
 	actionSlot?: ReactNode;

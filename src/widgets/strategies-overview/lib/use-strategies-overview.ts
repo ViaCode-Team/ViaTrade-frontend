@@ -1,6 +1,5 @@
 import { useSuspenseQueries } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useMemo } from 'react';
 
 import {
 	type GetAllSuspenseQueryError,
@@ -11,6 +10,8 @@ import {
 	type GetUsersStrategySuspenseQueryResult,
 	mapTradeStrategiesToStrategies,
 } from '@/entities/strategy';
+import { defaultFilters } from '@/features/strategy/filter-strategies/model/filters';
+import { useUrlFilters } from '@/shared/lib/hooks';
 
 type StrategiesQueries = [
 	{
@@ -30,14 +31,10 @@ export function useStrategiesOverview() {
 			{ ...getGetUsersStrategySuspenseQueryOptions(), refetchInterval: 300000 },
 		],
 	});
-	const [searchParams] = useSearchParams();
-	const searchQuery = searchParams.get('q') || '';
-	const sortOption = searchParams.get('sort') || 'name-asc';
-	const statusFilter = searchParams.get('filter') || 'all';
-
-	const [selectedStockIdsByStrategyId, setSelectedStockIdsByStrategyId] = useState<
-		Record<number, string[]>
-	>({});
+	const { filters } = useUrlFilters(defaultFilters);
+	const searchQuery = filters.q;
+	const sortOption = filters.sort;
+	const statusFilter = filters.filter;
 
 	const strategies = useMemo(
 		() =>
@@ -81,17 +78,6 @@ export function useStrategiesOverview() {
 		return result;
 	}, [strategies, searchQuery, sortOption, statusFilter]);
 
-	function getStockBindingSelectedIds(strategyId: number): string[] {
-		return selectedStockIdsByStrategyId[strategyId] ?? [];
-	}
-
-	function handleStockBindingChange(strategyId: number, nextStockIds: string[]) {
-		setSelectedStockIdsByStrategyId((currentSelectedStockIds) => ({
-			...currentSelectedStockIds,
-			[strategyId]: nextStockIds,
-		}));
-	}
-
 	const refetch = () => {
 		void strategiesQuery.refetch();
 		void userStrategiesQuery.refetch();
@@ -100,8 +86,6 @@ export function useStrategiesOverview() {
 	return {
 		strategies,
 		filteredStrategies,
-		getStockBindingSelectedIds,
-		handleStockBindingChange,
 		refetch,
 	};
 }

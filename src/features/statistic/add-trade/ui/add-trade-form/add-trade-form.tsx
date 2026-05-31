@@ -13,16 +13,14 @@ import {
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
 import { IconHelpCircle } from '@tabler/icons-react';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import type { TradeRequest } from '@/shared/api/types/gen/tradeRequest';
 import type { TradeSignal } from '@/shared/api/types/gen/tradeSignal';
 
-import { getGetByUserQueryKey, useCreateTrade } from '@/entities/statistic/api/gen';
+import { useCreateTrade } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
 
 type FormValues = {
@@ -38,7 +36,6 @@ type FormValues = {
 };
 
 export function AddTradeForm() {
-	const queryClient = useQueryClient();
 	const { mutate: createTrade, isPending } = useCreateTrade();
 	const { data: tradeCodesData, isLoading: isLoadingCodes } = useGetAllStocksCodes();
 
@@ -95,20 +92,7 @@ export function AddTradeForm() {
 			{ data: request },
 			{
 				onSuccess: () => {
-					notifications.show({
-						title: 'Успех',
-						message: 'Сделка успешно добавлена',
-						color: 'green',
-					});
-					queryClient.invalidateQueries({ queryKey: getGetByUserQueryKey() });
 					modals.closeAll();
-				},
-				onError: () => {
-					notifications.show({
-						title: 'Ошибка',
-						message: 'Не удалось добавить сделку',
-						color: 'red',
-					});
 				},
 			},
 		);

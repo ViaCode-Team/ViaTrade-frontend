@@ -1,15 +1,16 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router';
 
 import { mapTradeRemindToRemindItem } from '@/entities/remind';
 import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind/api/gen';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
+import { defaultFilters } from '@/features/remind/filter-reminds/model/filters';
+import { useUrlFilters } from '@/shared/lib/hooks';
 
 export function useRemindList(instrumentId?: number) {
-	const [searchParams] = useSearchParams();
-	const searchQuery = searchParams.get('rq')?.toLowerCase() || '';
-	const sortOption = searchParams.get('sort') || 'date-desc';
+	const { filters } = useUrlFilters(defaultFilters);
+	const searchQuery = filters.rq.toLowerCase();
+	const sortOption = filters.sort;
 
 	const queryOpts = instrumentId
 		? getGetTradeRemindByUserInstrumentSuspenseQueryOptions(instrumentId)

@@ -1,7 +1,11 @@
 import type { LoginMutationError } from '@/entities/auth';
 
 export function mapLoginApiError(error: LoginMutationError): string {
-	const status = error.details?.status;
+	if (error.name === 'NetworkError') {
+		return 'Ошибка сети, проверьте подключение';
+	}
+
+	const status = 'details' in error ? error.details?.status : undefined;
 
 	switch (status) {
 		case 401:

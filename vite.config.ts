@@ -23,15 +23,9 @@ export default defineConfig({
 		}),
 		VitePWA({
 			registerType: 'autoUpdate',
-			includeAssets: [
-				'assets/favicon/favicon.ico',
-				'assets/favicon/apple-touch-icon.png',
-				'assets/favicon/favicon.svg',
-			],
+			includeManifestIcons: false,
 			workbox: {
-				globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-				navigateFallback: '/index.html',
-				navigateFallbackDenylist: [/^\/api/],
+				globPatterns: ['**/*.{js,css,html,ico,svg,woff,woff2}'],
 			},
 			manifest: {
 				name: 'ViaTrade',
@@ -41,17 +35,17 @@ export default defineConfig({
 				background_color: '#ffffff',
 				icons: [
 					{
-						src: '/assets/favicon/web-app-manifest-192x192.png',
+						src: 'assets/favicon/web-app-manifest-192x192.png',
 						sizes: '192x192',
 						type: 'image/png',
 					},
 					{
-						src: '/assets/favicon/web-app-manifest-512x512.png',
+						src: 'assets/favicon/web-app-manifest-512x512.png',
 						sizes: '512x512',
 						type: 'image/png',
 					},
 					{
-						src: '/assets/favicon/web-app-manifest-512x512.png',
+						src: 'assets/favicon/web-app-manifest-512x512.png',
 						sizes: '512x512',
 						type: 'image/png',
 						purpose: 'any maskable',

@@ -10,6 +10,7 @@ import {
 import { IconAlertTriangle, IconRefresh, IconWorld } from '@tabler/icons-react';
 
 import { NetworkError } from '@/shared/api/client/custom-instance-fetch';
+import { useNetworkState } from '@/shared/lib/hooks';
 
 import { OfflineFallback } from './offline-fallback';
 
@@ -18,8 +19,9 @@ export function ErrorFallback({
 	resetErrorBoundary,
 }: FallbackProps) {
 	const theme = useMantineTheme();
+	const { isOnline } = useNetworkState();
 
-	const isOfflineError = !navigator.onLine || error instanceof NetworkError;
+	const isOfflineError = !isOnline || error instanceof NetworkError;
 
 	const handleReload = () => {
 		window.location.reload();

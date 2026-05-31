@@ -5,12 +5,11 @@ import {
 	useParams,
 } from 'react-router';
 
-import type { Stock } from '@/entities/trade-code/stock';
-
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { ROUTES } from '@/shared/model/routes';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
 import { StockReminds } from '@/widgets/stock-reminds';
@@ -19,7 +18,7 @@ import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
 import { StockNotFound } from './ui/stock-not-found';
 
-export function StockPage() {
+function StockPage() {
 	const { stockId } = useParams();
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 
@@ -31,29 +30,24 @@ export function StockPage() {
 
 	const stock = tradeCode ? mapTradeCodeToStock(tradeCode) : null;
 
+	const stockNoteSource = useMemo(
+		() => stock
+			? {
+					type: 'stock' as const,
+					id: String(stock.instrumentId),
+					label: stock.ticker,
+					description: stock.name,
+					path: generatePath(ROUTES.STOCK, { stockId: stock.ticker.toLowerCase() }),
+				}
+			: undefined,
+		[stock],
+	);
+
+	const stockNote = usePersonalNote({ source: stockNoteSource });
+
 	if (!stock) {
 		return <StockNotFound />;
 	}
-
-	return <StockPageContent stock={stock} />;
-}
-
-type StockPageContentProps = {
-	stock: Stock;
-};
-
-function StockPageContent({ stock }: StockPageContentProps) {
-	const stockNoteSource = useMemo(
-		() => ({
-			type: 'stock' as const,
-			id: String(stock.instrumentId),
-			label: stock.ticker,
-			description: stock.name,
-			path: generatePath(ROUTES.STOCK, { stockId: stock.ticker.toLowerCase() }),
-		}),
-		[stock.instrumentId, stock.name, stock.ticker],
-	);
-	const stockNote = usePersonalNote({ source: stockNoteSource });
 
 	return (
 		<>
@@ -84,3 +78,5 @@ function StockPageContent({ stock }: StockPageContentProps) {
 		</>
 	);
 }
+
+export const StockPageBoundary = withQueryBoundary(StockPage);

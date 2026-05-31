@@ -2,15 +2,13 @@ import { Button, NumberInput, Stack } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import type { Trade } from '@/shared/api/types/gen/trade';
 import type { TradeRequest } from '@/shared/api/types/gen/tradeRequest';
 
-import { getGetByUserQueryKey, useUpdateTrade } from '@/entities/statistic/api/gen';
+import { useUpdateTrade } from '@/entities/statistic/api/gen';
 
 type FormValues = {
 	tradeClose: number | '';
@@ -22,7 +20,6 @@ type CloseTradeFormProps = {
 };
 
 export function CloseTradeForm({ trade }: CloseTradeFormProps) {
-	const queryClient = useQueryClient();
 	const { mutate: updateTrade, isPending } = useUpdateTrade();
 	const [initialDate] = useState(() => new Date());
 
@@ -56,20 +53,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 			{ id: trade.id, data: request },
 			{
 				onSuccess: () => {
-					notifications.show({
-						title: 'Успех',
-						message: 'Сделка успешно закрыта',
-						color: 'green',
-					});
-					queryClient.invalidateQueries({ queryKey: getGetByUserQueryKey() });
 					modals.closeAll();
-				},
-				onError: () => {
-					notifications.show({
-						title: 'Ошибка',
-						message: 'Не удалось закрыть сделку',
-						color: 'red',
-					});
 				},
 			},
 		);

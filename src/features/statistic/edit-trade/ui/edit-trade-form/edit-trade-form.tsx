@@ -13,9 +13,7 @@ import {
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
 import { IconHelpCircle } from '@tabler/icons-react';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -23,7 +21,7 @@ import type { Trade } from '@/shared/api/types/gen/trade';
 import type { TradeRequest } from '@/shared/api/types/gen/tradeRequest';
 import type { TradeSignal } from '@/shared/api/types/gen/tradeSignal';
 
-import { getGetByUserQueryKey, useUpdateTrade } from '@/entities/statistic/api/gen';
+import { useUpdateTrade } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodes } from '@/entities/trade-code/api/gen';
 
 type EditTradeFormProps = {
@@ -43,7 +41,6 @@ type FormValues = {
 };
 
 export function EditTradeForm({ trade }: EditTradeFormProps) {
-	const queryClient = useQueryClient();
 	const { mutate: updateTrade, isPending } = useUpdateTrade();
 	const { data: tradeCodesData, isLoading: isLoadingCodes } = useGetAllStocksCodes();
 
@@ -100,20 +97,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 			{ id: trade.id, data: request },
 			{
 				onSuccess: () => {
-					notifications.show({
-						title: 'Успех',
-						message: 'Сделка успешно изменена',
-						color: 'green',
-					});
-					queryClient.invalidateQueries({ queryKey: getGetByUserQueryKey() });
 					modals.closeAll();
-				},
-				onError: () => {
-					notifications.show({
-						title: 'Ошибка',
-						message: 'Не удалось изменить сделку',
-						color: 'red',
-					});
 				},
 			},
 		);

@@ -1,6 +1,5 @@
 import { Button, SimpleGrid, Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useState } from 'react';
 
 import {
 	StrategyCard,
@@ -17,32 +16,54 @@ import { StrategiesListSkeleton } from './strategies-list.skeleton';
 
 type Strategy = ReturnType<typeof useStrategiesOverview>['strategies'][number];
 
-function StrategyStockBindingModal({
-	initialSelectedStockIds,
-	onSave,
-}: {
-	initialSelectedStockIds: string[];
-	onSave: (nextStockIds: string[]) => void;
-}) {
-	const [selectedStockIds, setSelectedStockIds] = useState(initialSelectedStockIds);
+import { useMemo } from 'react';
+
+import {
+	useCreateInstrumentsLink,
+	useDeleteInstrumentsLink,
+	useGetAllInstrumentsLinkSuspense,
+} from '@/entities/strategy/api/gen';
+
+function StrategyStockBindingModalContent({ strategyId }: { strategyId: number }) {
+	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
+	const serverSelectedStockIds = useMemo(
+		() =>
+			instrumentsLinkResponse.data
+				.filter((link) => link.strategyId === strategyId)
+				.map((link) => String(link.tradeCodeId)),
+		[instrumentsLinkResponse.data, strategyId],
+	);
+
+	const { mutate: createLink } = useCreateInstrumentsLink();
+	const { mutate: deleteLink } = useDeleteInstrumentsLink();
+
+	const handleLinkedStocksChange = (nextStockIds: string[]) => {
+		const added = nextStockIds.filter((id) => !serverSelectedStockIds.includes(id));
+		const removed = serverSelectedStockIds.filter((id) => !nextStockIds.includes(id));
+
+		added.forEach((id) => {
+			createLink({ data: { strategyId, tradeCodeId: Number(id) } });
+		});
+
+		removed.forEach((id) => {
+			deleteLink({ params: { strategyId, tradeCodeId: Number(id) } });
+		});
+	};
 
 	return (
 		<StrategyStockBinding
-			selectedStockIds={selectedStockIds}
-			onSelectedStockIdsChange={(nextStockIds) => {
-				setSelectedStockIds(nextStockIds);
-				onSave(nextStockIds);
-			}}
+			selectedStockIds={serverSelectedStockIds}
+			onSelectedStockIdsChange={handleLinkedStocksChange}
 		/>
 	);
 }
+
+const StrategyStockBindingModalBoundary = withQueryBoundary(StrategyStockBindingModalContent);
 
 export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActive?: boolean } = {}) {
 	const {
 		strategies,
 		filteredStrategies: allFilteredStrategies,
-		getStockBindingSelectedIds,
-		handleStockBindingChange,
 	} = useStrategiesOverview();
 
 	let filteredStrategies = onlyActive
@@ -54,20 +75,11 @@ export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActi
 	}
 
 	function openStockBindingModal(strategy: Strategy) {
-		const initialIds = getStockBindingSelectedIds(strategy.id);
-
 		modals.open({
 			title: `Привязать акции к ${strategy.name}`,
 			size: 'xl',
 			centered: true,
-			children: (
-				<StrategyStockBindingModal
-					initialSelectedStockIds={initialIds}
-					onSave={(nextStockIds) => {
-						handleStockBindingChange(strategy.id, nextStockIds);
-					}}
-				/>
-			),
+			children: <StrategyStockBindingModalBoundary strategyId={strategy.id} />,
 		});
 	}
 

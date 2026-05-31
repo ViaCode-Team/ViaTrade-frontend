@@ -4,9 +4,7 @@ import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-const defaultFilters = {
-	sq: '',
-};
+import { defaultFilters } from '../model/filters';
 
 export function SessionsControls() {
 	const { filters, setFilter } = useUrlFilters(defaultFilters);

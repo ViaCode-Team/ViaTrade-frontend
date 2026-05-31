@@ -8,6 +8,7 @@
 import {
 	useMutation,
 	useQuery,
+	useQueryClient,
 	useSuspenseQuery,
 } from '@tanstack/react-query';
 import type {
@@ -16,6 +17,7 @@ import type {
 	DefinedUseQueryResult,
 	InvalidateOptions,
 	MutationFunction,
+	MutationFunctionContext,
 	QueryClient,
 	QueryFunction,
 	QueryKey,
@@ -303,7 +305,7 @@ export async function createTrade(tradeRequest: TradeRequest, options?: RequestI
 }
 
 
-export function getCreateTradeMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createTrade>>, TError, { data: TradeRequest }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createTrade>>, TError, { data: TradeRequest }, TContext> {
+export function getCreateTradeMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createTrade>>, TError, { data: TradeRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createTrade>>, TError, { data: TradeRequest }, TContext> {
 	const mutationKey = ['createTrade'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -318,21 +320,29 @@ export function getCreateTradeMutationOptions<TError = ErrorType<ProblemDetails>
 		return createTrade(data, requestOptions);
 	};
 
+	const onSuccess = (data: Awaited<ReturnType<typeof createTrade>>, variables: { data: TradeRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
+		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetByUserQueryKey() });
+		}
+		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+	};
 
-	return { mutationFn, ...mutationOptions };
+
+	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
 export type CreateTradeMutationResult = NonNullable<Awaited<ReturnType<typeof createTrade>>>;
 export type CreateTradeMutationBody = TradeRequest;
 export type CreateTradeMutationError = ErrorType<ProblemDetails>;
 
-export function useCreateTrade<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createTrade>>, TError, { data: TradeRequest }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+export function useCreateTrade<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createTrade>>, TError, { data: TradeRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof createTrade>>,
 	TError,
 	{ data: TradeRequest },
 	TContext
 > {
-	return useMutation(getCreateTradeMutationOptions(options), queryClient);
+	const backupQueryClient = useQueryClient();
+	return useMutation(getCreateTradeMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
 export type getTradeByIdResponse200 = {
@@ -576,7 +586,7 @@ export async function updateTrade(id: number, tradeRequest: TradeRequest, option
 }
 
 
-export function getUpdateTradeMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateTrade>>, TError, { id: number; data: TradeRequest }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof updateTrade>>, TError, { id: number; data: TradeRequest }, TContext> {
+export function getUpdateTradeMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateTrade>>, TError, { id: number; data: TradeRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof updateTrade>>, TError, { id: number; data: TradeRequest }, TContext> {
 	const mutationKey = ['updateTrade'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -591,21 +601,30 @@ export function getUpdateTradeMutationOptions<TError = ErrorType<ProblemDetails>
 		return updateTrade(id, data, requestOptions);
 	};
 
+	const onSuccess = (data: Awaited<ReturnType<typeof updateTrade>>, variables: { id: number; data: TradeRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
+		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetByUserQueryKey() });
+			queryClient.invalidateQueries({ queryKey: getGetTradeByIdQueryKey(variables.id) });
+		}
+		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+	};
 
-	return { mutationFn, ...mutationOptions };
+
+	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
 export type UpdateTradeMutationResult = NonNullable<Awaited<ReturnType<typeof updateTrade>>>;
 export type UpdateTradeMutationBody = TradeRequest;
 export type UpdateTradeMutationError = ErrorType<ProblemDetails>;
 
-export function useUpdateTrade<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateTrade>>, TError, { id: number; data: TradeRequest }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+export function useUpdateTrade<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateTrade>>, TError, { id: number; data: TradeRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof updateTrade>>,
 	TError,
 	{ id: number; data: TradeRequest },
 	TContext
 > {
-	return useMutation(getUpdateTradeMutationOptions(options), queryClient);
+	const backupQueryClient = useQueryClient();
+	return useMutation(getUpdateTradeMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
 export type deleteTradeResponse204 = {
@@ -669,7 +688,7 @@ export async function deleteTrade(id: number, options?: RequestInit): Promise<de
 }
 
 
-export function getDeleteTradeMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrade>>, TError, { id: number }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteTrade>>, TError, { id: number }, TContext> {
+export function getDeleteTradeMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrade>>, TError, { id: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteTrade>>, TError, { id: number }, TContext> {
 	const mutationKey = ['deleteTrade'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -684,19 +703,28 @@ export function getDeleteTradeMutationOptions<TError = ErrorType<ProblemDetails>
 		return deleteTrade(id, requestOptions);
 	};
 
+	const onSuccess = (data: Awaited<ReturnType<typeof deleteTrade>>, variables: { id: number }, onMutateResult: TContext, context: MutationFunctionContext) => {
+		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetByUserQueryKey() });
+			queryClient.invalidateQueries({ queryKey: getGetTradeByIdQueryKey(variables.id) });
+		}
+		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+	};
 
-	return { mutationFn, ...mutationOptions };
+
+	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
 export type DeleteTradeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTrade>>>;
 
 export type DeleteTradeMutationError = ErrorType<ProblemDetails>;
 
-export function useDeleteTrade<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrade>>, TError, { id: number }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+export function useDeleteTrade<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrade>>, TError, { id: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
 	Awaited<ReturnType<typeof deleteTrade>>,
 	TError,
 	{ id: number },
 	TContext
 > {
-	return useMutation(getDeleteTradeMutationOptions(options), queryClient);
+	const backupQueryClient = useQueryClient();
+	return useMutation(getDeleteTradeMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }

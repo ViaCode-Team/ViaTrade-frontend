@@ -1,1 +1,2 @@
-export { SecurityProvider, useSecurity } from './model/security.context';
+export { SecurityProvider } from './model/security.context';
+export { useSecurity } from './model/use-security';

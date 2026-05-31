@@ -22,10 +22,6 @@ export function StockLinkedStrategiesStatusBar({ stockId, filters }: StockLinked
 		[allLinkedStrategies, filters],
 	);
 
-	if (allLinkedStrategies.length === 0) {
-		return null;
-	}
-
 	return (
 		<LinkedStrategiesStatusBar
 			totalCount={allLinkedStrategies.length}

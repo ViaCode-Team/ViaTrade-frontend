@@ -12,10 +12,6 @@ export function SessionsStatusBar() {
 		refetch,
 	} = useSessionsOverview();
 
-	if (sessions.length === 0 || filteredSessions.length === 0) {
-		return null;
-	}
-
 	return (
 		<ListStatusBar
 			totalCount={sessions.length}

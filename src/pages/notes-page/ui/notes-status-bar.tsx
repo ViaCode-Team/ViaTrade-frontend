@@ -10,10 +10,6 @@ type NotesStatusBarProps = {
 };
 
 export function NotesStatusBar({ notesCount, filteredNotes, onRefresh }: NotesStatusBarProps) {
-	if (notesCount === 0) {
-		return null;
-	}
-
 	return (
 		<ListStatusBar
 			totalCount={notesCount}

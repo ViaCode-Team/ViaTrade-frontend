@@ -8,12 +8,6 @@ import { useRemindList } from '../lib/use-remind-list';
 export function RemindStatusBar({ instrumentId }: { instrumentId?: number }) {
 	const { reminds, filteredReminds, refetch } = useRemindList(instrumentId);
 
-	const hasAnyReminds = reminds.length > 0;
-
-	if (!hasAnyReminds) {
-		return null;
-	}
-
 	return (
 		<ListStatusBar
 			totalCount={reminds.length}

@@ -25,7 +25,7 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			includeManifestIcons: false,
 			workbox: {
-				globPatterns: ['**/*.{js,css,html,ico,svg,woff,woff2}'],
+				globPatterns: ['**/*.{js,css,html,ico,svg,png,woff,woff2}'],
 			},
 			manifest: {
 				name: 'ViaTrade',

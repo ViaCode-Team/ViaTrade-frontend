@@ -76,7 +76,7 @@ export function StrategyCard({
 				</Flex>
 
 				<Text size='sm' c='dimmed' lineClamp={2}>
-					{strategy.description}
+					{strategy.description ?? 'Описание стратегии пока не заполнено.'}
 				</Text>
 			</Flex>
 
@@ -85,11 +85,11 @@ export function StrategyCard({
 				items={[
 					{
 						label: 'Частота сигнала',
-						value: strategy.signalFrequency,
+						value: strategy.signalFrequency ?? 'Не указана',
 					},
 					{
 						label: 'Инвест горизонт',
-						value: strategy.investmentHorizon,
+						value: strategy.investmentHorizon ?? 'Не указана',
 					},
 				]}
 			/>

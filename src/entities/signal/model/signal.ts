@@ -11,10 +11,10 @@ export type Signal = {
 	tradeCode: string;
 	date: string;
 	dateTime: string;
-	time: string | null;
+	time?: string;
 	close: number;
 	direction: SignalDirection;
-	confidence: number | null;
+	confidence?: number;
 	strategy: string;
 };
 
@@ -124,10 +124,10 @@ export function mapStrategyResultResponseToTradeHistory(
 function getLatestSupportedResult(results: StrategyResult[]) {
 	return [...results]
 		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-		.find((result) => normalizeSignalDirection(result.signal) !== null);
+		.find((result) => normalizeSignalDirection(result.signal) !== undefined);
 }
 
-function normalizeSignalDirection(signal: string): SignalDirection | null {
+function normalizeSignalDirection(signal: string): SignalDirection | undefined {
 	const normalizedSignal = signal.trim().toLowerCase();
 
 	if (BUY_SIGNAL_VALUES.has(normalizedSignal)) {
@@ -142,12 +142,12 @@ function normalizeSignalDirection(signal: string): SignalDirection | null {
 		return 'hold';
 	}
 
-	return null;
+	return undefined;
 }
 
 function normalizeConfidence(accuracy: number | null | undefined) {
 	if (typeof accuracy !== 'number' || Number.isNaN(accuracy)) {
-		return null;
+		return undefined;
 	}
 
 	return Math.min(100, Math.max(0, Math.round(accuracy)));
@@ -159,7 +159,7 @@ function getDateParts(dateTime: string) {
 	if (Number.isNaN(date.getTime())) {
 		return {
 			date: dateTime,
-			time: null,
+			time: undefined,
 		};
 	}
 

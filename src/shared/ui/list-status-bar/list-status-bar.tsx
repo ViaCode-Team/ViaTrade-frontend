@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Badge, Group, Text, Tooltip } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
 import { IconRefresh } from '@tabler/icons-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 type ListStatusBarProps = {
 	totalCount: number;
@@ -23,16 +23,15 @@ export function ListStatusBar({
 	const isFiltered = totalCount !== filteredCount;
 
 	const [throttleSeconds, setThrottleSeconds] = useState(0);
-	const interval = useInterval(() => setThrottleSeconds((s) => s - 1), 1000);
-
-	useEffect(() => {
-		if (throttleSeconds > 0 && !interval.active) {
-			interval.start();
-		}
-		else if (throttleSeconds === 0 && interval.active) {
-			interval.stop();
-		}
-	}, [throttleSeconds, interval]);
+	const interval = useInterval(() => {
+		setThrottleSeconds((s) => {
+			if (s <= 1) {
+				interval.stop();
+				return 0;
+			}
+			return s - 1;
+		});
+	}, 1000);
 
 	const handleRefresh = useCallback(() => {
 		if (throttleSeconds > 0)
@@ -40,7 +39,8 @@ export function ListStatusBar({
 
 		onRefresh?.();
 		setThrottleSeconds(5);
-	}, [onRefresh, throttleSeconds]);
+		interval.start();
+	}, [onRefresh, throttleSeconds, interval]);
 
 	const isThrottled = throttleSeconds > 0;
 	const isInteractive = Boolean(onRefresh) && !isThrottled;

@@ -6,7 +6,7 @@ export function filterLinkedStrategies(strategies: Strategy[], filters: LinkedSt
 	return strategies
 		.filter((strategy) => {
 			const matchesQuery = strategy.name.toLowerCase().includes(filters.searchQuery.toLowerCase())
-				|| strategy.description.toLowerCase().includes(filters.searchQuery.toLowerCase());
+				|| (strategy.description?.toLowerCase().includes(filters.searchQuery.toLowerCase()) ?? false);
 
 			const matchesStatus = filters.statusFilter === 'all'
 				|| (filters.statusFilter === 'active' && strategy.isActive)

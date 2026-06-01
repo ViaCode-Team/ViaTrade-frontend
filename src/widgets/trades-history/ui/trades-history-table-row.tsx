@@ -12,8 +12,8 @@ export type TradesHistoryTableRowProps = {
 };
 
 export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
-	const isWin = trade.percent > 0;
-	const isLoss = trade.percent < 0;
+	const isWin = trade.percent ? trade.percent > 0 : false;
+	const isLoss = trade.percent ? trade.percent < 0 : false;
 
 	return (
 		<Table.Tr>
@@ -42,10 +42,14 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.tradeClose ? `${trade.tradeClose.toFixed(2)} ₽` : '—'}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.count}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
-				<Text fw={500}>{trade.income.toFixed(2)}</Text>
+				<Text fw={500}>
+					{trade.income.toFixed(2)}
+					{' '}
+					₽
+				</Text>
 			</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
-				{trade.netIncome !== undefined && trade.netIncome !== null
+				{trade.percent !== undefined
 					? (
 							<Text c={isWin ? 'teal' : isLoss ? 'red' : 'dimmed'} fw={500}>
 								{trade.percent > 0 ? '+' : ''}

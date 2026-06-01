@@ -20,7 +20,7 @@ export type ProcessedTrade = Trade & {
 	ticker: string;
 	isLong: boolean;
 	income: number;
-	percent: number;
+	percent?: number;
 };
 
 export function useTradesHistoryData({
@@ -44,8 +44,8 @@ export function useTradesHistoryData({
 				...trade,
 				ticker: stock?.exchangeId || '-',
 				isLong: trade.tradeSignal !== -1,
-				income: trade.price ?? 0,
-				percent: trade.netIncome ?? 0,
+				income: trade.price,
+				percent: trade.netIncome,
 			};
 		});
 
@@ -57,7 +57,7 @@ export function useTradesHistoryData({
 				const tradeOpenStr = `${t.tradeOpen.toFixed(2)} ₽`;
 				const tradeCloseStr = t.tradeClose ? `${t.tradeClose.toFixed(2)} ₽` : '—';
 				const sumStr = t.income > 0 ? `+${t.income.toFixed(2)} ₽` : `${t.income.toFixed(2)} ₽`;
-				const percentStr = t.percent > 0 ? `+${t.percent.toFixed(2)}%` : `${t.percent.toFixed(2)}%`;
+				const percentStr = t.percent ? (t.percent > 0 ? `+${t.percent.toFixed(2)}%` : `${t.percent.toFixed(2)}%`) : '—';
 				const typeStr = t.isLong ? 'Long' : 'Short';
 
 				const searchableString = [
@@ -120,8 +120,8 @@ export function useTradesHistoryData({
 					bVal = b.income;
 					break;
 				case 'percent':
-					aVal = a.percent;
-					bVal = b.percent;
+					aVal = a.percent ?? 0;
+					bVal = b.percent ?? 0;
 					break;
 				default:
 					aVal = dayjs(a.dateOpen).valueOf();

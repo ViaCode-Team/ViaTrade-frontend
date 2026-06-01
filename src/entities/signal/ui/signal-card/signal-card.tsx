@@ -25,8 +25,8 @@ type SignalCardProps = {
 	onClick: (signal: Signal) => void;
 };
 
-function getConfidenceColor(confidence: number | null) {
-	if (confidence === null) {
+function getConfidenceColor(confidence?: number) {
+	if (confidence === undefined) {
 		return 'gray';
 	}
 
@@ -146,7 +146,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						fw='bold'
 						c={getConfidenceColor(signal.confidence)}
 					>
-						{signal.confidence === null ? 'Не указана' : `${signal.confidence}%`}
+						{signal.confidence === undefined ? 'Не указана' : `${signal.confidence}%`}
 					</Text>
 				</Flex>
 

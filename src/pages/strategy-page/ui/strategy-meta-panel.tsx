@@ -23,12 +23,12 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 	const metaItems = [
 		{
 			title: 'Частота сигнала',
-			value: strategy.signalFrequency,
+			value: strategy.signalFrequency ?? 'Не указана',
 			icon: <IconClock size={22} />,
 		},
 		{
 			title: 'Инвест горизонт',
-			value: strategy.investmentHorizon,
+			value: strategy.investmentHorizon ?? 'Не указана',
 			icon: <IconRoute size={22} />,
 		},
 	];

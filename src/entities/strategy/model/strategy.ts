@@ -6,21 +6,18 @@ import type {
 export type StrategyCardStrategy = {
 	id: number;
 	name: string;
-	description: string;
-	accuracy: number | null;
-	signalFrequency: string;
-	investmentHorizon: string;
+	description?: string;
+	accuracy?: number;
+	signalFrequency?: string;
+	investmentHorizon?: string;
 	isActive: boolean;
 };
 
 export type Strategy = StrategyCardStrategy & {
-	logicDescription: string | null;
-	useDescription: string | null;
-	limitDescription: string | null;
+	logicDescription?: string;
+	useDescription?: string;
+	limitDescription?: string;
 };
-
-const STRATEGY_EMPTY_FIELD = 'Не указана';
-const STRATEGY_EMPTY_DESCRIPTION = 'Описание стратегии пока не заполнено.';
 
 export function getUserStrategyIdSet(userStrategies: UserTradeStrategyDto[]) {
 	return new Set(
@@ -33,19 +30,14 @@ export function getUserStrategyIdSet(userStrategies: UserTradeStrategyDto[]) {
 export function mapTradeStrategyToStrategy(
 	tradeStrategy: TradeStrategy,
 	activeStrategyIds: Set<number>,
-): Strategy | null {
-	if (typeof tradeStrategy.id !== 'number') {
-		return null;
-	}
-
-
+): Strategy {
 	return {
 		id: tradeStrategy.id,
 		name: tradeStrategy.name,
-		description: normalizeOptionalText(tradeStrategy.description) ?? STRATEGY_EMPTY_DESCRIPTION,
+		description: normalizeOptionalText(tradeStrategy.description),
 		accuracy: normalizeAccuracy(tradeStrategy.accuracy),
-		signalFrequency: normalizeOptionalText(tradeStrategy.signalFrequency) ?? STRATEGY_EMPTY_FIELD,
-		investmentHorizon: normalizeOptionalText(tradeStrategy.investmentHorizon) ?? STRATEGY_EMPTY_FIELD,
+		signalFrequency: normalizeOptionalText(tradeStrategy.signalFrequency),
+		investmentHorizon: normalizeOptionalText(tradeStrategy.investmentHorizon),
 		logicDescription: normalizeOptionalText(tradeStrategy.logicDesc),
 		useDescription: normalizeOptionalText(tradeStrategy.useDesc),
 		limitDescription: normalizeOptionalText(tradeStrategy.limitDesc),
@@ -59,15 +51,9 @@ export function mapTradeStrategiesToStrategies(
 ) {
 	const activeStrategyIds = getUserStrategyIdSet(userStrategies);
 
-	return tradeStrategies.reduce<Strategy[]>((strategies, tradeStrategy) => {
-		const strategy = mapTradeStrategyToStrategy(tradeStrategy, activeStrategyIds);
-
-		if (strategy) {
-			strategies.push(strategy);
-		}
-
-		return strategies;
-	}, []);
+	return tradeStrategies.map((tradeStrategy) =>
+		mapTradeStrategyToStrategy(tradeStrategy, activeStrategyIds),
+	);
 }
 
 export function toStrategyCardStrategy(
@@ -99,7 +85,7 @@ export function getAccuracyColor(accuracy: number) {
 
 function normalizeAccuracy(accuracy: number | null | undefined) {
 	if (typeof accuracy !== 'number' || Number.isNaN(accuracy)) {
-		return null;
+		return undefined;
 	}
 
 	return Math.min(100, Math.max(0, Math.round(accuracy)));
@@ -107,8 +93,8 @@ function normalizeAccuracy(accuracy: number | null | undefined) {
 
 function normalizeOptionalText(value: string | null | undefined) {
 	if (!value?.trim()) {
-		return null;
+		return undefined;
 	}
 
-	return value;
+	return value.trim();
 }

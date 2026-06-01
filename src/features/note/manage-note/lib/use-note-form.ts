@@ -33,8 +33,10 @@ export function useNoteForm({
 	});
 
 	useEffect(() => {
-		form.setValues({ text: value });
-	}, [value, form.setValues, form]);
+		if (value !== form.values.text) {
+			form.setValues({ text: value });
+		}
+	}, [value, form.values.text, form]);
 
 	const normalizedSavedText = getNormalizedNoteFormData({ text: savedValue }).text;
 	const currentNormalizedText = getNormalizedNoteFormData({ text: form.values.text }).text;

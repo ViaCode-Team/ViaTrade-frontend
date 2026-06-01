@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { AppShell } from '@mantine/core';
+import { AppShell, Box } from '@mantine/core';
 import { Outlet } from 'react-router';
 
 import { APP_SHELL_PADDING } from '@/shared/model/layout';
@@ -16,7 +16,10 @@ export function AuthLayout({ children }: AuthLayoutProps) {
 		<AppShell header={{ height: 53 }} padding={APP_SHELL_PADDING}>
 			<AppShell.Header>
 				<PureHeader />
-				<OfflineBanner />
+
+				<Box px='sm' py='xs'>
+					<OfflineBanner />
+				</Box>
 			</AppShell.Header>
 
 			<AppShell.Main className={cls.main}>

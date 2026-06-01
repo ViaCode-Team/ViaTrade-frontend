@@ -11,17 +11,10 @@ import { brandGradient } from '@/shared/model/theme';
 import { useRegisterForm } from '../lib/use-register-form';
 
 export function RegisterForm() {
-	const {
-		formData,
-		errors,
-		apiError,
-		isPending,
-		setField,
-		submit,
-	} = useRegisterForm();
+	const { form, apiError, isPending, handleSubmit } = useRegisterForm();
 
 	return (
-		<form onSubmit={submit}>
+		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack gap='lg'>
 				{apiError && (
 					<Alert color='red' variant='outline'>
@@ -33,28 +26,24 @@ export function RegisterForm() {
 					<TextInput
 						label='Email'
 						type='email'
-						value={formData.email}
-						onChange={(e) => setField('email', e.currentTarget.value)}
-						error={errors.email}
 						autoFocus
+						key={form.key('email')}
+						{...form.getInputProps('email')}
 					/>
 					<TextInput
 						label='Логин'
-						value={formData.login}
-						onChange={(e) => setField('login', e.currentTarget.value)}
-						error={errors.login}
+						key={form.key('login')}
+						{...form.getInputProps('login')}
 					/>
 					<PasswordInput
 						label='Пароль'
-						value={formData.password}
-						onChange={(e) => setField('password', e.currentTarget.value)}
-						error={errors.password}
+						key={form.key('password')}
+						{...form.getInputProps('password')}
 					/>
 					<PasswordInput
 						label='Подтверждение пароля'
-						value={formData.confirmPassword}
-						onChange={(e) => setField('confirmPassword', e.currentTarget.value)}
-						error={errors.confirmPassword}
+						key={form.key('confirmPassword')}
+						{...form.getInputProps('confirmPassword')}
 					/>
 				</Stack>
 

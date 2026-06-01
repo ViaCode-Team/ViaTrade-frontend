@@ -1,4 +1,5 @@
-import { type SubmitEvent, useState } from 'react';
+import { useForm } from '@mantine/form';
+import { useEffect } from 'react';
 
 import {
 	getNormalizedNoteFormData,
@@ -7,8 +8,6 @@ import {
 	validateNoteForm,
 } from '@/entities/note';
 
-type NoteFormErrors = Partial<Record<keyof NoteFormData, string>>;
-
 type UseNoteFormOptions = {
 	value: string;
 	savedValue: string;
@@ -16,68 +15,53 @@ type UseNoteFormOptions = {
 	onSubmit: (formData: NoteFormData) => void;
 };
 
-type UseNoteFormReturn = {
-	formData: NoteFormData;
-	errors: NoteFormErrors;
-	isSubmitDisabled: boolean;
-	isResetDisabled: boolean;
-	setField: (field: keyof NoteFormData, value: string) => void;
-	reset: () => void;
-	submit: (event: SubmitEvent<HTMLFormElement>) => void;
-};
-
 export function useNoteForm({
 	value,
 	savedValue,
 	onValueChange,
 	onSubmit,
-}: UseNoteFormOptions): UseNoteFormReturn {
-	const [errors, setErrors] = useState<NoteFormErrors>({});
-	const formData: NoteFormData = { text: value };
+}: UseNoteFormOptions) {
+	const form = useForm<NoteFormData>({
+		initialValues: {
+			text: value,
+		},
+		validate: (values) => {
+			const normalized = getNormalizedNoteFormData(values);
+			const result = validateNoteForm(normalized);
+			return getNoteFormErrors(result) as Record<string, string>;
+		},
+	});
 
-	const normalizedText = getNormalizedNoteFormData(formData).text;
+	useEffect(() => {
+		form.setValues({ text: value });
+	}, [value, form.setValues, form]);
+
 	const normalizedSavedText = getNormalizedNoteFormData({ text: savedValue }).text;
-	const isSubmitDisabled = normalizedText.length === 0 || normalizedText === normalizedSavedText;
-	const isResetDisabled = normalizedText === normalizedSavedText;
+	const currentNormalizedText = getNormalizedNoteFormData({ text: form.values.text }).text;
 
-	const setField = (field: keyof NoteFormData, value: string) => {
-		if (field === 'text') {
-			onValueChange(value);
-		}
+	const isSubmitDisabled = currentNormalizedText.length === 0 || currentNormalizedText === normalizedSavedText;
+	const isResetDisabled = currentNormalizedText === normalizedSavedText;
+
+	const handleSubmit = (values: NoteFormData) => {
+		if (isSubmitDisabled)
+			return;
+
+		const normalized = getNormalizedNoteFormData(values);
+		onSubmit(normalized);
+		onValueChange(normalized.text);
 	};
 
-	const submit = (event: SubmitEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		if (isSubmitDisabled) {
-			return;
-		}
-
-		const normalizedFormData = getNormalizedNoteFormData(formData);
-		const result = validateNoteForm(normalizedFormData);
-
-		if (!result.success) {
-			setErrors(getNoteFormErrors(result));
-			return;
-		}
-
-		onSubmit(result.output);
-		onValueChange(result.output.text);
-		setErrors({});
-	};
-
-	const reset = () => {
+	const handleReset = () => {
+		form.setValues({ text: savedValue });
 		onValueChange(savedValue);
-		setErrors({});
+		form.clearErrors();
 	};
 
 	return {
-		formData,
-		errors,
+		form,
 		isSubmitDisabled,
 		isResetDisabled,
-		setField,
-		reset,
-		submit,
+		handleSubmit,
+		handleReset,
 	};
 }

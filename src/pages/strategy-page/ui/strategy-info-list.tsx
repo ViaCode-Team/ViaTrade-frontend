@@ -1,4 +1,4 @@
-import { Alert, SimpleGrid } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import {
 	IconAlertTriangle,
 	IconTargetArrow,
@@ -7,11 +7,12 @@ import {
 
 import type { Strategy } from '@/entities/strategy';
 
-import { mapTradeStrategyToStrategy, useGetById } from '@/entities/strategy';
+import { mapTradeStrategyToStrategy, useGetByIdSuspense } from '@/entities/strategy';
 import { EmptyState } from '@/shared/ui/empty-state';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { StrategyInfoCard } from './strategy-info-card';
-import { StrategyInfoGridSkeleton } from './strategy-info-grid.skeleton';
+import { StrategyInfoListSkeleton } from './strategy-info-list.skeleton';
 
 const INACTIVE_STRATEGY_IDS = new Set<number>();
 
@@ -33,38 +34,16 @@ const STRATEGY_INFO_SECTIONS = [
 	},
 ];
 
-type StrategyInfoGridProps = {
+type StrategyInfoListProps = {
 	strategyId: number;
 };
 
-export function StrategyInfoGrid({ strategyId }: StrategyInfoGridProps) {
-	const strategyQuery = useGetById(strategyId);
-	const strategy = strategyQuery.data?.data
-		? mapTradeStrategyToStrategy(strategyQuery.data.data, INACTIVE_STRATEGY_IDS)
-		: null;
-
-	if (strategyQuery.isLoading) {
-		return <StrategyInfoGridSkeleton />;
-	}
-
-	if (strategyQuery.isError) {
-		return (
-			<section>
-				<Alert color='red' variant='outline'>
-					Не удалось загрузить описание стратегии. Попробуйте обновить страницу.
-				</Alert>
-			</section>
-		);
-	}
+function StrategyInfoList({ strategyId }: StrategyInfoListProps) {
+	const strategyQuery = useGetByIdSuspense(strategyId);
+	const strategy = mapTradeStrategyToStrategy(strategyQuery.data.data, INACTIVE_STRATEGY_IDS);
 
 	if (!strategy) {
-		return (
-			<section>
-				<Alert color='red' variant='outline'>
-					Описание стратегии не найдено.
-				</Alert>
-			</section>
-		);
+		return null;
 	}
 
 	const visibleSections = STRATEGY_INFO_SECTIONS
@@ -96,3 +75,7 @@ export function StrategyInfoGrid({ strategyId }: StrategyInfoGridProps) {
 		</section>
 	);
 }
+
+export const StrategyInfoListBoundary = withQueryBoundary(StrategyInfoList, {
+	suspenseProps: { fallback: <StrategyInfoListSkeleton /> },
+});

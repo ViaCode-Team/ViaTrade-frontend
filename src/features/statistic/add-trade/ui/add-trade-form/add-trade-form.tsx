@@ -48,6 +48,7 @@ export function AddTradeForm() {
 	const [initialDate] = useState(() => new Date());
 
 	const form = useForm<FormValues>({
+		mode: 'uncontrolled',
 		initialValues: {
 			tradeTypeId: '1',
 			tradeCodeId: '',
@@ -69,6 +70,8 @@ export function AddTradeForm() {
 			dateClose: (value, values) => (values.isClosed && !value ? 'Выберите дату закрытия' : null),
 		},
 	});
+
+	const [isClosed, setIsClosed] = useState(false);
 
 	const handleSubmit = (values: FormValues) => {
 		if (!values.dateOpen)
@@ -99,6 +102,7 @@ export function AddTradeForm() {
 	};
 
 	const maxDate = dayjs().toDate();
+	const { onChange: isClosedOnChange, ...isClosedProps } = form.getInputProps('isClosed', { type: 'checkbox' });
 
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>
@@ -108,6 +112,7 @@ export function AddTradeForm() {
 						{ label: 'Акция', value: '1' },
 						{ label: 'Фьючерс', value: '2' },
 					]}
+					key={form.key('tradeTypeId')}
 					{...form.getInputProps('tradeTypeId')}
 				/>
 
@@ -141,6 +146,7 @@ export function AddTradeForm() {
 							{ label: 'Short', value: '-1' },
 						]}
 						fullWidth
+						key={form.key('tradeSignal')}
 						{...form.getInputProps('tradeSignal')}
 					/>
 				</Input.Wrapper>
@@ -152,6 +158,7 @@ export function AddTradeForm() {
 					searchable
 					disabled={isLoadingCodes}
 					withAsterisk
+					key={form.key('tradeCodeId')}
 					{...form.getInputProps('tradeCodeId')}
 				/>
 
@@ -161,6 +168,7 @@ export function AddTradeForm() {
 						placeholder='10'
 						min={1}
 						withAsterisk
+						key={form.key('count')}
 						{...form.getInputProps('count')}
 					/>
 					<NumberInput
@@ -169,6 +177,7 @@ export function AddTradeForm() {
 						min={0}
 						decimalScale={2}
 						withAsterisk
+						key={form.key('tradeOpen')}
 						{...form.getInputProps('tradeOpen')}
 					/>
 				</Group>
@@ -178,15 +187,21 @@ export function AddTradeForm() {
 					placeholder='Дата и время'
 					withAsterisk
 					maxDate={maxDate}
+					key={form.key('dateOpen')}
 					{...form.getInputProps('dateOpen')}
 				/>
 
 				<Switch
 					label='Сделка закрыта'
-					{...form.getInputProps('isClosed', { type: 'checkbox' })}
+					key={form.key('isClosed')}
+					{...isClosedProps}
+					onChange={(e) => {
+						isClosedOnChange?.(e);
+						setIsClosed(e.currentTarget.checked);
+					}}
 				/>
 
-				{form.values.isClosed && (
+				{isClosed && (
 					<>
 						<NumberInput
 							label='Цена закрытия'
@@ -194,14 +209,16 @@ export function AddTradeForm() {
 							min={0}
 							decimalScale={2}
 							withAsterisk
+							key={form.key('tradeClose')}
 							{...form.getInputProps('tradeClose')}
 						/>
 						<DateTimePicker
 							label='Дата закрытия'
 							placeholder='Дата и время'
 							withAsterisk
-							minDate={form.values.dateOpen || undefined}
+							minDate={form.getValues().dateOpen || undefined}
 							maxDate={maxDate}
+							key={form.key('dateClose')}
 							{...form.getInputProps('dateClose')}
 						/>
 					</>

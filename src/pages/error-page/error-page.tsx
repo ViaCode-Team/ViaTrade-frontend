@@ -9,7 +9,7 @@ import {
 import { IconHome, IconRefresh } from '@tabler/icons-react';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
 
-import LogoIcon from '@/shared/assets/icons/logo-default.svg?react';
+import logoUrl from '@/shared/assets/icons/logo-default.svg';
 
 type ErrorPageProps = {
 	statusCode?: number;
@@ -49,7 +49,7 @@ export function ErrorPage({ statusCode = 404 }: ErrorPageProps) {
 		<Container size='sm'>
 			<Stack gap='xl' justify='center' align='center' h='100vh'>
 				<Stack gap='xs' align='center' ta='center'>
-					<LogoIcon width={100} height={100} />
+					<img src={logoUrl} width={100} height={100} alt='logo' />
 
 					<Title c='var(--mantine-color-text)'>
 						{status}

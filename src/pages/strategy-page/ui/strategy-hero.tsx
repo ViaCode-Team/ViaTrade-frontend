@@ -1,13 +1,14 @@
-import { Alert, Grid } from '@mantine/core';
+import { Grid } from '@mantine/core';
 import { useMemo } from 'react';
 
 import {
 	getUserStrategyIdSet,
 	mapTradeStrategyToStrategy,
-	useGetById,
-	useGetUsersStrategy,
+	useGetByIdSuspense,
+	useGetUsersStrategySuspense,
 	useToggleUserStrategy,
 } from '@/entities/strategy';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { StrategyHeroSkeleton } from './strategy-hero.skeleton';
 import { StrategyMetaPanel } from './strategy-meta-panel';
@@ -17,38 +18,18 @@ type StrategyHeroProps = {
 	strategyId: number;
 };
 
-export function StrategyHero({ strategyId }: StrategyHeroProps) {
-	const strategyQuery = useGetById(strategyId);
-	const userStrategiesQuery = useGetUsersStrategy();
+function StrategyHero({ strategyId }: StrategyHeroProps) {
+	const strategyQuery = useGetByIdSuspense(strategyId);
+	const userStrategiesQuery = useGetUsersStrategySuspense();
 	const strategyToggle = useToggleUserStrategy();
 	const activeStrategyIds = useMemo(
 		() => getUserStrategyIdSet(userStrategiesQuery.data?.data ?? []),
 		[userStrategiesQuery.data?.data],
 	);
-	const strategy = strategyQuery.data?.data
-		? mapTradeStrategyToStrategy(strategyQuery.data.data, activeStrategyIds)
-		: null;
-	const isLoading = strategyQuery.isLoading || userStrategiesQuery.isLoading;
-	const hasError = strategyQuery.isError || userStrategiesQuery.isError;
-
-	if (isLoading) {
-		return <StrategyHeroSkeleton />;
-	}
-
-	if (hasError) {
-		return (
-			<Alert color='red' variant='outline'>
-				Не удалось загрузить стратегию. Попробуйте обновить страницу.
-			</Alert>
-		);
-	}
+	const strategy = mapTradeStrategyToStrategy(strategyQuery.data.data, activeStrategyIds);
 
 	if (!strategy) {
-		return (
-			<Alert color='red' variant='outline'>
-				Стратегия не найдена.
-			</Alert>
-		);
+		return null;
 	}
 
 	const handleActiveChange = (nextIsActive: boolean) => {
@@ -86,12 +67,10 @@ export function StrategyHero({ strategyId }: StrategyHeroProps) {
 					<StrategyMetaPanel strategy={strategy} />
 				</Grid.Col>
 			</Grid>
-
-			{strategyToggle.isError && (
-				<Alert color='red' variant='outline'>
-					Не удалось обновить стратегию. Попробуйте еще раз.
-				</Alert>
-			)}
 		</>
 	);
 }
+
+export const StrategyHeroBoundary = withQueryBoundary(StrategyHero, {
+	suspenseProps: { fallback: <StrategyHeroSkeleton /> },
+});

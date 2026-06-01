@@ -1,6 +1,5 @@
-import { type SubmitEvent, useState } from 'react';
-
-import type { LoginMutationError } from '@/entities/auth';
+import { useForm } from '@mantine/form';
+import { useState } from 'react';
 
 import { useLogin } from '@/entities/auth';
 
@@ -9,62 +8,38 @@ import type { TLoginData } from '../model/login-data';
 import { mapLoginApiError } from '../model/login-error-map';
 import { getLoginFormErrors, validateLoginForm } from '../model/login-validation';
 
-type TLoginErrors = Partial<Record<keyof TLoginData, string>>;
-
-type UseLoginFormOptions = {
-	onError?: (error: LoginMutationError) => void;
-};
-
-type UseLoginFormReturn = {
-	formData: TLoginData;
-	errors: TLoginErrors;
-	apiError: string | null;
-	isPending: boolean;
-	setField: (field: keyof TLoginData, value: string) => void;
-	submit: (e: SubmitEvent<HTMLFormElement>) => void;
-};
-
-export function useLoginForm(options?: UseLoginFormOptions): UseLoginFormReturn {
-	const [formData, setFormData] = useState<TLoginData>({
-		login: '',
-		password: '',
-	});
-	const [errors, setErrors] = useState<TLoginErrors>({});
+export function useLoginForm() {
 	const [apiError, setApiError] = useState<string | null>(null);
 
 	const { mutate, isPending } = useLogin({
 		mutation: {
-			onError: (error: LoginMutationError) => {
+			onError: (error) => {
 				setApiError(mapLoginApiError(error));
-				options?.onError?.(error);
 			},
 		},
 	});
 
-	const setField = (field: keyof TLoginData, value: string) => {
-		setFormData((prev) => ({ ...prev, [field]: value }));
-	};
+	const form = useForm<TLoginData>({
+		mode: 'uncontrolled',
+		initialValues: {
+			login: '',
+			password: '',
+		},
+		validate: (values) => {
+			const result = validateLoginForm(values);
+			return getLoginFormErrors(result) as Record<string, string>;
+		},
+	});
 
-	const submit = (e: SubmitEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		const result = validateLoginForm(formData);
-
-		if (!result.success) {
-			setErrors(getLoginFormErrors(result));
-			return;
-		}
-
-		mutate({ data: formData });
-		setErrors({});
+	const handleSubmit = (values: TLoginData) => {
+		setApiError(null);
+		mutate({ data: values });
 	};
 
 	return {
-		formData,
-		errors,
+		form,
 		apiError,
 		isPending,
-		setField,
-		submit,
+		handleSubmit,
 	};
 }

@@ -24,6 +24,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 	const [initialDate] = useState(() => new Date());
 
 	const form = useForm<FormValues>({
+		mode: 'uncontrolled',
 		initialValues: {
 			tradeClose: '',
 			dateClose: initialDate,
@@ -70,6 +71,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 					min={0}
 					decimalScale={2}
 					withAsterisk
+					key={form.key('tradeClose')}
 					{...form.getInputProps('tradeClose')}
 				/>
 
@@ -79,6 +81,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 					withAsterisk
 					minDate={minDate}
 					maxDate={initialDate}
+					key={form.key('dateClose')}
 					{...form.getInputProps('dateClose')}
 				/>
 

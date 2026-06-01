@@ -14,15 +14,14 @@ import {
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { ROUTES } from '@/shared/model/routes';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
-import { StrategyHero } from './ui/strategy-hero';
-import { StrategyInfoGrid } from './ui/strategy-info-grid';
+import { StrategyHeroBoundary } from './ui/strategy-hero';
+import { StrategyInfoListBoundary } from './ui/strategy-info-list';
 import { StrategyNotFound } from './ui/strategy-not-found';
 
-function StrategyPage() {
+export function StrategyPage() {
 	const { strategyName } = useParams();
 	const strategiesQuery = useGetAllSuspense();
 	const decodedName = decodeURIComponent(strategyName || '').toLowerCase();
@@ -84,10 +83,10 @@ function StrategyPage() {
 			<Stack>
 				<BackToStrategiesLink />
 
-				<StrategyHero strategyId={strategyId} />
+				<StrategyHeroBoundary strategyId={strategyId} />
 			</Stack>
 
-			<StrategyInfoGrid strategyId={strategyId} />
+			<StrategyInfoListBoundary strategyId={strategyId} />
 
 			<Section header={{ title: 'Связанные акции' }}>
 				<StrategyStockBinding
@@ -105,5 +104,3 @@ function StrategyPage() {
 		</>
 	);
 }
-
-export const StrategyPageBoundary = withQueryBoundary(StrategyPage);

@@ -33,6 +33,7 @@ export function ProtectedRoute({
 	const { data, isPending } = useGetMe({
 		query: {
 			enabled: isCanFetch,
+			refetchInterval: 60000,
 		},
 	});
 

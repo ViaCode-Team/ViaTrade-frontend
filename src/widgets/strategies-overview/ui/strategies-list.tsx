@@ -60,7 +60,7 @@ function StrategyStockBindingModalContent({ strategyId }: { strategyId: number }
 
 const StrategyStockBindingModalBoundary = withQueryBoundary(StrategyStockBindingModalContent);
 
-export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActive?: boolean } = {}) {
+export function StrategiesList({ limit, onlyActive }: { limit?: number; onlyActive?: boolean }) {
 	const {
 		strategies,
 		filteredStrategies: allFilteredStrategies,

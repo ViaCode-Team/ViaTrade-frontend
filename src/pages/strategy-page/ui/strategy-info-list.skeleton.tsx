@@ -8,7 +8,7 @@ const STRATEGY_INFO_CARD_SKELETONS = 3;
 
 const skeletons = createSkeletons(STRATEGY_INFO_CARD_SKELETONS);
 
-export function StrategyInfoGridSkeleton() {
+export function StrategyInfoListSkeleton() {
 	return (
 		<section>
 			<SimpleGrid minColWidth={300} autoFlow='auto-fit'>

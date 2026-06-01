@@ -55,7 +55,7 @@ function Th({
 
 export type TradesHistoryTableProps = UseTradesHistoryDataProps & {
 	isFetching: boolean;
-	setSorting: (field: any) => void;
+	setSorting: (field: UseTradesHistoryDataProps['sortField']) => void;
 	setPage: (page: number) => void;
 };
 

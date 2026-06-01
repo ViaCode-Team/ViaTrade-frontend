@@ -1,7 +1,7 @@
 import { Group, Text } from '@mantine/core';
 import { Link as RouterLink } from 'react-router';
 
-import LogoIcon from '@/shared/assets/icons/logo-default.svg?react';
+import logoUrl from '@/shared/assets/icons/logo-default.svg';
 import { ROUTES } from '@/shared/model/routes';
 
 type LogoProps = {
@@ -18,7 +18,7 @@ export function Logo({
 	return (
 		<RouterLink to={ROUTES.HOME}>
 			<Group gap={5} align='center' wrap='nowrap'>
-				<LogoIcon width={logoWidth} height={logoHeight} />
+				<img src={logoUrl} width={logoWidth} height={logoHeight} alt='logo' />
 
 				<Text component='h2' fw='bold' fz={fz || 'lg'}>
 					ViaTrade

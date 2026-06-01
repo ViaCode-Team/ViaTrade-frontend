@@ -1,84 +1,53 @@
-import { type SubmitEvent, useState } from 'react';
-
-import type { RegisterMutationError } from '@/entities/auth';
+import { useForm } from '@mantine/form';
+import { useState } from 'react';
 
 import { useRegister } from '@/entities/auth';
 
 import type { TRegisterData } from '../model/register-data';
 
 import { mapRegisterApiError } from '../model/register-error-map';
-import {
-	getRegisterFormErrors,
-	validateRegisterForm,
-} from '../model/register-validation';
+import { getRegisterFormErrors, validateRegisterForm } from '../model/register-validation';
 
-type TRegisterErrors = Partial<Record<keyof TRegisterData, string>>;
-
-type UseRegisterFormOptions = {
-	onError?: (error: RegisterMutationError) => void;
-};
-
-type UseRegisterFormReturn = {
-	formData: TRegisterData;
-	errors: TRegisterErrors;
-	apiError: string | null;
-	isPending: boolean;
-	setField: (field: keyof TRegisterData, value: string) => void;
-	submit: (e: SubmitEvent<HTMLFormElement>) => void;
-};
-
-export function useRegisterForm(options?: UseRegisterFormOptions): UseRegisterFormReturn {
-	const [formData, setFormData] = useState<TRegisterData>({
-		email: '',
-		login: '',
-		password: '',
-		confirmPassword: '',
-	});
-	const [errors, setErrors] = useState<TRegisterErrors>({});
+export function useRegisterForm() {
 	const [apiError, setApiError] = useState<string | null>(null);
 
 	const { mutate, isPending } = useRegister({
 		mutation: {
-			onError: (error: RegisterMutationError) => {
+			onError: (error) => {
 				setApiError(mapRegisterApiError(error));
-				options?.onError?.(error);
 			},
 		},
 	});
 
-	const setField = (field: keyof TRegisterData, value: string) => {
-		setFormData((prev) => ({ ...prev, [field]: value }));
-	};
+	const form = useForm<TRegisterData>({
+		mode: 'uncontrolled',
+		initialValues: {
+			email: '',
+			login: '',
+			password: '',
+			confirmPassword: '',
+		},
+		validate: (values) => {
+			const result = validateRegisterForm(values);
+			const errors = getRegisterFormErrors(result) as Record<string, string>;
 
-	const submit = (e: SubmitEvent<HTMLFormElement>) => {
-		e.preventDefault();
+			if (values.password !== values.confirmPassword) {
+				errors.confirmPassword = 'Пароли не совпадают';
+			}
 
-		const result = validateRegisterForm(formData);
+			return errors;
+		},
+	});
 
-		if (!result.success) {
-			setErrors(getRegisterFormErrors(result));
-			return;
-		}
-
-		// Additional check for password match
-		if (formData.password !== formData.confirmPassword) {
-			setErrors((prev) => ({
-				...prev,
-				confirmPassword: 'Пароли не совпадают',
-			}));
-			return;
-		}
-
-		mutate({ data: formData });
-		setErrors({});
+	const handleSubmit = (values: TRegisterData) => {
+		setApiError(null);
+		mutate({ data: values });
 	};
 
 	return {
-		formData,
-		errors,
+		form,
 		apiError,
 		isPending,
-		setField,
-		submit,
+		handleSubmit,
 	};
 }

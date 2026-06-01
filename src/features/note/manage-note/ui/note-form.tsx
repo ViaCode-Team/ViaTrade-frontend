@@ -50,13 +50,11 @@ export function NoteForm({
 	errorMessage,
 }: NoteFormProps) {
 	const {
-		formData,
-		errors,
+		form,
 		isSubmitDisabled,
 		isResetDisabled,
-		setField,
-		reset,
-		submit,
+		handleSubmit,
+		handleReset,
 	} = useNoteForm({
 		value,
 		savedValue,
@@ -65,7 +63,7 @@ export function NoteForm({
 	});
 
 	return (
-		<form onSubmit={submit}>
+		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack gap='sm'>
 				{errorMessage
 					? (
@@ -80,8 +78,12 @@ export function NoteForm({
 					: null}
 
 				<NoteTextarea
-					value={formData.text}
-					error={errors.text}
+					value={form.values.text}
+					error={form.errors.text as string}
+					onChange={(val: string) => {
+						form.setFieldValue('text', val);
+						onValueChange(val);
+					}}
 					placeholder={placeholder}
 					minLength={minLength}
 					maxLength={maxLength}
@@ -89,12 +91,11 @@ export function NoteForm({
 					maxRows={maxRows}
 					autoFocus={autoFocus}
 					disabled={isLoading || isSubmitting}
-					onChange={(nextValue) => setField('text', nextValue)}
 				/>
 
 				<Flex justify='space-between' gap='sm' wrap='wrap'>
 					<NoteCharactersRemaining
-						valueLength={formData.text.length}
+						valueLength={form.values.text.length}
 						maxLength={maxLength}
 					/>
 
@@ -104,7 +105,7 @@ export function NoteForm({
 						isSubmitDisabled={isSubmitDisabled}
 						isResetDisabled={isResetDisabled}
 						isSubmitting={isSubmitting}
-						onReset={reset}
+						onReset={handleReset}
 					/>
 				</Flex>
 			</Stack>

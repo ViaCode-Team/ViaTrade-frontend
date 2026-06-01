@@ -13,7 +13,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
 			notifications.show({
 				id: 'pwa-offline-ready',
 				title: 'Готово к работе офлайн',
-				message: 'Приложение было успешно закешировано и теперь может работать без интернета.',
+				message: 'Теперь приложение может работать в автономном режиме.',
 				color: 'teal',
 				icon: <IconWifi size={18} />,
 				autoClose: 5000,

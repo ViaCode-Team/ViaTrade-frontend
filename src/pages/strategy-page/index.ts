@@ -1,2 +1,2 @@
-export { StrategyPageBoundary as StrategyPage } from './strategy-page';
-export { StrategyPageBoundary as Component } from './strategy-page';
+export { StrategyPage } from './strategy-page';
+export { StrategyPage as Component } from './strategy-page';

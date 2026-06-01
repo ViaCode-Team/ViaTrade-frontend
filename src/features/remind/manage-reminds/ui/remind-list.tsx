@@ -18,7 +18,7 @@ export function RemindList({
 	hideSourceBadge?: boolean;
 	instrumentId?: number;
 	limit?: number;
-} = {}) {
+}) {
 	const { reminds, filteredReminds: allFilteredReminds, handleRemindChange } = useRemindList(instrumentId);
 
 	const filteredReminds = limit ? allFilteredReminds.slice(0, limit) : allFilteredReminds;

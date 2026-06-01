@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
 			// Ошибки роута (404)
 			{
 				path: '*',
-				lazy: () => import('@/pages/error-page'),
+				element: <ErrorPage />,
 			},
 		],
 	},

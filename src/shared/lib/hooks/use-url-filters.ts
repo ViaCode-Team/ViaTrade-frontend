@@ -5,7 +5,7 @@ export function useUrlFilters<T extends Record<string, string>>(defaultValues: T
 
 	const filters = Object.keys(defaultValues).reduce((acc, key) => {
 		const val = searchParams.get(key);
-		acc[key as keyof T] = val ? (val as any) : defaultValues[key];
+		acc[key as keyof T] = (val !== null ? val : defaultValues[key]) as unknown as T[keyof T];
 		return acc;
 	}, {} as T);
 

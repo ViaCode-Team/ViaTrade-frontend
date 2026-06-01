@@ -1,10 +1,10 @@
 import { Alert, Text } from '@mantine/core';
 import { IconWifiOff } from '@tabler/icons-react';
 
-import { useNetworkState } from '@/shared/lib/hooks';
+import { useAppNetwork } from '@/shared/lib/hooks';
 
 export function OfflineBanner() {
-	const { isOnline } = useNetworkState();
+	const { isOnline } = useAppNetwork();
 
 	if (isOnline) {
 		return null;

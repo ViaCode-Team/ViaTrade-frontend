@@ -1,5 +1,4 @@
-import { useDebouncedCallback } from '@mantine/hooks';
-import { useState } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
 
 import type { RemindEditableField, RemindItem } from '../model';
 
@@ -18,20 +17,13 @@ type UseRemindDraftOptions = {
 };
 
 export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions) {
-	const [localDraft, setLocalDraft] = useState(() => {
-		try {
-			const stored = localStorage.getItem(`via-remind-draft-${remind.id}`);
-			if (stored) {
-				return JSON.parse(stored);
-			}
-		}
-		catch {}
-
-		return {
+	const [localDraft, setLocalDraft, removeLocalDraft] = useLocalStorage({
+		key: `via-remind-draft-${remind.id}`,
+		defaultValue: {
 			text: remind.text,
 			date: remind.date,
 			time: remind.time,
-		};
+		},
 	});
 
 	const isDirty
@@ -39,20 +31,13 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 			|| localDraft.date !== remind.date
 			|| localDraft.time !== remind.time;
 
-	const debouncedSaveToStorage = useDebouncedCallback((draftValue) => {
-		localStorage.setItem(`via-remind-draft-${remind.id}`, JSON.stringify(draftValue));
-	}, 600);
-
 	const handleFieldChange = (field: RemindEditableField, value: string) => {
-		const nextDraft = { ...localDraft, [field]: value };
-		setLocalDraft(nextDraft);
-		debouncedSaveToStorage(nextDraft);
+		setLocalDraft((prev) => ({ ...prev, [field]: value }));
 	};
 
 	const handleDateTimeChange = (value: string | null) => {
 		if (value === null) {
-			handleFieldChange('date', '');
-			handleFieldChange('time', '');
+			setLocalDraft((prev) => ({ ...prev, date: '', time: '' }));
 			return;
 		}
 
@@ -82,13 +67,7 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 			}
 		}
 
-		const nextDraft = {
-			...localDraft,
-			date,
-			time,
-		};
-		setLocalDraft(nextDraft);
-		debouncedSaveToStorage(nextDraft);
+		setLocalDraft((prev) => ({ ...prev, date, time }));
 	};
 
 	const isFutureDate = () => {
@@ -123,8 +102,7 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 			return;
 		}
 
-		debouncedSaveToStorage.cancel();
-		localStorage.removeItem(`via-remind-draft-${remind.id}`);
+		removeLocalDraft();
 
 		onRemindChange(remind.id, {
 			text: localDraft.text,
@@ -134,8 +112,7 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 	};
 
 	const handleReset = () => {
-		debouncedSaveToStorage.cancel();
-		localStorage.removeItem(`via-remind-draft-${remind.id}`);
+		removeLocalDraft();
 		setLocalDraft({ text: remind.text, date: remind.date, time: remind.time });
 	};
 

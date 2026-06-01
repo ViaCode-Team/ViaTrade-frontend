@@ -1,50 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useIdle } from '@mantine/hooks';
+import { useEffect } from 'react';
 
 import { useSecurity } from '@/entities/security';
 import { lockApp } from '@/shared/lib/secure-storage';
 
 const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
+const EVENTS: (keyof DocumentEventMap)[] = ['mousemove', 'keydown', 'mousedown', 'touchstart', 'scroll'];
 
 export function InactivityLock() {
 	const { isLocked, checkSecurityState } = useSecurity();
-	const timerRef = useRef<number | null>(null);
+	const idle = useIdle(INACTIVITY_TIMEOUT_MS, { events: EVENTS });
 
 	useEffect(() => {
-		const resetTimer = () => {
-			if (timerRef.current !== null) {
-				window.clearTimeout(timerRef.current);
-			}
-
-			if (isLocked)
-				return;
-
-			timerRef.current = window.setTimeout(async () => {
+		if (idle && !isLocked) {
+			const lock = async () => {
 				lockApp();
 				await checkSecurityState();
-			}, INACTIVITY_TIMEOUT_MS);
-		};
-
-		const events = ['mousemove', 'keydown', 'mousedown', 'touchstart', 'scroll'];
-
-		const handleActivity = () => {
-			resetTimer();
-		};
-
-		resetTimer();
-
-		events.forEach((event) => {
-			window.addEventListener(event, handleActivity, { passive: true });
-		});
-
-		return () => {
-			if (timerRef.current !== null) {
-				window.clearTimeout(timerRef.current);
-			}
-			events.forEach((event) => {
-				window.removeEventListener(event, handleActivity);
-			});
-		};
-	}, [isLocked, checkSecurityState]);
+			};
+			lock();
+		}
+	}, [idle, isLocked, checkSecurityState]);
 
 	return null;
 }

@@ -1,8 +1,5 @@
-import {
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { useDebouncedCallback } from '@mantine/hooks';
+import { useEffect, useRef, useState } from 'react';
 
 import type { StoredPersonalNote } from '@/entities/note';
 
@@ -42,45 +39,15 @@ export function useNoteDraft({
 		text: value,
 		isDirty: false,
 	}));
-	const saveDraftTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const pendingDraftRef = useRef<PendingDraft | null>(null);
 	const upsertStoredNoteMutation = useUpsertStoredPersonalNoteMutation();
 	const deleteStoredNoteMutation = useDeleteStoredPersonalNoteMutation();
+
 	const draftValue = localDraft.noteId === note.id && localDraft.isDirty
 		? localDraft.text
 		: value;
 
-	useEffect(() => {
-		return () => {
-			clearDraftSaveTimeout();
-			flushPendingDraftToStorage();
-		};
-	}, []);
-
-	function clearDraftSaveTimeout() {
-		if (saveDraftTimeoutRef.current) {
-			clearTimeout(saveDraftTimeoutRef.current);
-			saveDraftTimeoutRef.current = null;
-		}
-	}
-
-	function flushPendingDraftToStorage() {
-		if (!pendingDraftRef.current) {
-			return;
-		}
-
-		const { note, savedValue, text } = pendingDraftRef.current;
-		pendingDraftRef.current = null;
-
-		if (isSameNoteText(text, savedValue)) {
-			deleteStoredPersonalNote(note.id);
-			return;
-		}
-
-		upsertStoredPersonalNote(note, text);
-	}
-
-	function saveLocalDraft() {
+	const saveLocalDraft = useDebouncedCallback(() => {
 		if (!pendingDraftRef.current) {
 			return;
 		}
@@ -97,7 +64,29 @@ export function useNoteDraft({
 			note,
 			text,
 		});
-	}
+	}, saveDelay);
+
+	useEffect(() => {
+		return () => {
+			// Cancel pending React Query mutation timeouts
+			saveLocalDraft.cancel?.();
+
+			// Flush synchronously to storage
+			if (!pendingDraftRef.current) {
+				return;
+			}
+
+			const { note, savedValue, text } = pendingDraftRef.current;
+			pendingDraftRef.current = null;
+
+			if (isSameNoteText(text, savedValue)) {
+				deleteStoredPersonalNote(note.id);
+				return;
+			}
+
+			upsertStoredPersonalNote(note, text);
+		};
+	}, [saveLocalDraft]);
 
 	function changeDraftValue(nextValue: string) {
 		setLocalDraft({
@@ -110,12 +99,11 @@ export function useNoteDraft({
 			savedValue,
 			text: nextValue,
 		};
-		clearDraftSaveTimeout();
-		saveDraftTimeoutRef.current = setTimeout(saveLocalDraft, saveDelay);
+		saveLocalDraft();
 	}
 
 	function confirmSaved(nextValue: string) {
-		clearDraftSaveTimeout();
+		saveLocalDraft.cancel?.();
 		pendingDraftRef.current = null;
 		setLocalDraft({
 			noteId: note.id,
@@ -126,7 +114,7 @@ export function useNoteDraft({
 	}
 
 	function discardDraft() {
-		clearDraftSaveTimeout();
+		saveLocalDraft.cancel?.();
 		pendingDraftRef.current = null;
 		deleteStoredNoteMutation.mutate(note.id);
 	}

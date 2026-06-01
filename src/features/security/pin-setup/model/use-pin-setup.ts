@@ -1,3 +1,4 @@
+import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { queryClient } from '@/app/query-client';
@@ -9,7 +10,7 @@ export function usePinSetup() {
 	const [pin, setPin] = useState('');
 	const [confirmPin, setConfirmPin] = useState('');
 	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
 
 	const handlePinChange = (value: string) => {
@@ -39,7 +40,7 @@ export function usePinSetup() {
 			return;
 		}
 
-		setIsLoading(true);
+		startLoading();
 		try {
 			await setupPin(pin);
 			await checkSecurityState();
@@ -51,7 +52,7 @@ export function usePinSetup() {
 			setConfirmPin('');
 		}
 		finally {
-			setIsLoading(false);
+			stopLoading();
 		}
 	};
 

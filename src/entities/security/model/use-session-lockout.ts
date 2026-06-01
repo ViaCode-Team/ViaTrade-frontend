@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useDocumentVisibility, useInterval, useWindowEvent } from '@mantine/hooks';
+import { useCallback, useEffect } from 'react';
 
 import { checkCookieLockState, lockApp } from '@/shared/lib/secure-storage';
 
@@ -10,38 +11,39 @@ export function useSessionLockout(
 	isLocked: boolean,
 	checkSecurityState: () => void,
 ) {
-	useEffect(() => {
+	const verifySession = useCallback(() => {
 		if (isLocked)
 			return;
 
-		const verifySession = () => {
-			const hasCookie = checkCookieLockState();
-			if (!hasCookie) {
-				lockApp();
-				checkSecurityState(); // Update context and trigger redirect
-			}
-		};
-
-		// Check immediately
-		verifySession();
-
-		// Check when user switches back to the tab
-		const handleVisibilityChange = () => {
-			if (document.visibilityState === 'visible') {
-				verifySession();
-			}
-		};
-
-		window.addEventListener('focus', verifySession);
-		window.addEventListener('visibilitychange', handleVisibilityChange);
-
-		// Check periodically (every 5 seconds)
-		const intervalId = setInterval(verifySession, 5_000);
-
-		return () => {
-			clearInterval(intervalId);
-			window.removeEventListener('focus', verifySession);
-			window.removeEventListener('visibilitychange', handleVisibilityChange);
-		};
+		const hasCookie = checkCookieLockState();
+		if (!hasCookie) {
+			lockApp();
+			checkSecurityState(); // Update context and trigger redirect
+		}
 	}, [isLocked, checkSecurityState]);
+
+	const interval = useInterval(verifySession, 5_000);
+	const documentVisibility = useDocumentVisibility();
+
+	useEffect(() => {
+		verifySession();
+	}, [verifySession]);
+
+	useEffect(() => {
+		if (!isLocked) {
+			interval.start();
+		}
+		else {
+			interval.stop();
+		}
+		return interval.stop;
+	}, [isLocked, interval]);
+
+	useEffect(() => {
+		if (documentVisibility === 'visible') {
+			verifySession();
+		}
+	}, [documentVisibility, verifySession]);
+
+	useWindowEvent('focus', verifySession);
 }

@@ -1,3 +1,4 @@
+import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { logout } from '@/entities/auth/api/gen';
@@ -13,12 +14,12 @@ import {
 export function usePinUnlock() {
 	const [pin, setPin] = useState('');
 	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
 
 	const handleComplete = async (value: string) => {
 		setError(null);
-		setIsLoading(true);
+		startLoading();
 
 		try {
 			const success = await unlockApp(value);
@@ -55,7 +56,7 @@ export function usePinUnlock() {
 			setPin('');
 		}
 		finally {
-			setIsLoading(false);
+			stopLoading();
 		}
 	};
 

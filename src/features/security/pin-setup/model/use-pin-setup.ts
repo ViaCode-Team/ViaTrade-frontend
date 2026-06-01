@@ -1,8 +1,10 @@
 import { useDisclosure } from '@mantine/hooks';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { queryClient } from '@/app/query-client';
+import { logout } from '@/entities/auth/api/gen';
 import { useSecurity } from '@/entities/security';
+import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
 import { setupPin } from '@/shared/lib/secure-storage';
 
 export function usePinSetup() {
@@ -12,6 +14,7 @@ export function usePinSetup() {
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
+	const queryClient = useQueryClient();
 
 	const handlePinChange = (value: string) => {
 		setPin(value);
@@ -63,6 +66,20 @@ export function usePinSetup() {
 		setError(null);
 	};
 
+	const handleLogout = async () => {
+		startLoading();
+		try {
+			await logout();
+		}
+		catch (e) {
+			console.warn('Logout API failed, possibly offline', e);
+		}
+		finally {
+			await clearLocalData(queryClient);
+			window.location.href = '/login';
+		}
+	};
+
 	return {
 		step,
 		pin,
@@ -74,5 +91,6 @@ export function usePinSetup() {
 		handleStep1Complete,
 		handleStep2Complete,
 		goBack,
+		handleLogout,
 	};
 }

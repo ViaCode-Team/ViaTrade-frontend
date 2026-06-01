@@ -1,21 +1,26 @@
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useLocalStorage } from '@mantine/hooks';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { logout } from '@/entities/auth/api/gen';
 import { useSecurity } from '@/entities/security';
-import { idbClear } from '@/shared/lib/idb';
+import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
 import {
+	FAILED_ATTEMPTS_KEY,
 	MAX_FAILED_ATTEMPTS,
-	recordFailedAttempt,
-	resetFailedAttempts,
 	unlockApp,
 } from '@/shared/lib/secure-storage';
 
 export function usePinUnlock() {
+	const queryClient = useQueryClient();
 	const [pin, setPin] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
+	const [failedAttempts, setFailedAttempts] = useLocalStorage<number>({
+		key: FAILED_ATTEMPTS_KEY,
+		defaultValue: 0,
+	});
 
 	const handleComplete = async (value: string) => {
 		setError(null);
@@ -24,11 +29,12 @@ export function usePinUnlock() {
 		try {
 			const success = await unlockApp(value);
 			if (success) {
-				resetFailedAttempts();
+				setFailedAttempts(0);
 				await checkSecurityState();
 			}
 			else {
-				const newAttempts = recordFailedAttempt();
+				const newAttempts = failedAttempts + 1;
+				setFailedAttempts(newAttempts);
 				setPin('');
 
 				if (newAttempts >= MAX_FAILED_ATTEMPTS) {
@@ -41,9 +47,7 @@ export function usePinUnlock() {
 					}
 
 					// Wipe all data and redirect to login
-					await idbClear();
-					localStorage.clear();
-					sessionStorage.clear();
+					await clearLocalData(queryClient);
 					window.location.href = '/login';
 					return;
 				}
@@ -66,11 +70,26 @@ export function usePinUnlock() {
 			setError(null);
 	};
 
+	const handleLogout = async () => {
+		startLoading();
+		try {
+			await logout();
+		}
+		catch (e) {
+			console.warn('Logout API failed, possibly offline', e);
+		}
+		finally {
+			await clearLocalData(queryClient);
+			window.location.href = '/login';
+		}
+	};
+
 	return {
 		pin,
 		error,
 		isLoading,
 		handleChange,
 		handleComplete,
+		handleLogout,
 	};
 }

@@ -9,7 +9,7 @@ const EVENTS: (keyof DocumentEventMap)[] = ['mousemove', 'keydown', 'mousedown',
 
 export function InactivityLock() {
 	const { isLocked, checkSecurityState } = useSecurity();
-	const idle = useIdle(INACTIVITY_TIMEOUT_MS, { events: EVENTS });
+	const idle = useIdle(INACTIVITY_TIMEOUT_MS, { events: EVENTS, initialState: false });
 
 	useEffect(() => {
 		if (idle && !isLocked) {

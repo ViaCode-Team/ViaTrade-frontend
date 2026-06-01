@@ -5,6 +5,9 @@ import { useInterval } from '@mantine/hooks';
 import { IconRefresh } from '@tabler/icons-react';
 import { useCallback, useState } from 'react';
 
+import { useAppNetwork } from '@/shared/lib/hooks';
+import { showNoNetworkNotification } from '@/shared/lib/no-network';
+
 type ListStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
@@ -20,7 +23,7 @@ export function ListStatusBar({
 	refreshIntervalText,
 	onRefresh,
 }: ListStatusBarProps) {
-	const isFiltered = totalCount !== filteredCount;
+	const { isOnline } = useAppNetwork();
 
 	const [throttleSeconds, setThrottleSeconds] = useState(0);
 	const interval = useInterval(() => {
@@ -34,13 +37,19 @@ export function ListStatusBar({
 	}, 1000);
 
 	const handleRefresh = useCallback(() => {
+		if (!isOnline) {
+			showNoNetworkNotification();
+			return;
+		}
+
 		if (throttleSeconds > 0)
 			return;
 
 		onRefresh?.();
 		setThrottleSeconds(5);
 		interval.start();
-	}, [onRefresh, throttleSeconds, interval]);
+	}, [throttleSeconds, isOnline, onRefresh, interval]);
+
 
 	const isThrottled = throttleSeconds > 0;
 	const isInteractive = Boolean(onRefresh) && !isThrottled;
@@ -54,6 +63,8 @@ export function ListStatusBar({
 	const displayText = isThrottled
 		? `Обновление через ${throttleSeconds}с`
 		: refreshIntervalText;
+
+	const isFiltered = totalCount !== filteredCount;
 
 	return (
 		<Group justify='space-between' align='center'>

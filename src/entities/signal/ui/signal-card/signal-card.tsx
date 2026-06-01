@@ -51,25 +51,26 @@ function getSignalDirectionColor(signal: Signal) {
 		case 'sell':
 			return 'red';
 		case 'hold':
-			return 'gray';
+			return 'dark';
 	}
 }
 
 export function SignalCard({ signal, onClick }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
 	const isSell = signal.direction === 'sell';
+	const isHold = signal.direction === 'hold';
 	const directionColor = getSignalDirectionColor(signal);
 	const leftBorderStyle = getLeftBorderCardStyle({
 		color: isBuy
 			? 'var(--mantine-color-green-light)'
 			: isSell
 				? 'var(--mantine-color-red-light)'
-				: 'var(--mantine-color-gray-light)',
+				: 'var(--mantine-color-dark-3)',
 		hoverColor: isBuy
 			? 'var(--mantine-color-green-filled)'
 			: isSell
 				? 'var(--mantine-color-red-filled)'
-				: 'var(--mantine-color-gray-filled)',
+				: 'var(--mantine-color-dark-4)',
 	});
 
 	return (
@@ -106,6 +107,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 						cls.directionBadge,
 						isBuy && cls.directionBadgeGreen,
 						isSell && cls.directionBadgeRed,
+						isHold && cls.directionBadgeHold,
 					)}
 				>
 					{getSignalDirectionLabel(signal)}

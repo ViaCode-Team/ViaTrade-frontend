@@ -1,11 +1,11 @@
 import { Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
 import { useLogout, useLogoutAll } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
-import { idbClear } from '@/shared/lib/idb';
-import { lockApp } from '@/shared/lib/secure-storage';
+import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
 import { ROUTES } from '@/shared/model/routes';
 
 type LogoutConfirmationContent = {
@@ -44,12 +44,10 @@ function openLogoutConfirmation({
 export function useUserSessionLogout() {
 	const navigate = useNavigate();
 	const { checkSecurityState } = useSecurity();
+	const queryClient = useQueryClient();
 
 	const onLogoutSuccess = async () => {
-		lockApp();
-		await idbClear();
-		localStorage.clear();
-		sessionStorage.clear();
+		await clearLocalData(queryClient);
 		await checkSecurityState();
 		navigate(ROUTES.LOGIN);
 	};

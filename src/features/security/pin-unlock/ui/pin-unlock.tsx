@@ -1,4 +1,5 @@
 import {
+	Button,
 	Center,
 	Container,
 	Group,
@@ -20,6 +21,7 @@ export function PinUnlock() {
 		isLoading,
 		handleChange,
 		handleComplete,
+		handleLogout,
 	} = usePinUnlock();
 
 	return (
@@ -57,6 +59,17 @@ export function PinUnlock() {
 								{error}
 							</Text>
 						)}
+
+						<Button
+							variant='subtle'
+							color='red'
+							fullWidth
+							mt='sm'
+							onClick={handleLogout}
+							disabled={isLoading}
+						>
+							Выйти из аккаунта
+						</Button>
 					</Stack>
 				</Paper>
 			</Container>

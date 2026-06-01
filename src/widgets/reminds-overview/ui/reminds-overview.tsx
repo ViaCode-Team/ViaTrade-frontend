@@ -35,6 +35,7 @@ export function RemindsOverview() {
 					<RemindsControls actionSlot={actionSlot} />
 					<RemindStatusBarBoundary />
 				</Stack>
+
 				<RemindListBoundary />
 			</Section>
 		</>

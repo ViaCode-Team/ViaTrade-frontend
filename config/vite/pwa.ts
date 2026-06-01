@@ -3,7 +3,6 @@ import type { VitePWAOptions } from 'vite-plugin-pwa';
 export const pwaConfig: Partial<VitePWAOptions> = {
 	registerType: 'autoUpdate',
 	includeAssets: [
-		'assets/favicon/favicon.ico',
 		'assets/favicon/apple-touch-icon.png',
 		'assets/favicon/favicon.svg',
 		'assets/favicon/favicon-96x96.png',

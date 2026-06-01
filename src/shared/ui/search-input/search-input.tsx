@@ -1,44 +1,46 @@
 import { Loader, TextInput, type TextInputProps } from '@mantine/core';
-import { useDebouncedCallback, useUncontrolled } from '@mantine/hooks';
+import { useDebouncedCallback } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
+import { type ChangeEvent, useState } from 'react';
 
 export type SearchInputProps = Omit<TextInputProps, 'onChange'> & {
-	isLoading?: boolean;
-	value?: string;
 	onChange?: (value: string) => void;
+	isLoading?: boolean;
+	debounceMs?: number;
 };
 
 export function SearchInput({
+	onChange,
+	isLoading,
+	debounceMs = 300,
 	flex = 1,
 	miw = 300,
-	isLoading,
-	value,
-	onChange,
+	defaultValue = '',
 	...props
 }: SearchInputProps) {
-	const debouncedOnChange = useDebouncedCallback((val: string) => {
+	const [value, setValue] = useState(defaultValue);
+
+	const debouncedSearch = useDebouncedCallback((val: string) => {
 		onChange?.(val);
-	}, 300);
+	}, debounceMs);
 
-	const [_value, handleChange] = useUncontrolled({
-		value,
-		defaultValue: '',
-		finalValue: '',
-		onChange: debouncedOnChange,
-	});
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const val = event.currentTarget.value;
 
-	const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		handleChange(event.currentTarget.value);
+		setValue(val);
+		debouncedSearch(val);
 	};
 
 	return (
 		<TextInput
+			{...props}
 			flex={flex}
 			miw={miw}
-			value={_value}
-			onChange={onInputChange}
-			leftSection={isLoading ? <Loader size={16} /> : <IconSearch size={16} />}
-			{...props}
+			value={value}
+			onChange={handleChange}
+			leftSection={
+				isLoading ? <Loader size={16} /> : <IconSearch size={16} />
+			}
 		/>
 	);
 }

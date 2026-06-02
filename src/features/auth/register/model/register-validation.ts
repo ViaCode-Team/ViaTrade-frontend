@@ -13,7 +13,6 @@ export function getRegisterFormErrors(
 		const { nested } = v.flatten(result.issues);
 
 		return {
-			email: nested?.email?.[0],
 			login: nested?.login?.[0],
 			password: nested?.password?.[0],
 			confirmPassword: nested?.confirmPassword?.[0],

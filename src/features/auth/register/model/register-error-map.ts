@@ -9,7 +9,7 @@ export function mapRegisterApiError(error: RegisterMutationError): string {
 
 	switch (status) {
 		case 409:
-			return 'Пользователь с таким логином или email уже существует';
+			return 'Пользователь с таким логином уже существует';
 		case 400:
 			return 'Некорректные данные регистрации';
 		case 500:

@@ -1,12 +1,6 @@
 import { v } from '@/shared/model/validate';
 
 export const registerSchema = v.object({
-	email: v.pipe(
-		v.string('Введите email'),
-		v.nonEmpty('Email обязателен для заполнения'),
-		v.email('Некорректный формат email'),
-		v.maxLength(255, 'Email слишком длинный'),
-	),
 	login: v.pipe(
 		v.string('Введите логин'),
 		v.nonEmpty('Логин обязателен для заполнения'),

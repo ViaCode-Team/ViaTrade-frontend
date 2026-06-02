@@ -22,7 +22,6 @@ export function useRegisterForm() {
 	const form = useForm<TRegisterData>({
 		mode: 'uncontrolled',
 		initialValues: {
-			email: '',
 			login: '',
 			password: '',
 			confirmPassword: '',

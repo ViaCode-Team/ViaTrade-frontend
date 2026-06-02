@@ -24,14 +24,8 @@ export function RegisterForm() {
 
 				<Stack gap='sm'>
 					<TextInput
-						label='Email'
-						type='email'
-						autoFocus
-						key={form.key('email')}
-						{...form.getInputProps('email')}
-					/>
-					<TextInput
 						label='Логин'
+						autoFocus
 						key={form.key('login')}
 						{...form.getInputProps('login')}
 					/>

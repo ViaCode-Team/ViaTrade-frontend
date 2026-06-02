@@ -17,15 +17,15 @@ export function CtaSection() {
 		<Container size='lg' ta='center' py={80}>
 			<Stack gap='xl' align='center'>
 				<Title order={2}>
-					Готовы вывести свой трейдинг на
+					Готовы систематизировать свою
 					{' '}
 					<Text component='span' variant='gradient' gradient={brandGradient} inherit>
-						новый уровень
+						торговлю
 					</Text>
 					?
 				</Title>
 				<Text c='dimmed' fz='lg' maw={600}>
-					Присоединяйтесь к тысячам успешных трейдеров, которые уже используют наши сигналы, а также ведут подробную и удобную аналитику своих торгов для постоянного приумножения капитала.
+					Начните использовать профессиональные инструменты для учета и анализа сделок, чтобы принимать решения на основе объективной статистики.
 				</Text>
 				<Group justify='center'>
 					<Button
@@ -36,7 +36,7 @@ export function CtaSection() {
 						radius='md'
 						rightSection={<IconArrowRight size={20} stroke={1.5} />}
 					>
-						Начать прямо сейчас
+						Попробовать бесплатно
 					</Button>
 				</Group>
 			</Stack>

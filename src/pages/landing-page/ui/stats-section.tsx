@@ -13,9 +13,9 @@ import { IconBolt, IconBrain, IconShieldCheck } from '@tabler/icons-react';
 
 
 const PRINCIPLES = [
-	{ title: 'Молниеносные сигналы', label: 'Скорость реакции алгоритма', icon: IconBolt, color: 'teal' },
-	{ title: 'Обоснованные стратегии', label: 'Опора на исторические данные', icon: IconBrain, color: 'blue' },
-	{ title: 'Надежность 24/7', label: 'Стабильность инфраструктуры', icon: IconShieldCheck, color: 'green' },
+	{ title: 'Точность данных', label: 'Своевременное обновление', icon: IconBolt, color: 'teal' },
+	{ title: 'Прозрачная аналитика', label: 'Объективные метрики', icon: IconBrain, color: 'blue' },
+	{ title: 'Доступность 24/7', label: 'Стабильная инфраструктура', icon: IconShieldCheck, color: 'green' },
 ];
 
 export function StatsSection() {

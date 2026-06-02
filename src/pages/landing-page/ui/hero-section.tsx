@@ -20,7 +20,7 @@ export function HeroSection() {
 			<Container size='lg' pos='relative'>
 				<Stack align='center' gap={40}>
 					<Badge variant='outline' color='gray' size='lg' radius='xl'>
-						Платформа №1 для трейдеров
+						Аналитическая платформа
 					</Badge>
 
 					<Stack gap='md' align='center'>
@@ -32,10 +32,10 @@ export function HeroSection() {
 							lh={1.1}
 							tt='uppercase'
 						>
-							Путь к
+							Инструменты для
 							{' '}
 							<Text component='span' variant='gradient' gradient={brandGradient} inherit>
-								успешному трейдингу
+								системного трейдинга
 							</Text>
 						</Title>
 
@@ -45,7 +45,7 @@ export function HeroSection() {
 							fw={500}
 							c='white'
 						>
-							Торгуйте умно, опираясь на технологии
+							Принимайте решения на основе данных, а не эмоций
 						</Text>
 					</Stack>
 
@@ -55,7 +55,7 @@ export function HeroSection() {
 						fz={{ base: 'md', md: 'lg' }}
 						maw={750}
 					>
-						Сигналы, глубокая аналитика и проверенные стратегии для инвесторов любого уровня. Начните торговать эффективнее и принимайте решения на основе точных данных, а не эмоций.
+						Инструменты для анализа рынка, ведения торгового журнала и отслеживания статистики. Наглядные метрики для оценки эффективности и оптимизации вашей торговой системы.
 					</Text>
 
 					<Group justify='center' gap='md'>
@@ -66,7 +66,7 @@ export function HeroSection() {
 							radius='md'
 							rightSection={<IconArrowRight size={20} stroke={1.5} />}
 						>
-							Начать бесплатно
+							Попробовать бесплатно
 						</Button>
 						<Button
 							component={Link}
@@ -76,7 +76,7 @@ export function HeroSection() {
 							variant='default'
 							radius='md'
 						>
-							Войти в аккаунт
+							Войти
 						</Button>
 					</Group>
 				</Stack>

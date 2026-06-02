@@ -26,7 +26,7 @@ export function FaqSection() {
 
 					<Accordion.Item value='cost'>
 						<Accordion.Control>Сколько стоит использование платформы?</Accordion.Control>
-						<Accordion.Panel>Базовый функционал, включая аналитику портфеля и часть стратегий, доступен бесплатно.</Accordion.Panel>
+						<Accordion.Panel>Базовый функционал, включающий ведение журнала сделок и основной аналитический дашборд, доступен совершенно бесплатно.</Accordion.Panel>
 					</Accordion.Item>
 
 					<Accordion.Item value='offline'>
@@ -36,7 +36,7 @@ export function FaqSection() {
 
 					<Accordion.Item value='custom-signals'>
 						<Accordion.Control>Могу ли я настроить сигналы под себя?</Accordion.Control>
-						<Accordion.Panel>Конечно. Вы можете гибко конфигурировать типы получаемых сигналов, выбирать нужные индикаторы и инструменты, чтобы получать только ту информацию, которая подходит вашей торговой стратегии.</Accordion.Panel>
+						<Accordion.Panel>Конечно. Вы можете гибко конфигурировать типы получаемых сигналов, выбирать нужные стратегии и инструменты, чтобы получать только ту информацию, которая подходит вашим инвестиционным предпочтениям.</Accordion.Panel>
 					</Accordion.Item>
 				</Accordion>
 			</Stack>

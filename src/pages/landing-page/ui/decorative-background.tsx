@@ -23,7 +23,7 @@ export function DecorativeBackground() {
 					width: 200,
 				}}
 			>
-				<Box fz='xs' c='dimmed' fw={600} mb={4}>AAPL / USD</Box>
+				<Box fz='xs' c='dimmed' fw={600} mb={4}>SBER / RUB</Box>
 				<Box fz='lg' c='teal.4' fw={700} mb={10}>+12.4%</Box>
 				<svg width='100%' height='40' viewBox='0 0 100 40'>
 					<path d='M0,40 L10,30 L20,35 L40,10 L50,15 L70,5 L80,10 L100,0' fill='none' stroke='var(--mantine-color-teal-5)' strokeWidth='2' />
@@ -46,7 +46,7 @@ export function DecorativeBackground() {
 				}}
 			>
 				<Box fz='xs' c='dimmed' fw={600} mb={8}>Прибыль за месяц</Box>
-				<Box fz='xl' c='white' fw={700}>$4,250.00</Box>
+				<Box fz='xl' c='white' fw={700}>425 000 ₽</Box>
 				<Box fz='xs' c='teal.5' fw={500} mt={4}>▲ 8.2% с прошлого месяца</Box>
 			</Box>
 
@@ -65,8 +65,8 @@ export function DecorativeBackground() {
 					width: 160,
 				}}
 			>
-				<Box fz='xs' c='dimmed' fw={600} mb={4}>Сигнал: BTC</Box>
-				<Box fz='sm' c='brand.4' fw={700}>STRONG BUY</Box>
+				<Box fz='xs' c='dimmed' fw={600} mb={4}>Сигнал: LKOH</Box>
+				<Box fz='sm' c='teal.4' fw={700}>ПОКУПАТЬ</Box>
 			</Box>
 
 			{/* 4 */}
@@ -84,7 +84,7 @@ export function DecorativeBackground() {
 					width: 150,
 				}}
 			>
-				<Box fz='xs' c='dimmed' fw={600} mb={10}>EUR/USD</Box>
+				<Box fz='xs' c='dimmed' fw={600} mb={10}>GAZP / RUB</Box>
 				<svg width='100%' height='50'>
 					<line x1='20' y1='10' x2='20' y2='40' stroke='var(--mantine-color-teal-5)' strokeWidth='1' />
 					<rect x='17' y='15' width='6' height='20' fill='var(--mantine-color-teal-5)' />
@@ -113,7 +113,7 @@ export function DecorativeBackground() {
 				}}
 			>
 				<Box fz='xs' c='dimmed' fw={600} mb={4}>Торговый объем</Box>
-				<Box fz='lg' c='gray.2' fw={700} mb={8}>$1.2M</Box>
+				<Box fz='lg' c='gray.2' fw={700} mb={8}>14.2M ₽</Box>
 				<svg width='100%' height='30' viewBox='0 0 100 30'>
 					<rect x='0' y='10' width='10' height='20' fill='var(--mantine-color-brand-6)' opacity={0.5} />
 					<rect x='15' y='5' width='10' height='25' fill='var(--mantine-color-brand-6)' opacity={0.6} />
@@ -138,8 +138,8 @@ export function DecorativeBackground() {
 					width: 170,
 				}}
 			>
-				<Box fz='xs' c='dimmed' fw={600} mb={4}>Сигнал: ETH</Box>
-				<Box fz='sm' c='red.4' fw={700}>SELL (85% Conf)</Box>
+				<Box fz='xs' c='dimmed' fw={600} mb={4}>Сигнал: YNDX</Box>
+				<Box fz='sm' c='red.4' fw={700}>ПРОДАВАТЬ (85%)</Box>
 			</Box>
 
 			{/* 7 */}
@@ -157,7 +157,7 @@ export function DecorativeBackground() {
 					width: 200,
 				}}
 			>
-				<Box fz='xs' c='dimmed' fw={600} mb={4}>TSLA / USD</Box>
+				<Box fz='xs' c='dimmed' fw={600} mb={4}>TCSG / RUB</Box>
 				<Box fz='lg' c='teal.4' fw={700} mb={10}>+5.1%</Box>
 				<svg width='100%' height='40' viewBox='0 0 100 40'>
 					<path d='M0,30 L20,35 L40,20 L60,25 L80,5 L100,0' fill='none' stroke='var(--mantine-color-teal-5)' strokeWidth='2' />

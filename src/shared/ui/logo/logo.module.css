@@ -1,0 +1,12 @@
+.link {
+	text-decoration: none;
+	color: inherit;
+}
+
+.text {
+	transition: text-shadow 0.2s ease-in-out;
+}
+
+.link:hover .text {
+	text-shadow: -2px 2px 0px #f1b24b66;
+}

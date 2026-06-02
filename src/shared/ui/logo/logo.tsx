@@ -4,6 +4,8 @@ import { Link as RouterLink } from 'react-router';
 import logoUrl from '@/shared/assets/icons/logo-default.svg';
 import { ROUTES } from '@/shared/model/routes';
 
+import cls from './logo.module.css';
+
 type LogoProps = {
 	logoWidth?: number;
 	logoHeight?: number;
@@ -16,11 +18,11 @@ export function Logo({
 	fz,
 }: LogoProps) {
 	return (
-		<RouterLink to={ROUTES.HOME}>
+		<RouterLink to={ROUTES.LANDING} className={cls.link}>
 			<Group gap={5} align='center' wrap='nowrap'>
 				<img src={logoUrl} width={logoWidth} height={logoHeight} alt='logo' />
 
-				<Text component='h2' fw='bold' fz={fz || 'lg'}>
+				<Text component='h2' fw='bold' fz={fz || 'lg'} className={cls.text}>
 					ViaTrade
 				</Text>
 			</Group>

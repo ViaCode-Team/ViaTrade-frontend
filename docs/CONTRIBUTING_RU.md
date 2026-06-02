@@ -153,19 +153,23 @@ export function LoginForm() {
 
 ## Именование
 
-| **Сущность**             | **Правило**                | **Пример**                   |
-| ------------------------ | -------------------------- | ---------------------------- |
-| Папки/файлы              | `kebab-case`               | `strategy-page`              |
-| CSS Modules              | `kebab-case.module.css`    | `strategy-page.module.css`   |
-| Skeleton-файлы           | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx` |
-| React-компоненты         | `PascalCase`               | `StrategyPage`               |
-| Boundary-компонент       | `<Component>Boundary`      | `UserOrdersBoundary`         |
-| Error fallback компонент | `<Component>ErrorFallback` | `UserOrdersErrorFallback`    |
-| CSS/SCSS-классы          | `camelCase`                | `pageTitle`                  |
-| Переменные               | `camelCase`                | `strategyName`               |
-| Функции                  | `camelCase`                | `getAccuracyColor`           |
-| Константы                | `SCREAMING_SNAKE_CASE`     | `ROUTES`                     |
-| HOC                      | `with` + `camelCase`       | `withQueryBoundary`          |
-| Хуки                     | `use` + `camelCase`        | `useLoginForm`               |
-| List pages               | множественное число        | `strategies-page`            |
-| Detail pages             | единственное число         | `strategy-page`              |
+| **Сущность**               | **Правило**                | **Пример**                   |
+| -------------------------- | -------------------------- | ---------------------------- |
+| Папки/файлы                | `kebab-case`               | `strategy-page`              |
+| CSS Modules                | `kebab-case.module.css`    | `strategy-page.module.css`   |
+| Skeleton-файлы             | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx` |
+| React-компоненты           | `PascalCase`               | `StrategyPage`               |
+| Boundary-компонент         | `<Component>Boundary`      | `UserOrdersBoundary`         |
+| Error fallback компонент   | `<Component>ErrorFallback` | `UserOrdersErrorFallback`    |
+| CSS/SCSS-классы            | `camelCase`                | `pageTitle`                  |
+| Переменные                 | `camelCase`                | `strategyName`               |
+| Функции                    | `camelCase`                | `getAccuracyColor`           |
+| Константы                  | `SCREAMING_SNAKE_CASE`     | `ROUTES`                     |
+| HOC                        | `with` + `camelCase`       | `withQueryBoundary`          |
+| Хуки                       | `use` + `camelCase`        | `useLoginForm`               |
+| List pages                 | множественное число        | `strategies-page`            |
+| Detail pages               | единственное число         | `strategy-page`              |
+| URL-параметры (Поиск)      | `q`                        | `?q=search`                  |
+| URL-параметры (Фильтры)    | Суффикс `Filter`           | `?typeFilter=long`           |
+| URL-параметры (Сортировка) | Суффикс `Sort`             | `?fieldSort=date`            |
+| URL-параметры (Пагинация)  | `page`                     | `?page=1`                    |

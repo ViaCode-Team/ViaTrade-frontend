@@ -7,7 +7,7 @@ import { useTradesHistoryControls } from '../lib/use-trades-history-controls';
 
 export function TradesHistoryControls() {
 	const {
-		search,
+		q,
 		handleSearch,
 		typeFilter,
 		handleTypeFilter,
@@ -20,7 +20,7 @@ export function TradesHistoryControls() {
 		<ControlsGroup align='flex-end'>
 			<SearchInput
 				placeholder='Поиск'
-				value={search}
+				value={q}
 				onChange={handleSearch}
 				miw={{ base: '100%', sm: 250 }}
 				isLoading={isFetching}

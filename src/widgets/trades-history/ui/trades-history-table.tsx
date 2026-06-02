@@ -13,12 +13,26 @@ import {
 } from '@mantine/core';
 import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
 
+import type { TradeFilters } from '@/features/trade/filter-trades';
+
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { useTradesHistoryData, type UseTradesHistoryDataProps } from '../lib/use-trades-history';
+import { useTradesHistoryTable } from '../lib/use-trades-history-table';
 import { TradesHistoryTableRow } from './trades-history-table-row';
 import { TradesHistoryTableSkeleton } from './trades-history-table.skeleton';
+
+const COLUMNS: { field: TradeFilters['fieldSort']; label: string }[] = [
+	{ field: 'ticker', label: 'Тикер' },
+	{ field: 'type', label: 'Тип' },
+	{ field: 'dateOpen', label: 'Открытие' },
+	{ field: 'dateClose', label: 'Закрытие' },
+	{ field: 'tradeOpen', label: 'Цена откр.' },
+	{ field: 'tradeClose', label: 'Цена закр.' },
+	{ field: 'count', label: 'Кол-во' },
+	{ field: 'sum', label: 'Сумма' },
+	{ field: 'income', label: 'Прибыль, %' },
+];
 
 type ThProps = {
 	children: ReactNode;
@@ -39,11 +53,12 @@ function Th({
 
 	return (
 		<Table.Th>
-			<UnstyledButton onClick={onSort} disabled={disabled} style={{ width: '100%', padding: 'var(--mantine-spacing-xs) 0', opacity: disabled ? 0.5 : 1 }}>
-				<Group justify='space-between' wrap='nowrap'>
+			<UnstyledButton w='100%' onClick={onSort} disabled={disabled} opacity={disabled ? 0.5 : 1}>
+				<Group justify='space-between' wrap='nowrap' gap={4}>
 					<Text fw={500} size='sm'>
 						{children}
 					</Text>
+
 					<Center style={{ flexShrink: 0 }}>
 						<Icon size={16} stroke={1.5} />
 					</Center>
@@ -53,31 +68,18 @@ function Th({
 	);
 }
 
-export type TradesHistoryTableProps = UseTradesHistoryDataProps & {
-	isFetching: boolean;
-	setSorting: (field: UseTradesHistoryDataProps['sortField']) => void;
-	setPage: (page: number) => void;
-};
-
-function TradesHistoryTable({
-	search,
-	typeFilter,
-	statusFilter,
-	sortField,
-	sortDirection,
-	page,
-	isFetching,
-	setSorting,
-	setPage,
-}: TradesHistoryTableProps) {
-	const { trades, paginatedTrades, totalPages } = useTradesHistoryData({
-		search,
-		typeFilter,
-		statusFilter,
-		sortField,
-		sortDirection,
+function TradesHistoryTable() {
+	const {
+		trades,
+		paginatedTrades,
+		totalPages,
+		fieldSort,
+		directionSort,
 		page,
-	});
+		isFetching,
+		setSorting,
+		setPage,
+	} = useTradesHistoryTable();
 
 	if (trades.length === 0) {
 		return (
@@ -91,15 +93,17 @@ function TradesHistoryTable({
 				<Table highlightOnHover>
 					<Table.Thead>
 						<Table.Tr>
-							<Th sorted={sortField === 'ticker'} reversed={sortDirection === 'desc'} onSort={() => setSorting('ticker')} disabled={isFetching}>Тикер</Th>
-							<Th sorted={sortField === 'type'} reversed={sortDirection === 'desc'} onSort={() => setSorting('type')} disabled={isFetching}>Тип</Th>
-							<Th sorted={sortField === 'dateOpen'} reversed={sortDirection === 'desc'} onSort={() => setSorting('dateOpen')} disabled={isFetching}>Открытие</Th>
-							<Th sorted={sortField === 'dateClose'} reversed={sortDirection === 'desc'} onSort={() => setSorting('dateClose')} disabled={isFetching}>Закрытие</Th>
-							<Th sorted={sortField === 'tradeOpen'} reversed={sortDirection === 'desc'} onSort={() => setSorting('tradeOpen')} disabled={isFetching}>Цена откр.</Th>
-							<Th sorted={sortField === 'tradeClose'} reversed={sortDirection === 'desc'} onSort={() => setSorting('tradeClose')} disabled={isFetching}>Цена закр.</Th>
-							<Th sorted={sortField === 'count'} reversed={sortDirection === 'desc'} onSort={() => setSorting('count')} disabled={isFetching}>Кол-во</Th>
-							<Th sorted={sortField === 'sum'} reversed={sortDirection === 'desc'} onSort={() => setSorting('sum')} disabled={isFetching}>Сумма</Th>
-							<Th sorted={sortField === 'percent'} reversed={sortDirection === 'desc'} onSort={() => setSorting('percent')} disabled={isFetching}>Прибыль, %</Th>
+							{COLUMNS.map(({ field, label }) => (
+								<Th
+									key={field}
+									sorted={fieldSort === field}
+									reversed={directionSort === 'desc'}
+									onSort={() => setSorting(field)}
+									disabled={isFetching}
+								>
+									{label}
+								</Th>
+							))}
 							<Table.Th />
 						</Table.Tr>
 					</Table.Thead>

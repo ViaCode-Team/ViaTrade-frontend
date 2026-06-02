@@ -17,7 +17,9 @@ export function StatisticsPage() {
 				<StatisticsSummary />
 			</Section>
 
-			<StatisticsDashboard />
+			<Section>
+				<StatisticsDashboard />
+			</Section>
 
 			<Section header={{ title: 'История сделок', actions: <AddTradeButton /> }}>
 				<TradesHistory />

@@ -153,19 +153,23 @@ General rule:
 
 ## Naming
 
-| **Entity**               | **Rule**                   | **Example**                  |
-| ------------------------ | -------------------------- | ---------------------------- |
-| Folders/files            | `kebab-case`               | `strategy-page`              |
-| CSS Modules              | `kebab-case.module.css`    | `strategy-page.module.css`   |
-| Skeleton files           | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx` |
-| React components         | `PascalCase`               | `StrategyPage`               |
-| Boundary component       | `<Component>Boundary`      | `UserOrdersBoundary`         |
-| Error fallback component | `<Component>ErrorFallback` | `UserOrdersErrorFallback`    |
-| CSS/SCSS classes         | `camelCase`                | `pageTitle`                  |
-| Variables                | `camelCase`                | `strategyName`               |
-| Functions                | `camelCase`                | `getAccuracyColor`           |
-| Constants                | `SCREAMING_SNAKE_CASE`     | `ROUTES`                     |
-| HOC                      | `with` + `camelCase`       | `withQueryBoundary`          |
-| Hooks                    | `use` + `camelCase`        | `useLoginForm`               |
-| List pages               | plural                     | `strategies-page`            |
-| Detail pages             | singular                   | `strategy-page`              |
+| **Entity**                         | **Rule**                   | **Example**                  |
+| ---------------------------------- | -------------------------- | ---------------------------- |
+| Folders/files                      | `kebab-case`               | `strategy-page`              |
+| CSS Modules                        | `kebab-case.module.css`    | `strategy-page.module.css`   |
+| Skeleton files                     | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx` |
+| React components                   | `PascalCase`               | `StrategyPage`               |
+| Boundary component                 | `<Component>Boundary`      | `UserOrdersBoundary`         |
+| Error fallback component           | `<Component>ErrorFallback` | `UserOrdersErrorFallback`    |
+| CSS/SCSS classes                   | `camelCase`                | `pageTitle`                  |
+| Variables                          | `camelCase`                | `strategyName`               |
+| Functions                          | `camelCase`                | `getAccuracyColor`           |
+| Constants                          | `SCREAMING_SNAKE_CASE`     | `ROUTES`                     |
+| HOC                                | `with` + `camelCase`       | `withQueryBoundary`          |
+| Hooks                              | `use` + `camelCase`        | `useLoginForm`               |
+| List pages                         | plural                     | `strategies-page`            |
+| Detail pages                       | singular                   | `strategy-page`              |
+| URL Search Parameters (Search)     | `q`                        | `?q=search`                  |
+| URL Search Parameters (Filters)    | `*Filter`                  | `?typeFilter=long`           |
+| URL Search Parameters (Sorting)    | `*Sort`                    | `?fieldSort=date`            |
+| URL Search Parameters (Pagination) | `page`                     | `?page=1`                    |

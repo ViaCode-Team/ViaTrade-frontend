@@ -1,20 +1,12 @@
+import { useIsFetching } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import type { SortDirection, SortField } from '@/features/trade/filter-trades';
 import type { Trade } from '@/shared/api/types/gen/trade';
 
-import { useGetByUserSuspense } from '@/entities/statistic/api/gen';
+import { getGetByUserQueryKey, useGetByUserSuspense } from '@/entities/statistic/api/gen';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
-
-export type UseTradesHistoryDataProps = {
-	search: string;
-	typeFilter: 'all' | 'long' | 'short';
-	statusFilter: 'all' | 'open' | 'closed';
-	sortField: SortField;
-	sortDirection: SortDirection;
-	page: number;
-};
+import { type TradeFilters, useTradesHistory } from '@/features/trade/filter-trades';
 
 export type ProcessedTrade = Trade & {
 	ticker: string;
@@ -23,16 +15,21 @@ export type ProcessedTrade = Trade & {
 	percent?: number;
 };
 
-export function useTradesHistoryData({
-	search,
-	typeFilter,
-	statusFilter,
-	sortField,
-	sortDirection,
-	page,
-}: UseTradesHistoryDataProps) {
+export function useTradesHistoryTable() {
+	const {
+		q,
+		typeFilter,
+		statusFilter,
+		fieldSort,
+		directionSort,
+		page,
+		setFilters,
+		setFilter,
+	} = useTradesHistory();
+
 	const { data: tradesResponse } = useGetByUserSuspense();
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
+	const isFetchingTrades = useIsFetching({ queryKey: getGetByUserQueryKey() });
 
 	const trades = tradesResponse.data;
 	const stocks = stocksResponse.data;
@@ -49,8 +46,8 @@ export function useTradesHistoryData({
 			};
 		});
 
-		if (search) {
-			const lowerSearch = search.toLowerCase();
+		if (q) {
+			const lowerSearch = q.toLowerCase();
 			result = result.filter((t) => {
 				const dateOpenStr = dayjs(t.dateOpen).format('DD.MM.YYYY HH:mm');
 				const dateCloseStr = t.dateClose ? dayjs(t.dateClose).format('DD.MM.YYYY HH:mm') : '—';
@@ -86,7 +83,7 @@ export function useTradesHistoryData({
 			let aVal: string | number;
 			let bVal: string | number;
 
-			switch (sortField) {
+			switch (fieldSort) {
 				case 'ticker':
 					aVal = a.ticker;
 					bVal = b.ticker;
@@ -119,7 +116,7 @@ export function useTradesHistoryData({
 					aVal = a.income;
 					bVal = b.income;
 					break;
-				case 'percent':
+				case 'income':
 					aVal = a.percent ?? 0;
 					bVal = b.percent ?? 0;
 					break;
@@ -131,18 +128,38 @@ export function useTradesHistoryData({
 			if (aVal === bVal)
 				return 0;
 			const compare = aVal > bVal ? 1 : -1;
-			return sortDirection === 'desc' ? -compare : compare;
+			return directionSort === 'desc' ? -compare : compare;
 		});
 
 		return result;
-	}, [trades, stocks, search, typeFilter, statusFilter, sortField, sortDirection]);
+	}, [trades, stocks, q, typeFilter, statusFilter, fieldSort, directionSort]);
 
 	const totalPages = Math.ceil(processedTrades.length / 10);
 	const paginatedTrades = processedTrades.slice((page - 1) * 10, page * 10);
+
+	const setSorting = (field: TradeFilters['fieldSort']) => {
+		const reversed = field === fieldSort ? directionSort === 'desc' : false;
+
+		setFilters({
+			directionSort: reversed ? 'asc' : 'desc',
+			fieldSort: field,
+			page: '1',
+		});
+	};
+
+	const setPage = (val: number) => {
+		setFilter('page', val.toString());
+	};
 
 	return {
 		trades,
 		paginatedTrades,
 		totalPages,
+		fieldSort,
+		directionSort,
+		page,
+		isFetching: isFetchingTrades > 0,
+		setSorting,
+		setPage,
 	};
 }

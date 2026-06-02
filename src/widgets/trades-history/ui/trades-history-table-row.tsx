@@ -5,7 +5,7 @@ import { CloseTradeButton } from '@/features/statistic/close-trade';
 import { DeleteTradeButton } from '@/features/statistic/delete-trade';
 import { EditTradeButton } from '@/features/statistic/edit-trade';
 
-import type { ProcessedTrade } from '../lib/use-trades-history';
+import type { ProcessedTrade } from '../lib/use-trades-history-table';
 
 export type TradesHistoryTableRowProps = {
 	trade: ProcessedTrade;

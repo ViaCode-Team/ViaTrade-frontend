@@ -1,21 +1,15 @@
-import type { useNotesList } from '@/widgets/notes-list';
-
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { ValueBadge } from '@/shared/ui/value-badge';
+import { useNotesList } from '@/widgets/notes-list';
 
-type NotesStatusBarProps = {
-	notesCount: number;
-	filteredNotes: ReturnType<typeof useNotesList>['filteredNotes'];
-	onRefresh?: () => void;
-};
-
-export function NotesStatusBar({ notesCount, filteredNotes, onRefresh }: NotesStatusBarProps) {
+export function NotesStatusBar() {
+	const { notes, filteredNotes, refetch } = useNotesList();
 	return (
 		<ListStatusBar
-			totalCount={notesCount}
+			totalCount={notes.length}
 			filteredCount={filteredNotes.length}
 			refreshIntervalText='Автообновление: 5 мин'
-			onRefresh={onRefresh}
+			onRefresh={refetch}
 			badges={(
 				<>
 					<ValueBadge

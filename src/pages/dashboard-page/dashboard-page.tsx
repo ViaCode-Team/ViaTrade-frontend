@@ -45,9 +45,6 @@ export function DashboardPage() {
 
 			<Section header={{ title: 'Лучшие акции' }}>
 				<StocksListBoundary
-					searchQuery=''
-					sortOption='name-asc'
-					trendFilter='all'
 					limit={4}
 					onLinkedStrategiesClick={() => {}}
 				/>

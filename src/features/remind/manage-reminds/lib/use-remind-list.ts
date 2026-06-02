@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { mapTradeRemindToRemindItem } from '@/entities/remind';
 import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind/api/gen';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
-import { defaultFilters } from '@/features/remind/filter-reminds/model/filters';
+import { remindFiltersSchema } from '@/features/remind/filter-reminds/model/filters';
 import { useUrlFilters } from '@/shared/lib/hooks';
 
 export function useRemindList(instrumentId?: number) {
-	const { filters } = useUrlFilters(defaultFilters);
-	const searchQuery = filters.rq.toLowerCase();
-	const sortOption = filters.sort;
+	const { filters } = useUrlFilters(remindFiltersSchema);
+	const searchQuery = filters.q.toLowerCase();
+	const sortOption = filters.listSort;
 
 	const queryOpts = instrumentId
 		? getGetTradeRemindByUserInstrumentSuspenseQueryOptions(instrumentId)

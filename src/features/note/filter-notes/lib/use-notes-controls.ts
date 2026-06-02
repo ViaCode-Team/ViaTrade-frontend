@@ -1,23 +1,25 @@
 import { useMemo } from 'react';
 
 import { useUrlFilters } from '@/shared/lib/hooks';
+import { v } from '@/shared/model/validate';
 
-import type { NotesSourceFilter } from '../model/note-filters';
-
-const defaultFilters = {
-	q: '',
-	source: 'all' as NotesSourceFilter,
-};
+export const noteFiltersSchema = v.object({
+	q: v.fallback(v.string(), ''),
+	sourceFilter: v.fallback(
+		v.picklist(['all', 'stock', 'strategy']),
+		'all',
+	),
+});
 
 export function useNotesControls() {
-	const { filters: urlFilters, setFilter } = useUrlFilters(defaultFilters);
+	const { filters: urlFilters, setFilter } = useUrlFilters(noteFiltersSchema);
 
 	const filters = useMemo(
 		() => ({
 			searchQuery: urlFilters.q,
-			sourceFilter: urlFilters.source,
+			sourceFilter: urlFilters.sourceFilter,
 		}),
-		[urlFilters.q, urlFilters.source],
+		[urlFilters.q, urlFilters.sourceFilter],
 	);
 
 	return { filters, setFilter };

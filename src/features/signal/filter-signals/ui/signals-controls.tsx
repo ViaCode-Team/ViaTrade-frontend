@@ -26,14 +26,14 @@ export function SignalsControls({ disabled, isLoading }: SignalsControlsProps) {
 			<Select
 				data={sortOptions}
 				value={filters.sortOption}
-				onChange={(val) => val && setFilter('sort', val)}
+				onChange={(val) => val && setFilter('listSort', val)}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
 			<SegmentedControl
 				data={directionOptions}
 				value={filters.directionFilter}
-				onChange={(val) => setFilter('direction', val)}
+				onChange={(val) => setFilter('directionFilter', val)}
 				disabled={disabled}
 			/>
 		</ControlsGroup>

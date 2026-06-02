@@ -1,10 +1,9 @@
 import { SimpleGrid, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 
-import type { StockSortOption, StockTrendFilter } from '@/features/stock/filter-stocks';
-
 import { useGetAllInstrumentsLinkSuspense } from '@/entities/strategy/api/gen';
 import { type Stock, StockCard } from '@/entities/trade-code/stock';
+import { useStocksControls } from '@/features/stock/filter-stocks';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -13,21 +12,20 @@ import { useStocksQuery } from '../../model/stocks-query';
 import { StocksListSkeleton } from './stocks-list.skeleton';
 
 type StocksListProps = {
-	searchQuery: string;
-	trendFilter: StockTrendFilter;
-	sortOption: StockSortOption;
 	limit?: number;
 	onLinkedStrategiesClick: (stock: Stock) => void;
 };
 
 export function StocksList({
-	searchQuery,
-	trendFilter,
-	sortOption,
 	limit,
 	onLinkedStrategiesClick,
 }: StocksListProps) {
-	const { data: stocks } = useStocksQuery(searchQuery, trendFilter, sortOption);
+	const { filters } = useStocksControls();
+	const { data: stocks } = useStocksQuery(
+		filters.searchQuery,
+		filters.trendFilter,
+		filters.sortOption,
+	);
 	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
 
 	const linkCountsByStockId = useMemo(() => {
@@ -41,7 +39,7 @@ export function StocksList({
 	const filteredStocks = limit ? stocks.slice(0, limit) : stocks;
 
 	if (filteredStocks.length === 0) {
-		const hasFilters = Boolean(searchQuery) || trendFilter !== 'all';
+		const hasFilters = Boolean(filters.searchQuery) || filters.trendFilter !== 'all';
 
 		if (!hasFilters) {
 			return (

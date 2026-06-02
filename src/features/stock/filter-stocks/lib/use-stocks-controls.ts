@@ -1,25 +1,32 @@
 import { useMemo } from 'react';
 
 import { useUrlFilters } from '@/shared/lib/hooks';
+import { v } from '@/shared/model/validate';
 
 import type { StockSortOption, StockTrendFilter } from '../model/stock-filters';
 
-const defaultFilters = {
-	q: '',
-	sort: 'name-asc' as StockSortOption,
-	trend: 'all' as StockTrendFilter,
-};
+export const stockFiltersSchema = v.object({
+	q: v.fallback(v.string(), ''),
+	listSort: v.fallback(
+		v.picklist(['name-asc', 'name-desc', 'price-asc', 'price-desc', 'change-desc', 'change-asc']),
+		'name-asc',
+	),
+	trendFilter: v.fallback(
+		v.picklist(['all', 'gainers', 'losers']),
+		'all',
+	),
+});
 
 export function useStocksControls() {
-	const { filters: urlFilters, setFilter } = useUrlFilters(defaultFilters);
+	const { filters: urlFilters, setFilter } = useUrlFilters(stockFiltersSchema);
 
 	const filters = useMemo(
 		() => ({
 			searchQuery: urlFilters.q,
-			sortOption: urlFilters.sort,
-			trendFilter: urlFilters.trend,
+			sortOption: urlFilters.listSort as StockSortOption,
+			trendFilter: urlFilters.trendFilter as StockTrendFilter,
 		}),
-		[urlFilters.q, urlFilters.sort, urlFilters.trend],
+		[urlFilters.q, urlFilters.listSort, urlFilters.trendFilter],
 	);
 
 	return { filters, setFilter };

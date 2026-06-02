@@ -1,14 +1,10 @@
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
+import { useNotesList } from '@/widgets/notes-list';
 
-type NotesSummaryProps = {
-	total: number;
-	stock: number;
-	strategy: number;
-	isLoading?: boolean;
-};
-
-export function NotesSummary({ total, stock, strategy, isLoading }: NotesSummaryProps) {
+export function NotesSummary() {
+	const { summary, isLoading } = useNotesList();
+	const { total, stock, strategy } = summary;
 	return (
 		<SummaryList>
 			<SummaryCard title='Всего' value={total} isLoading={isLoading} />

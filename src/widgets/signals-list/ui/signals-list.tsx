@@ -8,7 +8,7 @@ import {
 	SignalCard,
 	useGetResultSuspense,
 } from '@/entities/signal';
-import { getFilteredSignals, type SignalFilters } from '@/features/signal/filter-signals';
+import { getFilteredSignals, useSignalsControls } from '@/features/signal/filter-signals';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -16,16 +16,15 @@ import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { SignalsListSkeleton } from './signals-list.skeleton';
 
 type SignalsListProps = {
-	filters?: SignalFilters;
 	limit?: number;
 	onSignalSelect: (signal: Signal) => void;
 };
 
 export function SignalsList({
-	filters,
 	limit,
 	onSignalSelect,
 }: SignalsListProps) {
+	const { filters } = useSignalsControls();
 	const { data: signalsData } = useGetResultSuspense(undefined, {
 		query: {
 			staleTime: Infinity,

@@ -29,7 +29,7 @@ export function NotesControls({
 
 			<SegmentedControl
 				value={filters.sourceFilter}
-				onChange={(val) => setFilter('source', val)}
+				onChange={(val) => setFilter('sourceFilter', val)}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

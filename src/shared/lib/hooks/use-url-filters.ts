@@ -1,19 +1,24 @@
 import { useSearchParams } from 'react-router';
 
-export function useUrlFilters<T extends Record<string, string>>(defaultValues: T) {
+import { v } from '@/shared/model/validate';
+
+export function useUrlFilters<TSchema extends v.BaseSchema<any, any, any>>(schema: TSchema) {
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const filters = Object.keys(defaultValues).reduce((acc, key) => {
-		const val = searchParams.get(key);
-		acc[key as keyof T] = (val !== null ? val : defaultValues[key]) as unknown as T[keyof T];
-		return acc;
-	}, {} as T);
+	const rawParams: Record<string, string> = {};
+	searchParams.forEach((val, key) => {
+		rawParams[key] = val;
+	});
 
-	const setFilter = <K extends keyof T>(key: K, value: T[K] | string | null) => {
+	const result = v.safeParse(schema, rawParams);
+	const filters = (result.success ? result.output : v.parse(schema, {})) as v.InferOutput<TSchema>;
+	const defaultValues = v.parse(schema, {}) as v.InferOutput<TSchema>;
+
+	const setFilter = <K extends keyof v.InferOutput<TSchema>>(key: K, value: v.InferOutput<TSchema>[K] | string | null) => {
 		setSearchParams(
 			(prev) => {
-				if (value && value !== defaultValues[key]) {
-					prev.set(key as string, value as string);
+				if (value !== null && value !== undefined && value !== defaultValues[key]) {
+					prev.set(key as string, String(value));
 				}
 				else {
 					prev.delete(key as string);
@@ -24,12 +29,12 @@ export function useUrlFilters<T extends Record<string, string>>(defaultValues: T
 		);
 	};
 
-	const setFilters = (newFilters: Partial<{ [K in keyof T]: T[K] | string | null }>) => {
+	const setFilters = (newFilters: Partial<{ [K in keyof v.InferOutput<TSchema>]: v.InferOutput<TSchema>[K] | string | null }>) => {
 		setSearchParams(
 			(prev) => {
 				Object.entries(newFilters).forEach(([key, value]) => {
-					if (value && value !== defaultValues[key as keyof T]) {
-						prev.set(key, value as string);
+					if (value !== null && value !== undefined && value !== defaultValues[key as keyof v.InferOutput<TSchema>]) {
+						prev.set(key, String(value));
 					}
 					else {
 						prev.delete(key);

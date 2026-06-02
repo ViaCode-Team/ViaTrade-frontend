@@ -1,3 +1,5 @@
+import { v } from '@/shared/model/validate';
+
 export type StrategySortOption = 'name-asc' | 'name-desc' | 'accuracy-desc' | 'accuracy-asc';
 export type StrategyStatusFilter = 'all' | 'active' | 'inactive';
 
@@ -8,8 +10,16 @@ export const strategySortOptions = [
 	{ value: 'accuracy-asc', label: 'По точности (возрастание)' },
 ];
 
-export const defaultFilters = {
-	q: '',
-	sort: 'name-asc' as StrategySortOption,
-	filter: 'all' as StrategyStatusFilter,
-};
+export const strategyFiltersSchema = v.object({
+	q: v.fallback(v.string(), ''),
+	listSort: v.fallback(
+		v.picklist(['name-asc', 'name-desc', 'accuracy-desc', 'accuracy-asc']),
+		'name-asc',
+	),
+	statusFilter: v.fallback(
+		v.picklist(['all', 'active', 'inactive']),
+		'all',
+	),
+});
+
+export const defaultFilters = v.parse(strategyFiltersSchema, {});

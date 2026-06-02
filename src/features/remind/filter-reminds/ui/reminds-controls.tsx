@@ -8,7 +8,7 @@ import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import { defaultFilters, remindSortOptions } from '../model/filters';
+import { remindFiltersSchema, remindSortOptions } from '../model/filters';
 
 type RemindsControlsProps = {
 	actionSlot?: ReactNode;
@@ -16,7 +16,7 @@ type RemindsControlsProps = {
 };
 
 export function RemindsControls({ actionSlot, instrumentId }: RemindsControlsProps = {}) {
-	const { filters, setFilter } = useUrlFilters(defaultFilters);
+	const { filters, setFilter } = useUrlFilters(remindFiltersSchema);
 
 	const queryOpts = instrumentId
 		? getGetTradeRemindByUserInstrumentQueryOptions(instrumentId)
@@ -28,16 +28,16 @@ export function RemindsControls({ actionSlot, instrumentId }: RemindsControlsPro
 	return (
 		<ControlsGroup>
 			<SearchInput
-				value={filters.rq}
-				onChange={(val) => setFilter('rq', val)}
+				value={filters.q}
+				onChange={(val) => setFilter('q', val)}
 				placeholder='Поиск напоминаний...'
 				disabled={disabled}
 			/>
 
 			<Select
 				data={remindSortOptions}
-				value={filters.sort}
-				onChange={(val) => setFilter('sort', val)}
+				value={filters.listSort}
+				onChange={(val) => setFilter('listSort', val)}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>

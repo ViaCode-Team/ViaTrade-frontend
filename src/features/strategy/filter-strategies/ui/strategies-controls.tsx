@@ -5,10 +5,12 @@ import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import { defaultFilters, strategySortOptions } from '../model/filters';
+import type { StrategySortOption, StrategyStatusFilter } from '../model/filters';
+
+import { strategyFiltersSchema, strategySortOptions } from '../model/filters';
 
 export function StrategiesControls() {
-	const { filters, setFilter } = useUrlFilters(defaultFilters);
+	const { filters, setFilter } = useUrlFilters(strategyFiltersSchema);
 
 	const { data, isLoading } = useGetAll();
 	const disabled = isLoading || (data?.data.length === 0);
@@ -25,15 +27,15 @@ export function StrategiesControls() {
 
 			<Select
 				data={strategySortOptions}
-				value={filters.sort}
-				onChange={(val) => setFilter('sort', val)}
+				value={filters.listSort}
+				onChange={(val) => setFilter('listSort', val as StrategySortOption)}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
 
 			<SegmentedControl
-				value={filters.filter}
-				onChange={(val) => setFilter('filter', val)}
+				value={filters.statusFilter}
+				onChange={(val) => setFilter('statusFilter', val as StrategyStatusFilter)}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

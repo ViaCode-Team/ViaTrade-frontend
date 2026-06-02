@@ -7,7 +7,6 @@ import type { Stock } from '@/entities/trade-code/stock';
 import {
 	getStocksSummary,
 	StocksControls,
-	useStocksControls,
 } from '@/features/stock/filter-stocks';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
@@ -19,8 +18,6 @@ import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
 import { UserStockLinkedStrategiesModal } from './ui/user-stock-linked-strategies-modal';
 
 export function StocksPage() {
-	const { filters } = useStocksControls();
-
 	const { data: stocks } = useStocksQuery('', 'all', 'name-asc');
 	const summary = useMemo(() => getStocksSummary(stocks), [stocks]);
 
@@ -63,17 +60,11 @@ export function StocksPage() {
 						<StocksControls disabled={stocks.length === 0} />
 
 						<StocksStatusBarBoundary
-							searchQuery={filters.searchQuery}
-							sortOption={filters.sortOption}
-							trendFilter={filters.trendFilter}
 							totalCount={stocks.length}
 						/>
 					</Stack>
 
 					<StocksListBoundary
-						searchQuery={filters.searchQuery}
-						sortOption={filters.sortOption}
-						trendFilter={filters.trendFilter}
 						onLinkedStrategiesClick={openLinkedStrategiesModal}
 					/>
 				</Stack>

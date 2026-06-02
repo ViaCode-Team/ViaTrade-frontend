@@ -28,14 +28,14 @@ export function StocksControls({ disabled, isLoading }: StocksControlsProps) {
 			<Select
 				data={stockSortOptions}
 				value={filters.sortOption}
-				onChange={(value) => value && setFilter('sort', value)}
+				onChange={(value) => value && setFilter('listSort', value)}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
 
 			<SegmentedControl
 				value={filters.trendFilter}
-				onChange={(value) => setFilter('trend', value)}
+				onChange={(value) => setFilter('trendFilter', value)}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

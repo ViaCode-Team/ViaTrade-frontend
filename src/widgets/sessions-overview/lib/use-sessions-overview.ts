@@ -8,13 +8,13 @@ import {
 	normalizeUserSessions,
 	sortUserSessionsByActivity,
 } from '@/entities/session';
-import { defaultFilters } from '@/features/session/filter-sessions/model/filters';
+import { sessionFiltersSchema } from '@/features/session/filter-sessions/model/filters';
 import { useUserSessionLogout } from '@/features/session/manage-sessions';
 import { useUrlFilters } from '@/shared/lib/hooks';
 
 export function useSessionsOverview() {
-	const { filters } = useUrlFilters(defaultFilters);
-	const searchQuery = filters.sq;
+	const { filters } = useUrlFilters(sessionFiltersSchema);
+	const searchQuery = filters.q;
 	const [page, setPage] = useState(1);
 	const [prevSearchQuery, setPrevSearchQuery] = useState(searchQuery);
 

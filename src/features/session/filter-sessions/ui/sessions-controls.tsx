@@ -4,10 +4,10 @@ import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import { defaultFilters } from '../model/filters';
+import { sessionFiltersSchema } from '../model/filters';
 
 export function SessionsControls() {
-	const { filters, setFilter } = useUrlFilters(defaultFilters);
+	const { filters, setFilter } = useUrlFilters(sessionFiltersSchema);
 
 	const { data, isLoading } = useGetSessions();
 	const sessions = data?.data ? normalizeUserSessions(data.data) : [];
@@ -16,8 +16,8 @@ export function SessionsControls() {
 	return (
 		<ControlsGroup>
 			<SearchInput
-				value={filters.sq}
-				onChange={(val) => setFilter('sq', val)}
+				value={filters.q}
+				onChange={(val) => setFilter('q', val)}
 				placeholder='Поиск сессии...'
 				disabled={disabled}
 				isLoading={isLoading}

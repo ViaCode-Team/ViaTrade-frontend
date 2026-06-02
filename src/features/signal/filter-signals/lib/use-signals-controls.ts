@@ -1,25 +1,32 @@
 import { useMemo } from 'react';
 
 import { useUrlFilters } from '@/shared/lib/hooks';
+import { v } from '@/shared/model/validate';
 
 import type { DirectionFilter, SortOption } from '../model/signal-filters';
 
-const defaultFilters = {
-	q: '',
-	sort: 'date-desc' as SortOption,
-	direction: 'all' as DirectionFilter,
-};
+export const signalFiltersSchema = v.object({
+	q: v.fallback(v.string(), ''),
+	listSort: v.fallback(
+		v.picklist(['date-desc', 'date-asc', 'asset-asc', 'asset-desc', 'confidence-desc', 'confidence-asc']),
+		'date-desc',
+	),
+	directionFilter: v.fallback(
+		v.picklist(['all', 'buy', 'sell']),
+		'all',
+	),
+});
 
 export function useSignalsControls() {
-	const { filters: urlFilters, setFilter } = useUrlFilters(defaultFilters);
+	const { filters: urlFilters, setFilter } = useUrlFilters(signalFiltersSchema);
 
 	const filters = useMemo(
 		() => ({
 			searchQuery: urlFilters.q,
-			sortOption: urlFilters.sort,
-			directionFilter: urlFilters.direction,
+			sortOption: urlFilters.listSort as SortOption,
+			directionFilter: urlFilters.directionFilter as DirectionFilter,
 		}),
-		[urlFilters.q, urlFilters.sort, urlFilters.direction],
+		[urlFilters.q, urlFilters.listSort, urlFilters.directionFilter],
 	);
 
 	return { filters, setFilter };

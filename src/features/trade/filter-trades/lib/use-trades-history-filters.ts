@@ -1,7 +1,9 @@
-import { useTradesHistoryFiltersContext } from './trades-history-filters-context';
+import { useUrlFilters } from '@/shared/lib/hooks';
+
+import { tradeFiltersSchema } from '../model/trade-filters';
 
 export function useTradesHistoryFilters() {
-	const { filters, setFilters, setFilter } = useTradesHistoryFiltersContext();
+	const { filters, setFilters, setFilter } = useUrlFilters(tradeFiltersSchema);
 
 	const {
 		q,

@@ -9,7 +9,6 @@ import {
 } from '@/entities/signal';
 import {
 	SignalsControls,
-	useSignalsControls,
 } from '@/features/signal/filter-signals';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
@@ -20,8 +19,6 @@ import { SignalsStatusBarBoundary } from './ui/signals-status-bar';
 import { SignalsSummaryBoundary } from './ui/signals-summary';
 
 export function SignalsPage() {
-	const { filters } = useSignalsControls();
-
 	const { data: signalsData, isLoading } = useGetResult(undefined, {
 		query: {
 			staleTime: Infinity,
@@ -61,11 +58,10 @@ export function SignalsPage() {
 						isLoading={isLoading}
 					/>
 
-					<SignalsStatusBarBoundary filters={filters} />
+					<SignalsStatusBarBoundary />
 				</Stack>
 
 				<SignalsListBoundary
-					filters={filters}
 					onSignalSelect={openSignalHistoryModal}
 				/>
 			</Stack>

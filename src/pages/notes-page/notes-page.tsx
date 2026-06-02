@@ -7,7 +7,7 @@ import { IconAlertTriangle } from '@tabler/icons-react';
 import { NotesControls } from '@/features/note/filter-notes';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { NotesList, useNotesList } from '@/widgets/notes-list';
+import { NotesListBoundary, useNotesList } from '@/widgets/notes-list';
 
 import { NotesStatusBar } from './ui/notes-status-bar';
 import { NotesSummary } from './ui/notes-summary';
@@ -15,15 +15,8 @@ import { NotesSummary } from './ui/notes-summary';
 export function NotesPage() {
 	const {
 		notes,
-		filteredNotes,
-		summary,
 		isLoading,
 		hasError,
-		isSaving,
-		isDeleting,
-		updateNote,
-		deleteNote,
-		refetch,
 	} = useNotesList();
 
 	const hasNotes = notes.length > 0;
@@ -36,7 +29,7 @@ export function NotesPage() {
 			/>
 
 			<Section>
-				<NotesSummary {...summary} isLoading={isLoading} />
+				<NotesSummary />
 			</Section>
 
 			<Section header={{ title: 'Список заметок' }}>
@@ -60,23 +53,11 @@ export function NotesPage() {
 						/>
 
 						{!isLoading && (
-							<NotesStatusBar
-								notesCount={notes.length}
-								filteredNotes={filteredNotes}
-								onRefresh={refetch}
-							/>
+							<NotesStatusBar />
 						)}
 					</Stack>
 
-					<NotesList
-						filteredNotes={filteredNotes}
-						hasNotes={hasNotes}
-						isLoading={isLoading}
-						isSaving={isSaving}
-						isDeleting={isDeleting}
-						updateNote={updateNote}
-						deleteNote={deleteNote}
-					/>
+					<NotesListBoundary />
 				</Stack>
 			</Section>
 		</>

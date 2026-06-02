@@ -10,7 +10,7 @@ import {
 	type GetUsersStrategySuspenseQueryResult,
 	mapTradeStrategiesToStrategies,
 } from '@/entities/strategy';
-import { defaultFilters } from '@/features/strategy/filter-strategies/model/filters';
+import { strategyFiltersSchema } from '@/features/strategy/filter-strategies/model/filters';
 import { useUrlFilters } from '@/shared/lib/hooks';
 
 type StrategiesQueries = [
@@ -31,10 +31,10 @@ export function useStrategiesOverview() {
 			{ ...getGetUsersStrategySuspenseQueryOptions(), refetchInterval: 300000 },
 		],
 	});
-	const { filters } = useUrlFilters(defaultFilters);
+	const { filters } = useUrlFilters(strategyFiltersSchema);
 	const searchQuery = filters.q;
-	const sortOption = filters.sort;
-	const statusFilter = filters.filter;
+	const sortOption = filters.listSort;
+	const statusFilter = filters.statusFilter;
 
 	const strategies = useMemo(
 		() =>

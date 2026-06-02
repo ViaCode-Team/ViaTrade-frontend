@@ -1,5 +1,6 @@
 import { Flex, Group } from '@mantine/core';
 
+import { AddTradeButton } from '@/features/statistic/add-trade';
 import { Logo } from '@/shared/ui/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 
@@ -34,6 +35,8 @@ export function AppHeader({
 			</Group>
 			<Group gap='sm'>
 				<ThemeSwitcher />
+
+				<AddTradeButton />
 			</Group>
 		</Flex>
 	);

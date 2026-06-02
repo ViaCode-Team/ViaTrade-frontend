@@ -1,5 +1,4 @@
 .main {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	min-height: calc(100vh - 53px - var(--app-shell-padding, 0px));
 }

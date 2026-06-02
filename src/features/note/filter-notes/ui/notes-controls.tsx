@@ -2,19 +2,18 @@ import { SegmentedControl } from '@mantine/core';
 
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
+import { usePersonalNotes } from '@/widgets/notes-list';
 
 import { useNotesControls } from '../lib/use-notes-controls';
 
 type NotesControlsProps = {
-	disabled?: boolean;
 	isLoading?: boolean;
 };
 
-export function NotesControls({
-	disabled,
-	isLoading,
-}: NotesControlsProps) {
+export function NotesControls({ isLoading }: NotesControlsProps = {}) {
 	const { filters, setFilter } = useNotesControls();
+	const { notes } = usePersonalNotes();
+	const disabled = notes.length === 0;
 
 	return (
 		<ControlsGroup>

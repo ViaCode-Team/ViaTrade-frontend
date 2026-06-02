@@ -1,36 +1,34 @@
 import { Flex } from '@mantine/core';
 
+import type { DraftedPersonalNote } from '@/features/note/manage-note';
+
+import { getFilteredNotes, useNotesControls } from '@/features/note/filter-notes';
 import { NoteCard } from '@/features/note/manage-note';
 import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
 import { EmptyState } from '@/shared/ui/empty-state';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import type { useNotesList } from '../lib/use-notes-list';
-
+import { useNotesMutations } from '../lib/hooks/use-notes-mutations';
+import { usePersonalNotes } from '../lib/hooks/use-personal-notes';
 import cls from './notes-list.module.css';
 import { NotesListSkeleton } from './notes-list.skeleton';
 
 type NotesListProps = {
-	filteredNotes: ReturnType<typeof useNotesList>['filteredNotes'];
-	hasNotes: boolean;
-	isLoading?: boolean;
-	isSaving: boolean;
-	isDeleting: boolean;
-	updateNote: ReturnType<typeof useNotesList>['updateNote'];
-	deleteNote: ReturnType<typeof useNotesList>['deleteNote'];
+	notes?: DraftedPersonalNote[];
 };
 
-export function NotesList({
-	filteredNotes,
-	hasNotes,
-	isLoading,
-	isSaving,
-	isDeleting,
-	updateNote,
-	deleteNote,
-}: NotesListProps) {
-	if (isLoading) {
-		return <NotesListSkeleton />;
-	}
+export function NotesList({ notes: providedNotes }: NotesListProps = {}) {
+	const { notes: allNotes } = usePersonalNotes();
+	const { filters } = useNotesControls();
+	const { isSaving, isDeleting, updateNote, deleteNote } = useNotesMutations();
+
+	const displayNotes = providedNotes ?? getFilteredNotes({
+		notes: allNotes,
+		searchQuery: filters.searchQuery,
+		sourceFilter: filters.sourceFilter,
+	});
+
+	const hasNotes = providedNotes ? providedNotes.length > 0 : allNotes.length > 0;
 
 	if (!hasNotes) {
 		return (
@@ -41,7 +39,7 @@ export function NotesList({
 		);
 	}
 
-	if (filteredNotes.length === 0) {
+	if (displayNotes.length === 0) {
 		return (
 			<EmptyState
 				title='Ничего не найдено'
@@ -56,7 +54,7 @@ export function NotesList({
 			component='ul'
 			gap={CONTENT_GRID_SPACING}
 		>
-			{filteredNotes.map((note) => (
+			{displayNotes.map((note) => (
 				<li key={note.id} className={cls.item}>
 					<NoteCard
 						note={note}
@@ -70,3 +68,6 @@ export function NotesList({
 		</Flex>
 	);
 }
+export const NotesWorkspaceBoundary = withQueryBoundary(NotesList, {
+	suspenseProps: { fallback: <NotesListSkeleton /> },
+});

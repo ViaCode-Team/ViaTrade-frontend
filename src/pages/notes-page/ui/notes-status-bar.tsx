@@ -1,9 +1,18 @@
+import { getFilteredNotes, useNotesControls } from '@/features/note/filter-notes';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { ValueBadge } from '@/shared/ui/value-badge';
-import { useNotesList } from '@/widgets/notes-list';
+import { usePersonalNotes } from '@/widgets/notes-list';
 
 export function NotesStatusBar() {
-	const { notes, filteredNotes, refetch } = useNotesList();
+	const { notes, refetch } = usePersonalNotes();
+	const { filters } = useNotesControls();
+
+	const filteredNotes = getFilteredNotes({
+		notes,
+		searchQuery: filters.searchQuery,
+		sourceFilter: filters.sourceFilter,
+	});
+
 	return (
 		<ListStatusBar
 			totalCount={notes.length}

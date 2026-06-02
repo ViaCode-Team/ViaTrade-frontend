@@ -1,0 +1,68 @@
+import { useSuspenseQueries } from '@tanstack/react-query';
+import { useMemo } from 'react';
+
+import {
+	getGetByUserInstrumentAllSuspenseQueryOptions,
+	getGetByUserStrategyAllSuspenseQueryOptions,
+} from '@/entities/note/api/gen';
+import { getGetAllSuspenseQueryOptions as getGetAllStrategiesSuspenseQueryOptions } from '@/entities/strategy/api/gen';
+import { getGetAllStocksCodesSuspenseQueryOptions } from '@/entities/trade-code/api/gen';
+import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
+import {
+	mergeApiNotesWithDrafts,
+	useStoredPersonalNotesQuery,
+} from '@/features/note/manage-note';
+
+import { getApiPersonalNotes } from '../../model/api-notes';
+
+export function usePersonalNotes() {
+	const storedNotesQuery = useStoredPersonalNotesQuery();
+
+	const [
+		instrumentNotesQuery,
+		strategyNotesQuery,
+		stocksQuery,
+		strategiesQuery,
+	] = useSuspenseQueries({
+		queries: [
+			getGetByUserInstrumentAllSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
+			getGetByUserStrategyAllSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
+			getGetAllStocksCodesSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
+			getGetAllStrategiesSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
+		],
+	}) as [any, any, any, any];
+
+	const apiNotes = useMemo(
+		() => getApiPersonalNotes({
+			instrumentNotes: instrumentNotesQuery.data?.data ?? [],
+			strategyNotes: strategyNotesQuery.data?.data ?? [],
+			stocks: (stocksQuery.data?.data ?? []).map(mapTradeCodeToStock),
+			strategies: strategiesQuery.data?.data ?? [],
+		}),
+		[
+			instrumentNotesQuery.data?.data,
+			strategyNotesQuery.data?.data,
+			stocksQuery.data?.data,
+			strategiesQuery.data?.data,
+		],
+	);
+
+	const notes = useMemo(
+		() => mergeApiNotesWithDrafts({
+			apiNotes,
+			storedNotes: storedNotesQuery.data ?? [],
+		}),
+		[apiNotes, storedNotesQuery.data],
+	);
+
+	const refetch = () => {
+		void instrumentNotesQuery.refetch();
+		void strategyNotesQuery.refetch();
+	};
+
+	return {
+		notes,
+		apiNotes,
+		refetch,
+	};
+}

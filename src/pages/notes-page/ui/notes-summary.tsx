@@ -1,10 +1,19 @@
+import { useMemo } from 'react';
+
+import { getNotesSummary } from '@/features/note/filter-notes';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
-import { useNotesList } from '@/widgets/notes-list';
+import { usePersonalNotes } from '@/widgets/notes-list';
 
-export function NotesSummary() {
-	const { summary, isLoading } = useNotesList();
+type NotesSummaryProps = {
+	isLoading?: boolean;
+};
+
+export function NotesSummary({ isLoading }: NotesSummaryProps = {}) {
+	const { notes } = usePersonalNotes();
+	const summary = useMemo(() => getNotesSummary(notes), [notes]);
 	const { total, stock, strategy } = summary;
+
 	return (
 		<SummaryList>
 			<SummaryCard title='Всего' value={total} isLoading={isLoading} />

@@ -48,7 +48,7 @@ export function StockReminds({ stock }: StockRemindsProps) {
 	return (
 		<Stack>
 			<Stack gap='xs'>
-				<RemindsControls actionSlot={actionSlot} />
+				<RemindsControls actionSlot={actionSlot} instrumentId={stock.instrumentId} />
 				<RemindStatusBarBoundary instrumentId={stock.instrumentId} />
 			</Stack>
 			<RemindListBoundary hideSourceBadge instrumentId={stock.instrumentId} />

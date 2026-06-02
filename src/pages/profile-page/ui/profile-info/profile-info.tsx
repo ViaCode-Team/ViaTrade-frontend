@@ -21,7 +21,7 @@ export function ProfileInfo() {
 	const { data: user } = data;
 
 	return (
-		<Card p={0} radius='md' className={cls.card}>
+		<Card p={0} className={cls.card}>
 			<ProfileBanner />
 
 			<Stack align='center' gap='sm' className={cls.profileHeader}>

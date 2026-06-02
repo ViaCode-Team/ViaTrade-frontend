@@ -37,7 +37,7 @@ export function PinSetup() {
 				<Logo />
 			</div>
 			<Container size='xs' style={{ width: '100%', maxWidth: '400px' }}>
-				<Paper radius='md' p='xl' withBorder style={{ position: 'relative' }}>
+				<Paper p='xl' withBorder style={{ position: 'relative' }}>
 					{step === 2 && (
 						<ActionIcon
 							variant='subtle'

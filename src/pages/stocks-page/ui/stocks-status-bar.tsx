@@ -40,6 +40,6 @@ export function StocksStatusBar({ totalCount }: StocksStatusBarProps) {
 
 export const StocksStatusBarBoundary = withQueryBoundary(StocksStatusBar, {
 	suspenseProps: {
-		fallback: <Skeleton height={40} radius='md' />,
+		fallback: <Skeleton height={40} />,
 	},
 });

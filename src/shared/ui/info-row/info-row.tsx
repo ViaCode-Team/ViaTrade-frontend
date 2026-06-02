@@ -55,7 +55,6 @@ export function InfoRow({
 			<div className={cls.main}>
 				<ThemeIcon
 					className={cls.icon}
-					radius='md'
 					size={42}
 				>
 					{icon}

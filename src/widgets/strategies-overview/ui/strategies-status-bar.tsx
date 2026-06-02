@@ -34,6 +34,6 @@ export function StrategiesStatusBar() {
 
 export const StrategiesStatusBarBoundary = withQueryBoundary(StrategiesStatusBar, {
 	suspenseProps: {
-		fallback: <Skeleton height={40} radius='md' />,
+		fallback: <Skeleton height={40} />,
 	},
 });

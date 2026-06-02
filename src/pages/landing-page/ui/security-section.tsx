@@ -40,10 +40,10 @@ const SECURITY_FEATURES = [
 
 export function SecuritySection() {
 	const features = SECURITY_FEATURES.map((feature) => (
-		<Paper key={feature.title} p='xl' radius='md' shadow='sm' withBorder className={cls.card}>
+		<Paper key={feature.title} p='xl' shadow='sm' withBorder className={cls.card}>
 			<Stack gap='sm'>
 				<Group>
-					<ThemeIcon size={40} radius='md'>
+					<ThemeIcon size={40}>
 						<feature.icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
 					</ThemeIcon>
 					<Title order={3} fz='lg'>{feature.title}</Title>

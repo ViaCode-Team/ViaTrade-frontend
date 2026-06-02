@@ -60,11 +60,11 @@ const MOCKDATA = [
 
 export function FeaturesSection() {
 	const features = MOCKDATA.map((feature) => (
-		<Card key={feature.title} shadow='md' radius='md' padding='xl' withBorder className={cls.card}>
+		<Card key={feature.title} shadow='md' padding='xl' withBorder className={cls.card}>
 			<Stack gap='sm'>
 				<ThemeIcon
 					size={50}
-					radius='md'
+
 					variant='light'
 					color={feature.color}
 				>

@@ -33,7 +33,7 @@ export function CtaSection() {
 						to={ROUTES.REGISTER}
 						size='xl'
 						color='brand'
-						radius='md'
+
 						rightSection={<IconArrowRight size={20} stroke={1.5} />}
 					>
 						Попробовать бесплатно

@@ -24,6 +24,6 @@ export function SessionsStatusBar() {
 
 export const SessionsStatusBarBoundary = withQueryBoundary(SessionsStatusBar, {
 	suspenseProps: {
-		fallback: <Skeleton height={40} radius='md' />,
+		fallback: <Skeleton height={40} />,
 	},
 });

@@ -63,7 +63,6 @@ export function HeroSection() {
 							component={Link}
 							to={ROUTES.REGISTER}
 							size='xl'
-							radius='md'
 							rightSection={<IconArrowRight size={20} stroke={1.5} />}
 						>
 							Попробовать бесплатно
@@ -74,7 +73,7 @@ export function HeroSection() {
 							size='xl'
 							color='dark'
 							variant='default'
-							radius='md'
+
 						>
 							Войти
 						</Button>

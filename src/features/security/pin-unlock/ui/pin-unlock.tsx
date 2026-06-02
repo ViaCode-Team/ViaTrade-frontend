@@ -30,7 +30,7 @@ export function PinUnlock() {
 				<Logo />
 			</div>
 			<Container size='xs' style={{ width: '100%', maxWidth: '400px' }}>
-				<Paper radius='md' p='xl' withBorder>
+				<Paper p='xl' withBorder>
 					<Title order={2} ta='center' mt='md' mb='xs'>
 						С возвращением
 					</Title>

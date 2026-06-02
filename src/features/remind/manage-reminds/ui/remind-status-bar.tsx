@@ -20,6 +20,6 @@ export function RemindStatusBar({ instrumentId }: { instrumentId?: number }) {
 
 export const RemindStatusBarBoundary = withQueryBoundary(RemindStatusBar, {
 	suspenseProps: {
-		fallback: <Skeleton height={40} radius='md' />,
+		fallback: <Skeleton height={40} />,
 	},
 });

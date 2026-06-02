@@ -20,9 +20,9 @@ const PRINCIPLES = [
 
 export function StatsSection() {
 	const principles = PRINCIPLES.map((principle) => (
-		<Paper key={principle.label} p='md' radius='md' shadow='sm' withBorder>
+		<Paper key={principle.label} p='md' shadow='sm' withBorder>
 			<Group align='center'>
-				<ThemeIcon size={40} radius='md' variant='light' color={principle.color}>
+				<ThemeIcon size={40} variant='light' color={principle.color}>
 					<principle.icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
 				</ThemeIcon>
 				<div>

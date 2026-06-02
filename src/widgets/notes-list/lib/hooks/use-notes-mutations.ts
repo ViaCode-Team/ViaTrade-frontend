@@ -28,12 +28,33 @@ export function useNotesMutations() {
 	const deleteInstrumentNoteMutation = useDeleteInstrumentNote();
 	const deleteStrategyNoteMutation = useDeleteStrategyNote();
 
-	const isSaving = updateInstrumentNoteMutation.isPending
-		|| updateStrategyNoteMutation.isPending
-		|| createInstrumentNoteMutation.isPending
-		|| createStrategyNoteMutation.isPending;
-	const isDeleting = deleteInstrumentNoteMutation.isPending
-		|| deleteStrategyNoteMutation.isPending;
+	function isNoteSaving(note: DraftedPersonalNote) {
+		const sourceId = getApiSourceId(note.source.id);
+		if (sourceId === null) {
+			return false;
+		}
+
+		if (note.source.type === 'stock') {
+			return (updateInstrumentNoteMutation.isPending && updateInstrumentNoteMutation.variables?.idInstrument === sourceId)
+				|| (createInstrumentNoteMutation.isPending && createInstrumentNoteMutation.variables?.idInstrument === sourceId);
+		}
+
+		return (updateStrategyNoteMutation.isPending && updateStrategyNoteMutation.variables?.idStrategy === sourceId)
+			|| (createStrategyNoteMutation.isPending && createStrategyNoteMutation.variables?.idStrategy === sourceId);
+	}
+
+	function isNoteDeleting(note: DraftedPersonalNote) {
+		const sourceId = getApiSourceId(note.source.id);
+		if (sourceId === null) {
+			return false;
+		}
+
+		if (note.source.type === 'stock') {
+			return deleteInstrumentNoteMutation.isPending && deleteInstrumentNoteMutation.variables?.idInstrument === sourceId;
+		}
+
+		return deleteStrategyNoteMutation.isPending && deleteStrategyNoteMutation.variables?.idStrategy === sourceId;
+	}
 
 	function updateNote(
 		note: DraftedPersonalNote,
@@ -117,8 +138,8 @@ export function useNotesMutations() {
 	}
 
 	return {
-		isSaving,
-		isDeleting,
+		isNoteSaving,
+		isNoteDeleting,
 		updateNote,
 		deleteNote,
 	};

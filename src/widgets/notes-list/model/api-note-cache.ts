@@ -72,6 +72,24 @@ function updateInstrumentNotesData(
 		return data;
 	}
 
+	const exists = data.data.some((note) => note.tradeCodeId === sourceId);
+
+	if (!exists) {
+		return {
+			...data,
+			data: [
+				...data.data,
+				{
+					id: Date.now(),
+					tradeCodeId: sourceId,
+					noteText: text,
+					isFavourite: false,
+					updateTime: new Date().toISOString(),
+				} as any,
+			],
+		};
+	}
+
 	return {
 		...data,
 		data: data.data.map((note) => note.tradeCodeId === sourceId
@@ -115,6 +133,24 @@ function updateStrategyNotesData(
 ) {
 	if (!data) {
 		return data;
+	}
+
+	const exists = data.data.some((note) => note.tradeStrategyId === sourceId);
+
+	if (!exists) {
+		return {
+			...data,
+			data: [
+				...data.data,
+				{
+					id: Date.now(),
+					tradeStrategyId: sourceId,
+					noteText: text,
+					isFavourite: false,
+					updateTime: new Date().toISOString(),
+				} as any,
+			],
+		};
 	}
 
 	return {

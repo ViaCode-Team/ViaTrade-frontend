@@ -1,5 +1,4 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 import { mapTradeRemindToRemindItem } from '@/entities/remind';
 import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind/api/gen';
@@ -8,6 +7,7 @@ import { remindFiltersSchema } from '@/features/remind/filter-reminds/model/filt
 import { useUrlFilters } from '@/shared/lib/hooks';
 
 export function useRemindList(instrumentId?: number) {
+	const queryClient = useQueryClient();
 	const { filters } = useUrlFilters(remindFiltersSchema);
 	const searchQuery = filters.q.toLowerCase();
 	const sortOption = filters.listSort;
@@ -21,7 +21,6 @@ export function useRemindList(instrumentId?: number) {
 		refetchInterval: 300000,
 	});
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
-	const [now] = useState(Date.now);
 
 	const reminds = response.data
 		.map((r) => {
@@ -32,22 +31,38 @@ export function useRemindList(instrumentId?: number) {
 				item.source.id = tradeCode.exchangeId.toLowerCase();
 			}
 			return item;
-		})
-		.filter((r) => new Date(`${r.date}T${r.time}`).getTime() >= now);
+		});
 
 	const updateRemindMutation = useUpdateRemind();
 
-	const handleRemindChange = (remindId: string, updates: { text: string; date: string; time: string }) => {
+	const handleRemindChange = (remindId: string, updates: { text: string; date: string; time: string }, onSuccess?: () => void) => {
 		const remind = reminds.find((r) => r.id === remindId);
 		if (!remind) {
 			return;
 		}
+
 
 		updateRemindMutation.mutate({
 			redindId: Number(remindId),
 			data: {
 				textRemind: updates.text,
 				dateTime: `${updates.date}T${updates.time}:00.000Z`,
+			},
+		}, {
+			onSuccess: () => {
+				queryClient.setQueryData(queryOpts.queryKey, (oldData: any) => {
+					if (!oldData)
+						return oldData;
+					return {
+						...oldData,
+						data: oldData.data.map((r: any) =>
+							r.id === Number(remindId)
+								? { ...r, textRemind: updates.text, dateTime: `${updates.date}T${updates.time}:00.000Z` }
+								: r,
+						),
+					};
+				});
+				onSuccess?.();
 			},
 		});
 	};

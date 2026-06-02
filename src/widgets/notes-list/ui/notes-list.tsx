@@ -20,7 +20,7 @@ type NotesListProps = {
 export function NotesList({ notes: providedNotes }: NotesListProps = {}) {
 	const { notes: allNotes } = usePersonalNotes();
 	const { filters } = useNotesControls();
-	const { isSaving, isDeleting, updateNote, deleteNote } = useNotesMutations();
+	const { isNoteSaving, isNoteDeleting, updateNote, deleteNote } = useNotesMutations();
 
 	const displayNotes = providedNotes ?? getFilteredNotes({
 		notes: allNotes,
@@ -58,8 +58,8 @@ export function NotesList({ notes: providedNotes }: NotesListProps = {}) {
 				<li key={note.id} className={cls.item}>
 					<NoteCard
 						note={note}
-						isSaving={isSaving}
-						isDeleting={isDeleting}
+						isSaving={isNoteSaving(note)}
+						isDeleting={isNoteDeleting(note)}
 						onSave={updateNote}
 						onDelete={deleteNote}
 					/>

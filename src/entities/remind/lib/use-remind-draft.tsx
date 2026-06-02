@@ -13,6 +13,7 @@ type UseRemindDraftOptions = {
 	onRemindChange: (
 		remindId: string,
 		updates: RemindUpdates,
+		onSuccess?: () => void,
 	) => void;
 };
 
@@ -102,13 +103,20 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 			return;
 		}
 
-		removeLocalDraft();
-
-		onRemindChange(remind.id, {
-			text: localDraft.text,
-			date: localDraft.date,
-			time: localDraft.time,
-		});
+		onRemindChange(
+			remind.id,
+			{
+				text: localDraft.text,
+				date: localDraft.date,
+				time: localDraft.time,
+			},
+			() => {
+				// We do not call removeLocalDraft() here because useLocalStorage would reset the state
+				// to the initial defaultValue (the old text), causing a UI blink.
+				// Instead, we just manually clean up the localStorage entry. The localDraft state stays as the new text.
+				window.localStorage.removeItem(`via-remind-draft-${remind.id}`);
+			},
+		);
 	};
 
 	const handleReset = () => {

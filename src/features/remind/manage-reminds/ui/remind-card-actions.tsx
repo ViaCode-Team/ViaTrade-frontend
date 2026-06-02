@@ -1,13 +1,15 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { useDeleteRemind } from '@/entities/remind/api/gen';
+import { getGetAllByUserQueryKey, useDeleteRemind } from '@/entities/remind/api/gen';
 
 type RemindCardActionsProps = {
 	remindId: string;
 };
 
 export function RemindCardActions({ remindId }: RemindCardActionsProps) {
+	const queryClient = useQueryClient();
 	const deleteRemindMutation = useDeleteRemind();
 
 	return (
@@ -19,7 +21,24 @@ export function RemindCardActions({ remindId }: RemindCardActionsProps) {
 					size='md'
 					aria-label='Удалить напоминание'
 					onClick={() => {
-						deleteRemindMutation.mutate({ redindId: Number(remindId) });
+						deleteRemindMutation.mutate({ redindId: Number(remindId) }, {
+							onSuccess: () => {
+								const updater = (oldData: any) => {
+									if (!oldData)
+										return oldData;
+									return {
+										...oldData,
+										data: oldData.data.filter((r: any) => r.id !== Number(remindId)),
+									};
+								};
+
+								queryClient.setQueriesData({ queryKey: getGetAllByUserQueryKey() }, updater);
+								queryClient.setQueriesData(
+									{ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/TradeRemind/byuser/instrument/') },
+									updater,
+								);
+							},
+						});
 					}}
 					loading={deleteRemindMutation.isPending}
 				>

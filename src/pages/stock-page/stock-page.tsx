@@ -9,7 +9,6 @@ import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { ROUTES } from '@/shared/model/routes';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
 import { StockReminds } from '@/widgets/stock-reminds';
@@ -18,7 +17,7 @@ import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
 import { StockNotFound } from './ui/stock-not-found';
 
-function StockPage() {
+export function StockPage() {
 	const { stockId } = useParams();
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 
@@ -78,5 +77,3 @@ function StockPage() {
 		</>
 	);
 }
-
-export const StockPageBoundary = withQueryBoundary(StockPage);

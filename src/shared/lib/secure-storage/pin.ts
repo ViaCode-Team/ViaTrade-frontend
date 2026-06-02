@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval';
+import { del, get, set } from 'idb-keyval';
 
 import {
 	decryptBuffer,
@@ -10,9 +10,29 @@ import {
 	generateSalt,
 	importKey,
 } from '../crypto';
-import { STORE_ENCRYPTED_MK_KEY, STORE_MK_IV_KEY, STORE_SALT_KEY } from './constants';
+import {
+	FAILED_ATTEMPTS_KEY,
+	PIN_SETUP_MARK_KEY,
+	STORE_ENCRYPTED_MK_KEY,
+	STORE_MK_IV_KEY,
+	STORE_SALT_KEY,
+} from './constants';
 import { saveTempKey } from './cookie';
 import { setSessionMasterKey } from './state';
+
+export async function setPinSetupMark(): Promise<void> {
+	const mark = crypto.randomUUID(); // A secure enough random mark
+	await set(PIN_SETUP_MARK_KEY, mark);
+}
+
+export async function clearPinSetupMark(): Promise<void> {
+	await del(PIN_SETUP_MARK_KEY);
+}
+
+export async function hasPinSetupMark(): Promise<boolean> {
+	const mark = await get<string>(PIN_SETUP_MARK_KEY);
+	return !!mark;
+}
 
 export async function hasPinSetup(): Promise<boolean> {
 	const salt = await get<Uint8Array>(STORE_SALT_KEY);
@@ -33,6 +53,7 @@ export async function setupPin(pin: string): Promise<void> {
 	await set(STORE_SALT_KEY, salt);
 	await set(STORE_ENCRYPTED_MK_KEY, encryptedMk);
 	await set(STORE_MK_IV_KEY, iv);
+	await set(FAILED_ATTEMPTS_KEY, 0);
 
 	setSessionMasterKey(mk);
 	saveTempKey(rawMk);

@@ -33,6 +33,4 @@ export const tradeFiltersSchema = v.object({
 
 export type TradeFilters = v.InferOutput<typeof tradeFiltersSchema>;
 
-export const defaultTradeFilters = v.parse(tradeFiltersSchema, {
-	typeFilter: 'hacked',
-});
+export const defaultTradeFilters = v.parse(tradeFiltersSchema, {});

@@ -3,6 +3,7 @@ import { createContext, use } from 'react';
 export type SecurityState = {
 	isLocked: boolean;
 	hasPin: boolean;
+	isPinSetupMark: boolean;
 	isReady: boolean;
 	checkSecurityState: () => Promise<void>;
 };

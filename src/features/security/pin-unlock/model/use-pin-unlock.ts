@@ -1,15 +1,20 @@
-import { useDisclosure, useLocalStorage } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 import { useQueryClient } from '@tanstack/react-query';
+import { get, set } from 'idb-keyval';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
-import { logout } from '@/entities/auth/api/gen';
+import { useLogout } from '@/entities/auth/api/gen';
 import { useSecurity } from '@/entities/security';
 import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
+import { useAppNetwork } from '@/shared/lib/hooks';
+import { showNoNetworkNotification } from '@/shared/lib/no-network';
 import {
 	FAILED_ATTEMPTS_KEY,
 	MAX_FAILED_ATTEMPTS,
 	unlockApp,
 } from '@/shared/lib/secure-storage';
+import { ROUTES } from '@/shared/model/routes';
 
 export function usePinUnlock() {
 	const queryClient = useQueryClient();
@@ -17,38 +22,47 @@ export function usePinUnlock() {
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
-	const [failedAttempts, setFailedAttempts] = useLocalStorage<number>({
-		key: FAILED_ATTEMPTS_KEY,
-		defaultValue: 0,
-	});
+	const { isOnline } = useAppNetwork();
+
+	const navigate = useNavigate();
+	const onLogoutSuccess = async () => {
+		await clearLocalData(queryClient);
+		await checkSecurityState();
+		navigate(ROUTES.LOGIN);
+	};
+
+	const { mutate: logout, isPending: isLoggingOut } = useLogout({ mutation: { onSuccess: onLogoutSuccess } });
 
 	const handleComplete = async (value: string) => {
 		setError(null);
 		startLoading();
 
 		try {
+			const currentAttempts = await get<number>(FAILED_ATTEMPTS_KEY);
+
+			// Защита: если ключа попыток нет вообще, значит его удалили вручную в IDB для обхода лимита
+			if (currentAttempts === undefined) {
+				logout();
+				await clearLocalData(queryClient);
+				navigate(ROUTES.LOGIN);
+				return;
+			}
+
 			const success = await unlockApp(value);
 			if (success) {
-				setFailedAttempts(0);
+				await set(FAILED_ATTEMPTS_KEY, 0);
 				await checkSecurityState();
 			}
 			else {
-				const newAttempts = failedAttempts + 1;
-				setFailedAttempts(newAttempts);
+				const newAttempts = currentAttempts + 1;
+				await set(FAILED_ATTEMPTS_KEY, newAttempts);
 				setPin('');
 
 				if (newAttempts >= MAX_FAILED_ATTEMPTS) {
-					// Try to call logout API to clear HttpOnly cookies (ignore error if offline)
-					try {
-						await logout();
-					}
-					catch (e) {
-						console.warn('Logout API failed, possibly offline', e);
-					}
+					logout();
 
-					// Wipe all data and redirect to login
 					await clearLocalData(queryClient);
-					window.location.href = '/login';
+					navigate(ROUTES.LOGIN);
 					return;
 				}
 
@@ -71,23 +85,18 @@ export function usePinUnlock() {
 	};
 
 	const handleLogout = async () => {
-		startLoading();
-		try {
-			await logout();
+		if (!isOnline) {
+			showNoNetworkNotification();
+			return;
 		}
-		catch (e) {
-			console.warn('Logout API failed, possibly offline', e);
-		}
-		finally {
-			await clearLocalData(queryClient);
-			window.location.href = '/login';
-		}
+
+		logout();
 	};
 
 	return {
 		pin,
 		error,
-		isLoading,
+		isLoading: isLoading || isLoggingOut,
 		handleChange,
 		handleComplete,
 		handleLogout,

@@ -1,11 +1,15 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
-import { logout } from '@/entities/auth/api/gen';
+import { useLogout } from '@/entities/auth/api/gen';
 import { useSecurity } from '@/entities/security';
 import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
-import { setupPin } from '@/shared/lib/secure-storage';
+import { useAppNetwork } from '@/shared/lib/hooks';
+import { showNoNetworkNotification } from '@/shared/lib/no-network';
+import { clearPinSetupMark, hasPinSetupMark, setupPin } from '@/shared/lib/secure-storage';
+import { ROUTES } from '@/shared/model/routes';
 
 export function usePinSetup() {
 	const [step, setStep] = useState<1 | 2>(1);
@@ -15,6 +19,17 @@ export function usePinSetup() {
 	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
 	const queryClient = useQueryClient();
+
+	const { isOnline } = useAppNetwork();
+	const navigate = useNavigate();
+
+	const onLogoutSuccess = async () => {
+		await clearLocalData(queryClient);
+		await checkSecurityState();
+		navigate(ROUTES.LOGIN);
+	};
+
+	const { mutate: logout, isPending: isLoggingOut } = useLogout({ mutation: { onSuccess: onLogoutSuccess } });
 
 	const handlePinChange = (value: string) => {
 		setPin(value);
@@ -28,7 +43,20 @@ export function usePinSetup() {
 			setError(null);
 	};
 
-	const handleStep1Complete = () => {
+	const handleStep1Complete = async () => {
+		if (!isOnline) {
+			showNoNetworkNotification();
+			return;
+		}
+
+		const hasMark = await hasPinSetupMark();
+		if (!hasMark) {
+			logout();
+			await clearLocalData(queryClient);
+			navigate(ROUTES.LOGIN);
+			return;
+		}
+
 		setError(null);
 		setStep(2);
 		setConfirmPin('');
@@ -36,6 +64,20 @@ export function usePinSetup() {
 
 	const handleStep2Complete = async (value: string) => {
 		setError(null);
+
+		if (!isOnline) {
+			showNoNetworkNotification();
+			setConfirmPin('');
+			return;
+		}
+
+		const hasMark = await hasPinSetupMark();
+		if (!hasMark) {
+			logout();
+			await clearLocalData(queryClient);
+			navigate(ROUTES.LOGIN);
+			return;
+		}
 
 		if (pin !== value) {
 			setError('ПИН-коды не совпадают.');
@@ -46,8 +88,8 @@ export function usePinSetup() {
 		startLoading();
 		try {
 			await setupPin(pin);
+			await clearPinSetupMark();
 			await checkSecurityState();
-			// Refetch to ensure the cache is saved to the newly created secure storage
 			await queryClient.refetchQueries();
 		}
 		catch {
@@ -67,17 +109,12 @@ export function usePinSetup() {
 	};
 
 	const handleLogout = async () => {
-		startLoading();
-		try {
-			await logout();
+		if (!isOnline) {
+			showNoNetworkNotification();
+			return;
 		}
-		catch (e) {
-			console.warn('Logout API failed, possibly offline', e);
-		}
-		finally {
-			await clearLocalData(queryClient);
-			window.location.href = '/login';
-		}
+
+		logout();
 	};
 
 	return {
@@ -85,7 +122,7 @@ export function usePinSetup() {
 		pin,
 		confirmPin,
 		error,
-		isLoading,
+		isLoading: isLoading || isLoggingOut,
 		handlePinChange,
 		handleConfirmPinChange,
 		handleStep1Complete,

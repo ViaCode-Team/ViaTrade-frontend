@@ -1,7 +1,11 @@
 import { useForm } from '@mantine/form';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useLogin } from '@/entities/auth';
+import { getGetSessionsQueryKey, useLogin } from '@/entities/auth';
+import { useSecurity } from '@/entities/security';
+import { getGetMeQueryKey } from '@/entities/user';
+import { setPinSetupMark } from '@/shared/lib/secure-storage';
 
 import type { TLoginData } from '../model/login-data';
 
@@ -10,9 +14,18 @@ import { getLoginFormErrors, validateLoginForm } from '../model/login-validation
 
 export function useLoginForm() {
 	const [apiError, setApiError] = useState<string | null>(null);
+	const queryClient = useQueryClient();
+	const { checkSecurityState } = useSecurity();
 
 	const { mutate, isPending } = useLogin({
+		skipInvalidation: true,
 		mutation: {
+			onSuccess: async () => {
+				await setPinSetupMark();
+				await checkSecurityState();
+				queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
+				queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() });
+			},
 			onError: (error) => {
 				setApiError(mapLoginApiError(error));
 			},

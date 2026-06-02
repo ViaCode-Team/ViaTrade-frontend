@@ -1,15 +1,20 @@
-import { useIsRestoring } from '@tanstack/react-query';
+import { useIsRestoring, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import {
 	Navigate,
 	Outlet,
 	type To,
 	useLocation,
+	useNavigate,
 } from 'react-router';
 
+import { useLogout } from '@/entities/auth/api/gen';
 import { useSecurity } from '@/entities/security';
 import { useGetMe } from '@/entities/user';
 import { PinSetup } from '@/features/security/pin-setup';
 import { PinUnlock } from '@/features/security/pin-unlock';
+import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
+import { useAppNetwork } from '@/shared/lib/hooks';
 import { ROUTES } from '@/shared/model/routes';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
@@ -26,7 +31,8 @@ export function ProtectedRoute({
 }: ProtectedRouteProps) {
 	const location = useLocation();
 	const isRestoring = useIsRestoring();
-	const { hasPin, isLocked, isReady } = useSecurity();
+	const { hasPin, isLocked, isReady, isPinSetupMark } = useSecurity();
+	const { isOnline } = useAppNetwork();
 
 	const isCanFetch = isReady && (!hasPin || !isLocked) && !isRestoring;
 
@@ -56,7 +62,15 @@ export function ProtectedRoute({
 
 	// Если пользователь авторизован, проверяем PIN
 	if (isExistUser && !hasPin) {
-		return <PinSetup />;
+		if (isPinSetupMark) {
+			return <PinSetup />;
+		}
+
+		if (isOnline) {
+			return <ForceLogout />;
+		}
+
+		return <GlobalLoader />;
 	}
 
 	// Если маршрут для авторизованного пользователя(приватный), но пользователь неавторизован, то делаем редирект
@@ -74,4 +88,24 @@ export function ProtectedRoute({
 	}
 
 	return <Outlet />;
+}
+
+function ForceLogout() {
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
+	const { checkSecurityState } = useSecurity();
+
+	const onLogoutSuccess = async () => {
+		await clearLocalData(queryClient);
+		await checkSecurityState();
+		navigate(ROUTES.LOGIN);
+	};
+
+	const { mutate: logout } = useLogout({ mutation: { onSuccess: onLogoutSuccess } });
+
+	useEffect(() => {
+		logout();
+	}, [logout]);
+
+	return <GlobalLoader />;
 }

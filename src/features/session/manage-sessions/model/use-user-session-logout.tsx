@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router';
 import { useLogout, useLogoutAll } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
 import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
+import { useAppNetwork } from '@/shared/lib/hooks';
+import { showNoNetworkNotification } from '@/shared/lib/no-network';
 import { ROUTES } from '@/shared/model/routes';
 
 type LogoutConfirmationContent = {
@@ -59,14 +61,28 @@ export function useUserSessionLogout() {
 		mutation: { onSuccess: onLogoutSuccess },
 	});
 
-	const requestLogoutAll = () => openLogoutConfirmation({
-		title: 'Выйти из всех сессий?',
-		description: 'После подтверждения все активные сессии будут завершены, и потребуется войти заново.',
-		confirmLabel: 'Выйти',
-		onConfirm: logoutAll,
-	});
+	const { isOnline } = useAppNetwork();
+
+	const requestLogoutAll = () => {
+		if (!isOnline) {
+			showNoNetworkNotification();
+			return;
+		}
+
+		openLogoutConfirmation({
+			title: 'Выйти из всех сессий?',
+			description: 'После подтверждения все активные сессии будут завершены, и потребуется войти заново.',
+			confirmLabel: 'Выйти',
+			onConfirm: logoutAll,
+		});
+	};
 
 	const requestLogoutCurrentSession = () => {
+		if (!isOnline) {
+			showNoNetworkNotification();
+			return;
+		}
+
 		openLogoutConfirmation({
 			title: 'Выйти из текущей сессии?',
 			description: 'После подтверждения текущая сессия будет завершена, и потребуется войти заново.',

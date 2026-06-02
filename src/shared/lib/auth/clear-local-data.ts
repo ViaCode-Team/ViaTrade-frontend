@@ -19,9 +19,6 @@ export async function clearLocalData(queryClient: QueryClient) {
 	localStorage.clear();
 	sessionStorage.clear();
 	queryClient.clear();
-	// await Promise.all(
-	// 	(await caches.keys()).map((key) => caches.delete(key)),
-	// );
 	Object.keys(Cookies.get()).forEach((name) => {
 		Cookies.remove(name);
 	});

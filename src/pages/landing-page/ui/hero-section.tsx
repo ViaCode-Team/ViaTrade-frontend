@@ -65,7 +65,7 @@ export function HeroSection() {
 							size='xl'
 							rightSection={<IconArrowRight size={20} stroke={1.5} />}
 						>
-							Попробовать бесплатно
+							Попробовать
 						</Button>
 						<Button
 							component={Link}

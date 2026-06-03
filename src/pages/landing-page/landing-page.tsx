@@ -42,5 +42,3 @@ export function LandingPage() {
 		</AppShell>
 	);
 }
-
-export default LandingPage;

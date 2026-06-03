@@ -36,7 +36,7 @@ export function CtaSection() {
 
 						rightSection={<IconArrowRight size={20} stroke={1.5} />}
 					>
-						Попробовать бесплатно
+						Попробовать
 					</Button>
 				</Group>
 			</Stack>

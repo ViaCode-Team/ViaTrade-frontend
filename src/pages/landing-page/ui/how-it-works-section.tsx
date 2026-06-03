@@ -42,7 +42,7 @@ export function HowItWorksSection() {
 					0
 					{index + 1}
 				</Text>
-				<Stack gap='xs' mt={10}>
+				<Stack gap='xs'>
 					<Text fz='lg' fw={700}>
 						{step.title}
 					</Text>

@@ -24,11 +24,6 @@ export function FaqSection() {
 						<Accordion.Panel>Любая торговля на бирже сопряжена с рисками. Мы предоставляем статистически выверенные сигналы и исторически успешные стратегии, однако решение о сделке всегда остается за вами. Мы настоятельно рекомендуем диверсифицировать риски.</Accordion.Panel>
 					</Accordion.Item>
 
-					<Accordion.Item value='cost'>
-						<Accordion.Control>Сколько стоит использование платформы?</Accordion.Control>
-						<Accordion.Panel>Базовый функционал, включающий ведение журнала сделок и основной аналитический дашборд, доступен совершенно бесплатно.</Accordion.Panel>
-					</Accordion.Item>
-
 					<Accordion.Item value='offline'>
 						<Accordion.Control>Работает ли платформа без интернета?</Accordion.Control>
 						<Accordion.Panel>Да! Благодаря поддержке PWA, вы можете просматривать сохраненную аналитику, стратегии и историю сделок даже в офлайн-режиме.</Accordion.Panel>

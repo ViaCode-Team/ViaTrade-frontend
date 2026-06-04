@@ -3,7 +3,6 @@ import { Box } from '@mantine/core';
 export function DecorativeBackground() {
 	return (
 		<Box
-			visibleFrom='sm'
 			pos='absolute'
 			inset={0}
 			style={{ zIndex: -1, pointerEvents: 'none', overflow: 'hidden' }}

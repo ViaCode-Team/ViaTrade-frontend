@@ -1,4 +1,4 @@
-import { AppShell, Box, Text, Title } from '@mantine/core';
+import { AppShell, Box } from '@mantine/core';
 
 import { Section } from '@/shared/ui/section';
 import { PureHeader } from '@/widgets/header';
@@ -32,18 +32,7 @@ export function LandingPage() {
 						<HeroSection />
 					</Section>
 
-					<Section header={(
-						<Title order={2} ta='center'>
-							Наши
-							{' '}
-							<Text component='span' c='brand' inherit>
-								главные принципы
-							</Text>
-						</Title>
-					)}
-					>
-						<StatsSection />
-					</Section>
+					<StatsSection />
 					<HowItWorksSection />
 					{/* <ExampleSignals /> */}
 					<FeaturesSection />

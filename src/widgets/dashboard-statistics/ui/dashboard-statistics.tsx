@@ -27,10 +27,6 @@ export function DashboardStatistics() {
 				description={`Profit Factor: ${stats.profitFactor === Infinity ? '∞' : stats.profitFactor.toFixed(2)}`}
 				color={stats.winRate >= 50 ? 'green' : 'red'}
 			/>
-			<SummaryCard
-				title='Среднее время на сделку'
-				value={stats.averageHoldTime}
-			/>
 		</SummaryList>
 	);
 }

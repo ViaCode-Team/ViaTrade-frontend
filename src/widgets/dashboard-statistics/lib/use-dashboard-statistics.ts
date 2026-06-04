@@ -39,8 +39,6 @@ export function useDashboardStatistics() {
 			averageProfit,
 			winRate,
 			profitFactor,
-			// Simplified average hold time since it requires complex calculations
-			averageHoldTime: 'Н/Д',
 		};
 	}, [trades]);
 }

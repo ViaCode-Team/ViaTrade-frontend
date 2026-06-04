@@ -1,5 +1,5 @@
 import { PageHeader } from '@/shared/ui/page-header';
-import { RemindsOverview } from '@/widgets/reminds-overview';
+import { RemindsOverviewWidget } from '@/widgets/reminds-overview-widget';
 
 export function RemindsPage() {
 	return (
@@ -9,7 +9,7 @@ export function RemindsPage() {
 				description='Ваши напоминания по акциям и стратегиям'
 			/>
 
-			<RemindsOverview />
+			<RemindsOverviewWidget />
 		</>
 	);
 }

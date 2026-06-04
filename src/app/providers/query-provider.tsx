@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { onlineManager } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
@@ -12,6 +13,8 @@ import { queryClient } from '../query-client';
 type StoreProviderProps = {
 	children: ReactNode;
 };
+
+onlineManager.setOnline(navigator.onLine);
 
 const persister = createAsyncStoragePersister({
 	storage: secureQueryPersister,

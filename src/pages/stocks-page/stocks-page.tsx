@@ -4,21 +4,60 @@ import { useMemo } from 'react';
 
 import type { Stock } from '@/entities/trade-code/stock';
 
+import { useGetAllInstrumentsLinkSuspense } from '@/entities/strategy/api/gen';
+import { StocksList, StocksListSkeleton } from '@/entities/trade-code/stock';
 import {
 	getStocksSummary,
 	StocksControls,
+	useStocksControls,
 } from '@/features/stock/filter-stocks';
 import { PageHeader } from '@/shared/ui/page-header';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
-import { useStocksQuery } from './model/stocks-query';
-import { StocksListBoundary } from './ui/stocks-list/stocks-list';
+import { useStocksQuery, useStocksQuerySuspense } from './model/stocks-query';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
 import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
 import { UserStockLinkedStrategiesModal } from './ui/user-stock-linked-strategies-modal';
 
+function StocksListView({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: (stock: Stock) => void }) {
+	const { filters } = useStocksControls();
+	const { data: stocks } = useStocksQuerySuspense(
+		filters.searchQuery,
+		filters.trendFilter,
+		filters.sortOption,
+	);
+	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
+
+	const linkCountsByStockId = useMemo(() => {
+		const counts = new Map<number, number>();
+		instrumentsLinkResponse.data.forEach((link) => {
+			counts.set(link.tradeCodeId, (counts.get(link.tradeCodeId) || 0) + 1);
+		});
+		return counts;
+	}, [instrumentsLinkResponse.data]);
+
+	const hasFilters = Boolean(filters.searchQuery) || filters.trendFilter !== 'all';
+
+	return (
+		<StocksList
+			stocks={stocks}
+			hasFilters={hasFilters}
+			linkCountsByStockId={linkCountsByStockId}
+			onLinkedStrategiesClick={onLinkedStrategiesClick}
+		/>
+	);
+}
+
+const StocksListViewBoundary = withQueryBoundary(StocksListView, {
+	suspenseProps: {
+		fallback: <StocksListSkeleton />,
+	},
+});
+
 export function StocksPage() {
-	const { data: stocks } = useStocksQuery('', 'all', 'name-asc');
+	const { data: stocksResponse, isLoading } = useStocksQuery('', 'all', 'name-asc');
+	const stocks = useMemo(() => stocksResponse ?? [], [stocksResponse]);
 	const summary = useMemo(() => getStocksSummary(stocks), [stocks]);
 
 	function handleLinkedStrategyNavigate(modalId: string) {
@@ -51,20 +90,20 @@ export function StocksPage() {
 			/>
 
 			<Section>
-				<StocksMarketSummary {...summary} />
+				<StocksMarketSummary {...summary} isLoading={isLoading} />
 			</Section>
 
 			<Section header={{ title: 'Список акций' }}>
 				<Stack>
 					<Stack gap='xs'>
-						<StocksControls disabled={stocks.length === 0} />
+						<StocksControls disabled={isLoading || stocks.length === 0} isLoading={isLoading} />
 
 						<StocksStatusBarBoundary
 							totalCount={stocks.length}
 						/>
 					</Stack>
 
-					<StocksListBoundary
+					<StocksListViewBoundary
 						onLinkedStrategiesClick={openLinkedStrategiesModal}
 					/>
 				</Stack>

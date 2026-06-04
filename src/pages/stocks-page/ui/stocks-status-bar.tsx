@@ -5,7 +5,7 @@ import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
-import { useStocksQuery } from '../model/stocks-query';
+import { useStocksQuerySuspense } from '../model/stocks-query';
 
 type StocksStatusBarProps = {
 	totalCount: number;
@@ -13,7 +13,7 @@ type StocksStatusBarProps = {
 
 export function StocksStatusBar({ totalCount }: StocksStatusBarProps) {
 	const { filters } = useStocksControls();
-	const { data: filteredStocks, refetch } = useStocksQuery(
+	const { data: filteredStocks, refetch } = useStocksQuerySuspense(
 		filters.searchQuery,
 		filters.trendFilter,
 		filters.sortOption,

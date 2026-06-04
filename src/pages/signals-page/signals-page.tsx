@@ -1,32 +1,15 @@
-import { Stack } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 import type { Signal } from '@/entities/signal';
 
-import {
-	mapStrategyResultResponseToSignals,
-	useGetResult,
-} from '@/entities/signal';
-import {
-	SignalsControls,
-} from '@/features/signal/filter-signals';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { HistoryTableBoundary } from '@/widgets/signal-history-table';
-import { SignalsListBoundary } from '@/widgets/signals-list';
+import { SignalsOverviewWidget } from '@/widgets/signals-overview-widget';
 
-import { SignalsStatusBarBoundary } from './ui/signals-status-bar';
 import { SignalsSummaryBoundary } from './ui/signals-summary';
 
 export function SignalsPage() {
-	const { data: signalsData, isLoading } = useGetResult(undefined, {
-		query: {
-			staleTime: Infinity,
-		},
-	});
-	const hasSignals = signalsData?.data ? mapStrategyResultResponseToSignals(signalsData.data).length > 0 : false;
-	const disabled = isLoading || !hasSignals;
-
 	function openSignalHistoryModal(signal: Signal) {
 		modals.open({
 			title: `История сигнала: ${signal.asset}`,
@@ -51,20 +34,7 @@ export function SignalsPage() {
 				<SignalsSummaryBoundary />
 			</Section>
 
-			<Stack>
-				<Stack gap='xs'>
-					<SignalsControls
-						disabled={disabled}
-						isLoading={isLoading}
-					/>
-
-					<SignalsStatusBarBoundary />
-				</Stack>
-
-				<SignalsListBoundary
-					onSignalSelect={openSignalHistoryModal}
-				/>
-			</Stack>
+			<SignalsOverviewWidget onSignalSelect={openSignalHistoryModal} />
 		</>
 	);
 }

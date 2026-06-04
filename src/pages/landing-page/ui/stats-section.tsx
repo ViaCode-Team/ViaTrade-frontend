@@ -7,7 +7,6 @@ import {
 	Stack,
 	Text,
 	ThemeIcon,
-	Title,
 } from '@mantine/core';
 import { IconBolt, IconBrain, IconShieldCheck } from '@tabler/icons-react';
 
@@ -40,13 +39,7 @@ export function StatsSection() {
 	return (
 		<Container size='lg' py={60}>
 			<Stack gap={50}>
-				<Title order={2} ta='center'>
-					Наши
-					{' '}
-					<Text component='span' c='brand' inherit>
-						главные принципы
-					</Text>
-				</Title>
+
 				<SimpleGrid cols={{ base: 1, sm: 3 }}>
 					{principles}
 				</SimpleGrid>

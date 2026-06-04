@@ -2,16 +2,15 @@ import { modals } from '@mantine/modals';
 
 import type { Signal } from '@/entities/signal';
 
-import { RemindListBoundary } from '@/features/remind/manage-reminds';
-import { StocksListBoundary } from '@/pages/stocks-page/ui/stocks-list/stocks-list';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
+import { DashboardNotesWidgetBoundary } from '@/widgets/dashboard-notes-widget';
+import { DashboardRemindsWidgetBoundary } from '@/widgets/dashboard-reminds-widget';
+import { DashboardSignalsWidgetBoundary } from '@/widgets/dashboard-signals-widget';
 import { DashboardStatisticsBoundary } from '@/widgets/dashboard-statistics';
+import { DashboardStocksWidgetBoundary } from '@/widgets/dashboard-stocks-widget';
+import { DashboardStrategiesWidgetBoundary } from '@/widgets/dashboard-strategies-widget';
 import { HistoryTableBoundary } from '@/widgets/signal-history-table';
-import { SignalsListBoundary } from '@/widgets/signals-list';
-import { StrategiesListBoundary } from '@/widgets/strategies-overview/ui/strategies-list';
-
-import { DashboardNotesBoundary } from './ui/dashboard-notes';
 
 export function DashboardPage() {
 	function openSignalHistoryModal(signal: Signal) {
@@ -36,26 +35,23 @@ export function DashboardPage() {
 			</Section>
 
 			<Section header={{ title: 'Последние сигналы' }}>
-				<SignalsListBoundary limit={4} onSignalSelect={openSignalHistoryModal} />
+				<DashboardSignalsWidgetBoundary onSignalSelect={openSignalHistoryModal} />
 			</Section>
 
 			<Section header={{ title: 'Активные стратегии' }}>
-				<StrategiesListBoundary limit={4} onlyActive={true} />
+				<DashboardStrategiesWidgetBoundary />
 			</Section>
 
 			<Section header={{ title: 'Лучшие акции' }}>
-				<StocksListBoundary
-					limit={4}
-					onLinkedStrategiesClick={() => {}}
-				/>
+				<DashboardStocksWidgetBoundary onLinkedStrategiesClick={() => {}} />
 			</Section>
 
 			<Section header={{ title: 'Последние напоминания' }}>
-				<RemindListBoundary limit={4} />
+				<DashboardRemindsWidgetBoundary />
 			</Section>
 
 			<Section header={{ title: 'Последние заметки' }}>
-				<DashboardNotesBoundary />
+				<DashboardNotesWidgetBoundary />
 			</Section>
 		</>
 	);

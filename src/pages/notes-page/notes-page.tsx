@@ -1,12 +1,9 @@
-import { Stack } from '@mantine/core';
-
-import { NotesControls } from '@/features/note/filter-notes';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { NotesList } from '@/widgets/notes-list';
+import { NotesOverviewWidget } from '@/widgets/notes-overview-widget';
 
-import { NotesStatusBar } from './ui/notes-status-bar';
-import { NotesSummary } from './ui/notes-summary';
+import { NotesSummaryBoundary } from './ui/notes-summary';
+
 
 export function NotesPage() {
 	return (
@@ -17,18 +14,11 @@ export function NotesPage() {
 			/>
 
 			<Section>
-				<NotesSummary />
+				<NotesSummaryBoundary />
 			</Section>
 
 			<Section header={{ title: 'Список заметок' }}>
-				<Stack>
-					<Stack gap='xs'>
-						<NotesControls isLoading={false} />
-						<NotesStatusBar />
-					</Stack>
-
-					<NotesList />
-				</Stack>
+				<NotesOverviewWidget />
 			</Section>
 		</>
 	);

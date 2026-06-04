@@ -9,3 +9,4 @@ export {
 export { SessionDeviceIcon } from './ui/session-device-icon';
 export { SessionListItem } from './ui/session-list-item';
 export { SessionMeta } from './ui/session-meta';
+export { SessionsList, SessionsListSkeleton } from './ui/sessions-list/sessions-list';

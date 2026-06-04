@@ -5,7 +5,13 @@ import {
 	useParams,
 } from 'react-router';
 
-import { useGetAllSuspense } from '@/entities/strategy';
+import {
+	mapTradeStrategyToStrategy,
+	StrategyInfoList,
+	StrategyInfoListSkeleton,
+	useGetAllSuspense,
+	useGetByIdSuspense,
+} from '@/entities/strategy';
 import {
 	useCreateInstrumentsLink,
 	useDeleteInstrumentsLink,
@@ -14,21 +20,34 @@ import {
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { ROUTES } from '@/shared/model/routes';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
 import { StrategyHeroBoundary } from './ui/strategy-hero';
-import { StrategyInfoListBoundary } from './ui/strategy-info-list';
 import { StrategyNotFound } from './ui/strategy-not-found';
 
-export function StrategyPage() {
+const INACTIVE_STRATEGY_IDS = new Set<number>();
+
+function StrategyInfoView({ strategyId }: { strategyId: number }) {
+	const strategyQuery = useGetByIdSuspense(strategyId);
+	const strategy = mapTradeStrategyToStrategy(strategyQuery.data.data, INACTIVE_STRATEGY_IDS);
+
+	return <StrategyInfoList strategy={strategy} />;
+}
+
+const StrategyInfoViewBoundary = withQueryBoundary(StrategyInfoView, {
+	suspenseProps: { fallback: <StrategyInfoListSkeleton /> },
+});
+
+function StrategyPageContent() {
 	const { strategyName } = useParams();
 	const strategiesQuery = useGetAllSuspense();
 	const decodedName = decodeURIComponent(strategyName || '').toLowerCase();
-	const strategy = strategiesQuery.data.data.find(
+	const strategySummary = strategiesQuery.data.data.find(
 		(s) => s.name.toLowerCase() === decodedName,
 	);
-	const strategyId = strategy ? strategy.id : null;
+	const strategyId = strategySummary ? strategySummary.id : null;
 	const hasStrategyId = strategyId !== null;
 
 	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
@@ -51,11 +70,11 @@ export function StrategyPage() {
 		return {
 			type: 'strategy' as const,
 			id: String(strategyId),
-			label: strategy?.name ?? `Стратегия #${strategyId}`,
-			description: strategy?.description ?? 'Торговая стратегия',
-			path: generatePath(ROUTES.STRATEGY, { strategyName: strategy?.name ?? String(strategyId) }),
+			label: strategySummary?.name ?? `Стратегия #${strategyId}`,
+			description: strategySummary?.description ?? 'Торговая стратегия',
+			path: generatePath(ROUTES.STRATEGY, { strategyName: strategySummary?.name ?? String(strategyId) }),
 		};
-	}, [strategyId, strategy]);
+	}, [strategyId, strategySummary]);
 	const strategyNote = usePersonalNote({ source: strategyNoteSource });
 
 	if (!hasStrategyId) {
@@ -80,13 +99,9 @@ export function StrategyPage() {
 
 	return (
 		<>
-			<Stack>
-				<BackToStrategiesLink />
+			<StrategyHeroBoundary strategyId={strategyId} />
 
-				<StrategyHeroBoundary strategyId={strategyId} />
-			</Stack>
-
-			<StrategyInfoListBoundary strategyId={strategyId} />
+			<StrategyInfoViewBoundary strategyId={strategyId} />
 
 			<Section header={{ title: 'Связанные акции' }}>
 				<StrategyStockBinding
@@ -102,5 +117,16 @@ export function StrategyPage() {
 				/>
 			</Section>
 		</>
+	);
+}
+
+const StrategyPageContentBoundary = withQueryBoundary(StrategyPageContent);
+
+export function StrategyPage() {
+	return (
+		<Stack>
+			<BackToStrategiesLink />
+			<StrategyPageContentBoundary />
+		</Stack>
 	);
 }

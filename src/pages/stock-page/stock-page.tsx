@@ -9,15 +9,16 @@ import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { ROUTES } from '@/shared/model/routes';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
-import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
-import { StockReminds } from '@/widgets/stock-reminds';
+import { StockLinkedStrategiesWidget } from '@/widgets/stock-linked-strategies-widget';
+import { StockRemindsWidget } from '@/widgets/stock-reminds-widget';
 
 import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
 import { StockNotFound } from './ui/stock-not-found';
 
-export function StockPage() {
+function StockPageContent() {
 	const { stockId } = useParams();
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 
@@ -50,10 +51,7 @@ export function StockPage() {
 
 	return (
 		<>
-			<Stack>
-				<BackToStocksLink />
-				<StockHero stock={stock} />
-			</Stack>
+			<StockHero stock={stock} />
 
 			<Section
 				header={{
@@ -61,7 +59,7 @@ export function StockPage() {
 					description: stock.ticker ? `Стратегии, которые привязаны к ${stock.ticker}.` : undefined,
 				}}
 			>
-				<StockLinkedStrategies stockId={stock.instrumentId} />
+				<StockLinkedStrategiesWidget stockId={stock.instrumentId} />
 			</Section>
 
 			<Section header={{ title: 'Заметка к акции' }}>
@@ -72,8 +70,19 @@ export function StockPage() {
 			</Section>
 
 			<Section header={{ title: 'Напоминания к акции' }}>
-				<StockReminds stock={stock} />
+				<StockRemindsWidget stock={stock} />
 			</Section>
 		</>
+	);
+}
+
+const StockPageContentBoundary = withQueryBoundary(StockPageContent);
+
+export function StockPage() {
+	return (
+		<Stack>
+			<BackToStocksLink />
+			<StockPageContentBoundary />
+		</Stack>
 	);
 }

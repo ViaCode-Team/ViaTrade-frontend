@@ -1,5 +1,6 @@
-import { AppShell, Box } from '@mantine/core';
+import { AppShell, Box, Text, Title } from '@mantine/core';
 
+import { Section } from '@/shared/ui/section';
 import { PureHeader } from '@/widgets/header';
 import { OfflineBanner } from '@/widgets/offline-banner';
 
@@ -27,10 +28,24 @@ export function LandingPage() {
 			<AppShell.Main>
 				<Box pos='relative'>
 					<DecorativeBackground />
+					<Section>
+						<HeroSection />
+					</Section>
 
-					<HeroSection />
-					<StatsSection />
+					<Section header={(
+						<Title order={2} ta='center'>
+							Наши
+							{' '}
+							<Text component='span' c='brand' inherit>
+								главные принципы
+							</Text>
+						</Title>
+					)}
+					>
+						<StatsSection />
+					</Section>
 					<HowItWorksSection />
+					{/* <ExampleSignals /> */}
 					<FeaturesSection />
 					<AudienceSection />
 					<SecuritySection />

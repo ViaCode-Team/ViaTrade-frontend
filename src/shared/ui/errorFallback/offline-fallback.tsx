@@ -22,7 +22,7 @@ export function OfflineFallback({ handleReload, resetErrorBoundary }: OfflineFal
 			variant='default'
 		>
 			<Text size='sm' mb='md'>
-				Эта страница или функция недоступна в автономном режиме. Пожалуйста, проверьте подключение и попробуйте снова.
+				Эта страница или функция не доступна без первоначальной загрузки данных. Пожалуйста, проверьте подключение и попробуйте снова.
 			</Text>
 
 			<Group gap='xs'>

@@ -1,7 +1,7 @@
 import { Stack } from '@mantine/core';
 
 import { Section } from '@/shared/ui/section';
-import { SessionsOverview } from '@/widgets/sessions-overview';
+import { SessionsOverviewWidget } from '@/widgets/sessions-overview-widget';
 
 import { ProfileInfoBoundary } from './ui/profile-info';
 import { ThirdPartyService } from './ui/third-party-services';
@@ -19,7 +19,7 @@ export function ProfilePage() {
 				</Section>
 			</Stack>
 
-			<SessionsOverview />
+			<SessionsOverviewWidget />
 		</>
 	);
 }

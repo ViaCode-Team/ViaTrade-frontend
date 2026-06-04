@@ -7,7 +7,6 @@ import type { Stock } from '@/entities/trade-code/stock';
 import { useGetAllInstrumentsLinkSuspense } from '@/entities/strategy/api/gen';
 import { StocksList, StocksListSkeleton } from '@/entities/trade-code/stock';
 import {
-	getStocksSummary,
 	StocksControls,
 	useStocksControls,
 } from '@/features/stock/filter-stocks';
@@ -24,7 +23,6 @@ function StocksListView({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: 
 	const { filters } = useStocksControls();
 	const { data: stocks } = useStocksQuerySuspense(
 		filters.searchQuery,
-		filters.trendFilter,
 		filters.sortOption,
 	);
 	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
@@ -37,12 +35,10 @@ function StocksListView({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: 
 		return counts;
 	}, [instrumentsLinkResponse.data]);
 
-	const hasFilters = Boolean(filters.searchQuery) || filters.trendFilter !== 'all';
-
 	return (
 		<StocksList
 			stocks={stocks}
-			hasFilters={hasFilters}
+			hasFilters={!!filters.searchQuery}
 			linkCountsByStockId={linkCountsByStockId}
 			onLinkedStrategiesClick={onLinkedStrategiesClick}
 		/>
@@ -56,9 +52,8 @@ const StocksListViewBoundary = withQueryBoundary(StocksListView, {
 });
 
 export function StocksPage() {
-	const { data: stocksResponse, isLoading } = useStocksQuery('', 'all', 'name-asc');
+	const { data: stocksResponse, isLoading } = useStocksQuery('', 'name-asc');
 	const stocks = useMemo(() => stocksResponse ?? [], [stocksResponse]);
-	const summary = useMemo(() => getStocksSummary(stocks), [stocks]);
 
 	function handleLinkedStrategyNavigate(modalId: string) {
 		modals.close(modalId);
@@ -90,7 +85,7 @@ export function StocksPage() {
 			/>
 
 			<Section>
-				<StocksMarketSummary {...summary} isLoading={isLoading} />
+				<StocksMarketSummary totalCount={stocks.length} isLoading={isLoading} />
 			</Section>
 
 			<Section header={{ title: 'Список акций' }}>

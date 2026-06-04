@@ -1,4 +1,4 @@
-import { SegmentedControl, Select } from '@mantine/core';
+import { Select } from '@mantine/core';
 
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
@@ -30,18 +30,6 @@ export function StocksControls({ disabled, isLoading }: StocksControlsProps) {
 				value={filters.sortOption}
 				onChange={(value) => value && setFilter('listSort', value)}
 				w={{ base: '100%', sm: 220 }}
-				disabled={disabled}
-			/>
-
-			<SegmentedControl
-				value={filters.trendFilter}
-				onChange={(value) => setFilter('trendFilter', value)}
-				size='sm'
-				data={[
-					{ label: 'Все', value: 'all' },
-					{ label: 'Растут', value: 'gainers' },
-					{ label: 'Падают', value: 'losers' },
-				]}
 				disabled={disabled}
 			/>
 		</ControlsGroup>

@@ -3,7 +3,6 @@ import { Skeleton } from '@mantine/core';
 import { useStocksControls } from '@/features/stock/filter-stocks';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-import { ValueBadge } from '@/shared/ui/value-badge';
 
 import { useStocksQuerySuspense } from '../model/stocks-query';
 
@@ -15,12 +14,8 @@ export function StocksStatusBar({ totalCount }: StocksStatusBarProps) {
 	const { filters } = useStocksControls();
 	const { data: filteredStocks, refetch } = useStocksQuerySuspense(
 		filters.searchQuery,
-		filters.trendFilter,
 		filters.sortOption,
 	);
-
-	const gainersCount = filteredStocks.filter((s) => s.dayChangePercent > 0).length;
-	const losersCount = filteredStocks.filter((s) => s.dayChangePercent < 0).length;
 
 	return (
 		<ListStatusBar
@@ -28,12 +23,6 @@ export function StocksStatusBar({ totalCount }: StocksStatusBarProps) {
 			filteredCount={filteredStocks.length}
 			refreshIntervalText='Автообновление: 5 мин'
 			onRefresh={refetch}
-			badges={(
-				<>
-					<ValueBadge variant='dot' color='green' size='sm' label='Растут' value={gainersCount} />
-					<ValueBadge variant='dot' color='red' size='sm' label='Падают' value={losersCount} />
-				</>
-			)}
 		/>
 	);
 }

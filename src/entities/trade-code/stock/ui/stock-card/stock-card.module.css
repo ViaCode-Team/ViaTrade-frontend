@@ -32,15 +32,6 @@
 	letter-spacing: 0;
 }
 
-.changeBadge {
-	transition: background-color 0.2s ease;
-}
-
-.stockCard:hover .changeBadge {
-	color: var(--mantine-color-white);
-	background-color: var(--card-left-border-hover-color);
-}
-
 .strategiesButton {
 	position: relative;
 	z-index: 2;

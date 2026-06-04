@@ -15,14 +15,7 @@ export function StockCardSkeleton() {
 					<Skeleton height={24} width='50%' mb={4} />
 					<Skeleton height={20} width='80%' />
 				</Box>
-
-				<Skeleton height={24} width={64} radius='sm' />
 			</Flex>
-
-			<Box mt='md'>
-				<Skeleton height={20} width={100} mb={4} />
-				<Skeleton height={28} width={120} />
-			</Box>
 
 			<Skeleton height={36} mt='auto' radius='sm' />
 		</Card>

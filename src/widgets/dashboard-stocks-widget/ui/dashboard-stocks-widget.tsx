@@ -8,7 +8,7 @@ import { useStocksQuerySuspense } from '@/pages/stocks-page/model/stocks-query';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 function DashboardStocksWidget({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: (stock: Stock) => void }) {
-	const { data: stocks } = useStocksQuerySuspense('', 'all', 'name-asc');
+	const { data: stocks } = useStocksQuerySuspense('', 'name-asc');
 	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
 
 	const linkCountsByStockId = useMemo(() => {

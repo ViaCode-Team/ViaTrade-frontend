@@ -5,8 +5,6 @@ export type Stock = {
 	instrumentId: number;
 	ticker: string;
 	name: string;
-	price: number;
-	dayChangePercent: number;
 	linkedStrategies: StockLinkedStrategy[];
 };
 
@@ -26,20 +24,6 @@ export function mapTradeCodeToStock(tradeCode: TradeCode): Stock {
 		instrumentId: tradeCode.id,
 		ticker: tradeCode.exchangeId,
 		name: tradeCode.description || tradeCode.exchangeId,
-		price: 0, // Mocked until API supports
-		dayChangePercent: 0, // Mocked until API supports
 		linkedStrategies: [], // Mocked until API supports
 	};
-}
-
-export function getStockChangeColor(dayChangePercent: number) {
-	if (dayChangePercent > 0) {
-		return 'green';
-	}
-
-	if (dayChangePercent < 0) {
-		return 'red';
-	}
-
-	return 'gray';
 }

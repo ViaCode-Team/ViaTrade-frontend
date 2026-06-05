@@ -1,5 +1,5 @@
 import {
-	Container,
+	Box,
 	Group,
 	Paper,
 	rem,
@@ -56,7 +56,7 @@ export function SecuritySection() {
 	));
 
 	return (
-		<Container size='lg' py={80}>
+		<Box py={80}>
 			<Stack gap={50}>
 				<Title order={2} ta='center'>
 					Безопасность — наш
@@ -69,6 +69,6 @@ export function SecuritySection() {
 					{features}
 				</SimpleGrid>
 			</Stack>
-		</Container>
+		</Box>
 	);
 }

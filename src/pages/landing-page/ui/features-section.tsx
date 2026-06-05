@@ -1,6 +1,6 @@
 import {
+	Box,
 	Card,
-	Container,
 	rem,
 	SimpleGrid,
 	Stack,
@@ -81,7 +81,7 @@ export function FeaturesSection() {
 	));
 
 	return (
-		<Container size='lg' py={80}>
+		<Box py={80}>
 			<Stack gap={50}>
 				<Title order={2} ta='center'>
 					Почему выбирают ViaTrade?
@@ -90,6 +90,6 @@ export function FeaturesSection() {
 					{features}
 				</SimpleGrid>
 			</Stack>
-		</Container>
+		</Box>
 	);
 }

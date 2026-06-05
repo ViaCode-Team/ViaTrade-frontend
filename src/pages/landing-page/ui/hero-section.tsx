@@ -2,7 +2,6 @@ import {
 	Badge,
 	Box,
 	Button,
-	Container,
 	Group,
 	Stack,
 	Text,
@@ -17,7 +16,7 @@ import { brandGradient } from '@/shared/model/theme';
 export function HeroSection() {
 	return (
 		<Box py={120} pos='relative' style={{ overflow: 'hidden' }}>
-			<Container size='lg' pos='relative'>
+			<Box pos='relative'>
 				<Stack align='center' gap={40}>
 					<Badge variant='outline' color='gray' size='lg' radius='xl'>
 						Аналитическая платформа
@@ -79,7 +78,7 @@ export function HeroSection() {
 						</Button>
 					</Group>
 				</Stack>
-			</Container>
+			</Box>
 		</Box>
 	);
 }

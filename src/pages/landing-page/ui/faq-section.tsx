@@ -1,8 +1,8 @@
-import { Accordion, Container, Stack, Title } from '@mantine/core';
+import { Accordion, Box, Stack, Title } from '@mantine/core';
 
 export function FaqSection() {
 	return (
-		<Container size='sm' py={80}>
+		<Box maw={540} mx='auto' w='100%' py={80}>
 			<Stack gap={50}>
 				<Title order={2} ta='center'>
 					Часто задаваемые вопросы
@@ -35,6 +35,6 @@ export function FaqSection() {
 					</Accordion.Item>
 				</Accordion>
 			</Stack>
-		</Container>
+		</Box>
 	);
 }

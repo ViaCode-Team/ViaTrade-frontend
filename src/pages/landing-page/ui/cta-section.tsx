@@ -1,6 +1,6 @@
 import {
+	Box,
 	Button,
-	Container,
 	Group,
 	Stack,
 	Text,
@@ -14,7 +14,7 @@ import { brandGradient } from '@/shared/model/theme';
 
 export function CtaSection() {
 	return (
-		<Container size='lg' ta='center' py={80}>
+		<Box ta='center' py={80}>
 			<Stack gap='xl' align='center'>
 				<Title order={2}>
 					Готовы систематизировать свою
@@ -40,6 +40,6 @@ export function CtaSection() {
 					</Button>
 				</Group>
 			</Stack>
-		</Container>
+		</Box>
 	);
 }

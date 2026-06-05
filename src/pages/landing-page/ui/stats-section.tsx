@@ -1,5 +1,5 @@
 import {
-	Container,
+	Box,
 	Group,
 	Paper,
 	rem,
@@ -38,7 +38,7 @@ export function StatsSection() {
 	));
 
 	return (
-		<Container size='lg' py={60}>
+		<Box py={60}>
 			<Stack gap={50}>
 				<Title order={2} ta='center'>
 					Наши
@@ -51,6 +51,6 @@ export function StatsSection() {
 					{principles}
 				</SimpleGrid>
 			</Stack>
-		</Container>
+		</Box>
 	);
 }

@@ -1,5 +1,5 @@
 import {
-	Container,
+	Box,
 	Group,
 	rem,
 	Stack,
@@ -50,7 +50,7 @@ export function AudienceSection() {
 	));
 
 	return (
-		<Container size='md' py={80}>
+		<Box maw={720} mx='auto' w='100%' py={80}>
 			<Stack gap={60}>
 				<Title order={2} ta='center'>
 					Для кого создана платформа?
@@ -59,6 +59,6 @@ export function AudienceSection() {
 					{audiences}
 				</Stack>
 			</Stack>
-		</Container>
+		</Box>
 	);
 }

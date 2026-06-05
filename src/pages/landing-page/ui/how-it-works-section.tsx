@@ -1,6 +1,5 @@
 import {
 	Box,
-	Container,
 	Group,
 	SimpleGrid,
 	Stack,
@@ -55,7 +54,7 @@ export function HowItWorksSection() {
 	));
 
 	return (
-		<Container size='lg' py={80} pos='relative'>
+		<Box py={80} pos='relative'>
 			<Stack gap={60}>
 				<Title order={2} ta='center' tt='uppercase'>
 					Как это работает
@@ -64,6 +63,6 @@ export function HowItWorksSection() {
 					{steps}
 				</SimpleGrid>
 			</Stack>
-		</Container>
+		</Box>
 	);
 }

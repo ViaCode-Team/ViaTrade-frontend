@@ -101,3 +101,10 @@ export const statisticMutationInvalidates = [
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
+
+export const userMutationInvalidates = [
+	{
+		onMutations: ['postTgToken'],
+		invalidates: ['getTgToken', 'getMe'],
+	},
+] satisfies MutationInvalidatesConfig;

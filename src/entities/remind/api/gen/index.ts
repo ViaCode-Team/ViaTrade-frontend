@@ -49,6 +49,184 @@ import type { ErrorType } from '../../../../shared/api/client/custom-instance-fe
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
+export type getActualRemindResponse200 = {
+	data: TradeRemind[];
+	status: 200;
+};
+
+export type getActualRemindResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getActualRemindResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getActualRemindResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getActualRemindResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getActualRemindResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getActualRemindResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getActualRemindResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getActualRemindResponseSuccess = (getActualRemindResponse200) & {
+	headers: Headers;
+};
+export type getActualRemindResponseError = (getActualRemindResponse400 | getActualRemindResponse401 | getActualRemindResponse403 | getActualRemindResponse404 | getActualRemindResponse408 | getActualRemindResponse409 | getActualRemindResponse500) & {
+	headers: Headers;
+};
+
+export function getGetActualRemindUrl() {
+	return `/api/TradeRemind/byuser/actual`;
+}
+
+export async function getActualRemind(options?: RequestInit): Promise<getActualRemindResponseSuccess> {
+	return customInstance<getActualRemindResponseSuccess>(getGetActualRemindUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetActualRemindQueryKey() {
+	return [
+		`/api/TradeRemind/byuser/actual`,
+	] as const;
+}
+
+
+export function getGetActualRemindQueryOptions<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetActualRemindQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getActualRemind>>> = ({ signal }) => getActualRemind({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetActualRemindQueryResult = NonNullable<Awaited<ReturnType<typeof getActualRemind>>>;
+export type GetActualRemindQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetActualRemind<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getActualRemind>>,
+			TError,
+			Awaited<ReturnType<typeof getActualRemind>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetActualRemind<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getActualRemind>>,
+			TError,
+			Awaited<ReturnType<typeof getActualRemind>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetActualRemind<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetActualRemind<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetActualRemindQueryOptions(options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
+}
+
+export async function prefetchGetActualRemindQuery<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetActualRemindQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetActualRemind(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetActualRemindQueryKey() }, options);
+
+	return queryClient;
+}
+
+
+export function getGetActualRemindSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetActualRemindQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getActualRemind>>> = ({ signal }) => getActualRemind({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetActualRemindSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getActualRemind>>>;
+export type GetActualRemindSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetActualRemindSuspense<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetActualRemindSuspense<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetActualRemindSuspense<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetActualRemindSuspense<TData = Awaited<ReturnType<typeof getActualRemind>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getActualRemind>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetActualRemindSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
 export type getAllByUserResponse200 = {
 	data: TradeRemind[];
 	status: 200;

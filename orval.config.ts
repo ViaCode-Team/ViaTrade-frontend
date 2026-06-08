@@ -9,6 +9,7 @@ import {
 	remindMutationInvalidates,
 	statisticMutationInvalidates,
 	strategyMutationInvalidates,
+	userMutationInvalidates,
 } from './orval.invalidation';
 
 const SWAGGER_PATH = './swagger.yaml';
@@ -93,7 +94,15 @@ export default defineConfig({
 			},
 		},
 	}),
-	usersApi: createApiConfig('User', 'user'),
+	usersApi: createApiConfig('User', 'user', {
+		output: {
+			override: {
+				query: {
+					mutationInvalidates: userMutationInvalidates,
+				},
+			},
+		},
+	}),
 	signalApi: createApiConfig('Result', 'signal'),
 	statisticApi: createApiConfig('Statistic', 'statistic', {
 		output: {

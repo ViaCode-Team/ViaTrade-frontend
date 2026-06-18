@@ -23,7 +23,7 @@ export function SideBarItem({
 	onClick,
 }: SideBarItemProps) {
 	const location = useLocation();
-	const isActive = path === ROUTES.HOME
+	const isActive = path === ROUTES.DASHBOARD
 		? location.pathname === path
 		: location.pathname.startsWith(path);
 

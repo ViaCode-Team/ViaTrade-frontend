@@ -6,7 +6,7 @@ import {
 	TextInput,
 } from '@mantine/core';
 
-import { brandGradient } from '@/shared/model/theme';
+import { brandGradient } from '@/app/providers/theme-provider/theme';
 
 import { useRegisterForm } from '../lib/use-register-form';
 

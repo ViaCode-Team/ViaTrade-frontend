@@ -1,6 +1,6 @@
 export const ROUTES = {
 	LANDING: '/',
-	HOME: '/dashboard',
+	DASHBOARD: '/dashboard',
 	SIGNALS: '/signals',
 	STOCKS: '/stocks',
 	STOCK: '/stocks/:stockId',

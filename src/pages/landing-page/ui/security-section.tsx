@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { IconKey, IconLock, IconServer, IconShieldLock } from '@tabler/icons-react';
 
-import { brandGradient } from '@/shared/model/theme';
+import { brandGradient } from '@/app/providers/theme-provider/theme';
 
 import cls from './security-section.module.css';
 

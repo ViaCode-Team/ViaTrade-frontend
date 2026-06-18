@@ -1,7 +1,7 @@
 import { AddTradeButton } from '@/features/statistic/add-trade';
+import { StatisticsDashboard } from '@/pages/statistics-page/ui/statistics-dashboard';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { StatisticsDashboard } from '@/widgets/statistics-dashboard';
 import { TradesHistory } from '@/widgets/trades-history';
 
 import { StatisticsSummary } from './ui/statistics-summary/statistics-summary';

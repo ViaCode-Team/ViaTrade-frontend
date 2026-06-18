@@ -33,7 +33,7 @@ const menuItems: MenuItem[] = [
 	{
 		icon: <IconHome size={22} />,
 		text: 'Главная',
-		path: ROUTES.HOME,
+		path: ROUTES.DASHBOARD,
 	},
 	{
 		icon: <IconChartCandle size={22} />,

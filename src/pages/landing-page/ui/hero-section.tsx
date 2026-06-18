@@ -10,8 +10,8 @@ import {
 import { IconArrowRight } from '@tabler/icons-react';
 import { Link } from 'react-router';
 
+import { brandGradient } from '@/app/providers/theme-provider/theme';
 import { ROUTES } from '@/shared/model/routes';
-import { brandGradient } from '@/shared/model/theme';
 
 export function HeroSection() {
 	return (

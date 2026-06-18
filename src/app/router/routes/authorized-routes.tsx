@@ -8,7 +8,7 @@ export const authorizedRoutes: RouteObject[] = [
 		element: <DashboardLayout />,
 		children: [
 			{
-				path: ROUTES.HOME,
+				path: ROUTES.DASHBOARD,
 				lazy: () => import('@/pages/dashboard-page'),
 			},
 			{

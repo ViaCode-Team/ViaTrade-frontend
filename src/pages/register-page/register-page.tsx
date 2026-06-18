@@ -1,10 +1,7 @@
-import { Center } from '@mantine/core';
-
 import { AuthCard } from '@/entities/auth';
 import { RegisterForm } from '@/features/auth/register';
 import { ROUTES } from '@/shared/model/routes';
-
-import cls from './register-page.module.css';
+import { AuthBackground } from '@/shared/ui/auth-background';
 
 const TICKERS = [
 	{ id: 1, name: 'ALRS', price: '74.20', up: true },
@@ -19,34 +16,12 @@ const TICKERS = [
 
 export function RegisterPage() {
 	return (
-		<Center className={cls.container}>
-			<div className={cls.tickersWrapper}>
-				{TICKERS.map((ticker) => (
-					<div key={ticker.id} className={`${cls.floatingTicker} ${cls[`ticker${ticker.id}`]}`}>
-						<div className={cls.tickerName}>{ticker.name}</div>
-						<div className={cls.tickerPrice}>
-							{ticker.price}
-							{' '}
-							<span className={ticker.up ? cls.tickerPriceGreen : cls.tickerPriceRed}>{ticker.up ? '▲' : '▼'}</span>
-						</div>
-					</div>
-				))}
-			</div>
+		<AuthBackground tickers={TICKERS}>
+			<AuthCard title='Регистрация'>
+				<RegisterForm />
 
-			<div style={{
-				position: 'relative',
-				zIndex: 5,
-				width: '100%',
-				display: 'flex',
-				justifyContent: 'center',
-			}}
-			>
-				<AuthCard title='Регистрация'>
-					<RegisterForm />
-
-					<AuthCard.Footer text='Уже есть аккаунт?' linkText='Авторизация' to={ROUTES.LOGIN} />
-				</AuthCard>
-			</div>
-		</Center>
+				<AuthCard.Footer text='Уже есть аккаунт?' linkText='Авторизация' to={ROUTES.LOGIN} />
+			</AuthCard>
+		</AuthBackground>
 	);
 }

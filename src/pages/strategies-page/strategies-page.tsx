@@ -1,6 +1,6 @@
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { StrategiesOverviewWidget } from '@/widgets/strategies-overview-widget';
+import { StrategiesOverview } from '@/widgets/strategies-overview';
 
 import { StrategiesSummaryBoundary } from './ui/strategies-summary';
 
@@ -17,7 +17,7 @@ export function StrategiesPage() {
 			</Section>
 
 			<Section header={{ title: 'Список стратегий' }}>
-				<StrategiesOverviewWidget />
+				<StrategiesOverview />
 			</Section>
 		</>
 	);

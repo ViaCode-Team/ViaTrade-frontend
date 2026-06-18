@@ -1,6 +1,6 @@
 import type { Stock } from '@/entities/trade-code/stock';
 
-import { StockLinkedStrategiesWidget } from '@/widgets/stock-linked-strategies-widget';
+import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
 
 type UserStockLinkedStrategiesModalProps = {
 	stock: Stock;
@@ -14,7 +14,7 @@ export function UserStockLinkedStrategiesModal({
 	onNavigate,
 }: UserStockLinkedStrategiesModalProps) {
 	return (
-		<StockLinkedStrategiesWidget
+		<StockLinkedStrategies
 			stockId={stock.instrumentId}
 			onNavigate={() => onNavigate(modalId)}
 		/>

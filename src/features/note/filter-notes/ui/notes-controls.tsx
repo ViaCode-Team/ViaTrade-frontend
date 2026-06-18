@@ -2,7 +2,7 @@ import { SegmentedControl } from '@mantine/core';
 
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
-import { usePersonalNotes } from '@/widgets/notes-overview-widget';
+import { usePersonalNotes } from '@/widgets/notes-overview';
 
 import { useNotesControls } from '../lib/use-notes-controls';
 

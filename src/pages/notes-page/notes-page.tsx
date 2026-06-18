@@ -1,6 +1,6 @@
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { NotesOverviewWidget } from '@/widgets/notes-overview-widget';
+import { NotesOverview } from '@/widgets/notes-overview';
 
 import { NotesSummaryBoundary } from './ui/notes-summary';
 
@@ -18,7 +18,7 @@ export function NotesPage() {
 			</Section>
 
 			<Section header={{ title: 'Список заметок' }}>
-				<NotesOverviewWidget />
+				<NotesOverview />
 			</Section>
 		</>
 	);

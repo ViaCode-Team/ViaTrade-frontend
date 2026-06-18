@@ -2,14 +2,14 @@ import { modals } from '@mantine/modals';
 
 import type { Signal } from '@/entities/signal';
 
+import { DashboardNotesBoundary } from '@/pages/dashboard-page/ui/dashboard-notes';
+import { DashboardRemindsBoundary } from '@/pages/dashboard-page/ui/dashboard-reminds';
+import { DashboardSignalsBoundary } from '@/pages/dashboard-page/ui/dashboard-signals';
+import { DashboardStatisticsBoundary } from '@/pages/dashboard-page/ui/dashboard-statistics';
+import { DashboardStocksBoundary } from '@/pages/dashboard-page/ui/dashboard-stocks';
+import { DashboardStrategiesBoundary } from '@/pages/dashboard-page/ui/dashboard-strategies';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { DashboardNotesWidgetBoundary } from '@/widgets/dashboard-notes-widget';
-import { DashboardRemindsWidgetBoundary } from '@/widgets/dashboard-reminds-widget';
-import { DashboardSignalsWidgetBoundary } from '@/widgets/dashboard-signals-widget';
-import { DashboardStatisticsBoundary } from '@/widgets/dashboard-statistics';
-import { DashboardStocksWidgetBoundary } from '@/widgets/dashboard-stocks-widget';
-import { DashboardStrategiesWidgetBoundary } from '@/widgets/dashboard-strategies-widget';
 import { HistoryTableBoundary } from '@/widgets/signal-history-table';
 
 export function DashboardPage() {
@@ -35,23 +35,23 @@ export function DashboardPage() {
 			</Section>
 
 			<Section header={{ title: 'Последние сигналы' }}>
-				<DashboardSignalsWidgetBoundary onSignalSelect={openSignalHistoryModal} />
+				<DashboardSignalsBoundary onSignalSelect={openSignalHistoryModal} />
 			</Section>
 
 			<Section header={{ title: 'Активные стратегии' }}>
-				<DashboardStrategiesWidgetBoundary />
+				<DashboardStrategiesBoundary />
 			</Section>
 
 			<Section header={{ title: 'Лучшие акции' }}>
-				<DashboardStocksWidgetBoundary onLinkedStrategiesClick={() => {}} />
+				<DashboardStocksBoundary onLinkedStrategiesClick={() => {}} />
 			</Section>
 
 			<Section header={{ title: 'Последние напоминания' }}>
-				<DashboardRemindsWidgetBoundary />
+				<DashboardRemindsBoundary />
 			</Section>
 
 			<Section header={{ title: 'Последние заметки' }}>
-				<DashboardNotesWidgetBoundary />
+				<DashboardNotesBoundary />
 			</Section>
 		</>
 	);

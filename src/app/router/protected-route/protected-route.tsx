@@ -27,7 +27,7 @@ export type ProtectedRouteProps = {
 export function ProtectedRoute({
 	isPrivate = false,
 	guestRedirectTo = ROUTES.LOGIN,
-	authRedirectTo = ROUTES.HOME,
+	authRedirectTo = ROUTES.DASHBOARD,
 }: ProtectedRouteProps) {
 	const location = useLocation();
 	const isRestoring = useIsRestoring();

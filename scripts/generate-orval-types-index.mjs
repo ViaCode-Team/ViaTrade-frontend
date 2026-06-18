@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -17,9 +18,7 @@ const GENERATED_HEADER = `/**
 
 `;
 
-const IGNORED_FILE_NAMES = new Set([
-	'index.ts',
-]);
+const IGNORED_FILE_NAMES = new Set(['index.ts']);
 
 const IGNORED_SUFFIXES = [
 	'.test.ts',
@@ -28,11 +27,13 @@ const IGNORED_SUFFIXES = [
 	'.msw.ts',
 ];
 
+const TS_EXTENSION_REGEXP = /\.ts$/;
+
 function toPosixPath(filePath) {
 	return filePath.split(path.sep).join('/');
 }
 
-function shouldIncludeFile(fileName) {
+function isTypeSourceFile(fileName) {
 	if (!fileName.endsWith('.ts')) {
 		return false;
 	}
@@ -51,7 +52,7 @@ function shouldIncludeFile(fileName) {
 async function collectTypeFiles(directory) {
 	const entries = await readdir(directory, { withFileTypes: true });
 
-	const files = await Promise.all(
+	const nestedFiles = await Promise.all(
 		entries.map(async (entry) => {
 			const absolutePath = path.join(directory, entry.name);
 
@@ -59,11 +60,7 @@ async function collectTypeFiles(directory) {
 				return collectTypeFiles(absolutePath);
 			}
 
-			if (!entry.isFile()) {
-				return [];
-			}
-
-			if (!shouldIncludeFile(entry.name)) {
+			if (!entry.isFile() || !isTypeSourceFile(entry.name)) {
 				return [];
 			}
 
@@ -71,24 +68,26 @@ async function collectTypeFiles(directory) {
 		}),
 	);
 
-	return files.flat();
+	return nestedFiles.flat();
 }
-
-const regExt = /\.ts$/;
 
 function createExportPath(filePath) {
 	const relativePath = path.relative(TYPES_DIR, filePath);
-	const withoutExtension = relativePath.replace(regExt, '');
-	const posixPath = toPosixPath(withoutExtension);
+	const pathWithoutExtension = relativePath.replace(TS_EXTENSION_REGEXP, '');
 
-	return `./${posixPath}`;
+	return `./${toPosixPath(pathWithoutExtension)}`;
+}
+
+function createExportLine(filePath) {
+	const exportPath = createExportPath(filePath);
+
+	return `export * from '${exportPath}';`;
 }
 
 function createIndexContent(typeFiles) {
 	const exportLines = typeFiles
-		.map(createExportPath)
-		.sort((a, b) => a.localeCompare(b))
-		.map((exportPath) => `export * from '${exportPath}';`);
+		.map(createExportLine)
+		.sort((a, b) => a.localeCompare(b));
 
 	return `${GENERATED_HEADER}${exportLines.join('\n')}\n`;
 }
@@ -102,7 +101,7 @@ async function writeFileIfChanged(filePath, content) {
 		}
 	}
 	catch {
-		// File does not exist yet or cannot be read.
+		// ignore read errors
 	}
 
 	await writeFile(filePath, content, 'utf8');
@@ -119,17 +118,14 @@ async function main() {
 
 	const content = createIndexContent(typeFiles);
 	const wasChanged = await writeFileIfChanged(INDEX_FILE, content);
-
 	const relativeIndexFile = path.relative(PROJECT_ROOT, INDEX_FILE);
 
 	if (wasChanged) {
-		// eslint-disable-next-line no-console
 		console.log(`Generated ${relativeIndexFile} with ${typeFiles.length} exports.`);
+		return;
 	}
-	else {
-		// eslint-disable-next-line no-console
-		console.log(`${relativeIndexFile} is already up to date.`);
-	}
+
+	console.log(`${relativeIndexFile} is already up to date.`);
 }
 
 main().catch((error) => {

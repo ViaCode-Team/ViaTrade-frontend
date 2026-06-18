@@ -8,11 +8,11 @@ import {
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
 import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
+import { StockReminds } from '@/pages/stock-page/ui/stock-reminds';
 import { ROUTES } from '@/shared/model/routes';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
-import { StockLinkedStrategiesWidget } from '@/widgets/stock-linked-strategies-widget';
-import { StockRemindsWidget } from '@/widgets/stock-reminds-widget';
+import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
 
 import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
@@ -59,7 +59,7 @@ function StockPageContent() {
 					description: stock.ticker ? `Стратегии, которые привязаны к ${stock.ticker}.` : undefined,
 				}}
 			>
-				<StockLinkedStrategiesWidget stockId={stock.instrumentId} />
+				<StockLinkedStrategies stockId={stock.instrumentId} />
 			</Section>
 
 			<Section header={{ title: 'Заметка к акции' }}>
@@ -70,7 +70,7 @@ function StockPageContent() {
 			</Section>
 
 			<Section header={{ title: 'Напоминания к акции' }}>
-				<StockRemindsWidget stock={stock} />
+				<StockReminds stock={stock} />
 			</Section>
 		</>
 	);

@@ -2,10 +2,10 @@ import { modals } from '@mantine/modals';
 
 import type { Signal } from '@/entities/signal';
 
+import { SignalsOverview } from '@/pages/signals-page/ui/signals-overview';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { HistoryTableBoundary } from '@/widgets/signal-history-table';
-import { SignalsOverviewWidget } from '@/widgets/signals-overview-widget';
 
 import { SignalsSummaryBoundary } from './ui/signals-summary';
 
@@ -34,7 +34,7 @@ export function SignalsPage() {
 				<SignalsSummaryBoundary />
 			</Section>
 
-			<SignalsOverviewWidget onSignalSelect={openSignalHistoryModal} />
+			<SignalsOverview onSignalSelect={openSignalHistoryModal} />
 		</>
 	);
 }

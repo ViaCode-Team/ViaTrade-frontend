@@ -1,7 +1,7 @@
 import type { RouteObject } from 'react-router';
 
 import { AuthLayout } from '@/app/layouts/auth-layout';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 export const unauthorizedRoutes: RouteObject[] = [
 	{
@@ -9,11 +9,11 @@ export const unauthorizedRoutes: RouteObject[] = [
 		children: [
 			{
 				path: ROUTES.LOGIN,
-				lazy: () => import('@/pages/login-page'),
+				lazy: () => import('@/pages/login'),
 			},
 			{
 				path: ROUTES.REGISTER,
-				lazy: () => import('@/pages/register-page'),
+				lazy: () => import('@/pages/register'),
 			},
 		],
 	},

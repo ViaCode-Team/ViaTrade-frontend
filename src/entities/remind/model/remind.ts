@@ -1,4 +1,4 @@
-import type { TradeRemind } from '@/shared/api/types/gen';
+import type { TradeRemind } from '@/shared/api';
 
 export type RemindSource = {
 	type: 'stock';

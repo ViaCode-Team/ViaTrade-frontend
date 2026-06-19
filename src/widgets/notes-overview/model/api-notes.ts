@@ -4,12 +4,12 @@ import type {
 	NoteSource,
 	StoredPersonalNote,
 } from '@/entities/note';
-import type { Stock } from '@/entities/trade-code/stock';
+import type { Stock } from '@/entities/stock';
 import type { Note } from '@/shared/api';
-import type { TradeStrategy } from '@/shared/api/types/gen';
+import type { TradeStrategy } from '@/shared/api';
 
 import { getNoteId } from '@/entities/note';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 type GetApiNotesOptions = {
 	instrumentNotes: Note[];

@@ -4,10 +4,10 @@ import { useMemo } from 'react';
 import {
 	getGetByUserInstrumentAllSuspenseQueryOptions,
 	getGetByUserStrategyAllSuspenseQueryOptions,
-} from '@/entities/note/api/gen';
-import { getGetAllSuspenseQueryOptions as getGetAllStrategiesSuspenseQueryOptions } from '@/entities/strategy/api/gen';
-import { getGetAllStocksCodesSuspenseQueryOptions } from '@/entities/trade-code/api/gen';
-import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
+} from '@/entities/note';
+import { mapTradeCodeToStock } from '@/entities/stock';
+import { getGetAllSuspenseQueryOptions as getGetAllStrategiesSuspenseQueryOptions } from '@/entities/strategy';
+import { getGetAllStocksCodesSuspenseQueryOptions } from '@/entities/trade-code';
 import {
 	mergeApiNotesWithDrafts,
 	useStoredPersonalNotesQuery,

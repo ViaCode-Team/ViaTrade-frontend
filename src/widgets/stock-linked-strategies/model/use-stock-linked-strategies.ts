@@ -6,7 +6,7 @@ import {
 	useGetAllSuspense,
 	useGetUsersStrategySuspense,
 } from '@/entities/strategy';
-import { useGetAllInstrumentsLinkSuspense } from '@/entities/strategy/api/gen';
+import { useGetAllInstrumentsLinkSuspense } from '@/entities/strategy';
 
 export function useStockLinkedStrategies(stockId: number) {
 	const { data: userStrategies } = useGetUsersStrategySuspense();

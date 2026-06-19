@@ -1,7 +1,7 @@
 import { Flex } from '@mantine/core';
 
 import { createSkeletons } from '@/shared/lib/skeleton';
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { CONTENT_GRID_SPACING } from '@/shared/model';
 
 import { NoteCardSkeleton } from './note-card.skeleton';
 import cls from './notes-list.module.css';

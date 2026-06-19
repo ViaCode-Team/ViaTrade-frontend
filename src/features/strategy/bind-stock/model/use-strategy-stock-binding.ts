@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { useGetAllStocksCodes, useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
-import { mapTradeCodeToStock } from '@/entities/trade-code/stock';
+import { mapTradeCodeToStock } from '@/entities/stock';
+import { useGetAllStocksCodes, useGetAllStocksCodesSuspense } from '@/entities/trade-code';
 
 export const ITEMS_PER_PAGE = 12;
 

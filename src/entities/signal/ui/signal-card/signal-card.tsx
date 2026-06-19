@@ -15,7 +15,7 @@ import { generatePath, Link } from 'react-router';
 import type { Signal } from '@/entities/signal';
 
 import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 import { InfoPair } from '@/shared/ui/info-pair';
 
 import cls from './signal-card.module.css';

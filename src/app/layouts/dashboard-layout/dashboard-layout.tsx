@@ -14,7 +14,7 @@ import {
 	APP_SHELL_PADDING,
 	PAGE_CONTAINER_SIZE,
 	PAGE_STACK_GAP,
-} from '@/shared/model/layout';
+} from '@/shared/model';
 import { AppHeader } from '@/widgets/header';
 import { OfflineBanner } from '@/widgets/offline-banner';
 import { SideBar } from '@/widgets/side-bar';

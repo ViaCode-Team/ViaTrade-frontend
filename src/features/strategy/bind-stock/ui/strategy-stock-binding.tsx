@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {
 	StrategyStockBindingList,
 	StrategyStockBindingListSkeleton,
-} from '@/entities/trade-code/stock';
+} from '@/entities/stock';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { getFilteredStocks, getNextStockIdsAfterStockToggle } from '../model';

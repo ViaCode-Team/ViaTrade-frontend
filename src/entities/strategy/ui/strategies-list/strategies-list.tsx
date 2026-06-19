@@ -5,7 +5,7 @@ import {
 	StrategyCard,
 	toStrategyCardStrategy,
 } from '@/entities/strategy';
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { CONTENT_GRID_SPACING } from '@/shared/model';
 import { EmptyState } from '@/shared/ui/empty-state';
 
 export { StrategiesListSkeleton } from './strategies-list.skeleton';

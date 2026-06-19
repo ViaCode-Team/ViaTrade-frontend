@@ -3,7 +3,7 @@ import { SimpleGrid } from '@mantine/core';
 import type { Signal } from '@/entities/signal';
 
 import { SignalCard } from '@/entities/signal';
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { CONTENT_GRID_SPACING } from '@/shared/model';
 import { EmptyState } from '@/shared/ui/empty-state';
 
 export { SignalsListSkeleton } from './signals-list.skeleton';

@@ -2,7 +2,7 @@ import { SimpleGrid, Stack } from '@mantine/core';
 
 import { StrategyCardSkeleton } from '@/entities/strategy';
 import { createSkeletons } from '@/shared/lib/skeleton';
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { CONTENT_GRID_SPACING } from '@/shared/model';
 
 export function StockLinkedStrategiesListSkeleton() {
 	return (

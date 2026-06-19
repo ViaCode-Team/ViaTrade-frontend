@@ -3,12 +3,11 @@ import type { ReactNode } from 'react';
 import { Group, Select } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 
-import { getGetAllByUserQueryOptions, getGetTradeRemindByUserInstrumentQueryOptions } from '@/entities/remind/api/gen';
+import { getGetAllByUserQueryOptions, getGetTradeRemindByUserInstrumentQueryOptions } from '@/entities/remind';
+import { remindFiltersSchema, remindSortOptions } from '@/entities/remind';
 import { useUrlFilters } from '@/shared/lib/hooks';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
-
-import { remindFiltersSchema, remindSortOptions } from '../model/filters';
 
 type RemindsControlsProps = {
 	actionSlot?: ReactNode;

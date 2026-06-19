@@ -4,7 +4,7 @@ import {
 	useCreateInstrumentsLink,
 	useDeleteInstrumentsLink,
 	useGetAllInstrumentsLinkSuspense,
-} from '@/entities/strategy/api/gen';
+} from '@/entities/strategy';
 import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 

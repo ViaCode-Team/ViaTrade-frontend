@@ -20,7 +20,7 @@ import { generatePath, Link as RouterLink } from 'react-router';
 
 import type { RemindItem } from '@/entities/remind';
 
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 import { useRemindDraft } from '../lib/use-remind-draft';
 import cls from './remind-card.module.css';

@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { NavLink } from '@mantine/core';
 import { Link as RouterLink, useLocation } from 'react-router';
 
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 import cls from './side-bar-item.module.css';
 

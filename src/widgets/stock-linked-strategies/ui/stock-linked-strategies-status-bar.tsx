@@ -1,12 +1,12 @@
 import { Skeleton } from '@mantine/core';
 import { useMemo } from 'react';
 
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import {
 	filterLinkedStrategies,
 	LinkedStrategiesStatusBar,
 	type LinkedStrategyFilters,
-} from '@/features/strategy/filter-linked-strategies';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+} from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
 import { useStockLinkedStrategies } from '../model/use-stock-linked-strategies';
 

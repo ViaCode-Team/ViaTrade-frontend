@@ -7,7 +7,7 @@ import {
 	IconRotate,
 } from '@tabler/icons-react';
 
-import { brandGradient } from '@/app/providers/theme-provider/theme';
+import { brandGradient } from '@/shared/lib/theme';
 
 type NoteFormActionsProps = {
 	submitLabel: string;

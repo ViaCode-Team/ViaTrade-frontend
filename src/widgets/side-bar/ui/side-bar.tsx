@@ -12,7 +12,7 @@ import {
 	IconUser,
 } from '@tabler/icons-react';
 
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 import { SideBarItem } from './side-bar-item';
 import cls from './side-bar.module.css';
@@ -43,7 +43,7 @@ const menuItems: MenuItem[] = [
 	{
 		icon: <IconChartBar size={22} />,
 		text: 'Статистика',
-		path: '/statistics',
+		path: ROUTES.STATISTICS,
 	},
 	{ icon: <IconTrendingUp size={22} />, text: 'Акции', path: ROUTES.STOCKS },
 	{ icon: <IconChartLine size={22} />, text: 'Стратегии', path: ROUTES.STRATEGIES },

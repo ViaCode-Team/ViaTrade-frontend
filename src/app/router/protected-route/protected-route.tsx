@@ -8,14 +8,14 @@ import {
 	useNavigate,
 } from 'react-router';
 
-import { useLogout } from '@/entities/auth/api/gen';
+import { useLogout } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
 import { useGetMe } from '@/entities/user';
 import { PinSetup } from '@/features/security/pin-setup';
 import { PinUnlock } from '@/features/security/pin-unlock';
-import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
+import { clearLocalData } from '@/shared/lib/auth';
 import { useAppNetwork } from '@/shared/lib/hooks';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
 export type ProtectedRouteProps = {

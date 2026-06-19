@@ -2,7 +2,7 @@ import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getGetAllByUserQueryKey, useDeleteRemind } from '@/entities/remind/api/gen';
+import { getGetAllByUserQueryKey, useDeleteRemind } from '@/entities/remind';
 
 type RemindCardActionsProps = {
 	remindId: string;

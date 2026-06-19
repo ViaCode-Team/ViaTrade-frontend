@@ -1,6 +1,6 @@
 import { SimpleGrid, type SimpleGridProps } from '@mantine/core';
 
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { CONTENT_GRID_SPACING } from '@/shared/model';
 
 export type SummaryListProps = {} & SimpleGridProps;
 

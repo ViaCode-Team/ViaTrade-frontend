@@ -4,9 +4,9 @@ import { get, set } from 'idb-keyval';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useLogout } from '@/entities/auth/api/gen';
+import { useLogout } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
-import { clearLocalData } from '@/shared/lib/auth/clear-local-data';
+import { clearLocalData } from '@/shared/lib/auth';
 import { useAppNetwork } from '@/shared/lib/hooks';
 import { showNoNetworkNotification } from '@/shared/lib/no-network';
 import {
@@ -14,7 +14,7 @@ import {
 	MAX_FAILED_ATTEMPTS,
 	unlockApp,
 } from '@/shared/lib/secure-storage';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 export function usePinUnlock() {
 	const queryClient = useQueryClient();

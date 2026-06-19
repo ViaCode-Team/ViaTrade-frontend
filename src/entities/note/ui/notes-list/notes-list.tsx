@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Flex } from '@mantine/core';
 
-import { CONTENT_GRID_SPACING } from '@/shared/model/layout';
+import { CONTENT_GRID_SPACING } from '@/shared/model';
 import { EmptyState } from '@/shared/ui/empty-state';
 
 import cls from './notes-list.module.css';

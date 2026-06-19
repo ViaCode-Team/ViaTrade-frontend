@@ -1,7 +1,7 @@
 import type { RouteObject } from 'react-router';
 
 import { DashboardLayout } from '@/app/layouts/dashboard-layout';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 export const authorizedRoutes: RouteObject[] = [
 	{
@@ -9,43 +9,43 @@ export const authorizedRoutes: RouteObject[] = [
 		children: [
 			{
 				path: ROUTES.DASHBOARD,
-				lazy: () => import('@/pages/dashboard-page'),
+				lazy: () => import('@/pages/dashboard'),
 			},
 			{
 				path: ROUTES.SIGNALS,
-				lazy: () => import('@/pages/signals-page'),
+				lazy: () => import('@/pages/signals'),
 			},
 			{
 				path: ROUTES.STOCKS,
-				lazy: () => import('@/pages/stocks-page'),
+				lazy: () => import('@/pages/stocks'),
 			},
 			{
 				path: ROUTES.STOCK,
-				lazy: () => import('@/pages/stock-page'),
+				lazy: () => import('@/pages/stock'),
 			},
 			{
 				path: ROUTES.PROFILE,
-				lazy: () => import('@/pages/profile-page'),
+				lazy: () => import('@/pages/profile'),
 			},
 			{
 				path: ROUTES.STRATEGIES,
-				lazy: () => import('@/pages/strategies-page'),
+				lazy: () => import('@/pages/strategies'),
 			},
 			{
 				path: ROUTES.STRATEGY,
-				lazy: () => import('@/pages/strategy-page'),
+				lazy: () => import('@/pages/strategy'),
 			},
 			{
 				path: ROUTES.NOTES,
-				lazy: () => import('@/pages/notes-page'),
+				lazy: () => import('@/pages/notes'),
 			},
 			{
 				path: ROUTES.REMINDERS,
-				lazy: () => import('@/pages/reminds-page'),
+				lazy: () => import('@/pages/reminds'),
 			},
 			{
 				path: ROUTES.STATISTICS,
-				lazy: () => import('@/pages/statistics-page'),
+				lazy: () => import('@/pages/statistics'),
 			},
 		],
 	},

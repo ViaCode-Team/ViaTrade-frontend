@@ -12,7 +12,7 @@ import {
 import { generatePath, Link as RouterLink } from 'react-router';
 
 import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 import { InfoPair } from '@/shared/ui/info-pair';
 
 import type { StrategyCardStrategy } from '../../model';

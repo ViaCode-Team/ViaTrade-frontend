@@ -1,9 +1,9 @@
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 import { mapTradeRemindToRemindItem } from '@/entities/remind';
-import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind/api/gen';
-import { useGetAllStocksCodesSuspense } from '@/entities/trade-code/api/gen';
-import { remindFiltersSchema } from '@/features/remind/filter-reminds/model/filters';
+import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind';
+import { remindFiltersSchema } from '@/entities/remind';
+import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
 import { useUrlFilters } from '@/shared/lib/hooks';
 
 export function useRemindList(instrumentId?: number) {
@@ -71,7 +71,7 @@ export function useRemindList(instrumentId?: number) {
 		remind.text.toLowerCase().includes(searchQuery),
 	);
 
-	filteredReminds.sort((a, b) => {
+	filteredReminds.sort((a: any, b: any) => {
 		const dateA = new Date(`${a.date}T${a.time}`).getTime();
 		const dateB = new Date(`${b.date}T${b.time}`).getTime();
 

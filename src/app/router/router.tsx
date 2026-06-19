@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 
-import { ErrorPage } from '@/pages/error-page';
-import { ROUTES } from '@/shared/model/routes';
+import { ErrorPage } from '@/pages/error';
+import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import { MainLayout } from '../layouts/main-layout';
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
 			// Общедоступные пути (Landing)
 			{
 				path: ROUTES.LANDING,
-				lazy: () => import('@/pages/landing-page'),
+				lazy: () => import('@/pages/landing'),
 			},
 
 

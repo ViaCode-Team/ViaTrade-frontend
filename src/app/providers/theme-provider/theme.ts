@@ -1,10 +1,7 @@
-import type { MantineGradient } from '@mantine/core';
-
 import { Card, createTheme } from '@mantine/core';
 
 import cls from './theme.module.css';
 
-export const brandGradient: MantineGradient = { from: '#ffb752', to: '#e09530', deg: 135 };
 
 const primaryFontFamily = 'Roboto, system-ui, -apple-system, sans-serif';
 const headingFontFamily = 'Poppins, system-ui, -apple-system, sans-serif';

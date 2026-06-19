@@ -1,2 +1,2 @@
-export { AppHeader } from './ui/header';
+export { AppHeader } from './ui/app-header';
 export { PureHeader } from './ui/pure-header';

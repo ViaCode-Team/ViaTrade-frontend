@@ -14,7 +14,7 @@ import { generatePath, Link as RouterLink } from 'react-router';
 
 import type { SignalDirection } from '@/entities/signal';
 
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 

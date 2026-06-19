@@ -2,7 +2,7 @@ import { Group, Text } from '@mantine/core';
 import { Link as RouterLink } from 'react-router';
 
 import logoUrl from '@/shared/assets/icons/logo-default.svg';
-import { ROUTES } from '@/shared/model/routes';
+import { ROUTES } from '@/shared/model';
 
 import cls from './logo.module.css';
 

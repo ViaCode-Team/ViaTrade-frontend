@@ -3,7 +3,7 @@ import { Stack } from '@mantine/core';
 import {
 	LinkedStrategiesControls,
 	useLinkedStrategiesControls,
-} from '@/features/strategy/filter-linked-strategies';
+} from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
 import { StockLinkedStrategiesListBoundary } from './stock-linked-strategies-list';
 import { StockLinkedStrategiesStatusBarBoundary } from './stock-linked-strategies-status-bar';

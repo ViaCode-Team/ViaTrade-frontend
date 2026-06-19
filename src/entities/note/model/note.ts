@@ -1,4 +1,4 @@
-import { v } from '@/shared/model/validate';
+import { v } from '@/shared/model';
 
 export const noteFormSchema = v.object({
 	text: v.string('Введите заметку'),

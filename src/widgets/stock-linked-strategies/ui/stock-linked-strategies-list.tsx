@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-import type { LinkedStrategyFilters } from '@/features/strategy/filter-linked-strategies';
+import type { LinkedStrategyFilters } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
 import { StockLinkedStrategiesList as LinkedStrategiesList, StockLinkedStrategiesListSkeleton } from '@/entities/strategy';
-import { filterLinkedStrategies } from '@/features/strategy/filter-linked-strategies';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { filterLinkedStrategies } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
 import { useStockLinkedStrategies } from '../model/use-stock-linked-strategies';
 

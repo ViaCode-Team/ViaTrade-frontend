@@ -53,7 +53,7 @@ export async function setupPin(pin: string): Promise<void> {
 	await set(STORE_SALT_KEY, salt);
 	await set(STORE_ENCRYPTED_MK_KEY, encryptedMk);
 	await set(STORE_MK_IV_KEY, iv);
-	await set(FAILED_ATTEMPTS_KEY, 0);
+	await setFailedPinAttempts(0);
 
 	setSessionMasterKey(mk);
 	saveTempKey(rawMk);
@@ -81,4 +81,12 @@ export async function unlockApp(pin: string): Promise<boolean> {
 		console.error('Failed to unlock app', e);
 		return false;
 	}
+}
+
+export async function getFailedPinAttempts() {
+	return await get<number>(FAILED_ATTEMPTS_KEY);
+}
+
+export async function setFailedPinAttempts(attempts: number) {
+	await set(FAILED_ATTEMPTS_KEY, attempts);
 }

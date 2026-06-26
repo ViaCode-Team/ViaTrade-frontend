@@ -1,5 +1,7 @@
 import { useLocalStorage } from '@mantine/hooks';
 
+import { createStorageKey } from '@/shared/lib/storage-key';
+
 import type { RemindEditableField, RemindItem } from '../model';
 
 type RemindUpdates = {
@@ -17,9 +19,14 @@ type UseRemindDraftOptions = {
 	) => void;
 };
 
+function getRemindDraftStorageKey(remindId: string) {
+	return createStorageKey('reminds', 'drafts', remindId);
+}
+
 export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions) {
+	const storageKey = getRemindDraftStorageKey(remind.id);
 	const [localDraft, setLocalDraft, removeLocalDraft] = useLocalStorage({
-		key: `via-remind-draft-${remind.id}`,
+		key: storageKey,
 		defaultValue: {
 			text: remind.text,
 			date: remind.date,
@@ -114,7 +121,7 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 				// We do not call removeLocalDraft() here because useLocalStorage would reset the state
 				// to the initial defaultValue (the old text), causing a UI blink.
 				// Instead, we just manually clean up the localStorage entry. The localDraft state stays as the new text.
-				window.localStorage.removeItem(`via-remind-draft-${remind.id}`);
+				window.localStorage.removeItem(storageKey);
 			},
 		);
 	};

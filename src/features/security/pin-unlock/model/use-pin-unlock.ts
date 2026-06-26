@@ -1,6 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useQueryClient } from '@tanstack/react-query';
-import { get, set } from 'idb-keyval';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -10,8 +9,9 @@ import { clearLocalData } from '@/shared/lib/auth';
 import { useAppNetwork } from '@/shared/lib/hooks';
 import { showNoNetworkNotification } from '@/shared/lib/no-network';
 import {
-	FAILED_ATTEMPTS_KEY,
+	getFailedPinAttempts,
 	MAX_FAILED_ATTEMPTS,
+	setFailedPinAttempts,
 	unlockApp,
 } from '@/shared/lib/secure-storage';
 import { ROUTES } from '@/shared/model';
@@ -38,7 +38,7 @@ export function usePinUnlock() {
 		startLoading();
 
 		try {
-			const currentAttempts = await get<number>(FAILED_ATTEMPTS_KEY);
+			const currentAttempts = await getFailedPinAttempts();
 
 			// Защита: если ключа попыток нет вообще, значит его удалили вручную в IDB для обхода лимита
 			if (currentAttempts === undefined) {
@@ -50,12 +50,12 @@ export function usePinUnlock() {
 
 			const success = await unlockApp(value);
 			if (success) {
-				await set(FAILED_ATTEMPTS_KEY, 0);
+				await setFailedPinAttempts(0);
 				await checkSecurityState();
 			}
 			else {
 				const newAttempts = currentAttempts + 1;
-				await set(FAILED_ATTEMPTS_KEY, newAttempts);
+				await setFailedPinAttempts(newAttempts);
 				setPin('');
 
 				if (newAttempts >= MAX_FAILED_ATTEMPTS) {

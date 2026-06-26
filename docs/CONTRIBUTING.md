@@ -143,6 +143,13 @@ General rule:
 - Do not create `.module.css` for trivial cases with no significant structural value.
 - Move styles into CSS Modules when it makes JSX cleaner and separates visual logic from markup.
 
+## Storage Keys
+
+- Use `createStorageKey()` from `src/shared/lib/storage-key.ts` for persistent storage keys.
+- Use the same `createStorageKey()` helper for cookie names.
+- Storage keys use the `viatrade_scope_name` format.
+- Keep hardcoded legacy keys only when an explicit migration is required.
+
 ## Spacing
 
 - Use Mantine spacing tokens (`xs`, `sm`, `md`, `lg`, `xl`) as the default spacing scale.

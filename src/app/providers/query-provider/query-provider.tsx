@@ -7,6 +7,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 
 import { useSecurity } from '@/entities/security';
 import { secureQueryPersister } from '@/shared/lib/secure-storage';
+import { createStorageKey } from '@/shared/lib/storage-key';
 
 import { queryClient } from './query-client';
 
@@ -17,6 +18,7 @@ type StoreProviderProps = {
 onlineManager.setOnline(navigator.onLine);
 
 const persister = createAsyncStoragePersister({
+	key: createStorageKey('query', 'cache'),
 	storage: secureQueryPersister,
 });
 

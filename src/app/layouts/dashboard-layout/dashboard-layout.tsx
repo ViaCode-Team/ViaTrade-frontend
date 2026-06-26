@@ -4,12 +4,9 @@ import {
 	AppShell,
 	Container,
 	Flex,
-	useMantineTheme,
 } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Outlet } from 'react-router';
 
-import { useLockDocumentScroll } from '@/shared/lib/hooks';
 import {
 	APP_SHELL_PADDING,
 	PAGE_CONTAINER_SIZE,
@@ -20,51 +17,36 @@ import { OfflineBanner } from '@/widgets/offline-banner';
 import { SideBar } from '@/widgets/side-bar';
 
 import cls from './dashboard-layout.module.css';
+import { useDashboardSidebar } from './use-dashboard-sidebar';
 
 type DashboardLayoutProps = { children?: ReactNode };
 
-const DESKTOP_SIDEBAR_EXPANDED_WIDTH = 216;
-const DESKTOP_SIDEBAR_COLLAPSED_WIDTH = 54;
-const NAVBAR_BREAKPOINT = 'xs' as const;
-
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-	const theme = useMantineTheme();
-	const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints[NAVBAR_BREAKPOINT]})`);
-
-	const [mobileOpened, mobileHandlers] = useDisclosure(false);
-	const [desktopExpanded, desktopHandlers] = useDisclosure(true);
-
-	useLockDocumentScroll(isDesktop === false && mobileOpened);
+	const sidebar = useDashboardSidebar();
 
 	return (
 		<AppShell
 			header={{ height: 55 }}
-			navbar={{
-				width: desktopExpanded
-					? DESKTOP_SIDEBAR_EXPANDED_WIDTH
-					: DESKTOP_SIDEBAR_COLLAPSED_WIDTH,
-				breakpoint: NAVBAR_BREAKPOINT,
-				collapsed: { mobile: !mobileOpened },
-			}}
+			navbar={sidebar.navbar}
 			padding={APP_SHELL_PADDING}
 			transitionDuration={240}
 			transitionTimingFunction='cubic-bezier(0.2, 0, 0, 1)'
 		>
 			<AppShell.Header>
 				<AppHeader
-					isDesktopSidebarExpanded={desktopExpanded}
-					isMobileSidebarOpen={mobileOpened}
-					onToggleDesktopSidebar={desktopHandlers.toggle}
-					onToggleMobileSidebar={mobileHandlers.toggle}
+					isDesktopSidebarExpanded={sidebar.isDesktopExpanded}
+					isMobileSidebarOpen={sidebar.isMobileOpen}
+					onToggleDesktopSidebar={sidebar.toggleDesktopSidebar}
+					onToggleMobileSidebar={sidebar.toggleMobileSidebar}
 				/>
 
 			</AppShell.Header>
 
 			<AppShell.Navbar className={cls.navbar}>
 				<SideBar
-					isCollapsed={!desktopExpanded}
-					mobileOpen={mobileOpened}
-					onClose={mobileHandlers.close}
+					isCollapsed={!sidebar.isDesktopExpanded}
+					mobileOpen={sidebar.isMobileOpen}
+					onClose={sidebar.closeMobileSidebar}
 				/>
 			</AppShell.Navbar>
 

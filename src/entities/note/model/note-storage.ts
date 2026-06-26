@@ -1,3 +1,5 @@
+import { createStorageKey } from '@/shared/lib/storage-key';
+
 import type {
 	NoteSource,
 	StoredPersonalNote,
@@ -8,8 +10,8 @@ import {
 	getNoteId,
 } from './note';
 
-const PERSONAL_NOTES_STORAGE_KEY = 'viatrade:personal-notes';
-const PERSONAL_NOTES_UPDATE_EVENT = 'viatrade:personal-notes:update';
+const PERSONAL_NOTES_STORAGE_KEY = createStorageKey('notes', 'personal');
+const PERSONAL_NOTES_UPDATE_EVENT = createStorageKey('notes', 'personal', 'update');
 const EMPTY_PERSONAL_NOTES: StoredPersonalNote[] = [];
 
 let cachedRawPersonalNotes: string | null = null;

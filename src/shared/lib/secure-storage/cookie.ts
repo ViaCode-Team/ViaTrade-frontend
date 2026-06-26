@@ -1,6 +1,9 @@
 import Cookies from 'js-cookie';
 
-import { LOCKOUT_MINUTES, TEMP_MK_COOKIE } from './constants';
+import {
+	LOCKOUT_MINUTES,
+	TEMP_MK_COOKIE,
+} from './constants';
 
 export function toHex(bytes: Uint8Array): string {
 	return Array.from(bytes, (byte) =>

@@ -37,6 +37,21 @@
 	margin-inline-end: 0;
 }
 
-.link[data-active-icon] .section {
+.link:where([data-active], [aria-current='page']) {
+	--nl-bg: transparent;
+	--nl-color: inherit;
+}
+
+:where([data-mantine-color-scheme='light'])
+	.link:where([data-active], [aria-current='page']) {
+	--nl-hover: var(--mantine-color-gray-0);
+}
+
+:where([data-mantine-color-scheme='dark'])
+	.link:where([data-active], [aria-current='page']) {
+	--nl-hover: var(--mantine-color-dark-6);
+}
+
+.link:where([data-active], [aria-current='page']) .section {
 	color: var(--mantine-primary-color-5);
 }

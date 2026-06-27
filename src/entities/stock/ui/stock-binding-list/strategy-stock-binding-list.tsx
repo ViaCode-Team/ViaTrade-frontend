@@ -1,7 +1,7 @@
 import { Group, Pagination, SimpleGrid, Stack } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 import type { Stock } from '../../model';
 
@@ -31,7 +31,7 @@ export function StrategyStockBindingList({
 	const selectedStockIdSet = new Set(selectedStockIds);
 
 	if (paginatedStocks.length === 0) {
-		return <EmptyState title='Акции не найдены' />;
+		return <AppEmptyState title='Акции не найдены' />;
 	}
 
 	return (

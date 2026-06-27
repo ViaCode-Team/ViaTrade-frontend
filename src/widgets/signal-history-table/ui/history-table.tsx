@@ -15,7 +15,7 @@ import { generatePath, Link as RouterLink } from 'react-router';
 import type { SignalDirection } from '@/entities/signal';
 
 import { ROUTES } from '@/shared/model';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { useHistoryTable } from '../lib/use-history-table';
@@ -91,7 +91,7 @@ export function HistoryTable({
 							? (
 									<Table.Tr>
 										<Table.Td colSpan={3}>
-											<EmptyState title='История пуста' description='Для этой акции еще не было сигналов.' />
+											<AppEmptyState title='История пуста' description='Для этой акции еще не было сигналов.' />
 										</Table.Td>
 									</Table.Tr>
 								)

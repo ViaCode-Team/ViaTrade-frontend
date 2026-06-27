@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Flex } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 import cls from './notes-list.module.css';
 
@@ -22,7 +22,7 @@ export function NotesList<T extends { id: number | string }>({
 }: NotesListProps<T>) {
 	if (!hasAnyNotes) {
 		return (
-			<EmptyState
+			<AppEmptyState
 				title='Нет заметок'
 				description='Оставляйте заметки к акциям, они появятся здесь.'
 			/>
@@ -31,7 +31,7 @@ export function NotesList<T extends { id: number | string }>({
 
 	if (notes.length === 0) {
 		return (
-			<EmptyState
+			<AppEmptyState
 				title='Ничего не найдено'
 				description='Попробуйте изменить параметры поиска или фильтры.'
 			/>

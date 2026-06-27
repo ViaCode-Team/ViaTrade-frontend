@@ -4,7 +4,7 @@ import type { Signal } from '@/entities/signal';
 
 import { SignalCard } from '@/entities/signal';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 export { SignalsListSkeleton } from './signals-list.skeleton';
 
@@ -20,12 +20,12 @@ export function SignalsList({
 	onSignalSelect,
 }: SignalsListProps) {
 	if (!hasAnySignals) {
-		return <EmptyState title='Сигналы отсутствуют' description='Привяжите акции к стратегии, чтобы начать получать сигналы.' />;
+		return <AppEmptyState title='Сигналы отсутствуют' description='Привяжите акции к стратегии, чтобы начать получать сигналы.' />;
 	}
 
 	if (signals.length === 0) {
 		return (
-			<EmptyState
+			<AppEmptyState
 				title='Ничего не найдено'
 				description='Измените параметры поиска или сбросьте фильтры.'
 			/>

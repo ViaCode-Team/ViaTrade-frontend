@@ -6,7 +6,7 @@ import {
 
 import type { UserSessionDto } from '@/shared/api';
 
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 import { SessionListItem } from '..';
 
@@ -32,11 +32,11 @@ export function SessionsList({
 	actionSlot,
 }: SessionsListProps) {
 	if (sessions.length === 0) {
-		return <EmptyState title='Нет активных сессий' description='Вы авторизованы только на этом устройстве.' />;
+		return <AppEmptyState title='Нет активных сессий' description='Вы авторизованы только на этом устройстве.' />;
 	}
 
 	if (paginatedSessions.length === 0) {
-		return <EmptyState title='Сессии не найдены' description='На этой странице нет активных сессий.' />;
+		return <AppEmptyState title='Сессии не найдены' description='На этой странице нет активных сессий.' />;
 	}
 
 	return (

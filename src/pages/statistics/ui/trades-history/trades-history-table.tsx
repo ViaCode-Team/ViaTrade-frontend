@@ -15,7 +15,7 @@ import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-reac
 
 import type { TradeFilters } from '@/pages/statistics/ui/filter-trades';
 
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { TradesHistoryTableRow } from './trades-history-table-row';
@@ -83,7 +83,7 @@ function TradesHistoryTable() {
 
 	if (trades.length === 0) {
 		return (
-			<EmptyState title='Нет сделок' description='Запишите вашу первую сделку в дневник.' />
+			<AppEmptyState title='Нет сделок' description='Запишите вашу первую сделку в дневник.' />
 		);
 	}
 
@@ -113,7 +113,7 @@ function TradesHistoryTable() {
 							: (
 									<Table.Tr>
 										<Table.Td colSpan={10}>
-											<EmptyState
+											<AppEmptyState
 												title='Сделки не найдены'
 												description='Попробуйте изменить параметры поиска или сбросить фильтры.'
 											/>

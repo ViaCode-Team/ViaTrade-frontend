@@ -1,7 +1,7 @@
 import { AreaChart, BarChart, DonutChart } from '@mantine/charts';
 import { Card, Flex, Text, Title } from '@mantine/core';
 
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 import cls from './statistics-dashboard.module.css';
 import { useStatisticsDashboard } from './utils/use-statistics-dashboard';
@@ -10,7 +10,7 @@ export function StatisticsDashboard() {
 	const { totalTrades, pnlData, winLossData, barData } = useStatisticsDashboard();
 
 	if (totalTrades === 0) {
-		return <EmptyState title='Статистика недоступна' description='Добавьте сделки, чтобы увидеть статистику.' />;
+		return <AppEmptyState title='Статистика недоступна' description='Добавьте сделки, чтобы увидеть статистику.' />;
 	}
 
 	return (

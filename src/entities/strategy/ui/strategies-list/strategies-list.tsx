@@ -6,7 +6,7 @@ import {
 	toStrategyCardStrategy,
 } from '@/entities/strategy';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 export { StrategiesListSkeleton } from './strategies-list.skeleton';
 
@@ -19,11 +19,11 @@ export type StrategiesListProps = {
 
 export function StrategiesList({ strategies, hasAnyStrategies, actionSlot, bottomActionSlot }: StrategiesListProps) {
 	if (!hasAnyStrategies) {
-		return <EmptyState title='Стратегий пока нет' description='Нажмите «Создать», чтобы добавить первую стратегию.' />;
+		return <AppEmptyState title='Стратегий пока нет' description='Нажмите «Создать», чтобы добавить первую стратегию.' />;
 	}
 
 	if (strategies.length === 0) {
-		return <EmptyState title='Стратегии не найдены' description='Очистите поиск или измените параметры фильтрации.' />;
+		return <AppEmptyState title='Стратегии не найдены' description='Очистите поиск или измените параметры фильтрации.' />;
 	}
 
 	return (

@@ -2,7 +2,7 @@ import { Group, Pagination, SimpleGrid, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 
 import { StrategyCard, type StrategyCardStrategy } from '@/entities/strategy';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 export { StockLinkedStrategiesListSkeleton } from './stock-linked-strategies-list.skeleton';
 
@@ -35,7 +35,7 @@ export function StockLinkedStrategiesList({
 
 	if (!hasAnyStrategies) {
 		return (
-			<EmptyState title='Нет стратегий' description='К этой акции пока не привязано ни одной стратегии.' />
+			<AppEmptyState title='Нет стратегий' description='К этой акции пока не привязано ни одной стратегии.' />
 		);
 	}
 
@@ -43,7 +43,7 @@ export function StockLinkedStrategiesList({
 		<Stack gap='md'>
 			{strategies.length === 0
 				? (
-						<EmptyState title='Ничего не найдено' description='Попробуйте изменить поисковый запрос или фильтры.' />
+						<AppEmptyState title='Ничего не найдено' description='Попробуйте изменить поисковый запрос или фильтры.' />
 					)
 				: (
 						<>

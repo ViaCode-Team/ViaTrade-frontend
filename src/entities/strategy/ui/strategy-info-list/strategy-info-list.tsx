@@ -7,7 +7,7 @@ import {
 
 import type { Strategy } from '@/entities/strategy';
 
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 import { StrategyInfoCard } from '../strategy-info-card/strategy-info-card';
 
@@ -51,7 +51,7 @@ export function StrategyInfoList({ strategy }: StrategyInfoListProps) {
 		);
 
 	if (visibleSections.length === 0) {
-		return <EmptyState title='Информация о стратегии не заполнена' />;
+		return <AppEmptyState title='Информация о стратегии не заполнена' />;
 	}
 
 	return (

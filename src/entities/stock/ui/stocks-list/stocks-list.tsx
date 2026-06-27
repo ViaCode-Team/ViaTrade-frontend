@@ -2,7 +2,7 @@ import { SimpleGrid, Stack } from '@mantine/core';
 
 import { type Stock, StockCard } from '@/entities/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 export { StocksListSkeleton } from './stocks-list.skeleton';
 
@@ -23,7 +23,7 @@ export function StocksList({
 		if (!hasFilters) {
 			return (
 				<Stack gap='md'>
-					<EmptyState
+					<AppEmptyState
 						title='Нет акций'
 						description='В системе пока нет доступных акций.'
 					/>
@@ -33,7 +33,7 @@ export function StocksList({
 
 		return (
 			<Stack gap='md'>
-				<EmptyState
+				<AppEmptyState
 					title='Ничего не найдено'
 					description='Попробуйте изменить поисковый запрос или фильтры.'
 				/>

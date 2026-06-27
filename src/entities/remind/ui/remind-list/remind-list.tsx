@@ -2,7 +2,7 @@ import { SimpleGrid, Stack } from '@mantine/core';
 
 import { RemindCard, type RemindItem } from '@/entities/remind';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { EmptyState } from '@/shared/ui/empty-state';
+import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 import cls from './remind-list.module.css';
 
@@ -30,11 +30,21 @@ export function RemindList({
 	const hasFilteredReminds = reminds.length > 0;
 
 	if (!hasAnyReminds) {
-		return <EmptyState title='Напоминаний нет' description='Создайте первое напоминание, чтобы ничего не пропустить.' />;
+		return (
+			<AppEmptyState
+				title='Напоминаний нет'
+				description='Создайте первое напоминание, чтобы ничего не пропустить.'
+			/>
+		);
 	}
 
 	if (!hasFilteredReminds) {
-		return <EmptyState title='Ничего не найдено' description='Очистите строку поиска или измените фильтры.' />;
+		return (
+			<AppEmptyState
+				title='Ничего не найдено'
+				description='Очистите строку поиска или измените фильтры.'
+			/>
+		);
 	}
 
 	return (

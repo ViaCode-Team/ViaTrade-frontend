@@ -6,7 +6,6 @@ import type { Stock } from '@/entities/stock';
 
 import { StocksList, StocksListSkeleton } from '@/entities/stock';
 import { useGetAllInstrumentsLinkSuspense } from '@/entities/strategy';
-import { useStocksQuery, useStocksQuerySuspense } from '@/features/stock/load-stocks';
 import {
 	StocksControls,
 	useStocksControls,
@@ -15,6 +14,7 @@ import { PageHeader } from '@/shared/ui/page-header';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
+import { useStocksQuery, useStocksQuerySuspense } from './api/stocks-query';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
 import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
 import { UserStockLinkedStrategiesModal } from './ui/user-stock-linked-strategies-modal';

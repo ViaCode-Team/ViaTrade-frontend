@@ -2,8 +2,10 @@ import { AreaChart, BarChart, DonutChart } from '@mantine/charts';
 import { Card, Flex, Text, Title } from '@mantine/core';
 
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import cls from './statistics-dashboard.module.css';
+import { StatisticsDashboardSkeleton } from './statistics-dashboard.skeleton';
 import { useStatisticsDashboard } from './utils/use-statistics-dashboard';
 
 export function StatisticsDashboard() {
@@ -66,3 +68,9 @@ export function StatisticsDashboard() {
 		</div>
 	);
 }
+
+export const StatisticsDashboardBoundary = withQueryBoundary(StatisticsDashboard, {
+	suspenseProps: {
+		fallback: <StatisticsDashboardSkeleton />,
+	},
+});

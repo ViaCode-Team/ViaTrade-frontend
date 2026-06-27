@@ -1,14 +1,10 @@
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import { useGetByUserSuspense } from '@/entities/statistic';
+import { useTradeStatisticsBase } from '@/entities/statistic';
 
 export function useStatisticsDashboard() {
-	const { data } = useGetByUserSuspense();
-
-	const trades = data.data;
-
-	const totalTrades = trades.length;
+	const { trades, totalTrades } = useTradeStatisticsBase();
 
 	const profitableTrades = useMemo(
 		() => trades.filter((t) => (t.netIncome ?? 0) > 0).length,

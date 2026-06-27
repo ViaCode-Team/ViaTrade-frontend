@@ -1,5 +1,4 @@
-import { getFilteredStocks, type StockSortOption } from '@/entities/stock';
-import { mapTradeCodeToStock, type Stock } from '@/entities/stock';
+import { getFilteredStocks, mapTradeCodeToStock, type Stock, type StockSortOption } from '@/entities/stock';
 import {
 	useGetAllStocksCodes,
 	useGetAllStocksCodesSuspense,

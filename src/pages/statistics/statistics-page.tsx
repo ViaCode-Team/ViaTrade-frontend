@@ -1,10 +1,10 @@
 import { AddTradeButton } from '@/features/statistic/add';
-import { StatisticsDashboard } from '@/pages/statistics/ui/statistics-dashboard';
+import { StatisticsDashboardBoundary } from '@/pages/statistics/ui/statistics-dashboard';
 import { TradesHistory } from '@/pages/statistics/ui/trades-history';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 
-import { StatisticsSummary } from './ui/statistics-summary/statistics-summary';
+import { StatisticsSummaryBoundary } from './ui/statistics-summary/statistics-summary';
 
 export function StatisticsPage() {
 	return (
@@ -14,11 +14,11 @@ export function StatisticsPage() {
 				description='Аналитика по сделкам и доходу'
 			/>
 			<Section>
-				<StatisticsSummary />
+				<StatisticsSummaryBoundary />
 			</Section>
 
 			<Section>
-				<StatisticsDashboard />
+				<StatisticsDashboardBoundary />
 			</Section>
 
 			<Section header={{ title: 'История сделок', actions: <AddTradeButton /> }}>

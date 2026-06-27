@@ -1,1 +1,1 @@
-export { StatisticsDashboard } from './statistics-dashboard';
+export { StatisticsDashboard, StatisticsDashboardBoundary } from './statistics-dashboard';

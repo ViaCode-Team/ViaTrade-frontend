@@ -1,35 +1,47 @@
 import { useMemo } from 'react';
 
-import { useGetByUserSuspense } from '@/entities/statistic';
+import { useTradeStatisticsBase } from '@/entities/statistic';
 
 export function useStatisticsSummary() {
-	const { data } = useGetByUserSuspense();
-	const trades = data.data;
+	const { trades, totalTrades, winRate, totalIncome } = useTradeStatisticsBase();
 
-	const { totalTrades, profitableTrades, totalNetIncome } = useMemo(() => {
-		let profitable = 0;
-		let netIncome = 0;
+	const { profitableTrades, losingTrades, averageIncome, profitFactor } = useMemo(() => {
+		let totalProfit = 0;
+		let totalLoss = 0;
+		let profitableTrades = 0;
+		let losingTrades = 0;
 
-		for (const t of trades) {
-			const income = t.netIncome ?? 0;
+		for (const trade of trades) {
+			const income = trade.netIncome ?? 0;
+
 			if (income > 0) {
-				profitable++;
+				totalProfit += income;
+				profitableTrades++;
 			}
-			netIncome += income;
+			else if (income < 0) {
+				totalLoss += Math.abs(income);
+				losingTrades++;
+			}
 		}
 
-		return {
-			totalTrades: trades.length,
-			profitableTrades: profitable,
-			totalNetIncome: netIncome,
-		};
-	}, [trades]);
+		const averageIncome = totalTrades > 0 ? totalIncome / totalTrades : 0;
+		const profitFactor = totalLoss > 0 ? totalProfit / totalLoss : totalProfit > 0 ? Infinity : 0;
 
-	const winRate = totalTrades > 0 ? (profitableTrades / totalTrades) * 100 : 0;
+		return {
+			profitableTrades,
+			losingTrades,
+			averageIncome,
+			profitFactor,
+		};
+	}, [totalIncome, totalTrades, trades]);
 
 	return {
 		totalTrades,
 		winRate,
-		totalNetIncome,
+		totalIncome,
+		profitableTrades,
+		losingTrades,
+		averageIncome,
+		profitFactor,
 	};
 }

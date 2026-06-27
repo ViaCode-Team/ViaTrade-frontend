@@ -6,7 +6,6 @@ import { DashboardNotesBoundary } from '@/pages/dashboard/ui/dashboard-notes';
 import { DashboardRemindsBoundary } from '@/pages/dashboard/ui/dashboard-reminds';
 import { DashboardSignalsBoundary } from '@/pages/dashboard/ui/dashboard-signals';
 import { DashboardStatisticsBoundary } from '@/pages/dashboard/ui/dashboard-statistics';
-import { DashboardStocksBoundary } from '@/pages/dashboard/ui/dashboard-stocks';
 import { DashboardStrategiesBoundary } from '@/pages/dashboard/ui/dashboard-strategies';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
@@ -40,10 +39,6 @@ export function DashboardPage() {
 
 			<Section header={{ title: 'Активные стратегии' }}>
 				<DashboardStrategiesBoundary />
-			</Section>
-
-			<Section header={{ title: 'Лучшие акции' }}>
-				<DashboardStocksBoundary onLinkedStrategiesClick={() => {}} />
 			</Section>
 
 			<Section header={{ title: 'Последние напоминания' }}>

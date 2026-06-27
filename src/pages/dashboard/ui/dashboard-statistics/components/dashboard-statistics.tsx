@@ -1,3 +1,4 @@
+import { TRADE_STATISTICS_CARDS } from '@/entities/statistic';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
@@ -11,21 +12,18 @@ export function DashboardStatistics() {
 	return (
 		<SummaryList>
 			<SummaryCard
-				title='Всего сделок'
+				title={TRADE_STATISTICS_CARDS.totalTrades.title}
 				value={stats.totalTrades}
-				description={`Прибыльных: ${stats.profitableTrades} | Убыточных: ${stats.losingTrades}`}
 			/>
 			<SummaryCard
-				title='Общая прибыль'
-				value={`${stats.netProfit.toLocaleString('ru-RU', { minimumFractionDigits: 2 })} ₽`}
-				description={`Средняя: ${stats.averageProfit.toFixed(2)} ₽`}
-				color={stats.netProfit >= 0 ? 'green' : 'red'}
+				title={TRADE_STATISTICS_CARDS.totalIncome.title}
+				value={`${stats.totalIncome.toFixed(2)} ₽`}
+				color={TRADE_STATISTICS_CARDS.totalIncome.getColor(stats.totalIncome)}
 			/>
 			<SummaryCard
-				title='Win Rate'
+				title={TRADE_STATISTICS_CARDS.winRate.title}
 				value={`${stats.winRate.toFixed(1)}%`}
-				description={`Profit Factor: ${stats.profitFactor === Infinity ? '∞' : stats.profitFactor.toFixed(2)}`}
-				color={stats.winRate >= 50 ? 'green' : 'red'}
+				color={TRADE_STATISTICS_CARDS.winRate.getColor(stats.winRate)}
 			/>
 		</SummaryList>
 	);

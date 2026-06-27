@@ -1,9 +1,10 @@
 import { Skeleton } from '@mantine/core';
 
-import { useStocksQuerySuspense } from '@/features/stock/load-stocks';
 import { useStocksControls } from '@/pages/stocks/ui/filter-stocks';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import { useStocksQuerySuspense } from '../api/stocks-query';
 
 type StocksStatusBarProps = {
 	totalCount: number;

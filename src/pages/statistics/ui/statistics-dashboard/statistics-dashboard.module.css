@@ -1,4 +1,5 @@
 .root {
+	container-type: inline-size;
 	display: flex;
 	flex-direction: column;
 	gap: var(--mantine-spacing-md);
@@ -6,18 +7,56 @@
 
 .chartsGrid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
 	gap: var(--mantine-spacing-md);
-}
-
-@media (max-width: 768px) {
-	.chartsGrid {
-		grid-template-columns: 1fr;
-	}
 }
 
 .chartCard {
 	display: flex;
 	flex-direction: column;
 	gap: var(--mantine-spacing-md);
+}
+
+.profitCard {
+	grid-column: 1 / -1;
+}
+
+.profitHeader {
+	display: flex;
+	flex-direction: column;
+	gap: var(--mantine-spacing-sm);
+}
+
+.chartControls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--mantine-spacing-md);
+	align-items: flex-end;
+}
+
+.chartControls * {
+	flex: 1 1 250px;
+}
+
+.donutContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+@container (max-width: 860px) {
+	.chartControls {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.granularityControl {
+		grid-column: 1 / -1;
+	}
+}
+
+@container (max-width: 520px) {
+	.chartControls {
+		grid-template-columns: 1fr;
+	}
 }

@@ -1,15 +1,27 @@
 import { AreaChart, BarChart, DonutChart } from '@mantine/charts';
 import { Card, Flex, Text, Title } from '@mantine/core';
+import clsx from 'clsx';
 
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
+import { useStatisticsDashboard } from '../../model/use-statistics-dashboard';
+import { StatisticsDashboardControls } from './statistics-dashboard-controls';
 import cls from './statistics-dashboard.module.css';
 import { StatisticsDashboardSkeleton } from './statistics-dashboard.skeleton';
-import { useStatisticsDashboard } from './utils/use-statistics-dashboard';
 
 export function StatisticsDashboard() {
-	const { totalTrades, pnlData, winLossData, barData } = useStatisticsDashboard();
+	const {
+		totalTrades,
+		pnlData,
+		profitChartSettings,
+		maxEndDate,
+		handleProfitChartStartDateChange,
+		handleProfitChartEndDateChange,
+		handleProfitChartGranularityChange,
+		winLossData,
+		barData,
+	} = useStatisticsDashboard();
 
 	if (totalTrades === 0) {
 		return (
@@ -22,21 +34,39 @@ export function StatisticsDashboard() {
 
 	return (
 		<div className={cls.root}>
-
 			<div className={cls.chartsGrid}>
-				<Card withBorder className={cls.chartCard}>
-					<Flex direction='column'>
-						<Title order={4}>Прибыль</Title>
-						<Text size='sm' c='dimmed'>Ваша прибыль и убытки с течением времени</Text>
-					</Flex>
+				<Card withBorder className={clsx(cls.chartCard, cls.profitCard)}>
+					<div className={cls.profitHeader}>
+						<Flex direction='column'>
+							<Title order={4}>Прибыль</Title>
+							<Text size='sm' c='dimmed'>Ваша прибыль и убытки с течением времени</Text>
+						</Flex>
 
-					<AreaChart
-						h={300}
-						data={pnlData}
-						dataKey='date'
-						series={[{ name: 'Сумма', color: 'indigo.6' }]}
-						curveType='monotone'
-					/>
+						<StatisticsDashboardControls
+							settings={profitChartSettings}
+							maxEndDate={maxEndDate}
+							onStartDateChange={handleProfitChartStartDateChange}
+							onEndDateChange={handleProfitChartEndDateChange}
+							onGranularityChange={handleProfitChartGranularityChange}
+						/>
+					</div>
+
+					{pnlData.length > 0
+						? (
+								<AreaChart
+									h={300}
+									data={pnlData}
+									dataKey='date'
+									series={[{ name: 'Сумма', color: 'indigo.6' }]}
+									curveType='monotone'
+								/>
+							)
+						: (
+								<AppEmptyState
+									title='Нет данных за период'
+									description='Измените начало, конец или период графика.'
+								/>
+							)}
 				</Card>
 
 				<Card withBorder className={cls.chartCard}>
@@ -45,7 +75,7 @@ export function StatisticsDashboard() {
 						<Text size='sm' c='dimmed'>Прибыльные и убыточные сделки</Text>
 					</Flex>
 
-					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+					<div className={cls.donutContainer}>
 						<DonutChart
 							h={250}
 							data={winLossData}

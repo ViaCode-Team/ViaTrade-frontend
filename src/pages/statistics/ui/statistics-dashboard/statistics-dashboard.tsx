@@ -12,7 +12,12 @@ export function StatisticsDashboard() {
 	const { totalTrades, pnlData, winLossData, barData } = useStatisticsDashboard();
 
 	if (totalTrades === 0) {
-		return <AppEmptyState title='Статистика недоступна' description='Добавьте сделки, чтобы увидеть статистику.' />;
+		return (
+			<AppEmptyState
+				title='Статистика недоступна'
+				description='Добавьте сделки, чтобы увидеть статистику.'
+			/>
+		);
 	}
 
 	return (
@@ -21,7 +26,7 @@ export function StatisticsDashboard() {
 			<div className={cls.chartsGrid}>
 				<Card withBorder className={cls.chartCard}>
 					<Flex direction='column'>
-						<Title order={4}>Накопительная прибыль</Title>
+						<Title order={4}>Прибыль</Title>
 						<Text size='sm' c='dimmed'>Ваша прибыль и убытки с течением времени</Text>
 					</Flex>
 

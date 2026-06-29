@@ -1,5 +1,6 @@
 import { Skeleton } from '@mantine/core';
 
+import { QUERY_REFETCH_INTERVAL_TEXT } from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -12,7 +13,7 @@ export function RemindStatusBar({ instrumentId }: { instrumentId?: number }) {
 		<ListStatusBar
 			totalCount={reminds.length}
 			filteredCount={filteredReminds.length}
-			refreshIntervalText='Автообновление: 5 мин'
+			refreshIntervalText={QUERY_REFETCH_INTERVAL_TEXT}
 			onRefresh={refetch}
 		/>
 	);

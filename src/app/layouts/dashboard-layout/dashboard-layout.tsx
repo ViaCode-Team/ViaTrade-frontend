@@ -7,6 +7,7 @@ import {
 } from '@mantine/core';
 import { Outlet } from 'react-router';
 
+import { milliseconds } from '@/shared/lib/milliseconds';
 import {
 	APP_SHELL_PADDING,
 	PAGE_CONTAINER_SIZE,
@@ -29,7 +30,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 			header={{ height: 55 }}
 			navbar={sidebar.navbar}
 			padding={APP_SHELL_PADDING}
-			transitionDuration={240}
+			transitionDuration={milliseconds.fromMilliseconds(240)}
 			transitionTimingFunction='cubic-bezier(0.2, 0, 0, 1)'
 		>
 			<AppShell.Header>

@@ -12,6 +12,7 @@ import {
 	mergeApiNotesWithDrafts,
 	useStoredPersonalNotesQuery,
 } from '@/features/note/manage-note';
+import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import { getApiPersonalNotes } from '../../model/api-notes';
 
@@ -25,10 +26,10 @@ export function usePersonalNotes() {
 		strategiesQuery,
 	] = useSuspenseQueries({
 		queries: [
-			getGetByUserInstrumentAllSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
-			getGetByUserStrategyAllSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
-			getGetAllStocksCodesSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
-			getGetAllStrategiesSuspenseQueryOptions({ query: { refetchInterval: 300000 } }) as any,
+			getGetByUserInstrumentAllSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
+			getGetByUserStrategyAllSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
+			getGetAllStocksCodesSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
+			getGetAllStrategiesSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
 		],
 	}) as [any, any, any, any];
 

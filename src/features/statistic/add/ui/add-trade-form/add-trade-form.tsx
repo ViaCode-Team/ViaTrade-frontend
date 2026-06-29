@@ -21,8 +21,14 @@ import { useState } from 'react';
 import type { TradeRequest } from '@/shared/api';
 import type { TradeSignal } from '@/shared/api';
 
-import { useCreateTrade } from '@/entities/statistic';
+import {
+	TRADE_DIRECTION_HELP_TEXT,
+	TRADE_INSTRUMENT_TYPE_OPTIONS,
+	TRADE_SIGNAL_OPTIONS,
+	useCreateTrade,
+} from '@/entities/statistic';
 import { useGetAllStocksCodes } from '@/entities/trade-code';
+import { HELP_TOOLTIP_OPEN_DELAY } from '@/shared/model';
 
 type FormValues = {
 	tradeTypeId: string;
@@ -109,10 +115,7 @@ export function AddTradeForm() {
 		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack>
 				<SegmentedControl
-					data={[
-						{ label: 'Акция', value: '1' },
-						{ label: 'Фьючерс', value: '2' },
-					]}
+					data={[...TRADE_INSTRUMENT_TYPE_OPTIONS]}
 					key={form.key('tradeTypeId')}
 					{...form.getInputProps('tradeTypeId')}
 				/>
@@ -122,11 +125,11 @@ export function AddTradeForm() {
 						<Group gap={4}>
 							Направление сделки
 							<Tooltip
-								label='Long — покупка актива с расчетом на его рост. Short — продажа актива с расчетом на его падение.'
+								label={TRADE_DIRECTION_HELP_TEXT}
 								multiline
 								w={280}
 								withArrow
-								openDelay={150}
+								openDelay={HELP_TOOLTIP_OPEN_DELAY}
 								events={{ hover: true, focus: true, touch: true }}
 							>
 								<ActionIcon
@@ -142,10 +145,7 @@ export function AddTradeForm() {
 					)}
 				>
 					<SegmentedControl
-						data={[
-							{ label: 'Long', value: '1' },
-							{ label: 'Short', value: '-1' },
-						]}
+						data={[...TRADE_SIGNAL_OPTIONS]}
 						fullWidth
 						key={form.key('tradeSignal')}
 						{...form.getInputProps('tradeSignal')}

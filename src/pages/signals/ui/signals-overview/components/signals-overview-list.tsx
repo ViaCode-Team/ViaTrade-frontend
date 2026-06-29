@@ -10,6 +10,10 @@ import {
 	useGetResultSuspense,
 } from '@/entities/signal';
 import { getFilteredSignals } from '@/pages/signals/ui/filter-signals';
+import {
+	QUERY_REFETCH_INTERVAL,
+	STATIC_QUERY_STALE_TIME,
+} from '@/shared/model';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 export type SignalsOverviewListProps = {
@@ -20,8 +24,8 @@ export type SignalsOverviewListProps = {
 function SignalsOverviewList({ filters, onSignalSelect }: SignalsOverviewListProps) {
 	const { data: signalsData } = useGetResultSuspense(undefined, {
 		query: {
-			staleTime: Infinity,
-			refetchInterval: 300000,
+			staleTime: STATIC_QUERY_STALE_TIME,
+			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},
 	});
 

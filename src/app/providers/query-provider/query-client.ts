@@ -1,5 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
 
+import { milliseconds } from '@/shared/lib/milliseconds';
+import {
+	QUERY_CACHE_MAX_AGE,
+} from '@/shared/model';
+
 export const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
@@ -9,8 +14,8 @@ export const queryClient = new QueryClient({
 			refetchInterval: false,
 			refetchOnReconnect: false,
 			refetchIntervalInBackground: false,
-			gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days cache
-			staleTime: 1000 * 60 * 5, // 5 minutes
+			gcTime: QUERY_CACHE_MAX_AGE,
+			staleTime: milliseconds.fromMinutes(5),
 			networkMode: 'offlineFirst',
 		},
 		mutations: {

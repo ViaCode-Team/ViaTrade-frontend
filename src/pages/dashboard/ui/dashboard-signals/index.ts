@@ -1,1 +1,1 @@
-export { DashboardSignalsBoundary } from './components/dashboard-signals';
+export { DashboardSignalsBoundary } from './dashboard-signals';

@@ -1,4 +1,5 @@
 import { getFilteredNotes, useNotesControls } from '@/features/note/filter-notes';
+import { QUERY_REFETCH_INTERVAL_TEXT } from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { ValueBadge } from '@/shared/ui/value-badge';
 import { usePersonalNotes } from '@/widgets/notes-overview';
@@ -17,7 +18,7 @@ export function NotesStatusBar() {
 		<ListStatusBar
 			totalCount={notes.length}
 			filteredCount={filteredNotes.length}
-			refreshIntervalText='Автообновление: 5 мин'
+			refreshIntervalText={QUERY_REFETCH_INTERVAL_TEXT}
 			onRefresh={refetch}
 			badges={(
 				<>

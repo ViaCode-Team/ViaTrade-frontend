@@ -11,6 +11,7 @@ import {
 	mapTradeStrategiesToStrategies,
 } from '@/entities/strategy';
 import { useUrlFilters } from '@/shared/lib/url-filters';
+import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 import { strategyFiltersSchema } from '@/widgets/strategies-overview/ui/filter-strategies';
 
 type StrategiesQueries = [
@@ -27,8 +28,8 @@ type StrategiesQueries = [
 export function useStrategiesOverview() {
 	const [strategiesQuery, userStrategiesQuery] = useSuspenseQueries<StrategiesQueries>({
 		queries: [
-			{ ...getGetAllSuspenseQueryOptions(), refetchInterval: 300000 },
-			{ ...getGetUsersStrategySuspenseQueryOptions(), refetchInterval: 300000 },
+			{ ...getGetAllSuspenseQueryOptions(), refetchInterval: QUERY_REFETCH_INTERVAL },
+			{ ...getGetUsersStrategySuspenseQueryOptions(), refetchInterval: QUERY_REFETCH_INTERVAL },
 		],
 	});
 	const { filters } = useUrlFilters(strategyFiltersSchema);

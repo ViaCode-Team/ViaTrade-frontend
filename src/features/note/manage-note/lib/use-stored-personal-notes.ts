@@ -14,6 +14,7 @@ import {
 	subscribeStoredPersonalNotes,
 	upsertStoredPersonalNote,
 } from '@/entities/note';
+import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 
 export const STORED_PERSONAL_NOTES_QUERY_KEY = ['stored-personal-notes'] as const;
 
@@ -22,7 +23,7 @@ export function getStoredPersonalNotesQueryOptions() {
 		queryKey: STORED_PERSONAL_NOTES_QUERY_KEY,
 		queryFn: getStoredPersonalNotes,
 		initialData: getStoredPersonalNotes,
-		staleTime: Number.POSITIVE_INFINITY,
+		staleTime: STATIC_QUERY_STALE_TIME,
 	};
 }
 

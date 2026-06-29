@@ -2,9 +2,10 @@ import { useIdle } from '@mantine/hooks';
 import { useEffect } from 'react';
 
 import { useSecurity } from '@/entities/security';
+import { milliseconds } from '@/shared/lib/milliseconds';
 import { lockApp } from '@/shared/lib/secure-storage';
 
-const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
+const INACTIVITY_TIMEOUT_MS = milliseconds.fromMinutes(15);
 const EVENTS: (keyof DocumentEventMap)[] = ['mousemove', 'keydown', 'mousedown', 'touchstart', 'scroll'];
 
 export function InactivityLock() {

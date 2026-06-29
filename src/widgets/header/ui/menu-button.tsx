@@ -2,6 +2,8 @@ import { ActionIcon, Burger, Tooltip } from '@mantine/core';
 import { IconLayoutSidebarLeftCollapse } from '@tabler/icons-react';
 import { IconLayoutSidebarLeftExpand } from '@tabler/icons-react';
 
+import { milliseconds } from '@/shared/lib/milliseconds';
+
 type MenuButtonProps = {
 	isDesktopExpanded: boolean;
 	isMobileOpen: boolean;
@@ -19,7 +21,7 @@ export function MenuButton({
 
 	return (
 		<>
-			<Tooltip label={`${desktopActionText} меню`} openDelay={500}>
+			<Tooltip label={`${desktopActionText} меню`} openDelay={milliseconds.fromMilliseconds(500)}>
 				<ActionIcon
 					visibleFrom='xs'
 					size='lg'

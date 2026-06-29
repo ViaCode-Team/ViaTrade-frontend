@@ -1,1 +1,1 @@
-export { DashboardStrategiesBoundary } from './components/dashboard-strategies';
+export { DashboardStrategiesBoundary } from './dashboard-strategies';

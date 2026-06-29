@@ -17,7 +17,10 @@ import { IconDeviceFloppy } from '@tabler/icons-react';
 import { useState } from 'react';
 import { generatePath, Link as RouterLink } from 'react-router';
 
-import { ROUTES } from '@/shared/model';
+import {
+	DATE_TIME_DISPLAY_FORMAT,
+	ROUTES,
+} from '@/shared/model';
 
 import type { RemindItem } from '../model';
 
@@ -130,7 +133,7 @@ export function RemindCard({
 						placeholder='Дата и время'
 						value={getDateTimePickerValue(localDraft)}
 						onChange={handleDateTimeChange}
-						valueFormat='DD.MM.YYYY HH:mm'
+						valueFormat={DATE_TIME_DISPLAY_FORMAT}
 						defaultTimeValue={localDraft.time || '09:00'}
 						leftSection={<IconCalendarTime size={16} />}
 						leftSectionPointerEvents='none'

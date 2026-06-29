@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 
+import { milliseconds } from '../milliseconds';
 import {
 	LOCKOUT_MINUTES,
 	TEMP_MK_COOKIE,
@@ -31,7 +32,7 @@ function getCookieOptions(): Cookies.CookieAttributes {
 }
 
 function getLockoutExpirationDate(): Date {
-	return new Date(Date.now() + LOCKOUT_MINUTES * 60_000);
+	return new Date(Date.now() + milliseconds.fromMinutes(LOCKOUT_MINUTES));
 }
 
 export function getTempKey(): string | null {

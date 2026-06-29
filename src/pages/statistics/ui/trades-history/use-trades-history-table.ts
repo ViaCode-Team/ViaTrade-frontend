@@ -7,6 +7,7 @@ import type { Trade } from '@/shared/api';
 import { getGetByUserQueryKey, useGetByUserSuspense } from '@/entities/statistic';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
 import { type TradeFilters, useTradesHistory } from '@/pages/statistics/ui/filter-trades';
+import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
 
 export type ProcessedTrade = Trade & {
 	ticker: string;
@@ -49,8 +50,8 @@ export function useTradesHistoryTable() {
 		if (q) {
 			const lowerSearch = q.toLowerCase();
 			result = result.filter((t) => {
-				const dateOpenStr = dayjs(t.dateOpen).format('DD.MM.YYYY HH:mm');
-				const dateCloseStr = t.dateClose ? dayjs(t.dateClose).format('DD.MM.YYYY HH:mm') : '—';
+				const dateOpenStr = dayjs(t.dateOpen).format(DATE_TIME_DISPLAY_FORMAT);
+				const dateCloseStr = t.dateClose ? dayjs(t.dateClose).format(DATE_TIME_DISPLAY_FORMAT) : '—';
 				const tradeOpenStr = `${t.tradeOpen.toFixed(2)} ₽`;
 				const tradeCloseStr = t.tradeClose ? `${t.tradeClose.toFixed(2)} ₽` : '—';
 				const sumStr = t.income > 0 ? `+${t.income.toFixed(2)} ₽` : `${t.income.toFixed(2)} ₽`;

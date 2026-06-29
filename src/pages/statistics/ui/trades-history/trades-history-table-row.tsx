@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { CloseTradeButton } from '@/pages/statistics/ui/close-statistic';
 import { DeleteTradeButton } from '@/pages/statistics/ui/delete-statistic';
 import { EditTradeButton } from '@/pages/statistics/ui/edit-statistic';
+import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
 
 import type { ProcessedTrade } from './use-trades-history-table';
 
@@ -32,8 +33,8 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 					{trade.isLong ? 'Long' : 'Short'}
 				</Badge>
 			</Table.Td>
-			<Table.Td>{dayjs(trade.dateOpen).format('DD.MM.YYYY HH:mm')}</Table.Td>
-			<Table.Td>{trade.dateClose ? dayjs(trade.dateClose).format('DD.MM.YYYY HH:mm') : '—'}</Table.Td>
+			<Table.Td>{dayjs(trade.dateOpen).format(DATE_TIME_DISPLAY_FORMAT)}</Table.Td>
+			<Table.Td>{trade.dateClose ? dayjs(trade.dateClose).format(DATE_TIME_DISPLAY_FORMAT) : '—'}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
 				{trade.tradeOpen.toFixed(2)}
 				{' '}

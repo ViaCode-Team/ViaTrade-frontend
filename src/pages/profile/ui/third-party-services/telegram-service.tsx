@@ -2,6 +2,7 @@ import { Skeleton, Text, Title } from '@mantine/core';
 import { IconBrandTelegram } from '@tabler/icons-react';
 
 import { useGetMeSuspense, useGetTgToken } from '@/entities/user';
+import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 import { InfoRow } from '@/shared/ui/info-row';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -12,7 +13,7 @@ export function TelegramService() {
 	const { data: tokenRes } = useGetTgToken({
 		query: {
 			enabled: !tgId,
-			refetchInterval: 5 * 60 * 1000,
+			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},
 	});
 

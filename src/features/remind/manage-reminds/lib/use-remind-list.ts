@@ -5,6 +5,7 @@ import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentS
 import { remindFiltersSchema } from '@/entities/remind';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
 import { useUrlFilters } from '@/shared/lib/url-filters';
+import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 export function useRemindList(instrumentId?: number) {
 	const queryClient = useQueryClient();
@@ -18,7 +19,7 @@ export function useRemindList(instrumentId?: number) {
 
 	const { data: response, refetch } = useSuspenseQuery({
 		...queryOpts,
-		refetchInterval: 300000,
+		refetchInterval: QUERY_REFETCH_INTERVAL,
 	});
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 

@@ -4,6 +4,7 @@ import {
 	mapStrategyResultResponseToSignals,
 	useGetResultSuspense,
 } from '@/entities/signal';
+import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
@@ -11,7 +12,7 @@ import { SummaryList } from '@/shared/ui/summary-list';
 function SignalsSummary() {
 	const { data: signalsData } = useGetResultSuspense(undefined, {
 		query: {
-			staleTime: Infinity,
+			staleTime: STATIC_QUERY_STALE_TIME,
 		},
 	});
 

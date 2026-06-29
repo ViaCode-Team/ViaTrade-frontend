@@ -7,13 +7,14 @@ import {
 	deleteStoredPersonalNote,
 	upsertStoredPersonalNote,
 } from '@/entities/note';
+import { milliseconds } from '@/shared/lib/milliseconds';
 
 import {
 	useDeleteStoredPersonalNoteMutation,
 	useUpsertStoredPersonalNoteMutation,
 } from './use-stored-personal-notes';
 
-const DEFAULT_NOTE_DRAFT_SAVE_DELAY = 600;
+const DEFAULT_NOTE_DRAFT_SAVE_DELAY = milliseconds.fromMilliseconds(600);
 
 type PendingDraft = {
 	note: StoredPersonalNote;

@@ -1,1 +1,1 @@
-export { DashboardNotesBoundary } from './components/dashboard-notes';
+export { DashboardNotesBoundary } from './dashboard-notes';

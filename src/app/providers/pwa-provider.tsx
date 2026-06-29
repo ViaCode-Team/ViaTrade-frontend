@@ -3,6 +3,8 @@ import { IconWifi } from '@tabler/icons-react';
 import { type ReactNode, useEffect } from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
+import { milliseconds } from '@/shared/lib/milliseconds';
+
 export function PwaProvider({ children }: { children: ReactNode }) {
 	const {
 		offlineReady: [offlineReady, setOfflineReady],
@@ -16,7 +18,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
 				message: 'Теперь приложение может работать в автономном режиме.',
 				color: 'teal',
 				icon: <IconWifi size={18} />,
-				autoClose: 5000,
+				autoClose: milliseconds.fromSeconds(5),
 				onClose: () => setOfflineReady(false),
 			});
 		}

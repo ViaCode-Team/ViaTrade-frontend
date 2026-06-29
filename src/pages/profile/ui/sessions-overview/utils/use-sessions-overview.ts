@@ -4,6 +4,7 @@ import { useGetSessionsSuspense } from '@/entities/auth';
 import { sessionFiltersSchema } from '@/pages/profile/ui/filter-sessions';
 import { useUserSessionLogout } from '@/pages/profile/ui/manage-sessions';
 import { useUrlFilters } from '@/shared/lib/url-filters';
+import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import {
 	getCurrentSessionId,
@@ -26,7 +27,7 @@ export function useSessionsOverview() {
 
 	const sessionLogout = useUserSessionLogout();
 
-	const { data: sessionsData, refetch } = useGetSessionsSuspense({ query: { refetchInterval: 300000 } });
+	const { data: sessionsData, refetch } = useGetSessionsSuspense({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
 
 	const sessions = useMemo(() => normalizeUserSessions(sessionsData.data), [sessionsData.data]);
 	const currentSessionId = useMemo(() => getCurrentSessionId(sessions), [sessions]);

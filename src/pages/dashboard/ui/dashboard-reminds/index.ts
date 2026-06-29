@@ -1,1 +1,1 @@
-export { DashboardRemindsBoundary } from './components/dashboard-reminds';
+export { DashboardRemindsBoundary } from './dashboard-reminds';

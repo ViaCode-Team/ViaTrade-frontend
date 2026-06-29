@@ -4,6 +4,7 @@ import {
 	mapStrategyResultResponseToTradeHistory,
 	useGetResultByStrategyAndTradeCodeSuspense,
 } from '@/entities/signal';
+import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 
 type UseHistoryTableOptions = {
 	strategyName: string;
@@ -20,7 +21,7 @@ export function useHistoryTable({ strategyName, tradeCode }: UseHistoryTableOpti
 		undefined,
 		{
 			query: {
-				staleTime: Infinity,
+				staleTime: STATIC_QUERY_STALE_TIME,
 			},
 		},
 	);

@@ -10,6 +10,7 @@ import { IconUser } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 
 import { useGetMeSuspense } from '@/entities/user';
+import { DATE_DISPLAY_FORMAT } from '@/shared/model';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { ProfileBanner } from './profile-banner';
@@ -38,7 +39,7 @@ export function ProfileInfo() {
 					<Text c='dimmed' ta='center'>
 						Дата регистрации:
 						{' '}
-						{dayjs(user.registerDate).format('DD.MM.YYYY')}
+						{dayjs(user.registerDate).format(DATE_DISPLAY_FORMAT)}
 					</Text>
 				</Flex>
 			</Stack>

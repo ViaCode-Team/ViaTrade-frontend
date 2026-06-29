@@ -3,6 +3,8 @@ import { useDebouncedCallback } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { type ChangeEvent, useState } from 'react';
 
+import { milliseconds } from '@/shared/lib/milliseconds';
+
 export type SearchInputProps = Omit<TextInputProps, 'onChange'> & {
 	onChange?: (value: string) => void;
 	isLoading?: boolean;
@@ -12,7 +14,7 @@ export type SearchInputProps = Omit<TextInputProps, 'onChange'> & {
 export function SearchInput({
 	onChange,
 	isLoading,
-	debounceMs = 300,
+	debounceMs = milliseconds.fromMilliseconds(300),
 	flex = 1,
 	miw = 300,
 	defaultValue = '',

@@ -1,6 +1,8 @@
 import { Input, SegmentedControl } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 
+import { DATE_DISPLAY_FORMAT } from '@/shared/model';
+
 import type {
 	ProfitChartGranularity,
 	ProfitChartSettings,
@@ -39,7 +41,7 @@ export function StatisticsDashboardControls({
 				value={settings.startDate}
 				onChange={onStartDateChange}
 				maxDate={maxStartDate}
-				valueFormat='DD.MM.YYYY'
+				valueFormat={DATE_DISPLAY_FORMAT}
 			/>
 
 			<DateInput
@@ -49,7 +51,7 @@ export function StatisticsDashboardControls({
 				onChange={onEndDateChange}
 				minDate={minEndDate}
 				maxDate={maxEndDate}
-				valueFormat='DD.MM.YYYY'
+				valueFormat={DATE_DISPLAY_FORMAT}
 			/>
 
 			<Input.Wrapper className={cls.granularityControl} label='Период'>

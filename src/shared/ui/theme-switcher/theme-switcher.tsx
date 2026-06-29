@@ -2,7 +2,7 @@ import { Tooltip, useMantineColorScheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useCallback } from 'react';
 
-import { getThemeState } from '@/shared/lib/theme-mode';
+import { getThemeState } from '@/shared/lib/theme';
 
 import cls from './theme-switcher.module.css';
 

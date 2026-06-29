@@ -4,6 +4,7 @@ import type { Signal } from '@/entities/signal';
 
 import { useGetResult } from '@/entities/signal';
 import { SignalsControls, useSignalsControls } from '@/pages/signals/ui/filter-signals';
+import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 
 import { SignalsOverviewListBoundary } from './signals-overview-list';
 import { SignalsStatusBarBoundary } from './signals-status-bar';
@@ -12,7 +13,7 @@ export function SignalsOverview({ onSignalSelect }: { onSignalSelect: (signal: S
 	const { filters } = useSignalsControls();
 	const { data, isLoading } = useGetResult(undefined, {
 		query: {
-			staleTime: Infinity,
+			staleTime: STATIC_QUERY_STALE_TIME,
 		},
 	});
 

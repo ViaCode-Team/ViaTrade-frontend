@@ -9,6 +9,11 @@ import {
 } from '@/entities/signal';
 import { getFilteredSignals } from '@/pages/signals/ui/filter-signals';
 import { useSignalsControls } from '@/pages/signals/ui/filter-signals';
+import {
+	QUERY_REFETCH_INTERVAL,
+	QUERY_REFETCH_INTERVAL_TEXT,
+	STATIC_QUERY_STALE_TIME,
+} from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
@@ -17,8 +22,8 @@ export function SignalsStatusBar() {
 	const { filters } = useSignalsControls();
 	const { data: signalsData, refetch } = useGetResultSuspense(undefined, {
 		query: {
-			staleTime: Infinity,
-			refetchInterval: 300000,
+			staleTime: STATIC_QUERY_STALE_TIME,
+			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},
 	});
 	const signals = useMemo(
@@ -38,7 +43,7 @@ export function SignalsStatusBar() {
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredCount}
-			refreshIntervalText='Автообновление: 5 мин'
+			refreshIntervalText={QUERY_REFETCH_INTERVAL_TEXT}
 			onRefresh={refetch}
 			badges={(
 				<>

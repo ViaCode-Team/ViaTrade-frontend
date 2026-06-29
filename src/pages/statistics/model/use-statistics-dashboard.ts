@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
 import { useTradeStatisticsBase } from '@/entities/statistic';
+import { DATE_DISPLAY_FORMAT } from '@/shared/model';
 
 import type { ProfitChartGranularity, ProfitChartSettings } from './statistics-dashboard-types';
 
@@ -36,7 +37,7 @@ function getProfitChartLabel(date: string, granularity: ProfitChartGranularity) 
 		return pointDate.format('MM.YYYY');
 	}
 
-	return pointDate.format('DD.MM.YYYY');
+	return pointDate.format(DATE_DISPLAY_FORMAT);
 }
 
 export function useStatisticsDashboard() {

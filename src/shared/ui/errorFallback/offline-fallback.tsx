@@ -5,7 +5,9 @@ import {
 	Text,
 	useMantineTheme,
 } from '@mantine/core';
-import { IconRefresh, IconWifiOff, IconWorld } from '@tabler/icons-react';
+import { IconRefresh } from '@tabler/icons-react';
+import { IconWifiOff } from '@tabler/icons-react';
+import { IconWorld } from '@tabler/icons-react';
 
 type OfflineFallbackProps = {
 	handleReload: () => void;

@@ -1,4 +1,4 @@
-import { useUrlFilters } from '@/shared/lib/hooks';
+import { useUrlFilters } from '@/shared/lib/url-filters';
 
 import { tradeFiltersSchema } from './trade-filters';
 

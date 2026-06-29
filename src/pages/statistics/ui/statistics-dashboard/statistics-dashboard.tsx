@@ -1,3 +1,4 @@
+import '@mantine/charts/styles.css';
 import { AreaChart, BarChart, DonutChart } from '@mantine/charts';
 import { Card, Flex, Text, Title } from '@mantine/core';
 import clsx from 'clsx';

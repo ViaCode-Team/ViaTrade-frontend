@@ -1,7 +1,7 @@
 import { SegmentedControl, Select } from '@mantine/core';
 
 import { useGetAll } from '@/entities/strategy';
-import { useUrlFilters } from '@/shared/lib/hooks';
+import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 

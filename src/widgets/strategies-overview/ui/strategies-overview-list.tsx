@@ -1,5 +1,7 @@
 import { Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { Suspense } from 'react';
+import { lazily } from 'react-lazily';
 
 import type { Strategy } from '@/entities/strategy';
 
@@ -8,7 +10,8 @@ import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { useStrategiesOverview } from '../lib/use-strategies-overview';
-import { StrategyStockBindingModalBoundary } from './strategy-stock-binding-modal';
+
+const { StrategyStockBindingModalBoundary } = lazily(() => import('./strategy-stock-binding-modal'));
 
 function StrategiesOverviewList() {
 	const {
@@ -21,7 +24,11 @@ function StrategiesOverviewList() {
 			title: `Привязать акции к ${strategy.name}`,
 			size: 'xl',
 			centered: true,
-			children: <StrategyStockBindingModalBoundary strategyId={strategy.id} />,
+			children: (
+				<Suspense fallback={null}>
+					<StrategyStockBindingModalBoundary strategyId={strategy.id} />
+				</Suspense>
+			),
 		});
 	}
 

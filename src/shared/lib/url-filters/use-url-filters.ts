@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router';
 
-import { v } from '@/shared/model';
+import { v } from '@/shared/lib/validation';
 
 export function useUrlFilters<TSchema extends v.BaseSchema<any, any, any>>(schema: TSchema) {
 	const [searchParams, setSearchParams] = useSearchParams();

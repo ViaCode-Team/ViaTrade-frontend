@@ -1,4 +1,4 @@
-import { v } from '@/shared/model';
+import { v } from '@/shared/lib/validation';
 
 import { registerSchema, type TRegisterData } from './register-data';
 

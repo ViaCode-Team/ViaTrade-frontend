@@ -1,8 +1,9 @@
 import { modals } from '@mantine/modals';
+import { lazily } from 'react-lazily';
 
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { AddRemind } from '.';
+const { AddRemind } = lazily(() => import('./add-remind'));
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AddRemindBoundary = withQueryBoundary(AddRemind);

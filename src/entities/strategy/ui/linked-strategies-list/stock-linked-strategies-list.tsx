@@ -1,8 +1,11 @@
 import { Group, Pagination, SimpleGrid, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 
-import { StrategyCard, type StrategyCardStrategy } from '@/entities/strategy';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
+
+import type { StrategyCardStrategy } from '../../model';
+
+import { StrategyCard } from '../strategy-card';
 
 export { StockLinkedStrategiesListSkeleton } from './stock-linked-strategies-list.skeleton';
 

@@ -8,14 +8,12 @@ import {
 	ThemeIcon,
 	Title,
 } from '@mantine/core';
-import {
-	IconAdjustments,
-	IconChartBar,
-	IconDeviceAnalytics,
-	IconLayoutDashboard,
-	IconTargetArrow,
-	IconWifiOff,
-} from '@tabler/icons-react';
+import { IconAdjustments } from '@tabler/icons-react';
+import { IconChartBar } from '@tabler/icons-react';
+import { IconDeviceAnalytics } from '@tabler/icons-react';
+import { IconLayoutDashboard } from '@tabler/icons-react';
+import { IconTargetArrow } from '@tabler/icons-react';
+import { IconWifiOff } from '@tabler/icons-react';
 
 import cls from './features-section.module.css';
 

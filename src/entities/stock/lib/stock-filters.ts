@@ -1,4 +1,4 @@
-import type { Stock } from '@/entities/stock';
+import type { Stock } from '../model';
 
 export type StockSortOption = 'name-asc' | 'name-desc';
 

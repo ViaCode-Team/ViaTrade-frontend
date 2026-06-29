@@ -1,4 +1,5 @@
-import { IconMoon, IconSun } from '@tabler/icons-react';
+import { IconMoon } from '@tabler/icons-react';
+import { IconSun } from '@tabler/icons-react';
 
 export function getCurrentThemeMode(mode: 'light' | 'dark' | 'auto' | undefined, prefersDark: boolean): 'light' | 'dark' {
 	if (!mode || mode === 'auto') {

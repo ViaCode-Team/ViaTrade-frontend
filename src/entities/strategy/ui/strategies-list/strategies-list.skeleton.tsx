@@ -1,8 +1,9 @@
 import { SimpleGrid } from '@mantine/core';
 
-import { StrategyCardSkeleton } from '@/entities/strategy';
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
+
+import { StrategyCardSkeleton } from '../strategy-card/strategy-card.skeleton';
 
 export function StrategiesListSkeleton() {
 	return (

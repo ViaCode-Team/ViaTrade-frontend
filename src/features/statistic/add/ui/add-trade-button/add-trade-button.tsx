@@ -1,14 +1,20 @@
 import { ActionIcon, Button, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { IconPlus } from '@tabler/icons-react';
+import { Suspense } from 'react';
+import { lazily } from 'react-lazily';
 
-import { AddTradeForm } from '../add-trade-form/add-trade-form';
+const { AddTradeForm } = lazily(() => import('../add-trade-form/add-trade-form'));
 
 export function AddTradeButton() {
 	const openModal = () => {
 		modals.open({
 			title: 'Добавить сделку',
-			children: <AddTradeForm />,
+			children: (
+				<Suspense fallback={null}>
+					<AddTradeForm />
+				</Suspense>
+			),
 			size: 'md',
 		});
 	};

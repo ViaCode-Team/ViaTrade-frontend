@@ -1,16 +1,14 @@
 import type { ReactNode } from 'react';
 
 import { Flex } from '@mantine/core';
-import {
-	IconBell,
-	IconChartBar,
-	IconChartCandle,
-	IconChartLine,
-	IconHome,
-	IconNotebook,
-	IconTrendingUp,
-	IconUser,
-} from '@tabler/icons-react';
+import { IconBell } from '@tabler/icons-react';
+import { IconChartBar } from '@tabler/icons-react';
+import { IconChartCandle } from '@tabler/icons-react';
+import { IconChartLine } from '@tabler/icons-react';
+import { IconHome } from '@tabler/icons-react';
+import { IconNotebook } from '@tabler/icons-react';
+import { IconTrendingUp } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 
 import { ROUTES } from '@/shared/model';
 

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getGetAllByUserQueryOptions, getGetTradeRemindByUserInstrumentQueryOptions } from '@/entities/remind';
 import { remindFiltersSchema, remindSortOptions } from '@/entities/remind';
-import { useUrlFilters } from '@/shared/lib/hooks';
+import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 

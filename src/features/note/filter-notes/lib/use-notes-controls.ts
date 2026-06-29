@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { useUrlFilters } from '@/shared/lib/hooks';
-import { v } from '@/shared/model';
+import { useUrlFilters } from '@/shared/lib/url-filters';
+import { v } from '@/shared/lib/validation';
 
 export const noteFiltersSchema = v.object({
 	q: v.fallback(v.string(), ''),

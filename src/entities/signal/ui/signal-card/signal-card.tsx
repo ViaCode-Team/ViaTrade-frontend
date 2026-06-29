@@ -12,11 +12,11 @@ import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { generatePath, Link } from 'react-router';
 
-import type { Signal } from '@/entities/signal';
-
 import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
 import { ROUTES } from '@/shared/model';
 import { InfoPair } from '@/shared/ui/info-pair';
+
+import type { Signal } from '../../model';
 
 import cls from './signal-card.module.css';
 

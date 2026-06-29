@@ -1,8 +1,9 @@
 import { SimpleGrid } from '@mantine/core';
 
-import { SignalCardSkeleton } from '@/entities/signal';
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
+
+import { SignalCardSkeleton } from '../signal-card/signal-card.skeleton';
 
 export function SignalsListSkeleton() {
 	return (

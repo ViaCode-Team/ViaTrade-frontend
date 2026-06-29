@@ -9,7 +9,10 @@ import {
 	ThemeIcon,
 	Title,
 } from '@mantine/core';
-import { IconKey, IconLock, IconServer, IconShieldLock } from '@tabler/icons-react';
+import { IconKey } from '@tabler/icons-react';
+import { IconLock } from '@tabler/icons-react';
+import { IconServer } from '@tabler/icons-react';
+import { IconShieldLock } from '@tabler/icons-react';
 
 import { brandGradient } from '@/shared/lib/theme';
 

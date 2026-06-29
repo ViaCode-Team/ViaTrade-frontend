@@ -7,7 +7,9 @@ import {
 	Text,
 	Title,
 } from '@mantine/core';
-import { IconChartBar, IconClock, IconRoute } from '@tabler/icons-react';
+import { IconChartBar } from '@tabler/icons-react';
+import { IconClock } from '@tabler/icons-react';
+import { IconRoute } from '@tabler/icons-react';
 
 import type { Strategy } from '@/entities/strategy';
 

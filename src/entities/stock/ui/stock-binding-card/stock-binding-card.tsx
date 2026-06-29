@@ -7,9 +7,9 @@ import {
 } from '@mantine/core';
 import { generatePath, Link as RouterLink } from 'react-router';
 
-import type { Stock } from '@/entities/stock';
-
 import { ROUTES } from '@/shared/model';
+
+import type { Stock } from '../../model';
 
 import cls from './stock-binding-card.module.css';
 

@@ -1,8 +1,6 @@
 import { ActionIcon, Burger, Tooltip } from '@mantine/core';
-import {
-	IconLayoutSidebarLeftCollapse,
-	IconLayoutSidebarLeftExpand,
-} from '@tabler/icons-react';
+import { IconLayoutSidebarLeftCollapse } from '@tabler/icons-react';
+import { IconLayoutSidebarLeftExpand } from '@tabler/icons-react';
 
 type MenuButtonProps = {
 	isDesktopExpanded: boolean;

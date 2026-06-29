@@ -4,7 +4,7 @@ import { mapTradeRemindToRemindItem } from '@/entities/remind';
 import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind';
 import { remindFiltersSchema } from '@/entities/remind';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
-import { useUrlFilters } from '@/shared/lib/hooks';
+import { useUrlFilters } from '@/shared/lib/url-filters';
 
 export function useRemindList(instrumentId?: number) {
 	const queryClient = useQueryClient();

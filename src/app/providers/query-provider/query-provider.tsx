@@ -2,13 +2,13 @@ import type { ReactNode } from 'react';
 
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { onlineManager } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
 import { useSecurity } from '@/entities/security';
 import { secureQueryPersister } from '@/shared/lib/secure-storage';
 import { createStorageKey } from '@/shared/lib/storage-key';
 
+import { AppReactQueryDevtools } from './app-react-query-devtools';
 import { queryClient } from './query-client';
 
 type StoreProviderProps = {
@@ -35,7 +35,7 @@ export function QueryProvider({ children }: StoreProviderProps) {
 			}}
 		>
 			{children}
-			<ReactQueryDevtools initialIsOpen={false} />
+			<AppReactQueryDevtools />
 		</PersistQueryClientProvider>
 	);
 }

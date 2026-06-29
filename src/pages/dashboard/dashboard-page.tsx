@@ -1,4 +1,6 @@
 import { modals } from '@mantine/modals';
+import { Suspense } from 'react';
+import { lazily } from 'react-lazily';
 
 import type { Signal } from '@/entities/signal';
 
@@ -9,7 +11,8 @@ import { DashboardStatisticsBoundary } from '@/pages/dashboard/ui/dashboard-stat
 import { DashboardStrategiesBoundary } from '@/pages/dashboard/ui/dashboard-strategies';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { HistoryTableBoundary } from '@/widgets/signal-history-table';
+
+const { HistoryTableBoundary } = lazily(() => import('@/widgets/signal-history-table'));
 
 export function DashboardPage() {
 	function openSignalHistoryModal(signal: Signal) {
@@ -17,10 +20,12 @@ export function DashboardPage() {
 			title: `История сигнала: ${signal.asset}`,
 			size: 'md',
 			children: (
-				<HistoryTableBoundary
-					tradeCode={signal.tradeCode}
-					strategyName={signal.strategy}
-				/>
+				<Suspense fallback={null}>
+					<HistoryTableBoundary
+						tradeCode={signal.tradeCode}
+						strategyName={signal.strategy}
+					/>
+				</Suspense>
 			),
 		});
 	}

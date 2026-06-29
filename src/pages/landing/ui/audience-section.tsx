@@ -7,7 +7,9 @@ import {
 	ThemeIcon,
 	Title,
 } from '@mantine/core';
-import { IconBriefcase, IconChartLine, IconSchool } from '@tabler/icons-react';
+import { IconBriefcase } from '@tabler/icons-react';
+import { IconChartLine } from '@tabler/icons-react';
+import { IconSchool } from '@tabler/icons-react';
 
 import cls from './audience-section.module.css';
 

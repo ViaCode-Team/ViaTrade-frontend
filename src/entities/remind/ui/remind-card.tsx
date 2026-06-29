@@ -9,18 +9,17 @@ import {
 	Textarea,
 	Tooltip,
 } from '@mantine/core';
+import '@mantine/dates/styles.css';
 import { DateTimePicker } from '@mantine/dates';
-import {
-	IconArrowBackUp,
-	IconCalendarTime,
-	IconDeviceFloppy,
-} from '@tabler/icons-react';
+import { IconArrowBackUp } from '@tabler/icons-react';
+import { IconCalendarTime } from '@tabler/icons-react';
+import { IconDeviceFloppy } from '@tabler/icons-react';
 import { useState } from 'react';
 import { generatePath, Link as RouterLink } from 'react-router';
 
-import type { RemindItem } from '@/entities/remind';
-
 import { ROUTES } from '@/shared/model';
+
+import type { RemindItem } from '../model';
 
 import { useRemindDraft } from '../lib/use-remind-draft';
 import cls from './remind-card.module.css';

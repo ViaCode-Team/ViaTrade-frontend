@@ -1,8 +1,11 @@
 import { SimpleGrid, Stack } from '@mantine/core';
 
-import { type Stock, StockCard } from '@/entities/stock';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
+
+import type { Stock } from '../../model';
+
+import { StockCard } from '../stock-card';
 
 export { StocksListSkeleton } from './stocks-list.skeleton';
 

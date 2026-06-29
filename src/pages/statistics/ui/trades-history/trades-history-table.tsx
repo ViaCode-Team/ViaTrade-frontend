@@ -11,7 +11,9 @@ import {
 	Text,
 	UnstyledButton,
 } from '@mantine/core';
-import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
+import { IconChevronDown } from '@tabler/icons-react';
+import { IconChevronUp } from '@tabler/icons-react';
+import { IconSelector } from '@tabler/icons-react';
 
 import type { TradeFilters } from '@/pages/statistics/ui/filter-trades';
 

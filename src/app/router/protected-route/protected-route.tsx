@@ -1,5 +1,6 @@
 import { useIsRestoring, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { lazily } from 'react-lazily';
 import {
 	Navigate,
 	Outlet,
@@ -11,12 +12,13 @@ import {
 import { useLogout } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
 import { useGetMe } from '@/entities/user';
-import { PinSetup } from '@/features/security/pin-setup';
-import { PinUnlock } from '@/features/security/pin-unlock';
 import { clearLocalData } from '@/shared/lib/auth';
 import { useAppNetwork } from '@/shared/lib/hooks';
 import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
+
+const { PinSetup } = lazily(() => import('@/features/security/pin-setup'));
+const { PinUnlock } = lazily(() => import('@/features/security/pin-unlock'));
 
 export type ProtectedRouteProps = {
 	isPrivate?: boolean;

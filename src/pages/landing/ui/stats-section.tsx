@@ -9,7 +9,9 @@ import {
 	ThemeIcon,
 	Title,
 } from '@mantine/core';
-import { IconBolt, IconBrain, IconShieldCheck } from '@tabler/icons-react';
+import { IconBolt } from '@tabler/icons-react';
+import { IconBrain } from '@tabler/icons-react';
+import { IconShieldCheck } from '@tabler/icons-react';
 
 
 const PRINCIPLES = [

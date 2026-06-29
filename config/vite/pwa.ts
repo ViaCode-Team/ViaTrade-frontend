@@ -11,6 +11,7 @@ export const pwaConfig: Partial<VitePWAOptions> = {
 	],
 	includeManifestIcons: false,
 	workbox: {
+		sourcemap: false,
 		globPatterns: ['**\/*.{js,wasm,css,html}'],
 		runtimeCaching: [
 			{

@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 
 import type { StockSortOption } from '@/entities/stock';
 
-import { useUrlFilters } from '@/shared/lib/hooks';
-import { v } from '@/shared/model';
+import { useUrlFilters } from '@/shared/lib/url-filters';
+import { v } from '@/shared/lib/validation';
 
 export const stockFiltersSchema = v.object({
 	q: v.fallback(v.string(), ''),

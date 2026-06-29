@@ -1,4 +1,4 @@
-import { v } from '@/shared/model';
+import { v } from '@/shared/lib/validation';
 
 export const sessionFiltersSchema = v.object({
 	q: v.fallback(v.string(), ''),

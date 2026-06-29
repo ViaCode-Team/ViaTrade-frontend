@@ -10,6 +10,7 @@ import {
 	Switch,
 	Tooltip,
 } from '@mantine/core';
+import '@mantine/dates/styles.css';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { modals } from '@mantine/modals';

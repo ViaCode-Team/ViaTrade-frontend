@@ -1,11 +1,10 @@
 import type { RouteObject } from 'react-router';
 
-import { DashboardLayout } from '@/app/layouts/dashboard-layout';
 import { ROUTES } from '@/shared/model';
 
 export const authorizedRoutes: RouteObject[] = [
 	{
-		element: <DashboardLayout />,
+		lazy: () => import('@/app/layouts/dashboard-layout'),
 		children: [
 			{
 				path: ROUTES.DASHBOARD,

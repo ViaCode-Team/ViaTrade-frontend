@@ -7,7 +7,9 @@ import {
 	Text,
 	useMantineTheme,
 } from '@mantine/core';
-import { IconAlertTriangle, IconRefresh, IconWorld } from '@tabler/icons-react';
+import { IconAlertTriangle } from '@tabler/icons-react';
+import { IconRefresh } from '@tabler/icons-react';
+import { IconWorld } from '@tabler/icons-react';
 
 import { NetworkError } from '@/shared/api/client/custom-instance-fetch';
 import { useAppNetwork } from '@/shared/lib/hooks';

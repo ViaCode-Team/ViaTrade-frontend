@@ -1,4 +1,4 @@
-import { v } from '@/shared/model';
+import { v } from '@/shared/lib/validation';
 
 export const registerSchema = v.object({
 	login: v.pipe(

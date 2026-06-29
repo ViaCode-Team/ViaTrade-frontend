@@ -2,10 +2,8 @@ import {
 	Button,
 	Group,
 } from '@mantine/core';
-import {
-	IconCheck,
-	IconRotate,
-} from '@tabler/icons-react';
+import { IconCheck } from '@tabler/icons-react';
+import { IconRotate } from '@tabler/icons-react';
 
 import { brandGradient } from '@/shared/lib/theme';
 

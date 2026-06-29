@@ -1,12 +1,13 @@
 import { SimpleGrid, Stack } from '@mantine/core';
 
-import {
-	type Strategy,
-	StrategyCard,
-	toStrategyCardStrategy,
-} from '@/entities/strategy';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
+
+import {
+	type Strategy,
+	toStrategyCardStrategy,
+} from '../../model';
+import { StrategyCard } from '../strategy-card';
 
 export { StrategiesListSkeleton } from './strategies-list.skeleton';
 

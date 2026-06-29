@@ -1,19 +1,25 @@
 import { Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { Suspense } from 'react';
+import { lazily } from 'react-lazily';
 
 import type { Trade } from '@/shared/api';
-
-import { CloseTradeForm } from '../close-trade-form/close-trade-form';
 
 type CloseTradeButtonProps = {
 	trade: Trade;
 };
 
+const { CloseTradeForm } = lazily(() => import('../close-trade-form/close-trade-form'));
+
 export function CloseTradeButton({ trade }: CloseTradeButtonProps) {
 	const openModal = () => {
 		modals.open({
 			title: 'Закрытие сделки',
-			children: <CloseTradeForm trade={trade} />,
+			children: (
+				<Suspense fallback={null}>
+					<CloseTradeForm trade={trade} />
+				</Suspense>
+			),
 			size: 'sm',
 		});
 	};

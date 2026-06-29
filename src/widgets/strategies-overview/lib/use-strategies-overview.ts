@@ -10,7 +10,7 @@ import {
 	type GetUsersStrategySuspenseQueryResult,
 	mapTradeStrategiesToStrategies,
 } from '@/entities/strategy';
-import { useUrlFilters } from '@/shared/lib/hooks';
+import { useUrlFilters } from '@/shared/lib/url-filters';
 import { strategyFiltersSchema } from '@/widgets/strategies-overview/ui/filter-strategies';
 
 type StrategiesQueries = [

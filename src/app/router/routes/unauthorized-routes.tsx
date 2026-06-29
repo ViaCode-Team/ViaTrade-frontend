@@ -1,11 +1,10 @@
 import type { RouteObject } from 'react-router';
 
-import { AuthLayout } from '@/app/layouts/auth-layout';
 import { ROUTES } from '@/shared/model';
 
 export const unauthorizedRoutes: RouteObject[] = [
 	{
-		element: <AuthLayout />,
+		lazy: () => import('@/app/layouts/auth-layout'),
 		children: [
 			{
 				path: ROUTES.LOGIN,

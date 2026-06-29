@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { useGetSessionsSuspense } from '@/entities/auth';
 import { sessionFiltersSchema } from '@/pages/profile/ui/filter-sessions';
 import { useUserSessionLogout } from '@/pages/profile/ui/manage-sessions';
-import { useUrlFilters } from '@/shared/lib/hooks';
+import { useUrlFilters } from '@/shared/lib/url-filters';
 
 import {
 	getCurrentSessionId,

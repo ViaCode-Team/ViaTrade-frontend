@@ -6,7 +6,8 @@ import {
 	Text,
 	Title,
 } from '@mantine/core';
-import { IconHome, IconRefresh } from '@tabler/icons-react';
+import { IconHome } from '@tabler/icons-react';
+import { IconRefresh } from '@tabler/icons-react';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
 
 import logoUrl from '@/shared/assets/icons/logo-default.svg';

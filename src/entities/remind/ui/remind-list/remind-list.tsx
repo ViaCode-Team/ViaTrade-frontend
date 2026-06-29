@@ -1,9 +1,11 @@
 import { SimpleGrid, Stack } from '@mantine/core';
 
-import { RemindCard, type RemindItem } from '@/entities/remind';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
+import type { RemindItem } from '../../model';
+
+import { RemindCard } from '../remind-card';
 import cls from './remind-list.module.css';
 
 export { RemindListSkeleton } from './remind-list.skeleton';

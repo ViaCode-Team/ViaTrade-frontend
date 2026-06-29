@@ -1,10 +1,11 @@
 import { SimpleGrid } from '@mantine/core';
 
-import type { Signal } from '@/entities/signal';
-
-import { SignalCard } from '@/entities/signal';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
+
+import type { Signal } from '../../model';
+
+import { SignalCard } from '../signal-card';
 
 export { SignalsListSkeleton } from './signals-list.skeleton';
 

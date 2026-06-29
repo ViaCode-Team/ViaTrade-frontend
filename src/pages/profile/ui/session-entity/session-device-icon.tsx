@@ -1,4 +1,6 @@
-import { IconDeviceDesktop, IconDeviceMobile, IconDeviceTablet } from '@tabler/icons-react';
+import { IconDeviceDesktop } from '@tabler/icons-react';
+import { IconDeviceMobile } from '@tabler/icons-react';
+import { IconDeviceTablet } from '@tabler/icons-react';
 import clsx from 'clsx';
 
 import cls from './session-list-item.module.css';

@@ -1,13 +1,11 @@
 import { SimpleGrid } from '@mantine/core';
-import {
-	IconAlertTriangle,
-	IconTargetArrow,
-	IconTrendingUp,
-} from '@tabler/icons-react';
-
-import type { Strategy } from '@/entities/strategy';
+import { IconAlertTriangle } from '@tabler/icons-react';
+import { IconTargetArrow } from '@tabler/icons-react';
+import { IconTrendingUp } from '@tabler/icons-react';
 
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
+
+import type { Strategy } from '../../model';
 
 import { StrategyInfoCard } from '../strategy-info-card/strategy-info-card';
 

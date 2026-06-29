@@ -1,8 +1,9 @@
 import { SimpleGrid } from '@mantine/core';
 
-import { StockCardSkeleton } from '@/entities/stock';
 import { createSkeletons } from '@/shared/lib/skeleton';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
+
+import { StockCardSkeleton } from '../stock-card/stock-card.skeleton';
 
 const skeletons = createSkeletons(6);
 

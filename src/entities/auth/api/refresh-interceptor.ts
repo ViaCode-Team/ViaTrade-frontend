@@ -1,23 +1,15 @@
-import { createApiError, interceptors } from '@/shared/api';
-import { buildApiUrl } from '@/shared/lib/config';
+import { apiClient, setUnauthorizedHandler } from '@/shared/api';
 
 import { getLoginUrl, getRefreshUrl, getRegisterUrl } from './gen';
 
-const AUTH_URLS = [getRegisterUrl(), getLoginUrl()];
+const AUTH_URLS = [getRegisterUrl(), getLoginUrl(), getRefreshUrl()];
 
 function isAuthRequest(url: string) {
 	return AUTH_URLS.some((path) => url.includes(path));
 }
 
 async function refreshToken(): Promise<void> {
-	const responseRefresh = await fetch(
-		buildApiUrl(getRefreshUrl()),
-		{ method: 'POST' },
-	);
-
-	if (!responseRefresh.ok) {
-		throw await createApiError(responseRefresh);
-	}
+	await apiClient.post(getRefreshUrl());
 }
 
 let refreshPromise: Promise<void> | null = null;
@@ -27,20 +19,17 @@ export function registerAuthRefreshInterceptor() {
 	if (isRegistered)
 		return;
 
-	interceptors.response.use(async (response, url, options): Promise<Response> => {
-		if (response.status !== 401 || isAuthRequest(url))
-			return response;
+	setUnauthorizedHandler(async (request) => {
+		if (isAuthRequest(request.url)) {
+			return false;
+		}
 
-		// Deduplicate refresh requests
 		refreshPromise ??= refreshToken()
 			.finally(() => {
 				refreshPromise = null;
 			});
 
 		await refreshPromise;
-
-		// Retry
-		return fetch(url, options);
 	});
 
 	isRegistered = true;

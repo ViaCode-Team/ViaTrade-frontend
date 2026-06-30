@@ -13,7 +13,6 @@ type NotesControlsProps = {
 export function NotesControls({ isLoading, disabled }: NotesControlsProps = {}) {
 	const { filters, setFilter } = useNotesControls();
 
-
 	return (
 		<ControlsGroup>
 			<SearchInput

@@ -1,0 +1,40 @@
+import type { KyInstance } from 'ky';
+
+import ky, { isHTTPError } from 'ky';
+
+import { BASE_URL } from '@/shared/lib/config';
+
+import { createHttpApiError } from './errors';
+import { canRetryUnauthorizedRequest, retryUnauthorizedRequest } from './unauthorized-retry';
+
+function createApiClient(): KyInstance {
+	return ky.create({
+		prefix: BASE_URL || undefined,
+		retry: {
+			limit: 1,
+			shouldRetry: () => false,
+		},
+		hooks: {
+			afterResponse: [
+				({ request, response, retryCount }) => {
+					if (!canRetryUnauthorizedRequest(response, retryCount)) {
+						return;
+					}
+
+					return retryUnauthorizedRequest(request);
+				},
+			],
+			beforeError: [
+				({ error }) => {
+					if (isHTTPError(error)) {
+						return createHttpApiError(error);
+					}
+
+					return error;
+				},
+			],
+		},
+	});
+}
+
+export const apiClient = createApiClient();

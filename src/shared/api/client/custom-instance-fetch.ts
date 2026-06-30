@@ -1,64 +1,43 @@
+import type { Options } from 'ky';
+
 import { onlineManager } from '@tanstack/react-query';
 
-import { buildApiUrl } from '@/shared/lib/config';
-import { showNoNetworkNotification } from '@/shared/lib/no-network';
+import type { ProblemDetails } from '../types/gen';
+import type { ApiError } from './errors';
+import type { ApiClientOptions, ApiResponse } from './types';
 
-import { createApiError, parseBody } from './body';
-import { runRequestInterceptors, runResponseInterceptors } from './interceptor';
+import { apiClient } from './ky-client';
+import { normalizeRequestError } from './request-error';
+import { parseResponseData } from './response-data';
 
-export type ErrorType<Error> = ApiError<Error> | NetworkError;
+export type ErrorType<Error> = ApiError<Error | ProblemDetails>;
 
 export async function customInstance<T>(
 	url: string,
-	options: RequestInit,
+	options?: ApiClientOptions,
 ): Promise<T> {
-	[url, options] = await runRequestInterceptors(buildApiUrl(url), options);
-
-	let response: Response;
 	try {
-		response = await fetch(url, options);
+		const request = createRequest<T>(url, options);
+		const response = await request;
+
 		onlineManager.setOnline(true);
+		return createApiResponse<T>(await parseResponseData(request, response), response);
 	}
 	catch (error) {
-		if (error instanceof TypeError) {
-			onlineManager.setOnline(false);
-
-			if (options.method && options.method !== 'GET') {
-				showNoNetworkNotification();
-			}
-
-			throw new NetworkError('Failed to fetch due to network issues');
-		}
-		throw error;
+		throw normalizeRequestError(error, options);
 	}
+}
 
-	response = await runResponseInterceptors(response, url, options);
+function createRequest<T>(url: string, options?: ApiClientOptions) {
+	return apiClient<T>(url, options as Options | undefined);
+}
 
-	if (!response.ok) {
-		throw await createApiError(response);
-	}
-
-	const body = await parseBody<T>(response);
-
-	return {
-		data: body,
+function createApiResponse<T>(data: unknown, response: Response): T {
+	const apiResponse = {
+		data,
 		headers: response.headers,
 		status: response.status,
-	} as T;
-}
+	} satisfies ApiResponse<unknown>;
 
-export class ApiError<T> extends Error {
-	public details: T;
-
-	constructor(details: T) {
-		super('API error');
-		this.details = details;
-	}
-}
-
-export class NetworkError extends Error {
-	constructor(message: string = 'Network error') {
-		super(message);
-		this.name = 'NetworkError';
-	}
+	return apiResponse as T;
 }

@@ -11,7 +11,7 @@ import { IconAlertTriangle } from '@tabler/icons-react';
 import { IconRefresh } from '@tabler/icons-react';
 import { IconWorld } from '@tabler/icons-react';
 
-import { NetworkError } from '@/shared/api/client/custom-instance-fetch';
+import { NetworkError } from '@/shared/api/client/errors';
 import { useAppNetwork } from '@/shared/lib/hooks';
 
 import { OfflineFallback } from './offline-fallback';

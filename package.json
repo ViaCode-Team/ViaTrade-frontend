@@ -44,6 +44,7 @@
 		"dayjs": "^1.11.21",
 		"idb-keyval": "^6.2.6",
 		"js-cookie": "^3.0.8",
+		"ky": "^2.0.2",
 		"postcss": "^8.5.16",
 		"postcss-preset-mantine": "^1.18.0",
 		"postcss-simple-vars": "^7.0.1",

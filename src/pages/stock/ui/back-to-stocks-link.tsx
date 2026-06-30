@@ -1,15 +1,6 @@
-import { IconArrowLeft } from '@tabler/icons-react';
-
 import { ROUTES } from '@/shared/model';
-import { AppLink } from '@/shared/ui/app-link';
-
-import cls from '../stock-page.module.css';
+import { BackLink } from '@/shared/ui/back-link';
 
 export function BackToStocksLink() {
-	return (
-		<AppLink to={ROUTES.STOCKS} className={cls.backLink}>
-			<IconArrowLeft size={16} stroke={2} />
-			Назад к акциям
-		</AppLink>
-	);
+	return <BackLink to={ROUTES.STOCKS}>Назад к акциям</BackLink>;
 }

@@ -1,12 +1,13 @@
 import { Badge, Group, Table, Text } from '@mantine/core';
 import dayjs from 'dayjs';
 
-import { CloseTradeButton } from '@/pages/statistics/ui/close-statistic';
-import { DeleteTradeButton } from '@/pages/statistics/ui/delete-statistic';
-import { EditTradeButton } from '@/pages/statistics/ui/edit-statistic';
 import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
 
 import type { ProcessedTrade } from './use-trades-history-table';
+
+import { CloseTradeButton } from '../close-statistic';
+import { DeleteTradeButton } from '../delete-statistic';
+import { EditTradeButton } from '../edit-statistic';
 
 export type TradesHistoryTableRowProps = {
 	trade: ProcessedTrade;

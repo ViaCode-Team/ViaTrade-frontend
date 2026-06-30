@@ -10,7 +10,7 @@ export type PageHeaderProps = {
 
 export function PageHeader({ title, description, rightSection }: PageHeaderProps) {
 	return (
-		<Flex justify='space-between' align='flex-start' gap='md'>
+		<Flex justify='space-between' align='flex-start' gap='md' wrap='wrap'>
 			<Flex direction='column'>
 				<Title order={1}>{title}</Title>
 				{description && (

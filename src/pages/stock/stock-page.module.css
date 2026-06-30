@@ -1,16 +1,3 @@
-.backLink {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	width: fit-content;
-	color: var(--mantine-color-dimmed);
-	transition: color 140ms ease;
-}
-
-.backLink:hover {
-	color: var(--mantine-primary-color-filled);
-}
-
 .titleBlock {
 	position: relative;
 	padding-left: 18px;

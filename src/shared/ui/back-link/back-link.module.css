@@ -1,0 +1,12 @@
+.link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	width: fit-content;
+	color: var(--mantine-color-dimmed);
+	transition: color 140ms ease;
+}
+
+.link:hover {
+	color: var(--mantine-primary-color-filled);
+}

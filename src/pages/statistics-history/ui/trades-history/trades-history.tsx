@@ -1,7 +1,6 @@
 import { Card, Stack } from '@mantine/core';
 
-import { TradesHistoryControls } from '@/pages/statistics/ui/filter-trades';
-
+import { TradesHistoryControls } from '../filter-trades';
 import { TradesHistoryTableBoundary } from './trades-history-table';
 
 export function TradesHistory() {

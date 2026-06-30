@@ -15,10 +15,10 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { IconChevronUp } from '@tabler/icons-react';
 import { IconSelector } from '@tabler/icons-react';
 
-import type { TradeFilters } from '@/pages/statistics/ui/filter-trades';
-
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import type { TradeFilters } from '../filter-trades';
 
 import { TradesHistoryTableRow } from './trades-history-table-row';
 import { TradesHistoryTableSkeleton } from './trades-history-table.skeleton';

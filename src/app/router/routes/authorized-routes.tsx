@@ -46,6 +46,10 @@ export const authorizedRoutes: RouteObject[] = [
 				path: ROUTES.STATISTICS,
 				lazy: () => import('@/pages/statistics'),
 			},
+			{
+				path: ROUTES.STATISTICS_HISTORY,
+				lazy: () => import('@/pages/statistics-history'),
+			},
 		],
 	},
 ];

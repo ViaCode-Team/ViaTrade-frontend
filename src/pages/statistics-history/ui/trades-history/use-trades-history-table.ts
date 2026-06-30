@@ -6,8 +6,9 @@ import type { Trade } from '@/shared/api';
 
 import { getGetByUserQueryKey, useGetByUserSuspense } from '@/entities/statistic';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
-import { type TradeFilters, useTradesHistory } from '@/pages/statistics/ui/filter-trades';
 import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
+
+import { type TradeFilters, useTradesHistory } from '../filter-trades';
 
 export type ProcessedTrade = Trade & {
 	ticker: string;

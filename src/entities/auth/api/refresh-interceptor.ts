@@ -1,11 +1,26 @@
-import { apiClient, setUnauthorizedHandler } from '@/shared/api';
+import { apiClient, setApiRequestGate, setUnauthorizedHandler } from '@/shared/api';
+import { hasPinSetup, isAppLocked } from '@/shared/lib/secure-storage';
 
 import { getLoginUrl, getRefreshUrl, getRegisterUrl } from './gen';
 
-const AUTH_URLS = [getRegisterUrl(), getLoginUrl(), getRefreshUrl()];
+const AUTH_ENTRY_URLS = [getRegisterUrl(), getLoginUrl()];
+const AUTH_REFRESH_URLS = [getRefreshUrl()];
+const AUTH_URLS = [...AUTH_ENTRY_URLS, ...AUTH_REFRESH_URLS];
+
+function matchesAnyUrl(url: string, paths: string[]) {
+	return paths.some((path) => url.includes(path));
+}
 
 function isAuthRequest(url: string) {
 	return AUTH_URLS.some((path) => url.includes(path));
+}
+
+function isAuthEntryRequest(url: string) {
+	return matchesAnyUrl(url, AUTH_ENTRY_URLS);
+}
+
+async function isPinLocked(): Promise<boolean> {
+	return await hasPinSetup() && isAppLocked();
 }
 
 async function refreshToken(): Promise<void> {
@@ -19,8 +34,19 @@ export function registerAuthRefreshInterceptor() {
 	if (isRegistered)
 		return;
 
+	setApiRequestGate(async (request) => {
+		if (isAuthEntryRequest(request.url))
+			return true;
+
+		return !(await isPinLocked());
+	});
+
 	setUnauthorizedHandler(async (request) => {
 		if (isAuthRequest(request.url)) {
+			return false;
+		}
+
+		if (await isPinLocked()) {
 			return false;
 		}
 

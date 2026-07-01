@@ -81,11 +81,11 @@ export function useNoteDraft({
 			pendingDraftRef.current = null;
 
 			if (isSameNoteText(text, savedValue)) {
-				deleteStoredPersonalNote(note.id);
+				void deleteStoredPersonalNote(note.id);
 				return;
 			}
 
-			upsertStoredPersonalNote(note, text);
+			void upsertStoredPersonalNote(note, text);
 		};
 	}, [saveLocalDraft]);
 

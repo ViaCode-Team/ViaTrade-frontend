@@ -1,1 +1,1 @@
-export { HistoryTableBoundary } from './ui/history-table';
+export { SignalHistoryTableBoundary as HistoryTableBoundary } from './ui/history-table';

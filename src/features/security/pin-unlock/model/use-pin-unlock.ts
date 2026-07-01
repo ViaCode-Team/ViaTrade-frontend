@@ -1,72 +1,81 @@
-import { useDisclosure } from '@mantine/hooks';
-import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useDisclosure, useInterval, useWindowEvent } from '@mantine/hooks';
+import { useCallback, useEffect, useState } from 'react';
 
-import { useLogout } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
-import { clearLocalData } from '@/shared/lib/auth';
-import { useAppNetwork } from '@/shared/lib/hooks';
-import { showNoNetworkNotification } from '@/shared/lib/no-network';
+import { milliseconds } from '@/shared/lib/milliseconds';
 import {
-	getFailedPinAttempts,
-	MAX_FAILED_ATTEMPTS,
-	setFailedPinAttempts,
+	getPinLockoutStatus,
+	PIN_LOCKOUT_FAILURE_THRESHOLD,
+	recordFailedPinAttempt,
 	unlockApp,
 } from '@/shared/lib/secure-storage';
-import { ROUTES } from '@/shared/model';
+
+function formatRemainingTime(value: number): string {
+	const totalSeconds = Math.ceil(value / milliseconds.fromSeconds(1));
+	const hours = Math.floor(totalSeconds / 3600);
+	const minutes = Math.floor((totalSeconds % 3600) / 60);
+	const seconds = totalSeconds % 60;
+
+	if (hours > 0)
+		return `${hours} ч ${minutes} мин`;
+
+	if (minutes > 0)
+		return `${minutes} мин ${seconds} сек`;
+
+	return `${seconds} сек`;
+}
+
+function getAttemptsBeforeNextLockout(failedAttempts: number): number {
+	const attemptsInCurrentStep = failedAttempts % PIN_LOCKOUT_FAILURE_THRESHOLD;
+
+	if (attemptsInCurrentStep === 0)
+		return PIN_LOCKOUT_FAILURE_THRESHOLD;
+
+	return PIN_LOCKOUT_FAILURE_THRESHOLD - attemptsInCurrentStep;
+}
 
 export function usePinUnlock() {
-	const queryClient = useQueryClient();
 	const [pin, setPin] = useState('');
 	const [error, setError] = useState<string | null>(null);
+	const [lockoutRemainingMs, setLockoutRemainingMs] = useState(0);
 	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
-	const { isOnline } = useAppNetwork();
 
-	const navigate = useNavigate();
-	const onLogoutSuccess = async () => {
-		await clearLocalData(queryClient);
-		await checkSecurityState();
-		navigate(ROUTES.LOGIN);
-	};
-
-	const { mutate: logout, isPending: isLoggingOut } = useLogout({ mutation: { onSuccess: onLogoutSuccess } });
+	const refreshLockoutStatus = useCallback(async () => {
+		const status = await getPinLockoutStatus();
+		setLockoutRemainingMs(status.remainingMs);
+		return status;
+	}, []);
 
 	const handleComplete = async (value: string) => {
 		setError(null);
 		startLoading();
 
 		try {
-			const currentAttempts = await getFailedPinAttempts();
-
-			// Защита: если ключа попыток нет вообще, значит его удалили вручную в IDB для обхода лимита
-			if (currentAttempts === undefined) {
-				logout();
-				await clearLocalData(queryClient);
-				navigate(ROUTES.LOGIN);
+			const currentLockout = await refreshLockoutStatus();
+			if (currentLockout.isLockedOut) {
+				setPin('');
+				setError(`Слишком много неверных попыток. Повторите через ${formatRemainingTime(currentLockout.remainingMs)}.`);
 				return;
 			}
 
 			const success = await unlockApp(value);
 			if (success) {
-				await setFailedPinAttempts(0);
+				setLockoutRemainingMs(0);
 				await checkSecurityState();
 			}
 			else {
-				const newAttempts = currentAttempts + 1;
-				await setFailedPinAttempts(newAttempts);
+				const nextLockout = await recordFailedPinAttempt();
 				setPin('');
 
-				if (newAttempts >= MAX_FAILED_ATTEMPTS) {
-					logout();
-
-					await clearLocalData(queryClient);
-					navigate(ROUTES.LOGIN);
+				if (nextLockout.isLockedOut) {
+					setLockoutRemainingMs(nextLockout.remainingMs);
+					setError(`Слишком много неверных попыток. Повторите через ${formatRemainingTime(nextLockout.remainingMs)}.`);
 					return;
 				}
 
-				setError(`Неверный ПИН-код. Осталось попыток: ${MAX_FAILED_ATTEMPTS - newAttempts}`);
+				const attemptsBeforeLockout = getAttemptsBeforeNextLockout(nextLockout.state.failedAttempts);
+				setError(`Неверный ПИН-код. До временной блокировки: ${attemptsBeforeLockout}`);
 			}
 		}
 		catch {
@@ -79,26 +88,51 @@ export function usePinUnlock() {
 	};
 
 	const handleChange = (value: string) => {
+		if (lockoutRemainingMs > 0)
+			return;
+
 		setPin(value);
 		if (error)
 			setError(null);
 	};
 
-	const handleLogout = async () => {
-		if (!isOnline) {
-			showNoNetworkNotification();
-			return;
+	const lockoutInterval = useInterval(() => {
+		void refreshLockoutStatus();
+	}, milliseconds.fromSeconds(1));
+
+	useEffect(() => {
+		void refreshLockoutStatus();
+	}, [refreshLockoutStatus]);
+
+	useEffect(() => {
+		if (lockoutRemainingMs > 0) {
+			lockoutInterval.start();
+		}
+		else {
+			lockoutInterval.stop();
 		}
 
-		logout();
-	};
+		return lockoutInterval.stop;
+	}, [lockoutRemainingMs, lockoutInterval]);
+
+	useWindowEvent('focus', () => {
+		void refreshLockoutStatus();
+	});
+
+	useWindowEvent('pageshow', () => {
+		void refreshLockoutStatus();
+	});
+
+	const isLockedOut = lockoutRemainingMs > 0;
 
 	return {
 		pin,
-		error,
-		isLoading: isLoading || isLoggingOut,
+		error: isLockedOut
+			? `Слишком много неверных попыток. Повторите через ${formatRemainingTime(lockoutRemainingMs)}.`
+			: error,
+		isLoading,
+		isLockedOut,
 		handleChange,
 		handleComplete,
-		handleLogout,
 	};
 }

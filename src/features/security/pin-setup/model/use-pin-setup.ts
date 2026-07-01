@@ -3,12 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useLogout } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
 import { clearLocalData } from '@/shared/lib/auth';
-import { useAppNetwork } from '@/shared/lib/hooks';
-import { showNoNetworkNotification } from '@/shared/lib/no-network';
-import { clearPinSetupMark, hasPinSetupMark, setupPin } from '@/shared/lib/secure-storage';
+import { clearPinSetupMark, hasPinSetupMark, setLocalAuthBlocked, setupPin } from '@/shared/lib/secure-storage';
 import { ROUTES } from '@/shared/model';
 
 export function usePinSetup() {
@@ -20,16 +17,14 @@ export function usePinSetup() {
 	const { checkSecurityState } = useSecurity();
 	const queryClient = useQueryClient();
 
-	const { isOnline } = useAppNetwork();
 	const navigate = useNavigate();
 
-	const onLogoutSuccess = async () => {
+	const blockLocalAuth = async () => {
 		await clearLocalData(queryClient);
+		await setLocalAuthBlocked();
 		await checkSecurityState();
 		navigate(ROUTES.LOGIN);
 	};
-
-	const { mutate: logout, isPending: isLoggingOut } = useLogout({ mutation: { onSuccess: onLogoutSuccess } });
 
 	const handlePinChange = (value: string) => {
 		setPin(value);
@@ -44,16 +39,9 @@ export function usePinSetup() {
 	};
 
 	const handleStep1Complete = async () => {
-		if (!isOnline) {
-			showNoNetworkNotification();
-			return;
-		}
-
 		const hasMark = await hasPinSetupMark();
 		if (!hasMark) {
-			logout();
-			await clearLocalData(queryClient);
-			navigate(ROUTES.LOGIN);
+			await blockLocalAuth();
 			return;
 		}
 
@@ -65,17 +53,9 @@ export function usePinSetup() {
 	const handleStep2Complete = async (value: string) => {
 		setError(null);
 
-		if (!isOnline) {
-			showNoNetworkNotification();
-			setConfirmPin('');
-			return;
-		}
-
 		const hasMark = await hasPinSetupMark();
 		if (!hasMark) {
-			logout();
-			await clearLocalData(queryClient);
-			navigate(ROUTES.LOGIN);
+			await blockLocalAuth();
 			return;
 		}
 
@@ -90,7 +70,6 @@ export function usePinSetup() {
 			await setupPin(pin);
 			await clearPinSetupMark();
 			await checkSecurityState();
-			await queryClient.refetchQueries();
 		}
 		catch {
 			setError('Не удалось создать ПИН-код. Попробуйте еще раз.');
@@ -108,26 +87,16 @@ export function usePinSetup() {
 		setError(null);
 	};
 
-	const handleLogout = async () => {
-		if (!isOnline) {
-			showNoNetworkNotification();
-			return;
-		}
-
-		logout();
-	};
-
 	return {
 		step,
 		pin,
 		confirmPin,
 		error,
-		isLoading: isLoading || isLoggingOut,
+		isLoading,
 		handlePinChange,
 		handleConfirmPinChange,
 		handleStep1Complete,
 		handleStep2Complete,
 		goBack,
-		handleLogout,
 	};
 }

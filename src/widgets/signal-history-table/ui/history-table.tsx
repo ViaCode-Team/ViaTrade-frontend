@@ -18,9 +18,9 @@ import { ROUTES } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { useHistoryTable } from '../lib/use-history-table';
+import { useSignalHistoryTable } from '../lib/use-history-table';
 import cls from './history-table.module.css';
-import { HistoryTableSkeleton } from './history-table.skeleton';
+import { SignalHistoryTableSkeleton } from './history-table.skeleton';
 
 type HistoryTableProps = {
 	tradeCode: string;
@@ -29,7 +29,7 @@ type HistoryTableProps = {
 
 const ROWS_PER_PAGE_OPTIONS = ['5', '10', '25'];
 
-export function HistoryTable({
+export function SignalHistoryTable({
 	tradeCode,
 	strategyName,
 }: HistoryTableProps) {
@@ -43,7 +43,7 @@ export function HistoryTable({
 		activePage,
 		start,
 		to,
-	} = useHistoryTable({ strategyName, tradeCode });
+	} = useSignalHistoryTable({ strategyName, tradeCode });
 
 	function getSignalBadge(signal: SignalDirection) {
 		if (signal === 'buy')
@@ -147,8 +147,8 @@ export function HistoryTable({
 	);
 }
 
-export const HistoryTableBoundary = withQueryBoundary(HistoryTable, {
+export const SignalHistoryTableBoundary = withQueryBoundary(SignalHistoryTable, {
 	suspenseProps: {
-		fallback: <HistoryTableSkeleton />,
+		fallback: <SignalHistoryTableSkeleton />,
 	},
 });

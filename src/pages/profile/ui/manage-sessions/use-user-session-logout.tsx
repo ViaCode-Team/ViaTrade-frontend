@@ -55,9 +55,11 @@ export function useUserSessionLogout() {
 	};
 
 	const { mutate: logoutAll, isPending: isLoggingOutAll } = useLogoutAll({
+		skipInvalidation: true,
 		mutation: { onSuccess: onLogoutSuccess },
 	});
 	const { mutate: logoutCurrent } = useLogout({
+		skipInvalidation: true,
 		mutation: { onSuccess: onLogoutSuccess },
 	});
 

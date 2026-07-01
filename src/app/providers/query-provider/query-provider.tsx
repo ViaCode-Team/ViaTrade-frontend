@@ -8,6 +8,7 @@ import { useSecurity } from '@/entities/security';
 import { secureQueryPersister } from '@/shared/lib/secure-storage';
 import { createStorageKey } from '@/shared/lib/storage-key';
 import { QUERY_CACHE_MAX_AGE } from '@/shared/model';
+import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import { AppReactQueryDevtools } from './app-react-query-devtools';
 import { queryClient } from './query-client';
@@ -24,11 +25,16 @@ const persister = createAsyncStoragePersister({
 });
 
 export function QueryProvider({ children }: StoreProviderProps) {
-	const { isLocked } = useSecurity();
+	const { hasPin, isLocked, isLocalAuthBlocked, isReady } = useSecurity();
+
+	if (!isReady)
+		return <GlobalLoader />;
+
+	const isSecurityLocked = isLocalAuthBlocked || (hasPin && isLocked);
 
 	return (
 		<PersistQueryClientProvider
-			key={isLocked ? 'locked' : 'unlocked'}
+			key={isSecurityLocked ? 'locked' : 'unlocked'}
 			client={queryClient}
 			persistOptions={{
 				persister,

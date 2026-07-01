@@ -1,49 +1,98 @@
-import { useDocumentVisibility, useInterval, useWindowEvent } from '@mantine/hooks';
-import { useCallback, useEffect } from 'react';
+import { useDocumentVisibility, useWindowEvent } from '@mantine/hooks';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useRef } from 'react';
 
-import { checkCookieLockState, lockApp } from '@/shared/lib/secure-storage';
+import {
+	getUnlockDeadlineAt,
+	isUnlockDeadlineExpired,
+	lockAppSession,
+	subscribeToSecuritySessionEvents,
+} from '@/shared/lib/secure-storage';
 
 /**
- * Hook to enforce session lockouts based on the presence of the secure cookie.
- * It checks periodically and when the window gains focus.
+ * Enforces the absolute unlock deadline without polling.
  */
 export function useSessionLockout(
 	isLocked: boolean,
-	checkSecurityState: () => void,
+	checkSecurityState: () => Promise<void>,
 ) {
-	const verifySession = useCallback(() => {
+	const queryClient = useQueryClient();
+	const deadlineTimerRef = useRef<number | null>(null);
+
+	const clearDeadlineTimer = useCallback(() => {
+		if (deadlineTimerRef.current !== null) {
+			window.clearTimeout(deadlineTimerRef.current);
+			deadlineTimerRef.current = null;
+		}
+	}, []);
+
+	const verifySession = useCallback(async () => {
+		if (isLocked)
+			return false;
+
+		if (await isUnlockDeadlineExpired()) {
+			await lockAppSession(queryClient);
+			await checkSecurityState();
+			return true;
+		}
+
+		return false;
+	}, [isLocked, queryClient, checkSecurityState]);
+
+	const scheduleDeadlineLock = useCallback(async () => {
+		clearDeadlineTimer();
+
 		if (isLocked)
 			return;
 
-		const hasCookie = checkCookieLockState();
-		if (!hasCookie) {
-			lockApp();
-			checkSecurityState(); // Update context and trigger redirect
-		}
-	}, [isLocked, checkSecurityState]);
+		const deadlineAt = await getUnlockDeadlineAt();
+		if (deadlineAt === null)
+			return;
 
-	const interval = useInterval(verifySession, 5_000);
+		const delay = Math.max(deadlineAt - Date.now(), 0);
+		deadlineTimerRef.current = window.setTimeout(() => {
+			void verifySession();
+		}, delay);
+	}, [clearDeadlineTimer, isLocked, verifySession]);
+
+	const refreshDeadlineLock = useCallback(async () => {
+		const lockedByDeadline = await verifySession();
+		if (lockedByDeadline)
+			return;
+
+		await scheduleDeadlineLock();
+	}, [scheduleDeadlineLock, verifySession]);
+
 	const documentVisibility = useDocumentVisibility();
 
 	useEffect(() => {
-		verifySession();
-	}, [verifySession]);
+		void refreshDeadlineLock();
 
-	useEffect(() => {
-		if (!isLocked) {
-			interval.start();
-		}
-		else {
-			interval.stop();
-		}
-		return interval.stop;
-	}, [isLocked, interval]);
+		return clearDeadlineTimer;
+	}, [clearDeadlineTimer, refreshDeadlineLock]);
 
 	useEffect(() => {
 		if (documentVisibility === 'visible') {
-			verifySession();
+			void refreshDeadlineLock();
 		}
-	}, [documentVisibility, verifySession]);
+	}, [documentVisibility, refreshDeadlineLock]);
 
-	useWindowEvent('focus', verifySession);
+	useWindowEvent('focus', () => {
+		void refreshDeadlineLock();
+	});
+
+	useWindowEvent('pageshow', () => {
+		void refreshDeadlineLock();
+	});
+
+	useEffect(() => {
+		return subscribeToSecuritySessionEvents((event) => {
+			if (event.type === 'locked') {
+				void lockAppSession(queryClient, { broadcast: false }).then(checkSecurityState);
+				return;
+			}
+
+			void refreshDeadlineLock();
+		});
+	}, [checkSecurityState, queryClient, refreshDeadlineLock]);
 }

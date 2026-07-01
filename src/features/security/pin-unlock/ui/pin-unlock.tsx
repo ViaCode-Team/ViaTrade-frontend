@@ -1,5 +1,4 @@
 import {
-	Button,
 	Center,
 	Container,
 	Group,
@@ -19,9 +18,9 @@ export function PinUnlock() {
 		pin,
 		error,
 		isLoading,
+		isLockedOut,
 		handleChange,
 		handleComplete,
-		handleLogout,
 	} = usePinUnlock();
 
 	return (
@@ -49,7 +48,7 @@ export function PinUnlock() {
 								size='lg'
 								type='number'
 								error={!!error}
-								disabled={isLoading}
+								disabled={isLoading || isLockedOut}
 								autoFocus
 							/>
 						</Group>
@@ -59,17 +58,6 @@ export function PinUnlock() {
 								{error}
 							</Text>
 						)}
-
-						<Button
-							variant='subtle'
-							color='red'
-							fullWidth
-							mt='sm'
-							onClick={handleLogout}
-							disabled={isLoading}
-						>
-							Выйти из аккаунта
-						</Button>
 					</Stack>
 				</Paper>
 			</Container>

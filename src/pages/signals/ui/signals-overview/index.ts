@@ -1,1 +1,1 @@
-export { SignalsOverview } from './components/signals-overview';
+export { SignalsOverview } from './signals-overview';

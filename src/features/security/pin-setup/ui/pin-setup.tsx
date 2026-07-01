@@ -1,6 +1,5 @@
 import {
 	ActionIcon,
-	Button,
 	Center,
 	Container,
 	Group,
@@ -28,7 +27,6 @@ export function PinSetup() {
 		handleStep1Complete,
 		handleStep2Complete,
 		goBack,
-		handleLogout,
 	} = usePinSetup();
 
 	return (
@@ -108,16 +106,6 @@ export function PinSetup() {
 						</Stack>
 					)}
 
-					<Button
-						variant='subtle'
-						color='red'
-						fullWidth
-						mt='md'
-						onClick={handleLogout}
-						disabled={isLoading}
-					>
-						Выйти из аккаунта
-					</Button>
 				</Paper>
 			</Container>
 		</Center>

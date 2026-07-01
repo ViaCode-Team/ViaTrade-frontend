@@ -11,7 +11,7 @@ type UseHistoryTableOptions = {
 	tradeCode: string;
 };
 
-export function useHistoryTable({ strategyName, tradeCode }: UseHistoryTableOptions) {
+export function useSignalHistoryTable({ strategyName, tradeCode }: UseHistoryTableOptions) {
 	const [page, setPage] = useState(1);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 

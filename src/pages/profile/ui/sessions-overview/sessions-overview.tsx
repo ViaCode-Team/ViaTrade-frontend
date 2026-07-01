@@ -13,7 +13,7 @@ import { SessionsControls } from '@/pages/profile/ui/filter-sessions';
 import { useUserSessionLogout } from '@/pages/profile/ui/manage-sessions';
 import { Section } from '@/shared/ui/section';
 
-import { normalizeUserSessions } from '../../session-entity';
+import { normalizeUserSessions } from '../session-entity';
 import { SessionsOverviewListBoundary } from './sessions-overview-list';
 import { SessionsStatusBarBoundary } from './sessions-status-bar';
 

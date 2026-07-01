@@ -1,3 +1,4 @@
+import { isAppLocked, secureGetItem, secureSetItem } from '@/shared/lib/secure-storage';
 import { createStorageKey } from '@/shared/lib/storage-key';
 
 import type {
@@ -19,12 +20,8 @@ let cachedPersonalNotes: StoredPersonalNote[] = EMPTY_PERSONAL_NOTES;
 
 type PersonalNotesStorageEvent = CustomEvent<StoredPersonalNote[]>;
 
-export function getStoredPersonalNotes() {
-	if (!canUseLocalStorage()) {
-		return EMPTY_PERSONAL_NOTES;
-	}
-
-	const rawValue = window.localStorage.getItem(PERSONAL_NOTES_STORAGE_KEY);
+export async function getStoredPersonalNotes() {
+	const rawValue = await getEncryptedPersonalNotes();
 
 	if (!rawValue) {
 		cachedRawPersonalNotes = null;
@@ -37,37 +34,18 @@ export function getStoredPersonalNotes() {
 		return cachedPersonalNotes;
 	}
 
-	try {
-		const parsedValue: unknown = JSON.parse(rawValue);
-
-		if (!Array.isArray(parsedValue)) {
-			cachedRawPersonalNotes = rawValue;
-			cachedPersonalNotes = EMPTY_PERSONAL_NOTES;
-
-			return cachedPersonalNotes;
-		}
-
-		cachedRawPersonalNotes = rawValue;
-		cachedPersonalNotes = parsedValue.filter(isStoredPersonalNote);
-
-		return cachedPersonalNotes;
-	}
-	catch {
-		cachedRawPersonalNotes = rawValue;
-		cachedPersonalNotes = EMPTY_PERSONAL_NOTES;
-
-		return cachedPersonalNotes;
-	}
+	return parseAndCachePersonalNotes(rawValue);
 }
 
-export function getStoredPersonalNote(source: NoteSource) {
+export async function getStoredPersonalNote(source: NoteSource) {
 	const noteId = getNoteId(source);
+	const notes = await getStoredPersonalNotes();
 
-	return getStoredPersonalNotes().find((note) => note.id === noteId) ?? null;
+	return notes.find((note) => note.id === noteId) ?? null;
 }
 
-export function saveStoredPersonalNote(source: NoteSource, text: string) {
-	const notes = getStoredPersonalNotes();
+export async function saveStoredPersonalNote(source: NoteSource, text: string) {
+	const notes = await getStoredPersonalNotes();
 	const nextNoteData = createPersonalNote({ text });
 	const nextNote: StoredPersonalNote = {
 		id: getNoteId(source),
@@ -75,7 +53,7 @@ export function saveStoredPersonalNote(source: NoteSource, text: string) {
 		text: nextNoteData.text,
 	};
 
-	writeStoredPersonalNotes([
+	await writeStoredPersonalNotes([
 		nextNote,
 		...notes.filter((note) => note.id !== nextNote.id),
 	]);
@@ -83,8 +61,8 @@ export function saveStoredPersonalNote(source: NoteSource, text: string) {
 	return nextNote;
 }
 
-export function updateStoredPersonalNote(noteId: string, text: string) {
-	const notes = getStoredPersonalNotes();
+export async function updateStoredPersonalNote(noteId: string, text: string) {
+	const notes = await getStoredPersonalNotes();
 	const note = notes.find((currentNote) => currentNote.id === noteId);
 
 	if (!note) {
@@ -97,7 +75,7 @@ export function updateStoredPersonalNote(noteId: string, text: string) {
 		text: nextNoteData.text,
 	};
 
-	writeStoredPersonalNotes([
+	await writeStoredPersonalNotes([
 		nextNote,
 		...notes.filter((currentNote) => currentNote.id !== noteId),
 	]);
@@ -105,8 +83,8 @@ export function updateStoredPersonalNote(noteId: string, text: string) {
 	return nextNote;
 }
 
-export function upsertStoredPersonalNote(note: StoredPersonalNote, text: string) {
-	const notes = getStoredPersonalNotes();
+export async function upsertStoredPersonalNote(note: StoredPersonalNote, text: string) {
+	const notes = await getStoredPersonalNotes();
 	const nextNoteData = createPersonalNote({ text });
 	const nextNote: StoredPersonalNote = {
 		id: note.id,
@@ -114,7 +92,7 @@ export function upsertStoredPersonalNote(note: StoredPersonalNote, text: string)
 		text: nextNoteData.text,
 	};
 
-	writeStoredPersonalNotes([
+	await writeStoredPersonalNotes([
 		nextNote,
 		...notes.filter((currentNote) => currentNote.id !== note.id),
 	]);
@@ -122,17 +100,17 @@ export function upsertStoredPersonalNote(note: StoredPersonalNote, text: string)
 	return nextNote;
 }
 
-export function deleteStoredPersonalNote(noteId: string) {
-	const notes = getStoredPersonalNotes();
+export async function deleteStoredPersonalNote(noteId: string) {
+	const notes = await getStoredPersonalNotes();
 	const nextNotes = notes.filter((note) => note.id !== noteId);
 
-	writeStoredPersonalNotes(nextNotes);
+	await writeStoredPersonalNotes(nextNotes);
 }
 
 export function subscribeStoredPersonalNotes(
 	callback: (notes: StoredPersonalNote[]) => void,
 ) {
-	if (!canUseLocalStorage()) {
+	if (typeof window === 'undefined') {
 		return () => {};
 	}
 
@@ -140,37 +118,106 @@ export function subscribeStoredPersonalNotes(
 		callback((event as PersonalNotesStorageEvent).detail);
 	};
 
-	const handleStorageUpdate = (event: StorageEvent) => {
+	const handleLegacyStorageUpdate = (event: StorageEvent) => {
 		if (event.key === PERSONAL_NOTES_STORAGE_KEY) {
-			callback(getStoredPersonalNotes());
+			void getStoredPersonalNotes().then(callback);
 		}
 	};
 
 	window.addEventListener(PERSONAL_NOTES_UPDATE_EVENT, handleCustomUpdate);
-	window.addEventListener('storage', handleStorageUpdate);
+	window.addEventListener('storage', handleLegacyStorageUpdate);
 
 	return () => {
 		window.removeEventListener(PERSONAL_NOTES_UPDATE_EVENT, handleCustomUpdate);
-		window.removeEventListener('storage', handleStorageUpdate);
+		window.removeEventListener('storage', handleLegacyStorageUpdate);
 	};
 }
 
-function writeStoredPersonalNotes(notes: StoredPersonalNote[]) {
-	if (!canUseLocalStorage()) {
-		return;
+async function getEncryptedPersonalNotes() {
+	const encryptedValue = await secureGetItem(PERSONAL_NOTES_STORAGE_KEY);
+
+	if (encryptedValue) {
+		removeLegacyPersonalNotes();
+		return encryptedValue;
 	}
 
+	if (isAppLocked()) {
+		return null;
+	}
+
+	const legacyValue = getLegacyPersonalNotes();
+	if (!legacyValue) {
+		return null;
+	}
+
+	const notes = parsePersonalNotes(legacyValue);
+	const normalizedValue = JSON.stringify(notes);
+
+	await secureSetItem(PERSONAL_NOTES_STORAGE_KEY, normalizedValue);
+	removeLegacyPersonalNotes();
+
+	return normalizedValue;
+}
+
+async function writeStoredPersonalNotes(notes: StoredPersonalNote[]) {
 	const rawValue = JSON.stringify(notes);
 
 	cachedRawPersonalNotes = rawValue;
 	cachedPersonalNotes = notes;
 
-	window.localStorage.setItem(PERSONAL_NOTES_STORAGE_KEY, rawValue);
+	await secureSetItem(PERSONAL_NOTES_STORAGE_KEY, rawValue);
+	removeLegacyPersonalNotes();
+	dispatchStoredPersonalNotesUpdate(notes);
+}
+
+function dispatchStoredPersonalNotesUpdate(notes: StoredPersonalNote[]) {
+	if (typeof window === 'undefined') {
+		return;
+	}
+
 	window.dispatchEvent(
 		new CustomEvent(PERSONAL_NOTES_UPDATE_EVENT, {
 			detail: notes,
 		}),
 	);
+}
+
+function getLegacyPersonalNotes() {
+	if (!canUseLocalStorage()) {
+		return null;
+	}
+
+	return window.localStorage.getItem(PERSONAL_NOTES_STORAGE_KEY);
+}
+
+function removeLegacyPersonalNotes() {
+	if (!canUseLocalStorage()) {
+		return;
+	}
+
+	window.localStorage.removeItem(PERSONAL_NOTES_STORAGE_KEY);
+}
+
+function parseAndCachePersonalNotes(rawValue: string) {
+	cachedRawPersonalNotes = rawValue;
+	cachedPersonalNotes = parsePersonalNotes(rawValue);
+
+	return cachedPersonalNotes;
+}
+
+function parsePersonalNotes(rawValue: string) {
+	try {
+		const parsedValue: unknown = JSON.parse(rawValue);
+
+		if (!Array.isArray(parsedValue)) {
+			return EMPTY_PERSONAL_NOTES;
+		}
+
+		return parsedValue.filter(isStoredPersonalNote);
+	}
+	catch {
+		return EMPTY_PERSONAL_NOTES;
+	}
 }
 
 function canUseLocalStorage() {

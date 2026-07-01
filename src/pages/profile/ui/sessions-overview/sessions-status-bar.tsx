@@ -4,7 +4,7 @@ import { QUERY_REFETCH_INTERVAL_TEXT } from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { useSessionsOverview } from '../utils/use-sessions-overview';
+import { useSessionsOverview } from './use-sessions-overview';
 
 export function SessionsStatusBar() {
 	const {

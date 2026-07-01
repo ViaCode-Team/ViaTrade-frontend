@@ -4,6 +4,7 @@ export type SecurityState = {
 	isLocked: boolean;
 	hasPin: boolean;
 	isPinSetupMark: boolean;
+	isLocalAuthBlocked: boolean;
 	isReady: boolean;
 	checkSecurityState: () => Promise<void>;
 };

@@ -17,12 +17,14 @@ import {
 import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 
 export const STORED_PERSONAL_NOTES_QUERY_KEY = ['stored-personal-notes'] as const;
+const EMPTY_STORED_PERSONAL_NOTES: StoredPersonalNote[] = [];
 
 export function getStoredPersonalNotesQueryOptions() {
 	return {
 		queryKey: STORED_PERSONAL_NOTES_QUERY_KEY,
 		queryFn: getStoredPersonalNotes,
-		initialData: getStoredPersonalNotes,
+		networkMode: 'always' as const,
+		placeholderData: EMPTY_STORED_PERSONAL_NOTES,
 		staleTime: STATIC_QUERY_STALE_TIME,
 	};
 }
@@ -50,11 +52,14 @@ export function useUpsertStoredPersonalNoteMutation() {
 		}: {
 			note: StoredPersonalNote;
 			text: string;
-		}) => upsertStoredPersonalNote(note, text),
-		onSuccess: () => {
+		}) => {
+			await upsertStoredPersonalNote(note, text);
+			return await getStoredPersonalNotes();
+		},
+		onSuccess: (notes) => {
 			queryClient.setQueryData(
 				STORED_PERSONAL_NOTES_QUERY_KEY,
-				getStoredPersonalNotes(),
+				notes,
 			);
 		},
 	});
@@ -70,11 +75,14 @@ export function useSaveStoredPersonalNoteMutation() {
 		}: {
 			source: NoteSource;
 			text: string;
-		}) => saveStoredPersonalNote(source, text),
-		onSuccess: () => {
+		}) => {
+			await saveStoredPersonalNote(source, text);
+			return await getStoredPersonalNotes();
+		},
+		onSuccess: (notes) => {
 			queryClient.setQueryData(
 				STORED_PERSONAL_NOTES_QUERY_KEY,
-				getStoredPersonalNotes(),
+				notes,
 			);
 		},
 	});
@@ -85,12 +93,13 @@ export function useDeleteStoredPersonalNoteMutation() {
 
 	return useMutation({
 		mutationFn: async (noteId: string) => {
-			deleteStoredPersonalNote(noteId);
+			await deleteStoredPersonalNote(noteId);
+			return await getStoredPersonalNotes();
 		},
-		onSuccess: () => {
+		onSuccess: (notes) => {
 			queryClient.setQueryData(
 				STORED_PERSONAL_NOTES_QUERY_KEY,
-				getStoredPersonalNotes(),
+				notes,
 			);
 		},
 	});

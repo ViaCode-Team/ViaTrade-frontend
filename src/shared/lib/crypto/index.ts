@@ -62,12 +62,15 @@ export async function exportKey(key: CryptoKey): Promise<Uint8Array> {
 /**
  * Imports a raw Uint8Array into a CryptoKey for AES-GCM.
  */
-export async function importKey(rawKey: Uint8Array): Promise<CryptoKey> {
+export async function importKey(
+	rawKey: Uint8Array,
+	extractable = false,
+): Promise<CryptoKey> {
 	return window.crypto.subtle.importKey(
 		'raw',
 		rawKey as BufferSource,
 		{ name: 'AES-GCM' },
-		true,
+		extractable,
 		['encrypt', 'decrypt'],
 	);
 }

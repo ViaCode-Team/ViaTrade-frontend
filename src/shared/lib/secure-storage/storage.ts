@@ -29,6 +29,7 @@ export async function secureGetItem(key: string): Promise<string | null> {
 	}
 	catch (e) {
 		console.error(`Failed to decrypt item ${key}`, e);
+		await secureRemoveItem(key);
 		return null;
 	}
 }

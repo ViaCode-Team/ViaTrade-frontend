@@ -5,6 +5,7 @@ import ky, { isHTTPError } from 'ky';
 import { BASE_URL } from '@/shared/lib/config';
 
 import { createHttpApiError } from './errors';
+import { getBlockedApiRequestResponse } from './request-gate';
 import { canRetryUnauthorizedRequest, retryUnauthorizedRequest } from './unauthorized-retry';
 
 function createApiClient(): KyInstance {
@@ -15,6 +16,9 @@ function createApiClient(): KyInstance {
 			shouldRetry: () => false,
 		},
 		hooks: {
+			beforeRequest: [
+				({ request }) => getBlockedApiRequestResponse(request),
+			],
 			afterResponse: [
 				({ request, response, retryCount }) => {
 					if (!canRetryUnauthorizedRequest(response, retryCount)) {

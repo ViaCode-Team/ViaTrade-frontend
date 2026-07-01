@@ -3,8 +3,8 @@ import { IconLogout } from '@tabler/icons-react';
 
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { SessionsList, SessionsListSkeleton } from '../../session-entity';
-import { useSessionsOverview } from '../utils/use-sessions-overview';
+import { SessionsList, SessionsListSkeleton } from '../session-entity';
+import { useSessionsOverview } from './use-sessions-overview';
 
 function SessionsOverviewList() {
 	const {

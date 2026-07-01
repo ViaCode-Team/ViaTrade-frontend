@@ -6,7 +6,10 @@ import { IconRefresh } from '@tabler/icons-react';
 import { useCallback, useState } from 'react';
 
 import { useAppNetwork } from '@/shared/lib/hooks';
+import { milliseconds } from '@/shared/lib/milliseconds';
 import { showNoNetworkNotification } from '@/shared/lib/no-network';
+
+const REFRESH_THROTTLE_SECONDS = 5;
 
 type ListStatusBarProps = {
 	totalCount: number;
@@ -34,7 +37,7 @@ export function ListStatusBar({
 			}
 			return s - 1;
 		});
-	}, 1000);
+	}, milliseconds.fromSeconds(1));
 
 	const handleRefresh = useCallback(() => {
 		if (!isOnline) {
@@ -46,7 +49,7 @@ export function ListStatusBar({
 			return;
 
 		onRefresh?.();
-		setThrottleSeconds(5);
+		setThrottleSeconds(REFRESH_THROTTLE_SECONDS);
 		interval.start();
 	}, [throttleSeconds, isOnline, onRefresh, interval]);
 

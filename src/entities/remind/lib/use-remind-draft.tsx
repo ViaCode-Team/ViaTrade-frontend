@@ -1,5 +1,6 @@
-import { useLocalStorage } from '@mantine/hooks';
+import { useEffect, useMemo, useState } from 'react';
 
+import { isAppLocked, secureGetItem, secureRemoveItem, secureSetItem } from '@/shared/lib/secure-storage';
 import { createStorageKey } from '@/shared/lib/storage-key';
 
 import type { RemindEditableField, RemindItem } from '../model';
@@ -9,6 +10,8 @@ type RemindUpdates = {
 	date: string;
 	time: string;
 };
+
+type RemindDraft = RemindUpdates;
 
 type UseRemindDraftOptions = {
 	remind: RemindItem;
@@ -25,14 +28,32 @@ function getRemindDraftStorageKey(remindId: string) {
 
 export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions) {
 	const storageKey = getRemindDraftStorageKey(remind.id);
-	const [localDraft, setLocalDraft, removeLocalDraft] = useLocalStorage({
-		key: storageKey,
-		defaultValue: {
-			text: remind.text,
-			date: remind.date,
-			time: remind.time,
-		},
-	});
+	const defaultDraft = useMemo(() => getDefaultDraft(remind), [remind]);
+	const [storedDraft, setStoredDraft] = useState<{
+		draft: RemindDraft;
+		storageKey: string;
+	} | null>(null);
+	const localDraft = storedDraft?.storageKey === storageKey
+		? storedDraft.draft
+		: defaultDraft;
+
+	useEffect(() => {
+		let isActive = true;
+
+		const loadDraft = async () => {
+			const storedDraft = await getStoredRemindDraft(storageKey);
+
+			if (isActive && storedDraft) {
+				setStoredDraft({ storageKey, draft: storedDraft });
+			}
+		};
+
+		void loadDraft();
+
+		return () => {
+			isActive = false;
+		};
+	}, [storageKey]);
 
 	const isDirty
 		= localDraft.text !== remind.text
@@ -40,12 +61,18 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 			|| localDraft.time !== remind.time;
 
 	const handleFieldChange = (field: RemindEditableField, value: string) => {
-		setLocalDraft((prev) => ({ ...prev, [field]: value }));
+		const nextDraft = { ...localDraft, [field]: value };
+
+		setStoredDraft({ storageKey, draft: nextDraft });
+		void saveStoredRemindDraft(storageKey, nextDraft);
 	};
 
 	const handleDateTimeChange = (value: string | null) => {
 		if (value === null) {
-			setLocalDraft((prev) => ({ ...prev, date: '', time: '' }));
+			const nextDraft = { ...localDraft, date: '', time: '' };
+
+			setStoredDraft({ storageKey, draft: nextDraft });
+			void saveStoredRemindDraft(storageKey, nextDraft);
 			return;
 		}
 
@@ -75,7 +102,10 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 			}
 		}
 
-		setLocalDraft((prev) => ({ ...prev, date, time }));
+		const nextDraft = { ...localDraft, date, time };
+
+		setStoredDraft({ storageKey, draft: nextDraft });
+		void saveStoredRemindDraft(storageKey, nextDraft);
 	};
 
 	const isFutureDate = () => {
@@ -118,17 +148,14 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 				time: localDraft.time,
 			},
 			() => {
-				// We do not call removeLocalDraft() here because useLocalStorage would reset the state
-				// to the initial defaultValue (the old text), causing a UI blink.
-				// Instead, we just manually clean up the localStorage entry. The localDraft state stays as the new text.
-				window.localStorage.removeItem(storageKey);
+				void removeStoredRemindDraft(storageKey);
 			},
 		);
 	};
 
 	const handleReset = () => {
-		removeLocalDraft();
-		setLocalDraft({ text: remind.text, date: remind.date, time: remind.time });
+		void removeStoredRemindDraft(storageKey);
+		setStoredDraft({ storageKey, draft: defaultDraft });
 	};
 
 	return {
@@ -140,4 +167,99 @@ export function useRemindDraft({ remind, onRemindChange }: UseRemindDraftOptions
 		handleSave,
 		handleReset,
 	};
+}
+
+async function getStoredRemindDraft(storageKey: string) {
+	const encryptedValue = await secureGetItem(storageKey);
+
+	if (encryptedValue) {
+		removeLegacyRemindDraft(storageKey);
+		return parseRemindDraft(encryptedValue);
+	}
+
+	if (isAppLocked()) {
+		return null;
+	}
+
+	const legacyValue = getLegacyRemindDraft(storageKey);
+	if (!legacyValue) {
+		return null;
+	}
+
+	const legacyDraft = parseRemindDraft(legacyValue);
+	if (!legacyDraft) {
+		removeLegacyRemindDraft(storageKey);
+		return null;
+	}
+
+	await saveStoredRemindDraft(storageKey, legacyDraft);
+
+	return legacyDraft;
+}
+
+async function saveStoredRemindDraft(storageKey: string, draft: RemindDraft) {
+	await secureSetItem(storageKey, JSON.stringify(draft));
+	removeLegacyRemindDraft(storageKey);
+}
+
+async function removeStoredRemindDraft(storageKey: string) {
+	await secureRemoveItem(storageKey);
+	removeLegacyRemindDraft(storageKey);
+}
+
+function getDefaultDraft(remind: RemindItem): RemindDraft {
+	return {
+		text: remind.text,
+		date: remind.date,
+		time: remind.time,
+	};
+}
+
+function getLegacyRemindDraft(storageKey: string) {
+	if (!canUseLocalStorage()) {
+		return null;
+	}
+
+	return window.localStorage.getItem(storageKey);
+}
+
+function removeLegacyRemindDraft(storageKey: string) {
+	if (!canUseLocalStorage()) {
+		return;
+	}
+
+	window.localStorage.removeItem(storageKey);
+}
+
+function parseRemindDraft(value: string): RemindDraft | null {
+	try {
+		const parsedValue: unknown = JSON.parse(value);
+
+		if (!parsedValue || typeof parsedValue !== 'object') {
+			return null;
+		}
+
+		const draft = parsedValue as Partial<RemindDraft>;
+
+		if (
+			typeof draft.text !== 'string'
+			|| typeof draft.date !== 'string'
+			|| typeof draft.time !== 'string'
+		) {
+			return null;
+		}
+
+		return {
+			text: draft.text,
+			date: draft.date,
+			time: draft.time,
+		};
+	}
+	catch {
+		return null;
+	}
+}
+
+function canUseLocalStorage() {
+	return typeof window !== 'undefined' && 'localStorage' in window;
 }

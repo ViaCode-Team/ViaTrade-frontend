@@ -70,6 +70,14 @@ npm run dev
 | `npm run check:fix`  | Запустить `types`, `lint:fix` и `format:fix`           |
 | `npm run prepare`    | Установить Husky hooks                                 |
 
+## Документация по безопасности
+
+- [Модель угроз PIN-кода](./security/pin-threat-model_RU.md)
+- [Ревью безопасности PIN-кода](./security/pin-code-review.md)
+- [План реализации PIN-кода](./security/pin-code-plan.md)
+- [Проверка безопасности PIN-кода](./security/pin-verification_RU.md)
+- [Инвентаризация frontend storage](./security/storage-inventory_RU.md)
+
 ## Вклад в проект
 
 Мы приветствуем ваши contributions! Следуйте этим шагам:

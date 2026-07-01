@@ -9,11 +9,10 @@ import {
 	useNavigate,
 } from 'react-router';
 
-import { useLogout } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
 import { useGetMe } from '@/entities/user';
 import { clearLocalData } from '@/shared/lib/auth';
-import { useAppNetwork } from '@/shared/lib/hooks';
+import { setLocalAuthBlocked } from '@/shared/lib/secure-storage';
 import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
@@ -33,10 +32,15 @@ export function ProtectedRoute({
 }: ProtectedRouteProps) {
 	const location = useLocation();
 	const isRestoring = useIsRestoring();
-	const { hasPin, isLocked, isReady, isPinSetupMark } = useSecurity();
-	const { isOnline } = useAppNetwork();
+	const {
+		hasPin,
+		isLocked,
+		isReady,
+		isPinSetupMark,
+		isLocalAuthBlocked,
+	} = useSecurity();
 
-	const isCanFetch = isReady && (!hasPin || !isLocked) && !isRestoring;
+	const isCanFetch = isReady && !isLocalAuthBlocked && (!hasPin || !isLocked) && !isRestoring;
 
 	const { data, isPending } = useGetMe({
 		query: {
@@ -46,6 +50,14 @@ export function ProtectedRoute({
 
 	if (!isReady || isRestoring)
 		return <GlobalLoader />;
+
+	if (isLocalAuthBlocked) {
+		if (isPrivate) {
+			return <Navigate replace to={guestRedirectTo} state={{ from: location }} />;
+		}
+
+		return <Outlet />;
+	}
 
 	// Если приложение заблокировано (есть ПИН и он не введен),
 	// мы не можем прочитать кэш пользователя, поэтому показываем разблокировку до всех проверок.
@@ -67,11 +79,7 @@ export function ProtectedRoute({
 			return <PinSetup />;
 		}
 
-		if (isOnline) {
-			return <ForceLogout />;
-		}
-
-		return <GlobalLoader />;
+		return <LocalAuthBlock />;
 	}
 
 	// Если маршрут для авторизованного пользователя(приватный), но пользователь неавторизован, то делаем редирект
@@ -91,22 +99,21 @@ export function ProtectedRoute({
 	return <Outlet />;
 }
 
-function ForceLogout() {
+function LocalAuthBlock() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { checkSecurityState } = useSecurity();
 
-	const onLogoutSuccess = async () => {
-		await clearLocalData(queryClient);
-		await checkSecurityState();
-		navigate(ROUTES.LOGIN);
-	};
-
-	const { mutate: logout } = useLogout({ mutation: { onSuccess: onLogoutSuccess } });
-
 	useEffect(() => {
-		logout();
-	}, [logout]);
+		const block = async () => {
+			await clearLocalData(queryClient);
+			await setLocalAuthBlocked();
+			await checkSecurityState();
+			navigate(ROUTES.LOGIN);
+		};
+
+		void block();
+	}, [queryClient, checkSecurityState, navigate]);
 
 	return <GlobalLoader />;
 }

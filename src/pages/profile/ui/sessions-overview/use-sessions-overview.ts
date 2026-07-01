@@ -12,7 +12,7 @@ import {
 	getSessionsPagesCount,
 	normalizeUserSessions,
 	sortUserSessionsByActivity,
-} from '../../session-entity';
+} from '../session-entity';
 
 export function useSessionsOverview() {
 	const { filters } = useUrlFilters(sessionFiltersSchema);

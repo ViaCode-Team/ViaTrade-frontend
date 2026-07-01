@@ -2,10 +2,10 @@ import { useForm } from '@mantine/form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { getGetSessionsQueryKey, useLogin } from '@/entities/auth';
+import { useLogin } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
 import { getGetMeQueryKey } from '@/entities/user';
-import { setPinSetupMark } from '@/shared/lib/secure-storage';
+import { clearLocalAuthBlocked, setPinSetupMark } from '@/shared/lib/secure-storage';
 
 import type { TLoginData } from './login-data';
 
@@ -21,10 +21,10 @@ export function useLoginForm() {
 		skipInvalidation: true,
 		mutation: {
 			onSuccess: async () => {
+				await clearLocalAuthBlocked();
 				await setPinSetupMark();
 				await checkSecurityState();
 				queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
-				queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() });
 			},
 			onError: (error) => {
 				setApiError(mapLoginApiError(error));

@@ -12,7 +12,7 @@ export const ROUTES = {
 	LOGIN: '/login',
 	REGISTER: '/register',
 	STATISTICS: '/statistics',
-	STATISTICS_HISTORY: '/statistics/history',
+	TRADES: '/trades',
 } as const;
 
 export type PathParams = {

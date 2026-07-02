@@ -21,11 +21,11 @@ export function StatisticsPage() {
 				rightSection={(
 					<Button
 						component={Link}
-						to={ROUTES.STATISTICS_HISTORY}
+						to={ROUTES.TRADES}
 						variant='light'
 						leftSection={<IconTable size={18} />}
 					>
-						История сделок
+						Сделки
 					</Button>
 				)}
 			/>

@@ -25,6 +25,7 @@ export const strategyMutationInvalidates = [
 	{
 		onMutations: ['createInstrumentsLink', 'deleteInstrumentsLink'],
 		invalidates: [
+			'getStrategyStatistics',
 			'getAllInstrumentsLink',
 			{ query: 'getResult', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getResultByStrategyAndTradeCode', file: '@/entities/signal', invalidateMode: 'reset' },
@@ -33,6 +34,7 @@ export const strategyMutationInvalidates = [
 	{
 		onMutations: ['createUsersStrategy', 'deleteUsersStrategy'],
 		invalidates: [
+			'getStrategyStatistics',
 			'getUsersStrategy',
 			'getAllInstrumentsLink',
 			{ query: 'getResult', file: '@/entities/signal', invalidateMode: 'reset' },
@@ -49,8 +51,9 @@ export const noteMutationInvalidates = [
 			'deleteInstrumentNote',
 		],
 		invalidates: [
+			'getNoteStatistics',
 			'getByUserInstrumentAll',
-			{ query: 'getByUserInstrument', params: ['idInstrument'] },
+			{ query: 'getNoteByUserInstrument', params: ['idInstrument'] },
 		],
 	},
 	{
@@ -60,6 +63,7 @@ export const noteMutationInvalidates = [
 			'deleteStrategyNote',
 		],
 		invalidates: [
+			'getNoteStatistics',
 			'getByUserStrategyAll',
 			{ query: 'getByUserStrategy', params: ['idStrategy'] },
 		],
@@ -69,34 +73,36 @@ export const noteMutationInvalidates = [
 export const remindMutationInvalidates = [
 	{
 		onMutations: [
-			'createInstrumentRemind',
+			'create',
 		],
 		invalidates: [
+			'getRemindStatistics',
 			'getAllByUser',
-			{ query: 'getTradeRemindByUserInstrument', params: ['idInstrument'] },
+			{ query: 'getByUserInstrument', params: ['idInstrument'] },
 		],
 	},
 	{
 		onMutations: [
-			'updateRemind',
-			'deleteRemind',
+			'update',
+			'_delete',
 		],
 		invalidates: [
+			'getRemindStatistics',
 			'getAllByUser',
-			'getTradeRemindByUserInstrument',
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
 
-export const statisticMutationInvalidates = [
+export const tradeMutationInvalidates = [
 	{
 		onMutations: ['createTrade'],
-		invalidates: ['getByUser'],
+		invalidates: ['getByUser', 'getTradeStatistics'],
 	},
 	{
 		onMutations: ['updateTrade', 'deleteTrade'],
 		invalidates: [
 			'getByUser',
+			'getTradeStatistics',
 			{ query: 'getTradeById', params: ['id'] },
 		],
 	},

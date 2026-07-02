@@ -39,6 +39,10 @@ import type {
 } from '../../../../shared/api/types/gen/noteRequest';
 
 import type {
+	NoteStatistic,
+} from '../../../../shared/api/types/gen/noteStatistic';
+
+import type {
 	ProblemDetails,
 } from '../../../../shared/api/types/gen/problemDetails';
 
@@ -64,6 +68,184 @@ function withQueryKey<T extends object, K>(query: T, queryKey: K): T & { queryKe
 	}
 	return result;
 }
+
+export type getNoteStatisticsResponse200 = {
+	data: NoteStatistic;
+	status: 200;
+};
+
+export type getNoteStatisticsResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getNoteStatisticsResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getNoteStatisticsResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getNoteStatisticsResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getNoteStatisticsResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getNoteStatisticsResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getNoteStatisticsResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getNoteStatisticsResponseSuccess = (getNoteStatisticsResponse200) & {
+	headers: Headers;
+};
+export type getNoteStatisticsResponseError = (getNoteStatisticsResponse400 | getNoteStatisticsResponse401 | getNoteStatisticsResponse403 | getNoteStatisticsResponse404 | getNoteStatisticsResponse408 | getNoteStatisticsResponse409 | getNoteStatisticsResponse500) & {
+	headers: Headers;
+};
+
+export function getGetNoteStatisticsUrl() {
+	return `/api/Note/statistics`;
+}
+
+export async function getNoteStatistics(options?: RequestInit): Promise<getNoteStatisticsResponseSuccess> {
+	return customInstance<getNoteStatisticsResponseSuccess>(getGetNoteStatisticsUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetNoteStatisticsQueryKey() {
+	return [
+		`/api/Note/statistics`,
+	] as const;
+}
+
+
+export function getGetNoteStatisticsQueryOptions<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetNoteStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getNoteStatistics>>> = ({ signal }) => getNoteStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetNoteStatisticsQueryResult = NonNullable<Awaited<ReturnType<typeof getNoteStatistics>>>;
+export type GetNoteStatisticsQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetNoteStatistics<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getNoteStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getNoteStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetNoteStatistics<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getNoteStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getNoteStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetNoteStatistics<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetNoteStatistics<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetNoteStatisticsQueryOptions(options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetNoteStatisticsQuery<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetNoteStatisticsQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetNoteStatistics(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetNoteStatisticsQueryKey() }, options);
+
+	return queryClient;
+}
+
+
+export function getGetNoteStatisticsSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetNoteStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getNoteStatistics>>> = ({ signal }) => getNoteStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetNoteStatisticsSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getNoteStatistics>>>;
+export type GetNoteStatisticsSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetNoteStatisticsSuspense<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetNoteStatisticsSuspense<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetNoteStatisticsSuspense<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetNoteStatisticsSuspense<TData = Awaited<ReturnType<typeof getNoteStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetNoteStatisticsSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
 
 export type getByUserInstrumentAllResponse200 = {
 	data: Note[];
@@ -243,59 +425,59 @@ export function useGetByUserInstrumentAllSuspense<TData = Awaited<ReturnType<typ
 }
 
 
-export type getByUserInstrumentResponse200 = {
+export type getNoteByUserInstrumentResponse200 = {
 	data: Note;
 	status: 200;
 };
 
-export type getByUserInstrumentResponse400 = {
+export type getNoteByUserInstrumentResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type getByUserInstrumentResponse401 = {
+export type getNoteByUserInstrumentResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type getByUserInstrumentResponse403 = {
+export type getNoteByUserInstrumentResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type getByUserInstrumentResponse404 = {
+export type getNoteByUserInstrumentResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type getByUserInstrumentResponse408 = {
+export type getNoteByUserInstrumentResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type getByUserInstrumentResponse409 = {
+export type getNoteByUserInstrumentResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type getByUserInstrumentResponse500 = {
+export type getNoteByUserInstrumentResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type getByUserInstrumentResponseSuccess = (getByUserInstrumentResponse200) & {
+export type getNoteByUserInstrumentResponseSuccess = (getNoteByUserInstrumentResponse200) & {
 	headers: Headers;
 };
-export type getByUserInstrumentResponseError = (getByUserInstrumentResponse400 | getByUserInstrumentResponse401 | getByUserInstrumentResponse403 | getByUserInstrumentResponse404 | getByUserInstrumentResponse408 | getByUserInstrumentResponse409 | getByUserInstrumentResponse500) & {
+export type getNoteByUserInstrumentResponseError = (getNoteByUserInstrumentResponse400 | getNoteByUserInstrumentResponse401 | getNoteByUserInstrumentResponse403 | getNoteByUserInstrumentResponse404 | getNoteByUserInstrumentResponse408 | getNoteByUserInstrumentResponse409 | getNoteByUserInstrumentResponse500) & {
 	headers: Headers;
 };
 
-export function getGetByUserInstrumentUrl(idInstrument: number) {
+export function getGetNoteByUserInstrumentUrl(idInstrument: number) {
 	return `/api/Note/byuser/instrument/${idInstrument}`;
 }
 
-export async function getByUserInstrument(idInstrument: number, options?: RequestInit): Promise<getByUserInstrumentResponseSuccess> {
-	return customInstance<getByUserInstrumentResponseSuccess>(getGetByUserInstrumentUrl(idInstrument), {
+export async function getNoteByUserInstrument(idInstrument: number, options?: RequestInit): Promise<getNoteByUserInstrumentResponseSuccess> {
+	return customInstance<getNoteByUserInstrumentResponseSuccess>(getGetNoteByUserInstrumentUrl(idInstrument), {
 		...options,
 		method: 'GET',
 
@@ -304,118 +486,118 @@ export async function getByUserInstrument(idInstrument: number, options?: Reques
 }
 
 
-export function getGetByUserInstrumentQueryKey(idInstrument: number) {
+export function getGetNoteByUserInstrumentQueryKey(idInstrument: number) {
 	return [
 		`/api/Note/byuser/instrument/${idInstrument}`,
 	] as const;
 }
 
 
-export function getGetByUserInstrumentQueryOptions<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+export function getGetNoteByUserInstrumentQueryOptions<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
 	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getGetByUserInstrumentQueryKey(idInstrument);
+	const queryKey = queryOptions?.queryKey ?? getGetNoteByUserInstrumentQueryKey(idInstrument);
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getByUserInstrument>>> = ({ signal }) => getByUserInstrument(idInstrument, { signal, ...requestOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getNoteByUserInstrument>>> = ({ signal }) => getNoteByUserInstrument(idInstrument, { signal, ...requestOptions });
 
 
-	return { queryKey, queryFn, enabled: idInstrument !== null && idInstrument !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, enabled: idInstrument !== null && idInstrument !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
-export type GetByUserInstrumentQueryResult = NonNullable<Awaited<ReturnType<typeof getByUserInstrument>>>;
-export type GetByUserInstrumentQueryError = ErrorType<ProblemDetails>;
+export type GetNoteByUserInstrumentQueryResult = NonNullable<Awaited<ReturnType<typeof getNoteByUserInstrument>>>;
+export type GetNoteByUserInstrumentQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>> & Pick<
+export function useGetNoteByUserInstrument<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>> & Pick<
 		DefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getByUserInstrument>>,
+			Awaited<ReturnType<typeof getNoteByUserInstrument>>,
 			TError,
-			Awaited<ReturnType<typeof getByUserInstrument>>
+			Awaited<ReturnType<typeof getNoteByUserInstrument>>
 		>,
 		'initialData'
 	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>> & Pick<
+export function useGetNoteByUserInstrument<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>> & Pick<
 		UndefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getByUserInstrument>>,
+			Awaited<ReturnType<typeof getNoteByUserInstrument>>,
 			TError,
-			Awaited<ReturnType<typeof getByUserInstrument>>
+			Awaited<ReturnType<typeof getNoteByUserInstrument>>
 		>,
 		'initialData'
 	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetNoteByUserInstrument<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+export function useGetNoteByUserInstrument<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
 	idInstrument: number,
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetByUserInstrumentQueryOptions(idInstrument, options);
+	const queryOptions = getGetNoteByUserInstrumentQueryOptions(idInstrument, options);
 
 	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
 	return withQueryKey(query, queryOptions.queryKey);
 }
 
-export async function prefetchGetByUserInstrumentQuery<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
-	const queryOptions = getGetByUserInstrumentQueryOptions(idInstrument, options);
+export async function prefetchGetNoteByUserInstrumentQuery<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetNoteByUserInstrumentQueryOptions(idInstrument, options);
 
 	await queryClient.prefetchQuery(queryOptions);
 
 	return queryClient;
 }
 
-export async function invalidateGetByUserInstrument(queryClient: QueryClient, idInstrument: number, options?: InvalidateOptions): Promise<QueryClient> {
-	await queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(idInstrument) }, options);
+export async function invalidateGetNoteByUserInstrument(queryClient: QueryClient, idInstrument: number, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetNoteByUserInstrumentQueryKey(idInstrument) }, options);
 
 	return queryClient;
 }
 
 
-export function getGetByUserInstrumentSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+export function getGetNoteByUserInstrumentSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
 	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getGetByUserInstrumentQueryKey(idInstrument);
+	const queryKey = queryOptions?.queryKey ?? getGetNoteByUserInstrumentQueryKey(idInstrument);
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getByUserInstrument>>> = ({ signal }) => getByUserInstrument(idInstrument, { signal, ...requestOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getNoteByUserInstrument>>> = ({ signal }) => getNoteByUserInstrument(idInstrument, { signal, ...requestOptions });
 
 
-	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
-export type GetByUserInstrumentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getByUserInstrument>>>;
-export type GetByUserInstrumentSuspenseQueryError = ErrorType<ProblemDetails>;
+export type GetNoteByUserInstrumentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getNoteByUserInstrument>>>;
+export type GetNoteByUserInstrumentSuspenseQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetNoteByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetNoteByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetNoteByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+export function useGetNoteByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
 	idInstrument: number,
-	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getNoteByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetByUserInstrumentSuspenseQueryOptions(idInstrument, options);
+	const queryOptions = getGetNoteByUserInstrumentSuspenseQueryOptions(idInstrument, options);
 
 	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -501,8 +683,9 @@ export function getCreateInstrumentNoteMutationOptions<TError = ErrorType<Proble
 
 	const onSuccess = (data: Awaited<ReturnType<typeof createInstrumentNote>>, variables: { idInstrument: number; data: NoteRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetNoteStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentAllQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(variables.idInstrument) });
+			queryClient.invalidateQueries({ queryKey: getGetNoteByUserInstrumentQueryKey(variables.idInstrument) });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -603,8 +786,9 @@ export function getUpdateInstrumentNoteMutationOptions<TError = ErrorType<Proble
 
 	const onSuccess = (data: Awaited<ReturnType<typeof updateInstrumentNote>>, variables: { idInstrument: number; data: NoteRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetNoteStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentAllQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(variables.idInstrument) });
+			queryClient.invalidateQueries({ queryKey: getGetNoteByUserInstrumentQueryKey(variables.idInstrument) });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -705,8 +889,9 @@ export function getDeleteInstrumentNoteMutationOptions<TError = ErrorType<Proble
 
 	const onSuccess = (data: Awaited<ReturnType<typeof deleteInstrumentNote>>, variables: { idInstrument: number }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetNoteStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentAllQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(variables.idInstrument) });
+			queryClient.invalidateQueries({ queryKey: getGetNoteByUserInstrumentQueryKey(variables.idInstrument) });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -1165,6 +1350,7 @@ export function getCreateStrategyNoteMutationOptions<TError = ErrorType<ProblemD
 
 	const onSuccess = (data: Awaited<ReturnType<typeof createStrategyNote>>, variables: { idStrategy: number; data: NoteRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetNoteStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserStrategyAllQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserStrategyQueryKey(variables.idStrategy) });
 		}
@@ -1267,6 +1453,7 @@ export function getUpdateStrategyNoteMutationOptions<TError = ErrorType<ProblemD
 
 	const onSuccess = (data: Awaited<ReturnType<typeof updateStrategyNote>>, variables: { idStrategy: number; data: NoteRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetNoteStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserStrategyAllQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserStrategyQueryKey(variables.idStrategy) });
 		}
@@ -1369,6 +1556,7 @@ export function getDeleteStrategyNoteMutationOptions<TError = ErrorType<ProblemD
 
 	const onSuccess = (data: Awaited<ReturnType<typeof deleteStrategyNote>>, variables: { idStrategy: number }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetNoteStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserStrategyAllQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetByUserStrategyQueryKey(variables.idStrategy) });
 		}

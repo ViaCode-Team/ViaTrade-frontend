@@ -85,7 +85,7 @@ export function StocksPage() {
 			/>
 
 			<Section>
-				<StocksMarketSummary totalCount={stocks.length} isLoading={isLoading} />
+				<StocksMarketSummary isLoading={isLoading} />
 			</Section>
 
 			<Section header={{ title: 'Список акций' }}>

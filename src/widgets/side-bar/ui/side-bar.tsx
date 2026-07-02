@@ -7,6 +7,7 @@ import { IconChartCandle } from '@tabler/icons-react';
 import { IconChartLine } from '@tabler/icons-react';
 import { IconHome } from '@tabler/icons-react';
 import { IconNotebook } from '@tabler/icons-react';
+import { IconReceipt } from '@tabler/icons-react';
 import { IconTrendingUp } from '@tabler/icons-react';
 import { IconUser } from '@tabler/icons-react';
 
@@ -42,6 +43,11 @@ const menuItems: MenuItem[] = [
 		icon: <IconChartBar size={22} />,
 		text: 'Статистика',
 		path: ROUTES.STATISTICS,
+	},
+	{
+		icon: <IconReceipt size={22} />,
+		text: 'Сделки',
+		path: ROUTES.TRADES,
 	},
 	{ icon: <IconTrendingUp size={22} />, text: 'Акции', path: ROUTES.STOCKS },
 	{ icon: <IconChartLine size={22} />, text: 'Стратегии', path: ROUTES.STRATEGIES },

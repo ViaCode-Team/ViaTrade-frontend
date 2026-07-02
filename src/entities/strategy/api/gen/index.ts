@@ -47,6 +47,10 @@ import type {
 } from '../../../../shared/api/types/gen/problemDetails';
 
 import type {
+	StrategyStatistic,
+} from '../../../../shared/api/types/gen/strategyStatistic';
+
+import type {
 	TradeStrategy,
 } from '../../../../shared/api/types/gen/tradeStrategy';
 
@@ -88,6 +92,184 @@ function withQueryKey<T extends object, K>(query: T, queryKey: K): T & { queryKe
 	}
 	return result;
 }
+
+export type getStrategyStatisticsResponse200 = {
+	data: StrategyStatistic;
+	status: 200;
+};
+
+export type getStrategyStatisticsResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getStrategyStatisticsResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getStrategyStatisticsResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getStrategyStatisticsResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getStrategyStatisticsResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getStrategyStatisticsResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getStrategyStatisticsResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getStrategyStatisticsResponseSuccess = (getStrategyStatisticsResponse200) & {
+	headers: Headers;
+};
+export type getStrategyStatisticsResponseError = (getStrategyStatisticsResponse400 | getStrategyStatisticsResponse401 | getStrategyStatisticsResponse403 | getStrategyStatisticsResponse404 | getStrategyStatisticsResponse408 | getStrategyStatisticsResponse409 | getStrategyStatisticsResponse500) & {
+	headers: Headers;
+};
+
+export function getGetStrategyStatisticsUrl() {
+	return `/api/Strategy/statistics`;
+}
+
+export async function getStrategyStatistics(options?: RequestInit): Promise<getStrategyStatisticsResponseSuccess> {
+	return customInstance<getStrategyStatisticsResponseSuccess>(getGetStrategyStatisticsUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetStrategyStatisticsQueryKey() {
+	return [
+		`/api/Strategy/statistics`,
+	] as const;
+}
+
+
+export function getGetStrategyStatisticsQueryOptions<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStrategyStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStrategyStatistics>>> = ({ signal }) => getStrategyStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStrategyStatisticsQueryResult = NonNullable<Awaited<ReturnType<typeof getStrategyStatistics>>>;
+export type GetStrategyStatisticsQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStrategyStatistics<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStrategyStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getStrategyStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategyStatistics<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStrategyStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getStrategyStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategyStatistics<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStrategyStatistics<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStrategyStatisticsQueryOptions(options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetStrategyStatisticsQuery<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetStrategyStatisticsQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetStrategyStatistics(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetStrategyStatisticsQueryKey() }, options);
+
+	return queryClient;
+}
+
+
+export function getGetStrategyStatisticsSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStrategyStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStrategyStatistics>>> = ({ signal }) => getStrategyStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStrategyStatisticsSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getStrategyStatistics>>>;
+export type GetStrategyStatisticsSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStrategyStatisticsSuspense<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategyStatisticsSuspense<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategyStatisticsSuspense<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStrategyStatisticsSuspense<TData = Awaited<ReturnType<typeof getStrategyStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategyStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStrategyStatisticsSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
 
 export type getAllResponse200 = {
 	data: TradeStrategy[];
@@ -703,6 +885,7 @@ export function getCreateInstrumentsLinkMutationOptions<TError = ErrorType<Probl
 
 	const onSuccess = (data: Awaited<ReturnType<typeof createInstrumentsLink>>, variables: { data: UserStrategyTradeCodeRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetStrategyStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
 			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });
 			queryClient.resetQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/Result/strategy/') });
@@ -816,6 +999,7 @@ export function getDeleteInstrumentsLinkMutationOptions<TError = ErrorType<Probl
 
 	const onSuccess = (data: Awaited<ReturnType<typeof deleteInstrumentsLink>>, variables: { params: DeleteInstrumentsLinkParams }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetStrategyStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
 			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });
 			queryClient.resetQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/Result/strategy/') });
@@ -1097,6 +1281,7 @@ export function getCreateUsersStrategyMutationOptions<TError = ErrorType<Problem
 
 	const onSuccess = (data: Awaited<ReturnType<typeof createUsersStrategy>>, variables: { data: CreateUserStrategyRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetStrategyStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetUsersStrategyQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
 			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });
@@ -1211,6 +1396,7 @@ export function getDeleteUsersStrategyMutationOptions<TError = ErrorType<Problem
 
 	const onSuccess = (data: Awaited<ReturnType<typeof deleteUsersStrategy>>, variables: { params: DeleteUsersStrategyParams }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetStrategyStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetUsersStrategyQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllInstrumentsLinkQueryKey() });
 			queryClient.resetQueries({ queryKey: getGetResultQueryKey() });

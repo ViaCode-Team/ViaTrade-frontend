@@ -1,32 +1,36 @@
-import { TRADE_STATISTICS_CARDS } from '@/entities/statistic';
+import { TRADE_STATISTICS_CARDS, useGetTradeStatisticsSuspense } from '@/entities/trade';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 
 import { StatisticsSummarySkeleton } from './statistics-summary.skeleton';
-import { useStatisticsSummary } from './use-statistics-summary';
 
 export function StatisticsSummary() {
-	const stats = useStatisticsSummary();
+	const { data: response } = useGetTradeStatisticsSuspense();
+	const {
+		incomeStatistic,
+		tradeStatistic,
+		winrateStatistic,
+	} = response.data;
 
 	return (
 		<SummaryList>
 			<SummaryCard
 				title={TRADE_STATISTICS_CARDS.totalTrades.title}
-				value={stats.totalTrades}
-				description={`Прибыльных: ${stats.profitableTrades} | Убыточных: ${stats.losingTrades}`}
+				value={tradeStatistic.totalTrades}
+				description={`Прибыльных: ${tradeStatistic.winTrades} | Убыточных: ${tradeStatistic.loseTrades}`}
 			/>
 			<SummaryCard
 				title={TRADE_STATISTICS_CARDS.totalIncome.title}
-				value={`${stats.totalIncome.toFixed(2)} ₽`}
-				description={`Средняя: ${stats.averageIncome.toFixed(2)} ₽`}
-				color={TRADE_STATISTICS_CARDS.totalIncome.getColor(stats.totalIncome)}
+				value={`${incomeStatistic.totalIncome.toFixed(2)} ₽`}
+				description={`Средняя: ${incomeStatistic.averageIncome.toFixed(2)} ₽`}
+				color={TRADE_STATISTICS_CARDS.totalIncome.getColor(incomeStatistic.totalIncome)}
 			/>
 			<SummaryCard
 				title={TRADE_STATISTICS_CARDS.winRate.title}
-				value={`${stats.winRate.toFixed(1)}%`}
-				description={`Profit Factor: ${stats.profitFactor === Infinity ? '∞' : stats.profitFactor.toFixed(2)}`}
-				color={TRADE_STATISTICS_CARDS.winRate.getColor(stats.winRate)}
+				value={`${winrateStatistic.totalWinrate.toFixed(1)}%`}
+				description={`Profit Factor: ${winrateStatistic.profitFactor === Infinity ? '∞' : winrateStatistic.profitFactor.toFixed(2)}`}
+				color={TRADE_STATISTICS_CARDS.winRate.getColor(winrateStatistic.totalWinrate)}
 			/>
 		</SummaryList>
 	);

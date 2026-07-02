@@ -6,18 +6,25 @@ import {
 	Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { useCreateInstrumentRemind } from '@/entities/remind';
+import {
+	getGetAllByUserQueryKey,
+	getGetByUserInstrumentQueryKey,
+	getGetRemindStatisticsQueryKey,
+	useCreate,
+} from '@/entities/remind';
 import { mapTradeCodeToStock } from '@/entities/stock';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
 
 export function AddRemind() {
+	const queryClient = useQueryClient();
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
 	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
 	const stocks = stocksResponse.data.map(mapTradeCodeToStock);
-	const createRemindMutation = useCreateInstrumentRemind();
+	const createRemindMutation = useCreate();
 
 	const stockSelectData = stocks.map((stock) => ({
 		value: stock.id,
@@ -48,6 +55,9 @@ export function AddRemind() {
 			},
 		}, {
 			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
+				queryClient.invalidateQueries({ queryKey: getGetAllByUserQueryKey() });
+				queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(stock.instrumentId) });
 				modals.closeAll();
 			},
 		});

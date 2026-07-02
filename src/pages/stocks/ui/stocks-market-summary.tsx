@@ -1,21 +1,23 @@
+import { useGetStockStatistics } from '@/entities/trade-code';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 
 type StocksMarketSummaryProps = {
-	totalCount: number;
 	isLoading?: boolean;
 };
 
 export function StocksMarketSummary({
-	totalCount,
 	isLoading,
 }: StocksMarketSummaryProps) {
+	const { data: response, isLoading: isStatisticsLoading } = useGetStockStatistics();
+	const totalStocks = response?.data.totalStocks ?? 0;
+
 	return (
 		<SummaryList>
 			<SummaryCard
 				title='Инструменты'
-				value={totalCount}
-				isLoading={isLoading}
+				value={totalStocks}
+				isLoading={isLoading || isStatisticsLoading}
 			/>
 		</SummaryList>
 	);

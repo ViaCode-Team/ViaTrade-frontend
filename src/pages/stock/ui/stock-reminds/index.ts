@@ -1,1 +1,1 @@
-export { StockReminds } from './components/stock-reminds';
+export { StockReminds } from './stock-reminds';

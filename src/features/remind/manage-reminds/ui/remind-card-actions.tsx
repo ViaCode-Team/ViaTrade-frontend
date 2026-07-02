@@ -2,7 +2,7 @@ import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getGetAllByUserQueryKey, useDeleteRemind } from '@/entities/remind';
+import { getGetAllByUserQueryKey, getGetRemindStatisticsQueryKey, useDelete } from '@/entities/remind';
 
 type RemindCardActionsProps = {
 	remindId: string;
@@ -10,7 +10,7 @@ type RemindCardActionsProps = {
 
 export function RemindCardActions({ remindId }: RemindCardActionsProps) {
 	const queryClient = useQueryClient();
-	const deleteRemindMutation = useDeleteRemind();
+	const deleteRemindMutation = useDelete();
 
 	return (
 		<>
@@ -21,8 +21,10 @@ export function RemindCardActions({ remindId }: RemindCardActionsProps) {
 					size='md'
 					aria-label='Удалить напоминание'
 					onClick={() => {
-						deleteRemindMutation.mutate({ redindId: Number(remindId) }, {
+						deleteRemindMutation.mutate({ remindId: Number(remindId) }, {
 							onSuccess: () => {
+								queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
+
 								const updater = (oldData: any) => {
 									if (!oldData)
 										return oldData;

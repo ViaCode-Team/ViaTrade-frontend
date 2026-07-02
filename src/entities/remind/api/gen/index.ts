@@ -42,6 +42,10 @@ import type {
 	TradeRemindRequest,
 } from '../../../../shared/api/types/gen/tradeRemindRequest';
 
+import type {
+	TradeRemindStatistic,
+} from '../../../../shared/api/types/gen/tradeRemindStatistic';
+
 import { customInstance } from '../../../../shared/api/client/custom-instance-fetch';
 import type { ErrorType } from '../../../../shared/api/client/custom-instance-fetch';
 
@@ -64,6 +68,184 @@ function withQueryKey<T extends object, K>(query: T, queryKey: K): T & { queryKe
 	}
 	return result;
 }
+
+export type getRemindStatisticsResponse200 = {
+	data: TradeRemindStatistic;
+	status: 200;
+};
+
+export type getRemindStatisticsResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getRemindStatisticsResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getRemindStatisticsResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getRemindStatisticsResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getRemindStatisticsResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getRemindStatisticsResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getRemindStatisticsResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getRemindStatisticsResponseSuccess = (getRemindStatisticsResponse200) & {
+	headers: Headers;
+};
+export type getRemindStatisticsResponseError = (getRemindStatisticsResponse400 | getRemindStatisticsResponse401 | getRemindStatisticsResponse403 | getRemindStatisticsResponse404 | getRemindStatisticsResponse408 | getRemindStatisticsResponse409 | getRemindStatisticsResponse500) & {
+	headers: Headers;
+};
+
+export function getGetRemindStatisticsUrl() {
+	return `/api/TradeRemind/statistics`;
+}
+
+export async function getRemindStatistics(options?: RequestInit): Promise<getRemindStatisticsResponseSuccess> {
+	return customInstance<getRemindStatisticsResponseSuccess>(getGetRemindStatisticsUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetRemindStatisticsQueryKey() {
+	return [
+		`/api/TradeRemind/statistics`,
+	] as const;
+}
+
+
+export function getGetRemindStatisticsQueryOptions<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetRemindStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getRemindStatistics>>> = ({ signal }) => getRemindStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetRemindStatisticsQueryResult = NonNullable<Awaited<ReturnType<typeof getRemindStatistics>>>;
+export type GetRemindStatisticsQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetRemindStatistics<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getRemindStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getRemindStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetRemindStatistics<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getRemindStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getRemindStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetRemindStatistics<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetRemindStatistics<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetRemindStatisticsQueryOptions(options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetRemindStatisticsQuery<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetRemindStatisticsQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetRemindStatistics(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() }, options);
+
+	return queryClient;
+}
+
+
+export function getGetRemindStatisticsSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetRemindStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getRemindStatistics>>> = ({ signal }) => getRemindStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetRemindStatisticsSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getRemindStatistics>>>;
+export type GetRemindStatisticsSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetRemindStatisticsSuspense<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetRemindStatisticsSuspense<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetRemindStatisticsSuspense<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetRemindStatisticsSuspense<TData = Awaited<ReturnType<typeof getRemindStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetRemindStatisticsSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
 
 export type getActualRemindResponse200 = {
 	data: TradeRemind[];
@@ -243,6 +425,99 @@ export function useGetActualRemindSuspense<TData = Awaited<ReturnType<typeof get
 }
 
 
+export type deleteActualRemindResponse204 = {
+	data: void;
+	status: 204;
+};
+
+export type deleteActualRemindResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type deleteActualRemindResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type deleteActualRemindResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type deleteActualRemindResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type deleteActualRemindResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type deleteActualRemindResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type deleteActualRemindResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type deleteActualRemindResponseSuccess = (deleteActualRemindResponse204) & {
+	headers: Headers;
+};
+export type deleteActualRemindResponseError = (deleteActualRemindResponse400 | deleteActualRemindResponse401 | deleteActualRemindResponse403 | deleteActualRemindResponse404 | deleteActualRemindResponse408 | deleteActualRemindResponse409 | deleteActualRemindResponse500) & {
+	headers: Headers;
+};
+
+export function getDeleteActualRemindUrl(remindId: number) {
+	return `/api/TradeRemind/byuser/actual/${remindId}`;
+}
+
+export async function deleteActualRemind(remindId: number, options?: RequestInit): Promise<deleteActualRemindResponseSuccess> {
+	return customInstance<deleteActualRemindResponseSuccess>(getDeleteActualRemindUrl(remindId), {
+		...options,
+		method: 'DELETE',
+
+
+	});
+}
+
+
+export function getDeleteActualRemindMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteActualRemind>>, TError, { remindId: number }, TContext>; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteActualRemind>>, TError, { remindId: number }, TContext> {
+	const mutationKey = ['deleteActualRemind'];
+	const { mutation: mutationOptions, request: requestOptions } = options
+		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, request: undefined };
+
+
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteActualRemind>>, { remindId: number }> = (props) => {
+		const { remindId } = props ?? {};
+
+		return deleteActualRemind(remindId, requestOptions);
+	};
+
+
+	return { mutationFn, ...mutationOptions };
+}
+
+export type DeleteActualRemindMutationResult = NonNullable<Awaited<ReturnType<typeof deleteActualRemind>>>;
+
+export type DeleteActualRemindMutationError = ErrorType<ProblemDetails>;
+
+export function useDeleteActualRemind<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteActualRemind>>, TError, { remindId: number }, TContext>; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+	Awaited<ReturnType<typeof deleteActualRemind>>,
+	TError,
+	{ remindId: number },
+	TContext
+> {
+	return useMutation(getDeleteActualRemindMutationOptions(options), queryClient);
+}
+
 export type getAllByUserResponse200 = {
 	data: TradeRemind[];
 	status: 200;
@@ -421,59 +696,59 @@ export function useGetAllByUserSuspense<TData = Awaited<ReturnType<typeof getAll
 }
 
 
-export type getTradeRemindByUserInstrumentResponse200 = {
+export type getByUserInstrumentResponse200 = {
 	data: TradeRemind[];
 	status: 200;
 };
 
-export type getTradeRemindByUserInstrumentResponse400 = {
+export type getByUserInstrumentResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type getTradeRemindByUserInstrumentResponse401 = {
+export type getByUserInstrumentResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type getTradeRemindByUserInstrumentResponse403 = {
+export type getByUserInstrumentResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type getTradeRemindByUserInstrumentResponse404 = {
+export type getByUserInstrumentResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type getTradeRemindByUserInstrumentResponse408 = {
+export type getByUserInstrumentResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type getTradeRemindByUserInstrumentResponse409 = {
+export type getByUserInstrumentResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type getTradeRemindByUserInstrumentResponse500 = {
+export type getByUserInstrumentResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type getTradeRemindByUserInstrumentResponseSuccess = (getTradeRemindByUserInstrumentResponse200) & {
+export type getByUserInstrumentResponseSuccess = (getByUserInstrumentResponse200) & {
 	headers: Headers;
 };
-export type getTradeRemindByUserInstrumentResponseError = (getTradeRemindByUserInstrumentResponse400 | getTradeRemindByUserInstrumentResponse401 | getTradeRemindByUserInstrumentResponse403 | getTradeRemindByUserInstrumentResponse404 | getTradeRemindByUserInstrumentResponse408 | getTradeRemindByUserInstrumentResponse409 | getTradeRemindByUserInstrumentResponse500) & {
+export type getByUserInstrumentResponseError = (getByUserInstrumentResponse400 | getByUserInstrumentResponse401 | getByUserInstrumentResponse403 | getByUserInstrumentResponse404 | getByUserInstrumentResponse408 | getByUserInstrumentResponse409 | getByUserInstrumentResponse500) & {
 	headers: Headers;
 };
 
-export function getGetTradeRemindByUserInstrumentUrl(idInstrument: number) {
+export function getGetByUserInstrumentUrl(idInstrument: number) {
 	return `/api/TradeRemind/byuser/instrument/${idInstrument}`;
 }
 
-export async function getTradeRemindByUserInstrument(idInstrument: number, options?: RequestInit): Promise<getTradeRemindByUserInstrumentResponseSuccess> {
-	return customInstance<getTradeRemindByUserInstrumentResponseSuccess>(getGetTradeRemindByUserInstrumentUrl(idInstrument), {
+export async function getByUserInstrument(idInstrument: number, options?: RequestInit): Promise<getByUserInstrumentResponseSuccess> {
+	return customInstance<getByUserInstrumentResponseSuccess>(getGetByUserInstrumentUrl(idInstrument), {
 		...options,
 		method: 'GET',
 
@@ -482,118 +757,118 @@ export async function getTradeRemindByUserInstrument(idInstrument: number, optio
 }
 
 
-export function getGetTradeRemindByUserInstrumentQueryKey(idInstrument: number) {
+export function getGetByUserInstrumentQueryKey(idInstrument: number) {
 	return [
 		`/api/TradeRemind/byuser/instrument/${idInstrument}`,
 	] as const;
 }
 
 
-export function getGetTradeRemindByUserInstrumentQueryOptions<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+export function getGetByUserInstrumentQueryOptions<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
 	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getGetTradeRemindByUserInstrumentQueryKey(idInstrument);
+	const queryKey = queryOptions?.queryKey ?? getGetByUserInstrumentQueryKey(idInstrument);
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>> = ({ signal }) => getTradeRemindByUserInstrument(idInstrument, { signal, ...requestOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getByUserInstrument>>> = ({ signal }) => getByUserInstrument(idInstrument, { signal, ...requestOptions });
 
 
-	return { queryKey, queryFn, enabled: idInstrument !== null && idInstrument !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, enabled: idInstrument !== null && idInstrument !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
-export type GetTradeRemindByUserInstrumentQueryResult = NonNullable<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>>;
-export type GetTradeRemindByUserInstrumentQueryError = ErrorType<ProblemDetails>;
+export type GetByUserInstrumentQueryResult = NonNullable<Awaited<ReturnType<typeof getByUserInstrument>>>;
+export type GetByUserInstrumentQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetTradeRemindByUserInstrument<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>> & Pick<
+export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>> & Pick<
 		DefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>,
+			Awaited<ReturnType<typeof getByUserInstrument>>,
 			TError,
-			Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>
+			Awaited<ReturnType<typeof getByUserInstrument>>
 		>,
 		'initialData'
 	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindByUserInstrument<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>> & Pick<
+export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>> & Pick<
 		UndefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>,
+			Awaited<ReturnType<typeof getByUserInstrument>>,
 			TError,
-			Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>
+			Awaited<ReturnType<typeof getByUserInstrument>>
 		>,
 		'initialData'
 	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindByUserInstrument<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetTradeRemindByUserInstrument<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+export function useGetByUserInstrument<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
 	idInstrument: number,
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetTradeRemindByUserInstrumentQueryOptions(idInstrument, options);
+	const queryOptions = getGetByUserInstrumentQueryOptions(idInstrument, options);
 
 	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
 	return withQueryKey(query, queryOptions.queryKey);
 }
 
-export async function prefetchGetTradeRemindByUserInstrumentQuery<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
-	const queryOptions = getGetTradeRemindByUserInstrumentQueryOptions(idInstrument, options);
+export async function prefetchGetByUserInstrumentQuery<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, idInstrument: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetByUserInstrumentQueryOptions(idInstrument, options);
 
 	await queryClient.prefetchQuery(queryOptions);
 
 	return queryClient;
 }
 
-export async function invalidateGetTradeRemindByUserInstrument(queryClient: QueryClient, idInstrument: number, options?: InvalidateOptions): Promise<QueryClient> {
-	await queryClient.invalidateQueries({ queryKey: getGetTradeRemindByUserInstrumentQueryKey(idInstrument) }, options);
+export async function invalidateGetByUserInstrument(queryClient: QueryClient, idInstrument: number, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(idInstrument) }, options);
 
 	return queryClient;
 }
 
 
-export function getGetTradeRemindByUserInstrumentSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+export function getGetByUserInstrumentSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
 	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getGetTradeRemindByUserInstrumentQueryKey(idInstrument);
+	const queryKey = queryOptions?.queryKey ?? getGetByUserInstrumentQueryKey(idInstrument);
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>> = ({ signal }) => getTradeRemindByUserInstrument(idInstrument, { signal, ...requestOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getByUserInstrument>>> = ({ signal }) => getByUserInstrument(idInstrument, { signal, ...requestOptions });
 
 
-	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
-export type GetTradeRemindByUserInstrumentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>>;
-export type GetTradeRemindByUserInstrumentSuspenseQueryError = ErrorType<ProblemDetails>;
+export type GetByUserInstrumentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getByUserInstrument>>>;
+export type GetByUserInstrumentSuspenseQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetTradeRemindByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
-	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+	idInstrument: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetTradeRemindByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
+export function useGetByUserInstrumentSuspense<TData = Awaited<ReturnType<typeof getByUserInstrument>>, TError = ErrorType<ProblemDetails>>(
 	idInstrument: number,
-	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getByUserInstrument>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetTradeRemindByUserInstrumentSuspenseQueryOptions(idInstrument, options);
+	const queryOptions = getGetByUserInstrumentSuspenseQueryOptions(idInstrument, options);
 
 	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -601,59 +876,59 @@ export function useGetTradeRemindByUserInstrumentSuspense<TData = Awaited<Return
 }
 
 
-export type createInstrumentRemindResponse201 = {
+export type createResponse201 = {
 	data: void;
 	status: 201;
 };
 
-export type createInstrumentRemindResponse400 = {
+export type createResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type createInstrumentRemindResponse401 = {
+export type createResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type createInstrumentRemindResponse403 = {
+export type createResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type createInstrumentRemindResponse404 = {
+export type createResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type createInstrumentRemindResponse408 = {
+export type createResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type createInstrumentRemindResponse409 = {
+export type createResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type createInstrumentRemindResponse500 = {
+export type createResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type createInstrumentRemindResponseSuccess = (createInstrumentRemindResponse201) & {
+export type createResponseSuccess = (createResponse201) & {
 	headers: Headers;
 };
-export type createInstrumentRemindResponseError = (createInstrumentRemindResponse400 | createInstrumentRemindResponse401 | createInstrumentRemindResponse403 | createInstrumentRemindResponse404 | createInstrumentRemindResponse408 | createInstrumentRemindResponse409 | createInstrumentRemindResponse500) & {
+export type createResponseError = (createResponse400 | createResponse401 | createResponse403 | createResponse404 | createResponse408 | createResponse409 | createResponse500) & {
 	headers: Headers;
 };
 
-export function getCreateInstrumentRemindUrl(idInstrument: number) {
+export function getCreateUrl(idInstrument: number) {
 	return `/api/TradeRemind/byuser/instrument/${idInstrument}`;
 }
 
-export async function createInstrumentRemind(idInstrument: number, tradeRemindRequest: TradeRemindRequest, options?: RequestInit): Promise<createInstrumentRemindResponseSuccess> {
-	return customInstance<createInstrumentRemindResponseSuccess>(getCreateInstrumentRemindUrl(idInstrument), {
+export async function create(idInstrument: number, tradeRemindRequest: TradeRemindRequest, options?: RequestInit): Promise<createResponseSuccess> {
+	return customInstance<createResponseSuccess>(getCreateUrl(idInstrument), {
 		...options,
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json', ...options?.headers },
@@ -662,8 +937,8 @@ export async function createInstrumentRemind(idInstrument: number, tradeRemindRe
 }
 
 
-export function getCreateInstrumentRemindMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createInstrumentRemind>>, TError, { idInstrument: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createInstrumentRemind>>, TError, { idInstrument: number; data: TradeRemindRequest }, TContext> {
-	const mutationKey = ['createInstrumentRemind'];
+export function getCreateMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof create>>, TError, { idInstrument: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof create>>, TError, { idInstrument: number; data: TradeRemindRequest }, TContext> {
+	const mutationKey = ['create'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -671,16 +946,17 @@ export function getCreateInstrumentRemindMutationOptions<TError = ErrorType<Prob
 		: { mutation: { mutationKey }, request: undefined };
 
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<typeof createInstrumentRemind>>, { idInstrument: number; data: TradeRemindRequest }> = (props) => {
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof create>>, { idInstrument: number; data: TradeRemindRequest }> = (props) => {
 		const { idInstrument, data } = props ?? {};
 
-		return createInstrumentRemind(idInstrument, data, requestOptions);
+		return create(idInstrument, data, requestOptions);
 	};
 
-	const onSuccess = (data: Awaited<ReturnType<typeof createInstrumentRemind>>, variables: { idInstrument: number; data: TradeRemindRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
+	const onSuccess = (data: Awaited<ReturnType<typeof create>>, variables: { idInstrument: number; data: TradeRemindRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllByUserQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetTradeRemindByUserInstrumentQueryKey(variables.idInstrument) });
+			queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(variables.idInstrument) });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -689,73 +965,73 @@ export function getCreateInstrumentRemindMutationOptions<TError = ErrorType<Prob
 	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
-export type CreateInstrumentRemindMutationResult = NonNullable<Awaited<ReturnType<typeof createInstrumentRemind>>>;
-export type CreateInstrumentRemindMutationBody = TradeRemindRequest;
-export type CreateInstrumentRemindMutationError = ErrorType<ProblemDetails>;
+export type CreateMutationResult = NonNullable<Awaited<ReturnType<typeof create>>>;
+export type CreateMutationBody = TradeRemindRequest;
+export type CreateMutationError = ErrorType<ProblemDetails>;
 
-export function useCreateInstrumentRemind<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createInstrumentRemind>>, TError, { idInstrument: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
-	Awaited<ReturnType<typeof createInstrumentRemind>>,
+export function useCreate<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof create>>, TError, { idInstrument: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+	Awaited<ReturnType<typeof create>>,
 	TError,
 	{ idInstrument: number; data: TradeRemindRequest },
 	TContext
 > {
 	const backupQueryClient = useQueryClient();
-	return useMutation(getCreateInstrumentRemindMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
+	return useMutation(getCreateMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
-export type getTradeRemindByIdResponse200 = {
+export type getRemindByIdResponse200 = {
 	data: TradeRemind;
 	status: 200;
 };
 
-export type getTradeRemindByIdResponse400 = {
+export type getRemindByIdResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type getTradeRemindByIdResponse401 = {
+export type getRemindByIdResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type getTradeRemindByIdResponse403 = {
+export type getRemindByIdResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type getTradeRemindByIdResponse404 = {
+export type getRemindByIdResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type getTradeRemindByIdResponse408 = {
+export type getRemindByIdResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type getTradeRemindByIdResponse409 = {
+export type getRemindByIdResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type getTradeRemindByIdResponse500 = {
+export type getRemindByIdResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type getTradeRemindByIdResponseSuccess = (getTradeRemindByIdResponse200) & {
+export type getRemindByIdResponseSuccess = (getRemindByIdResponse200) & {
 	headers: Headers;
 };
-export type getTradeRemindByIdResponseError = (getTradeRemindByIdResponse400 | getTradeRemindByIdResponse401 | getTradeRemindByIdResponse403 | getTradeRemindByIdResponse404 | getTradeRemindByIdResponse408 | getTradeRemindByIdResponse409 | getTradeRemindByIdResponse500) & {
+export type getRemindByIdResponseError = (getRemindByIdResponse400 | getRemindByIdResponse401 | getRemindByIdResponse403 | getRemindByIdResponse404 | getRemindByIdResponse408 | getRemindByIdResponse409 | getRemindByIdResponse500) & {
 	headers: Headers;
 };
 
-export function getGetTradeRemindByIdUrl(remindId: number) {
+export function getGetRemindByIdUrl(remindId: number) {
 	return `/api/TradeRemind/byuser/${remindId}`;
 }
 
-export async function getTradeRemindById(remindId: number, options?: RequestInit): Promise<getTradeRemindByIdResponseSuccess> {
-	return customInstance<getTradeRemindByIdResponseSuccess>(getGetTradeRemindByIdUrl(remindId), {
+export async function getRemindById(remindId: number, options?: RequestInit): Promise<getRemindByIdResponseSuccess> {
+	return customInstance<getRemindByIdResponseSuccess>(getGetRemindByIdUrl(remindId), {
 		...options,
 		method: 'GET',
 
@@ -764,118 +1040,118 @@ export async function getTradeRemindById(remindId: number, options?: RequestInit
 }
 
 
-export function getGetTradeRemindByIdQueryKey(remindId: number) {
+export function getGetRemindByIdQueryKey(remindId: number) {
 	return [
 		`/api/TradeRemind/byuser/${remindId}`,
 	] as const;
 }
 
 
-export function getGetTradeRemindByIdQueryOptions<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+export function getGetRemindByIdQueryOptions<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
 	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getGetTradeRemindByIdQueryKey(remindId);
+	const queryKey = queryOptions?.queryKey ?? getGetRemindByIdQueryKey(remindId);
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getTradeRemindById>>> = ({ signal }) => getTradeRemindById(remindId, { signal, ...requestOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getRemindById>>> = ({ signal }) => getRemindById(remindId, { signal, ...requestOptions });
 
 
-	return { queryKey, queryFn, enabled: remindId !== null && remindId !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, enabled: remindId !== null && remindId !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
-export type GetTradeRemindByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getTradeRemindById>>>;
-export type GetTradeRemindByIdQueryError = ErrorType<ProblemDetails>;
+export type GetRemindByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getRemindById>>>;
+export type GetRemindByIdQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetTradeRemindById<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
-	remindId: number, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>> & Pick<
+export function useGetRemindById<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
+	remindId: number, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>> & Pick<
 		DefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getTradeRemindById>>,
+			Awaited<ReturnType<typeof getRemindById>>,
 			TError,
-			Awaited<ReturnType<typeof getTradeRemindById>>
+			Awaited<ReturnType<typeof getRemindById>>
 		>,
 		'initialData'
 	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindById<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
-	remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>> & Pick<
+export function useGetRemindById<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
+	remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>> & Pick<
 		UndefinedInitialDataOptions<
-			Awaited<ReturnType<typeof getTradeRemindById>>,
+			Awaited<ReturnType<typeof getRemindById>>,
 			TError,
-			Awaited<ReturnType<typeof getTradeRemindById>>
+			Awaited<ReturnType<typeof getRemindById>>
 		>,
 		'initialData'
 	>; request?: SecondParameter<typeof customInstance>; },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindById<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
-	remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetRemindById<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
+	remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetTradeRemindById<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
+export function useGetRemindById<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
 	remindId: number,
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetTradeRemindByIdQueryOptions(remindId, options);
+	const queryOptions = getGetRemindByIdQueryOptions(remindId, options);
 
 	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
 	return withQueryKey(query, queryOptions.queryKey);
 }
 
-export async function prefetchGetTradeRemindByIdQuery<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
-	const queryOptions = getGetTradeRemindByIdQueryOptions(remindId, options);
+export async function prefetchGetRemindByIdQuery<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, remindId: number, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetRemindByIdQueryOptions(remindId, options);
 
 	await queryClient.prefetchQuery(queryOptions);
 
 	return queryClient;
 }
 
-export async function invalidateGetTradeRemindById(queryClient: QueryClient, remindId: number, options?: InvalidateOptions): Promise<QueryClient> {
-	await queryClient.invalidateQueries({ queryKey: getGetTradeRemindByIdQueryKey(remindId) }, options);
+export async function invalidateGetRemindById(queryClient: QueryClient, remindId: number, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetRemindByIdQueryKey(remindId) }, options);
 
 	return queryClient;
 }
 
 
-export function getGetTradeRemindByIdSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(remindId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+export function getGetRemindByIdSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(remindId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
 	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getGetTradeRemindByIdQueryKey(remindId);
+	const queryKey = queryOptions?.queryKey ?? getGetRemindByIdQueryKey(remindId);
 
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getTradeRemindById>>> = ({ signal }) => getTradeRemindById(remindId, { signal, ...requestOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getRemindById>>> = ({ signal }) => getRemindById(remindId, { signal, ...requestOptions });
 
 
-	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
 }
 
-export type GetTradeRemindByIdSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTradeRemindById>>>;
-export type GetTradeRemindByIdSuspenseQueryError = ErrorType<ProblemDetails>;
+export type GetRemindByIdSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getRemindById>>>;
+export type GetRemindByIdSuspenseQueryError = ErrorType<ProblemDetails>;
 
 
-export function useGetTradeRemindByIdSuspense<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
-	remindId: number, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetRemindByIdSuspense<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
+	remindId: number, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindByIdSuspense<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
-	remindId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetRemindByIdSuspense<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
+	remindId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetTradeRemindByIdSuspense<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
-	remindId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+export function useGetRemindByIdSuspense<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
+	remindId: number, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetTradeRemindByIdSuspense<TData = Awaited<ReturnType<typeof getTradeRemindById>>, TError = ErrorType<ProblemDetails>>(
+export function useGetRemindByIdSuspense<TData = Awaited<ReturnType<typeof getRemindById>>, TError = ErrorType<ProblemDetails>>(
 	remindId: number,
-	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRemindById>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetTradeRemindByIdSuspenseQueryOptions(remindId, options);
+	const queryOptions = getGetRemindByIdSuspenseQueryOptions(remindId, options);
 
 	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -883,59 +1159,59 @@ export function useGetTradeRemindByIdSuspense<TData = Awaited<ReturnType<typeof 
 }
 
 
-export type updateRemindResponse204 = {
+export type updateResponse204 = {
 	data: void;
 	status: 204;
 };
 
-export type updateRemindResponse400 = {
+export type updateResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type updateRemindResponse401 = {
+export type updateResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type updateRemindResponse403 = {
+export type updateResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type updateRemindResponse404 = {
+export type updateResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type updateRemindResponse408 = {
+export type updateResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type updateRemindResponse409 = {
+export type updateResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type updateRemindResponse500 = {
+export type updateResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type updateRemindResponseSuccess = (updateRemindResponse204) & {
+export type updateResponseSuccess = (updateResponse204) & {
 	headers: Headers;
 };
-export type updateRemindResponseError = (updateRemindResponse400 | updateRemindResponse401 | updateRemindResponse403 | updateRemindResponse404 | updateRemindResponse408 | updateRemindResponse409 | updateRemindResponse500) & {
+export type updateResponseError = (updateResponse400 | updateResponse401 | updateResponse403 | updateResponse404 | updateResponse408 | updateResponse409 | updateResponse500) & {
 	headers: Headers;
 };
 
-export function getUpdateRemindUrl(redindId: number) {
-	return `/api/TradeRemind/byuser/${redindId}`;
+export function getUpdateUrl(remindId: number) {
+	return `/api/TradeRemind/byuser/${remindId}`;
 }
 
-export async function updateRemind(redindId: number, tradeRemindRequest: TradeRemindRequest, options?: RequestInit): Promise<updateRemindResponseSuccess> {
-	return customInstance<updateRemindResponseSuccess>(getUpdateRemindUrl(redindId), {
+export async function update(remindId: number, tradeRemindRequest: TradeRemindRequest, options?: RequestInit): Promise<updateResponseSuccess> {
+	return customInstance<updateResponseSuccess>(getUpdateUrl(remindId), {
 		...options,
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json', ...options?.headers },
@@ -944,8 +1220,8 @@ export async function updateRemind(redindId: number, tradeRemindRequest: TradeRe
 }
 
 
-export function getUpdateRemindMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateRemind>>, TError, { redindId: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof updateRemind>>, TError, { redindId: number; data: TradeRemindRequest }, TContext> {
-	const mutationKey = ['updateRemind'];
+export function getUpdateMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof update>>, TError, { remindId: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof update>>, TError, { remindId: number; data: TradeRemindRequest }, TContext> {
+	const mutationKey = ['update'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -953,16 +1229,16 @@ export function getUpdateRemindMutationOptions<TError = ErrorType<ProblemDetails
 		: { mutation: { mutationKey }, request: undefined };
 
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRemind>>, { redindId: number; data: TradeRemindRequest }> = (props) => {
-		const { redindId, data } = props ?? {};
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof update>>, { remindId: number; data: TradeRemindRequest }> = (props) => {
+		const { remindId, data } = props ?? {};
 
-		return updateRemind(redindId, data, requestOptions);
+		return update(remindId, data, requestOptions);
 	};
 
-	const onSuccess = (data: Awaited<ReturnType<typeof updateRemind>>, variables: { redindId: number; data: TradeRemindRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
+	const onSuccess = (data: Awaited<ReturnType<typeof update>>, variables: { remindId: number; data: TradeRemindRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllByUserQueryKey() });
-			queryClient.invalidateQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/TradeRemind/byuser/instrument/') });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -971,73 +1247,73 @@ export function getUpdateRemindMutationOptions<TError = ErrorType<ProblemDetails
 	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
-export type UpdateRemindMutationResult = NonNullable<Awaited<ReturnType<typeof updateRemind>>>;
-export type UpdateRemindMutationBody = TradeRemindRequest;
-export type UpdateRemindMutationError = ErrorType<ProblemDetails>;
+export type UpdateMutationResult = NonNullable<Awaited<ReturnType<typeof update>>>;
+export type UpdateMutationBody = TradeRemindRequest;
+export type UpdateMutationError = ErrorType<ProblemDetails>;
 
-export function useUpdateRemind<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateRemind>>, TError, { redindId: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
-	Awaited<ReturnType<typeof updateRemind>>,
+export function useUpdate<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof update>>, TError, { remindId: number; data: TradeRemindRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+	Awaited<ReturnType<typeof update>>,
 	TError,
-	{ redindId: number; data: TradeRemindRequest },
+	{ remindId: number; data: TradeRemindRequest },
 	TContext
 > {
 	const backupQueryClient = useQueryClient();
-	return useMutation(getUpdateRemindMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
+	return useMutation(getUpdateMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
-export type deleteRemindResponse204 = {
+export type _deleteResponse204 = {
 	data: void;
 	status: 204;
 };
 
-export type deleteRemindResponse400 = {
+export type _deleteResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type deleteRemindResponse401 = {
+export type _deleteResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type deleteRemindResponse403 = {
+export type _deleteResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type deleteRemindResponse404 = {
+export type _deleteResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type deleteRemindResponse408 = {
+export type _deleteResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type deleteRemindResponse409 = {
+export type _deleteResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type deleteRemindResponse500 = {
+export type _deleteResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type deleteRemindResponseSuccess = (deleteRemindResponse204) & {
+export type _deleteResponseSuccess = (_deleteResponse204) & {
 	headers: Headers;
 };
-export type deleteRemindResponseError = (deleteRemindResponse400 | deleteRemindResponse401 | deleteRemindResponse403 | deleteRemindResponse404 | deleteRemindResponse408 | deleteRemindResponse409 | deleteRemindResponse500) & {
+export type _deleteResponseError = (_deleteResponse400 | _deleteResponse401 | _deleteResponse403 | _deleteResponse404 | _deleteResponse408 | _deleteResponse409 | _deleteResponse500) & {
 	headers: Headers;
 };
 
-export function getDeleteRemindUrl(redindId: number) {
-	return `/api/TradeRemind/byuser/${redindId}`;
+export function getDeleteUrl(remindId: number) {
+	return `/api/TradeRemind/byuser/${remindId}`;
 }
 
-export async function deleteRemind(redindId: number, options?: RequestInit): Promise<deleteRemindResponseSuccess> {
-	return customInstance<deleteRemindResponseSuccess>(getDeleteRemindUrl(redindId), {
+export async function _delete(remindId: number, options?: RequestInit): Promise<_deleteResponseSuccess> {
+	return customInstance<_deleteResponseSuccess>(getDeleteUrl(remindId), {
 		...options,
 		method: 'DELETE',
 
@@ -1046,8 +1322,8 @@ export async function deleteRemind(redindId: number, options?: RequestInit): Pro
 }
 
 
-export function getDeleteRemindMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteRemind>>, TError, { redindId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deleteRemind>>, TError, { redindId: number }, TContext> {
-	const mutationKey = ['deleteRemind'];
+export function getDeleteMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof _delete>>, TError, { remindId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof _delete>>, TError, { remindId: number }, TContext> {
+	const mutationKey = ['_delete'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -1055,16 +1331,16 @@ export function getDeleteRemindMutationOptions<TError = ErrorType<ProblemDetails
 		: { mutation: { mutationKey }, request: undefined };
 
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteRemind>>, { redindId: number }> = (props) => {
-		const { redindId } = props ?? {};
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof _delete>>, { remindId: number }> = (props) => {
+		const { remindId } = props ?? {};
 
-		return deleteRemind(redindId, requestOptions);
+		return _delete(remindId, requestOptions);
 	};
 
-	const onSuccess = (data: Awaited<ReturnType<typeof deleteRemind>>, variables: { redindId: number }, onMutateResult: TContext, context: MutationFunctionContext) => {
+	const onSuccess = (data: Awaited<ReturnType<typeof _delete>>, variables: { remindId: number }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
+			queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetAllByUserQueryKey() });
-			queryClient.invalidateQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/TradeRemind/byuser/instrument/') });
 		}
 		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
 	};
@@ -1073,16 +1349,16 @@ export function getDeleteRemindMutationOptions<TError = ErrorType<ProblemDetails
 	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
-export type DeleteRemindMutationResult = NonNullable<Awaited<ReturnType<typeof deleteRemind>>>;
+export type _DeleteMutationResult = NonNullable<Awaited<ReturnType<typeof _delete>>>;
 
-export type DeleteRemindMutationError = ErrorType<ProblemDetails>;
+export type _DeleteMutationError = ErrorType<ProblemDetails>;
 
-export function useDeleteRemind<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteRemind>>, TError, { redindId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
-	Awaited<ReturnType<typeof deleteRemind>>,
+export function useDelete<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof _delete>>, TError, { remindId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+	Awaited<ReturnType<typeof _delete>>,
 	TError,
-	{ redindId: number },
+	{ remindId: number },
 	TContext
 > {
 	const backupQueryClient = useQueryClient();
-	return useMutation(getDeleteRemindMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
+	return useMutation(getDeleteMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }

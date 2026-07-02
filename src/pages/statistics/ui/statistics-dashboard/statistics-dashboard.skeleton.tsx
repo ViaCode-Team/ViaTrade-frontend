@@ -8,7 +8,6 @@ export function StatisticsDashboardSkeleton() {
 			<div className={cls.chartsGrid}>
 				<Skeleton height={300} radius='md' />
 				<Skeleton height={300} radius='md' />
-				<Skeleton height={300} radius='md' />
 			</div>
 		</div>
 	);

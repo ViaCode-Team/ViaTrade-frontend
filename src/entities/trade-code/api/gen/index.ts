@@ -29,6 +29,10 @@ import type {
 } from '../../../../shared/api/types/gen/problemDetails';
 
 import type {
+	StockStatistic,
+} from '../../../../shared/api/types/gen/stockStatistic';
+
+import type {
 	TradeCode,
 } from '../../../../shared/api/types/gen/tradeCode';
 
@@ -58,6 +62,184 @@ function withQueryKey<T extends object, K>(query: T, queryKey: K): T & { queryKe
 	}
 	return result;
 }
+
+export type getStockStatisticsResponse200 = {
+	data: StockStatistic;
+	status: 200;
+};
+
+export type getStockStatisticsResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getStockStatisticsResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getStockStatisticsResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getStockStatisticsResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getStockStatisticsResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getStockStatisticsResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getStockStatisticsResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getStockStatisticsResponseSuccess = (getStockStatisticsResponse200) & {
+	headers: Headers;
+};
+export type getStockStatisticsResponseError = (getStockStatisticsResponse400 | getStockStatisticsResponse401 | getStockStatisticsResponse403 | getStockStatisticsResponse404 | getStockStatisticsResponse408 | getStockStatisticsResponse409 | getStockStatisticsResponse500) & {
+	headers: Headers;
+};
+
+export function getGetStockStatisticsUrl() {
+	return `/api/TradeCode/stocks/statistics`;
+}
+
+export async function getStockStatistics(options?: RequestInit): Promise<getStockStatisticsResponseSuccess> {
+	return customInstance<getStockStatisticsResponseSuccess>(getGetStockStatisticsUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetStockStatisticsQueryKey() {
+	return [
+		`/api/TradeCode/stocks/statistics`,
+	] as const;
+}
+
+
+export function getGetStockStatisticsQueryOptions<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStockStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStockStatistics>>> = ({ signal }) => getStockStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStockStatisticsQueryResult = NonNullable<Awaited<ReturnType<typeof getStockStatistics>>>;
+export type GetStockStatisticsQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStockStatistics<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStockStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getStockStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockStatistics<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStockStatistics>>,
+			TError,
+			Awaited<ReturnType<typeof getStockStatistics>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockStatistics<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStockStatistics<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStockStatisticsQueryOptions(options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetStockStatisticsQuery<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetStockStatisticsQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetStockStatistics(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetStockStatisticsQueryKey() }, options);
+
+	return queryClient;
+}
+
+
+export function getGetStockStatisticsSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStockStatisticsQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStockStatistics>>> = ({ signal }) => getStockStatistics({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStockStatisticsSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getStockStatistics>>>;
+export type GetStockStatisticsSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStockStatisticsSuspense<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockStatisticsSuspense<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockStatisticsSuspense<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStockStatisticsSuspense<TData = Awaited<ReturnType<typeof getStockStatistics>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockStatistics>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStockStatisticsSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
 
 export type getAllStocksCodesResponse200 = {
 	data: TradeCode[];

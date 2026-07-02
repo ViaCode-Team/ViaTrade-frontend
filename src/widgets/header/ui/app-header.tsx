@@ -1,6 +1,6 @@
 import { Flex, Group } from '@mantine/core';
 
-import { AddTradeButton } from '@/features/statistic/add';
+import { AddTradeButton } from '@/features/trade/add';
 import { Logo } from '@/shared/ui/logo';
 import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
 

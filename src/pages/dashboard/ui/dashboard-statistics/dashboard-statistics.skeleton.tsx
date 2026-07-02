@@ -1,4 +1,4 @@
-import { TRADE_STATISTICS_CARDS } from '@/entities/statistic';
+import { TRADE_STATISTICS_CARDS } from '@/entities/trade';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 

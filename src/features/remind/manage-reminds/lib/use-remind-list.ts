@@ -1,7 +1,12 @@
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 import { mapTradeRemindToRemindItem } from '@/entities/remind';
-import { getGetAllByUserSuspenseQueryOptions, getGetTradeRemindByUserInstrumentSuspenseQueryOptions, useUpdateRemind } from '@/entities/remind';
+import {
+	getGetAllByUserSuspenseQueryOptions,
+	getGetByUserInstrumentSuspenseQueryOptions,
+	getGetRemindStatisticsQueryKey,
+	useUpdate,
+} from '@/entities/remind';
 import { remindFiltersSchema } from '@/entities/remind';
 import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
 import { useUrlFilters } from '@/shared/lib/url-filters';
@@ -13,9 +18,9 @@ export function useRemindList(instrumentId?: number) {
 	const searchQuery = filters.q.toLowerCase();
 	const sortOption = filters.listSort;
 
-	const queryOpts = instrumentId
-		? getGetTradeRemindByUserInstrumentSuspenseQueryOptions(instrumentId)
-		: getGetAllByUserSuspenseQueryOptions();
+	const queryOpts = instrumentId === undefined
+		? getGetAllByUserSuspenseQueryOptions()
+		: getGetByUserInstrumentSuspenseQueryOptions(instrumentId);
 
 	const { data: response, refetch } = useSuspenseQuery({
 		...queryOpts,
@@ -34,7 +39,7 @@ export function useRemindList(instrumentId?: number) {
 			return item;
 		});
 
-	const updateRemindMutation = useUpdateRemind();
+	const updateRemindMutation = useUpdate();
 
 	const handleRemindChange = (remindId: string, updates: { text: string; date: string; time: string }, onSuccess?: () => void) => {
 		const remind = reminds.find((r) => r.id === remindId);
@@ -44,19 +49,20 @@ export function useRemindList(instrumentId?: number) {
 
 
 		updateRemindMutation.mutate({
-			redindId: Number(remindId),
+			remindId: Number(remindId),
 			data: {
 				textRemind: updates.text,
 				dateTime: `${updates.date}T${updates.time}:00.000Z`,
 			},
 		}, {
 			onSuccess: () => {
-				queryClient.setQueryData(queryOpts.queryKey, (oldData: any) => {
+				queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
+				queryClient.setQueryData(queryOpts.queryKey, (oldData) => {
 					if (!oldData)
 						return oldData;
 					return {
 						...oldData,
-						data: oldData.data.map((r: any) =>
+						data: oldData.data.map((r) =>
 							r.id === Number(remindId)
 								? { ...r, textRemind: updates.text, dateTime: `${updates.date}T${updates.time}:00.000Z` }
 								: r,
@@ -72,7 +78,7 @@ export function useRemindList(instrumentId?: number) {
 		remind.text.toLowerCase().includes(searchQuery),
 	);
 
-	filteredReminds.sort((a: any, b: any) => {
+	filteredReminds.sort((a, b) => {
 		const dateA = new Date(`${a.date}T${a.time}`).getTime();
 		const dateB = new Date(`${b.date}T${b.time}`).getTime();
 

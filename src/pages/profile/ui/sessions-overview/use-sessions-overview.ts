@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 
 import { useGetSessionsSuspense } from '@/entities/auth';
 import { sessionFiltersSchema } from '@/pages/profile/ui/filter-sessions';
-import { useUserSessionLogout } from '@/pages/profile/ui/manage-sessions';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
@@ -24,8 +23,6 @@ export function useSessionsOverview() {
 		setPrevSearchQuery(searchQuery);
 		setPage(1);
 	}
-
-	const sessionLogout = useUserSessionLogout();
 
 	const { data: sessionsData, refetch } = useGetSessionsSuspense({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
 
@@ -52,13 +49,6 @@ export function useSessionsOverview() {
 		[filteredSessions, activePage],
 	);
 
-	const handleLogoutSession = (sessionId: string) => {
-		if (sessionId === currentSessionId) {
-			sessionLogout.requestLogoutCurrentSession();
-		}
-		// TODO: per-session revoke when API endpoint is available
-	};
-
 	return {
 		sessions,
 		filteredSessions,
@@ -67,7 +57,6 @@ export function useSessionsOverview() {
 		activePage,
 		totalPages,
 		setPage,
-		handleLogoutSession,
 		refetch,
 	};
 }

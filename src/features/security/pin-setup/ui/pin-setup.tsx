@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
 	ActionIcon,
 	Center,
@@ -15,7 +17,11 @@ import { Logo } from '@/shared/ui/logo';
 
 import { usePinSetup } from '../model/use-pin-setup';
 
-export function PinSetup() {
+type PinSetupProps = {
+	actionSlot?: ReactNode;
+};
+
+export function PinSetup({ actionSlot }: PinSetupProps) {
 	const {
 		step,
 		pin,
@@ -34,6 +40,7 @@ export function PinSetup() {
 			<div style={{ position: 'absolute', top: 32, left: 32 }}>
 				<Logo />
 			</div>
+
 			<Container size='xs' style={{ width: '100%', maxWidth: '400px' }}>
 				<Paper p='xl' withBorder style={{ position: 'relative' }}>
 					{step === 2 && (
@@ -51,6 +58,7 @@ export function PinSetup() {
 					<Title order={2} ta='center' mt={step === 2 ? 'md' : 'xs'} mb='xs'>
 						{step === 1 ? 'Создание ПИН-кода' : 'Подтверждение ПИН-кода'}
 					</Title>
+
 					<Text c='dimmed' size='sm' ta='center' mb='xl'>
 						{step === 1
 							? 'Придумайте 4-значный ПИН-код для защиты ваших локальных данных.'
@@ -108,6 +116,12 @@ export function PinSetup() {
 
 				</Paper>
 			</Container>
+
+			{actionSlot && (
+				<div style={{ position: 'absolute', top: 32, right: 32 }}>
+					{actionSlot}
+				</div>
+			)}
 		</Center>
 	);
 }

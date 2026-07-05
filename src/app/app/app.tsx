@@ -8,6 +8,7 @@ import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import { PwaProvider, QueryProvider, ThemeProvider } from '../providers';
 import { router } from '../router';
+import { LocalAuthBlockedLogout } from '../security/local-auth-block';
 
 export function App() {
 	useEffect(() => {
@@ -20,6 +21,7 @@ export function App() {
 				<QueryProvider>
 					<ThemeProvider>
 						<Suspense fallback={<GlobalLoader />}>
+							<LocalAuthBlockedLogout />
 							<SecuritySessionLockout />
 							<InactivityLock />
 							<RouterProvider router={router} />

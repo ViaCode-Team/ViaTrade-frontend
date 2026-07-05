@@ -3,9 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useSecurity } from '@/entities/security';
-import { clearLocalData } from '@/shared/lib/auth';
-import { clearPinSetupMark, hasPinSetupMark, setLocalAuthBlocked, setupPin } from '@/shared/lib/secure-storage';
+import { logoutCurrentSessionSilently } from '@/entities/auth';
+import { blockLocalAuth, clearLocalAuthBlock, useSecurity } from '@/entities/security';
+import { clearPinSetupMark, hasPinSetupMark, setupPin } from '@/shared/lib/secure-storage';
 import { ROUTES } from '@/shared/model';
 
 export function usePinSetup() {
@@ -19,9 +19,16 @@ export function usePinSetup() {
 
 	const navigate = useNavigate();
 
-	const blockLocalAuth = async () => {
-		await clearLocalData(queryClient);
-		await setLocalAuthBlocked();
+	const blockAppLocalAuth = async () => {
+		const isLoggedOut = await logoutCurrentSessionSilently();
+
+		if (isLoggedOut) {
+			await clearLocalAuthBlock(queryClient);
+		}
+		else {
+			await blockLocalAuth(queryClient);
+		}
+
 		await checkSecurityState();
 		navigate(ROUTES.LOGIN);
 	};
@@ -41,7 +48,7 @@ export function usePinSetup() {
 	const handleStep1Complete = async () => {
 		const hasMark = await hasPinSetupMark();
 		if (!hasMark) {
-			await blockLocalAuth();
+			await blockAppLocalAuth();
 			return;
 		}
 
@@ -55,7 +62,7 @@ export function usePinSetup() {
 
 		const hasMark = await hasPinSetupMark();
 		if (!hasMark) {
-			await blockLocalAuth();
+			await blockAppLocalAuth();
 			return;
 		}
 

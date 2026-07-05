@@ -12,12 +12,10 @@ import { pwaConfig } from './config/vite/pwa';
 import { transformImportsConfig } from './config/vite/transform-imports';
 
 export default defineConfig(({ command }) => {
-	const isDev = command === 'serve';
+	const isBuild = command === 'build';
 
 	const plugins: PluginOption[] = [
 		react(),
-
-		!isDev ? transformImports(transformImportsConfig) : null,
 
 		babel({
 			presets: [reactCompilerPreset()],
@@ -25,11 +23,31 @@ export default defineConfig(({ command }) => {
 
 		VitePWA(pwaConfig),
 
-		analyzer(analyzerConfig),
+		...(isBuild
+			? [
+					transformImports(transformImportsConfig),
+					analyzer(analyzerConfig),
+				]
+			: []),
 	];
 
 	return {
 		plugins,
+
+		build: {
+			rolldownOptions: {
+				output: {
+					codeSplitting: {
+						groups: [
+							{
+								name: 'vendor-charts',
+								test: /node_modules[\\/](recharts|d3-|victory-vendor)[\\/]/,
+							},
+						],
+					},
+				},
+			},
+		},
 
 		resolve: {
 			alias: {

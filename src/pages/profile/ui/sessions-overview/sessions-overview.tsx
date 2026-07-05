@@ -1,16 +1,14 @@
 import {
-	Button,
 	Group,
 	Skeleton,
 	Stack,
 	Text,
 } from '@mantine/core';
-import { IconLogout } from '@tabler/icons-react';
 import { useMemo } from 'react';
 
 import { useGetSessions } from '@/entities/auth';
+import { LogoutAllSessionsButton } from '@/features/auth/logout';
 import { SessionsControls } from '@/pages/profile/ui/filter-sessions';
-import { useUserSessionLogout } from '@/pages/profile/ui/manage-sessions';
 import { Section } from '@/shared/ui/section';
 
 import { normalizeUserSessions } from '../session-entity';
@@ -33,20 +31,10 @@ function SessionsCount({ isLoading, total }: { isLoading: boolean; total: number
 export function SessionsOverview() {
 	const { data: sessionsData, isLoading } = useGetSessions();
 	const sessionsRaw = useMemo(() => normalizeUserSessions(sessionsData?.data), [sessionsData?.data]);
-	const sessionLogout = useUserSessionLogout();
 
 	const headerActions = (
 		<Group gap='sm'>
-			<Button
-				variant='outline'
-				color='red'
-				size='xs'
-				leftSection={<IconLogout size={16} />}
-				onClick={sessionLogout.requestLogoutAll}
-				disabled={isLoading || sessionLogout.isLoggingOutAll}
-			>
-				Выйти из всех
-			</Button>
+			<LogoutAllSessionsButton disabled={isLoading} />
 		</Group>
 	);
 

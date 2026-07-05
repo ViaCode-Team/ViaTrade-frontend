@@ -1,6 +1,4 @@
-import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconLogout } from '@tabler/icons-react';
-
+import { LogoutCurrentSessionAction } from '@/features/auth/logout';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { SessionsList, SessionsListSkeleton } from '../session-entity';
@@ -14,7 +12,6 @@ function SessionsOverviewList() {
 		activePage,
 		totalPages,
 		setPage,
-		handleLogoutSession,
 	} = useSessionsOverview();
 
 	return (
@@ -25,22 +22,10 @@ function SessionsOverviewList() {
 			activePage={activePage}
 			totalPages={totalPages}
 			setPage={setPage}
-			actionSlot={(session, isCurrent) => {
+			actionSlot={(_, isCurrent) => {
 				if (!isCurrent)
 					return null;
-				return (
-					<Tooltip label='Завершить текущую сессию'>
-						<ActionIcon
-							size='lg'
-							variant='subtle'
-							color='red'
-							aria-label='Завершить текущую сессию'
-							onClick={() => handleLogoutSession(session.id)}
-						>
-							<IconLogout size={20} />
-						</ActionIcon>
-					</Tooltip>
-				);
+				return <LogoutCurrentSessionAction />;
 			}}
 		/>
 	);

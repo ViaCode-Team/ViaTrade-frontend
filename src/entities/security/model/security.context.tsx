@@ -2,58 +2,44 @@ import {
 	type ReactNode,
 	useCallback,
 	useEffect,
+	useMemo,
+	useRef,
 	useState,
 } from 'react';
 
-import {
-	hasPinSetup,
-	hasPinSetupMark,
-	isAppLocked,
-	isLocalAuthBlocked,
-	tryRestoreSessionMasterKey,
-} from '@/shared/lib/secure-storage';
-
+import { INITIAL_SECURITY_SNAPSHOT, readSecuritySnapshot } from './security-state';
 import { SecurityContext } from './use-security';
 
-export function SecurityProvider({ children }: { children: ReactNode }) {
-	const [isLocked, setIsLocked] = useState(true);
-	const [hasPin, setHasPin] = useState(false);
-	const [isPinSetupMark, setIsPinSetupMark] = useState(false);
-	const [isBlocked, setIsBlocked] = useState(false);
-	const [isReady, setIsReady] = useState(false);
+type SecurityProviderProps = {
+	children: ReactNode;
+};
+
+export function SecurityProvider({ children }: SecurityProviderProps) {
+	const [securitySnapshot, setSecuritySnapshot] = useState(INITIAL_SECURITY_SNAPSHOT);
+	const stateCheckIdRef = useRef(0);
 
 	const checkSecurityState = useCallback(async () => {
-		const pinSetup = await hasPinSetup();
-		setHasPin(pinSetup);
+		const stateCheckId = stateCheckIdRef.current + 1;
+		stateCheckIdRef.current = stateCheckId;
 
-		const pinMark = await hasPinSetupMark();
-		setIsPinSetupMark(pinMark);
+		const nextSnapshot = await readSecuritySnapshot();
 
-		const localAuthBlocked = await isLocalAuthBlocked();
-		setIsBlocked(localAuthBlocked);
-
-		if (pinSetup && !localAuthBlocked && isAppLocked()) {
-			await tryRestoreSessionMasterKey();
+		if (stateCheckIdRef.current === stateCheckId) {
+			setSecuritySnapshot(nextSnapshot);
 		}
-
-		setIsLocked(isAppLocked());
-		setIsReady(true);
 	}, []);
 
 	useEffect(() => {
 		void checkSecurityState();
 	}, [checkSecurityState]);
 
+	const contextValue = useMemo(() => ({
+		...securitySnapshot,
+		checkSecurityState,
+	}), [securitySnapshot, checkSecurityState]);
+
 	return (
-		<SecurityContext value={{
-			isLocked,
-			hasPin,
-			isPinSetupMark,
-			isLocalAuthBlocked: isBlocked,
-			isReady,
-			checkSecurityState,
-		}}
-		>
+		<SecurityContext value={contextValue}>
 			{children}
 		</SecurityContext>
 	);

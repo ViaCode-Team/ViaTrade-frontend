@@ -19,7 +19,7 @@ const EVENTS: (keyof DocumentEventMap)[] = [
 	'scroll',
 ];
 
-export function InactivityLock() {
+export function useInactivityLock() {
 	const { isLocked, checkSecurityState } = useSecurity();
 	const queryClient = useQueryClient();
 	const idle = useIdle(INACTIVITY_TIMEOUT_MS, { events: EVENTS, initialState: false });
@@ -30,9 +30,7 @@ export function InactivityLock() {
 				await lockAppSession(queryClient);
 				await checkSecurityState();
 			};
-			lock();
+			void lock();
 		}
 	}, [idle, isLocked, queryClient, checkSecurityState]);
-
-	return null;
 }

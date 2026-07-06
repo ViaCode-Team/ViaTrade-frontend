@@ -19,9 +19,10 @@ import { usePinSetup } from '../model/use-pin-setup';
 
 type PinSetupProps = {
 	actionSlot?: ReactNode;
+	onLocalAuthBlockRequired: () => Promise<void> | void;
 };
 
-export function PinSetup({ actionSlot }: PinSetupProps) {
+export function PinSetup({ actionSlot, onLocalAuthBlockRequired }: PinSetupProps) {
 	const {
 		step,
 		pin,
@@ -33,7 +34,7 @@ export function PinSetup({ actionSlot }: PinSetupProps) {
 		handleStep1Complete,
 		handleStep2Complete,
 		goBack,
-	} = usePinSetup();
+	} = usePinSetup({ onLocalAuthBlockRequired });
 
 	return (
 		<Center style={{ width: '100vw', height: '100vh', position: 'relative' }}>

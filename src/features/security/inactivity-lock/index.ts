@@ -1,1 +1,1 @@
-export { InactivityLock } from './ui/inactivity-lock';
+export { useInactivityLock } from './model/use-inactivity-lock';

@@ -1,14 +1,11 @@
 import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router';
 
-import { SecurityProvider, SecuritySessionLockout } from '@/entities/security';
-import { InactivityLock } from '@/features/security/inactivity-lock';
 import { releaseBootLoader } from '@/shared/lib/global-loader';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
-import { PwaProvider, QueryProvider, ThemeProvider } from '../providers';
 import { router } from '../router';
-import { LocalAuthBlockedLogout } from '../security/local-auth-block';
+import { AppProviders } from './app-providers';
 
 export function App() {
 	useEffect(() => {
@@ -16,19 +13,10 @@ export function App() {
 	}, []);
 
 	return (
-		<PwaProvider>
-			<SecurityProvider>
-				<QueryProvider>
-					<ThemeProvider>
-						<Suspense fallback={<GlobalLoader />}>
-							<LocalAuthBlockedLogout />
-							<SecuritySessionLockout />
-							<InactivityLock />
-							<RouterProvider router={router} />
-						</Suspense>
-					</ThemeProvider>
-				</QueryProvider>
-			</SecurityProvider>
-		</PwaProvider>
+		<AppProviders>
+			<Suspense fallback={<GlobalLoader />}>
+				<RouterProvider router={router} />
+			</Suspense>
+		</AppProviders>
 	);
 }

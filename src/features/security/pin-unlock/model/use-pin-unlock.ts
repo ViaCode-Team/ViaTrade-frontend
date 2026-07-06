@@ -1,14 +1,15 @@
-import { useDisclosure, useInterval, useWindowEvent } from '@mantine/hooks';
-import { useCallback, useEffect, useState } from 'react';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 
 import { useSecurity } from '@/entities/security';
 import { milliseconds } from '@/shared/lib/milliseconds';
 import {
-	getPinLockoutStatus,
 	PIN_LOCKOUT_FAILURE_THRESHOLD,
 	recordFailedPinAttempt,
 	unlockApp,
 } from '@/shared/lib/secure-storage';
+
+import { usePinLockoutStatus } from './use-pin-lockout-status';
 
 function formatRemainingTime(value: number): string {
 	const totalSeconds = Math.ceil(value / milliseconds.fromSeconds(1));
@@ -37,15 +38,14 @@ function getAttemptsBeforeNextLockout(failedAttempts: number): number {
 export function usePinUnlock() {
 	const [pin, setPin] = useState('');
 	const [error, setError] = useState<string | null>(null);
-	const [lockoutRemainingMs, setLockoutRemainingMs] = useState(0);
 	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
-
-	const refreshLockoutStatus = useCallback(async () => {
-		const status = await getPinLockoutStatus();
-		setLockoutRemainingMs(status.remainingMs);
-		return status;
-	}, []);
+	const {
+		isLockedOut,
+		lockoutRemainingMs,
+		refreshLockoutStatus,
+		setLockoutRemainingMs,
+	} = usePinLockoutStatus();
 
 	const handleComplete = async (value: string) => {
 		setError(null);
@@ -95,35 +95,6 @@ export function usePinUnlock() {
 		if (error)
 			setError(null);
 	};
-
-	const lockoutInterval = useInterval(() => {
-		void refreshLockoutStatus();
-	}, milliseconds.fromSeconds(1));
-
-	useEffect(() => {
-		void refreshLockoutStatus();
-	}, [refreshLockoutStatus]);
-
-	useEffect(() => {
-		if (lockoutRemainingMs > 0) {
-			lockoutInterval.start();
-		}
-		else {
-			lockoutInterval.stop();
-		}
-
-		return lockoutInterval.stop;
-	}, [lockoutRemainingMs, lockoutInterval]);
-
-	useWindowEvent('focus', () => {
-		void refreshLockoutStatus();
-	});
-
-	useWindowEvent('pageshow', () => {
-		void refreshLockoutStatus();
-	});
-
-	const isLockedOut = lockoutRemainingMs > 0;
 
 	return {
 		pin,

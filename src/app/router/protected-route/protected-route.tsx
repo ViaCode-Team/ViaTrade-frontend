@@ -1,17 +1,23 @@
 import { useIsRestoring } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import { lazily } from 'react-lazily';
 import {
 	Navigate,
 	Outlet,
 	type To,
 	useLocation,
+	useNavigate,
 } from 'react-router';
 
 import { useSecurity } from '@/entities/security';
 import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
-import { LocalAuthBlock, LocalAuthBlockedRoute } from '../../security/local-auth-block';
+import {
+	LocalAuthBlock,
+	LocalAuthBlockedRoute,
+	resolveLocalAuthBlock,
+} from '../../security/local-auth-block';
 import { useProtectedRouteUser } from './use-protected-route-user';
 
 const { PinSetup } = lazily(() => import('@/features/security/pin-setup'));
@@ -30,6 +36,7 @@ export function ProtectedRoute({
 	authRedirectTo = ROUTES.DASHBOARD,
 }: ProtectedRouteProps) {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const isRestoring = useIsRestoring();
 	const {
 		hasPin,
@@ -37,7 +44,14 @@ export function ProtectedRoute({
 		isReady,
 		isPinSetupMark,
 		isLocalAuthBlocked,
+		checkSecurityState,
 	} = useSecurity();
+
+	const handleLocalAuthBlockRequired = useCallback(async () => {
+		await resolveLocalAuthBlock();
+		await checkSecurityState();
+		navigate(ROUTES.LOGIN);
+	}, [checkSecurityState, navigate]);
 
 	const { isAuthChecked, isUserAuthenticated } = useProtectedRouteUser({
 		isReady,
@@ -73,7 +87,12 @@ export function ProtectedRoute({
 	// Если пользователь авторизован, проверяем PIN
 	if (isUserAuthenticated && !hasPin) {
 		if (isPinSetupMark) {
-			return <PinSetup actionSlot={<LogoutCurrentSessionAction />} />;
+			return (
+				<PinSetup
+					actionSlot={<LogoutCurrentSessionAction />}
+					onLocalAuthBlockRequired={handleLocalAuthBlockRequired}
+				/>
+			);
 		}
 
 		return <LocalAuthBlock />;

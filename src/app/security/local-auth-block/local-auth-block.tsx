@@ -1,34 +1,22 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
-import { logoutCurrentSessionSilently } from '@/entities/auth';
-import { blockLocalAuth, clearLocalAuthBlock, useSecurity } from '@/entities/security';
+import { useSecurity } from '@/entities/security';
 import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
+import { useLocalAuthBlockResolver } from './use-local-auth-block-resolver';
+
 export function LocalAuthBlock() {
-	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { checkSecurityState } = useSecurity();
 
-	useEffect(() => {
-		const block = async () => {
-			const isLoggedOut = await logoutCurrentSessionSilently();
+	const handleSettled = useCallback(async () => {
+		await checkSecurityState();
+		navigate(ROUTES.LOGIN);
+	}, [checkSecurityState, navigate]);
 
-			if (isLoggedOut) {
-				await clearLocalAuthBlock(queryClient);
-			}
-			else {
-				await blockLocalAuth(queryClient);
-			}
-
-			await checkSecurityState();
-			navigate(ROUTES.LOGIN);
-		};
-
-		void block();
-	}, [queryClient, checkSecurityState, navigate]);
+	useLocalAuthBlockResolver({ onSettled: handleSettled });
 
 	return <GlobalLoader />;
 }

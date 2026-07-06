@@ -1,37 +1,20 @@
 import { useDisclosure } from '@mantine/hooks';
-import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 
-import { logoutCurrentSessionSilently } from '@/entities/auth';
-import { blockLocalAuth, clearLocalAuthBlock, useSecurity } from '@/entities/security';
+import { useSecurity } from '@/entities/security';
 import { clearPinSetupMark, hasPinSetupMark, setupPin } from '@/shared/lib/secure-storage';
-import { ROUTES } from '@/shared/model';
 
-export function usePinSetup() {
+type UsePinSetupParams = {
+	onLocalAuthBlockRequired: () => Promise<void> | void;
+};
+
+export function usePinSetup({ onLocalAuthBlockRequired }: UsePinSetupParams) {
 	const [step, setStep] = useState<1 | 2>(1);
 	const [pin, setPin] = useState('');
 	const [confirmPin, setConfirmPin] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, { open: startLoading, close: stopLoading }] = useDisclosure(false);
 	const { checkSecurityState } = useSecurity();
-	const queryClient = useQueryClient();
-
-	const navigate = useNavigate();
-
-	const blockAppLocalAuth = async () => {
-		const isLoggedOut = await logoutCurrentSessionSilently();
-
-		if (isLoggedOut) {
-			await clearLocalAuthBlock(queryClient);
-		}
-		else {
-			await blockLocalAuth(queryClient);
-		}
-
-		await checkSecurityState();
-		navigate(ROUTES.LOGIN);
-	};
 
 	const handlePinChange = (value: string) => {
 		setPin(value);
@@ -48,7 +31,7 @@ export function usePinSetup() {
 	const handleStep1Complete = async () => {
 		const hasMark = await hasPinSetupMark();
 		if (!hasMark) {
-			await blockAppLocalAuth();
+			await onLocalAuthBlockRequired();
 			return;
 		}
 
@@ -62,7 +45,7 @@ export function usePinSetup() {
 
 		const hasMark = await hasPinSetupMark();
 		if (!hasMark) {
-			await blockAppLocalAuth();
+			await onLocalAuthBlockRequired();
 			return;
 		}
 

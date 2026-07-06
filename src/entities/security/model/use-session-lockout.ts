@@ -1,7 +1,8 @@
-import { useDocumentVisibility, useWindowEvent } from '@mantine/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
 
+import { usePageResumeEffect } from '@/shared/lib/hooks';
+import { milliseconds } from '@/shared/lib/milliseconds';
 import {
 	getUnlockDeadlineAt,
 	isUnlockDeadlineExpired,
@@ -9,82 +10,115 @@ import {
 	subscribeToSecuritySessionEvents,
 } from '@/shared/lib/secure-storage';
 
+const IMMEDIATE_DEADLINE_DELAY_MS = milliseconds.fromMilliseconds(0);
+
+type CheckSecurityState = () => Promise<void>;
+
 /**
  * Enforces the absolute unlock deadline without polling.
  */
 export function useSessionLockout(
 	isLocked: boolean,
-	checkSecurityState: () => Promise<void>,
+	checkSecurityState: CheckSecurityState,
 ) {
 	const queryClient = useQueryClient();
-	const deadlineTimerRef = useRef<number | null>(null);
 
-	const clearDeadlineTimer = useCallback(() => {
-		if (deadlineTimerRef.current !== null) {
-			window.clearTimeout(deadlineTimerRef.current);
-			deadlineTimerRef.current = null;
-		}
+	const {
+		refreshSessionLockoutTimer,
+		disposeSessionLockoutTimer,
+	} = useSessionLockoutTimer({
+		isLocked,
+		checkSecurityState,
+		queryClient,
+	});
+
+	useEffect(() => {
+		void refreshSessionLockoutTimer();
+
+		return disposeSessionLockoutTimer;
+	}, [disposeSessionLockoutTimer, refreshSessionLockoutTimer]);
+
+	usePageResumeEffect(refreshSessionLockoutTimer);
+	useSyncSessionLockoutAcrossTabs({
+		checkSecurityState,
+		queryClient,
+		refreshSessionLockoutTimer,
+	});
+}
+
+function useSessionLockoutTimer({
+	isLocked,
+	checkSecurityState,
+	queryClient,
+}: {
+	isLocked: boolean;
+	checkSecurityState: CheckSecurityState;
+	queryClient: ReturnType<typeof useQueryClient>;
+}) {
+	const lockoutTimerRef = useRef<number | null>(null);
+	const refreshVersionRef = useRef(0);
+
+	const clearSessionLockoutTimer = useCallback(() => {
+		if (lockoutTimerRef.current === null)
+			return;
+
+		window.clearTimeout(lockoutTimerRef.current);
+		lockoutTimerRef.current = null;
 	}, []);
 
-	const verifySession = useCallback(async () => {
+	const lockSessionIfLockoutDeadlineExpired = useCallback(async () => {
 		if (isLocked)
 			return false;
 
-		if (await isUnlockDeadlineExpired()) {
-			await lockAppSession(queryClient);
-			await checkSecurityState();
-			return true;
-		}
+		if (!await isUnlockDeadlineExpired())
+			return false;
 
-		return false;
+		await lockAppSession(queryClient);
+		await checkSecurityState();
+		return true;
 	}, [isLocked, queryClient, checkSecurityState]);
 
-	const scheduleDeadlineLock = useCallback(async () => {
-		clearDeadlineTimer();
+	const refreshSessionLockoutTimer = useCallback(async () => {
+		const refreshVersion = refreshVersionRef.current + 1;
+		refreshVersionRef.current = refreshVersion;
+		clearSessionLockoutTimer();
 
 		if (isLocked)
 			return;
 
-		const deadlineAt = await getUnlockDeadlineAt();
-		if (deadlineAt === null)
+		const lockedByLockoutDeadline = await lockSessionIfLockoutDeadlineExpired();
+		if (lockedByLockoutDeadline)
 			return;
 
-		const delay = Math.max(deadlineAt - Date.now(), 0);
-		deadlineTimerRef.current = window.setTimeout(() => {
-			void verifySession();
-		}, delay);
-	}, [clearDeadlineTimer, isLocked, verifySession]);
-
-	const refreshDeadlineLock = useCallback(async () => {
-		const lockedByDeadline = await verifySession();
-		if (lockedByDeadline)
+		const lockoutDeadlineAt = await getUnlockDeadlineAt();
+		if (refreshVersionRef.current !== refreshVersion || lockoutDeadlineAt === null)
 			return;
 
-		await scheduleDeadlineLock();
-	}, [scheduleDeadlineLock, verifySession]);
+		lockoutTimerRef.current = window.setTimeout(() => {
+			void lockSessionIfLockoutDeadlineExpired();
+		}, getLockoutDelayMs(lockoutDeadlineAt));
+	}, [clearSessionLockoutTimer, isLocked, lockSessionIfLockoutDeadlineExpired]);
 
-	const documentVisibility = useDocumentVisibility();
+	const disposeSessionLockoutTimer = useCallback(() => {
+		refreshVersionRef.current += 1;
+		clearSessionLockoutTimer();
+	}, [clearSessionLockoutTimer]);
 
-	useEffect(() => {
-		void refreshDeadlineLock();
+	return {
+		disposeSessionLockoutTimer,
+		refreshSessionLockoutTimer,
+	};
+}
 
-		return clearDeadlineTimer;
-	}, [clearDeadlineTimer, refreshDeadlineLock]);
-
-	useEffect(() => {
-		if (documentVisibility === 'visible') {
-			void refreshDeadlineLock();
-		}
-	}, [documentVisibility, refreshDeadlineLock]);
-
-	useWindowEvent('focus', () => {
-		void refreshDeadlineLock();
-	});
-
-	useWindowEvent('pageshow', () => {
-		void refreshDeadlineLock();
-	});
-
+function useSyncSessionLockoutAcrossTabs({
+	checkSecurityState,
+	queryClient,
+	refreshSessionLockoutTimer,
+}: {
+	checkSecurityState: CheckSecurityState;
+	queryClient: ReturnType<typeof useQueryClient>;
+	refreshSessionLockoutTimer: () => Promise<void>;
+}) {
 	useEffect(() => {
 		return subscribeToSecuritySessionEvents((event) => {
 			if (event.type === 'locked') {
@@ -92,7 +126,11 @@ export function useSessionLockout(
 				return;
 			}
 
-			void refreshDeadlineLock();
+			void refreshSessionLockoutTimer();
 		});
-	}, [checkSecurityState, queryClient, refreshDeadlineLock]);
+	}, [checkSecurityState, queryClient, refreshSessionLockoutTimer]);
+}
+
+function getLockoutDelayMs(lockoutDeadlineAt: number): number {
+	return Math.max(lockoutDeadlineAt - Date.now(), IMMEDIATE_DEADLINE_DELAY_MS);
 }

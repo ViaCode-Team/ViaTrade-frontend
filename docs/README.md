@@ -72,11 +72,7 @@ npm run dev
 
 ## Security Documentation
 
-- [PIN threat model](./security/pin-threat-model.md)
-- [PIN security review](./security/pin-code-review.md)
-- [PIN implementation plan](./security/pin-code-plan.md)
-- [PIN security verification](./security/pin-verification.md)
-- [Frontend storage inventory](./security/storage-inventory.md)
+- [Security: PIN and secure storage](./security.md)
 
 ## Contributing
 

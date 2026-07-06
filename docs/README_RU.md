@@ -72,11 +72,7 @@ npm run dev
 
 ## Документация по безопасности
 
-- [Модель угроз PIN-кода](./security/pin-threat-model_RU.md)
-- [Ревью безопасности PIN-кода](./security/pin-code-review.md)
-- [План реализации PIN-кода](./security/pin-code-plan.md)
-- [Проверка безопасности PIN-кода](./security/pin-verification_RU.md)
-- [Инвентаризация frontend storage](./security/storage-inventory_RU.md)
+- [Безопасность: PIN и защищенное хранилище](./security_RU.md)
 
 ## Вклад в проект
 

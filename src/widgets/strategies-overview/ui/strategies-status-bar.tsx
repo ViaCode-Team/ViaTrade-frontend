@@ -5,14 +5,12 @@ import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
-import { useStrategiesOverview } from '../lib/use-strategies-overview';
+import { useFilteredStrategies } from '../lib/use-filtered-strategies';
+import { useStrategiesData } from '../lib/use-strategies-data';
 
 export function StrategiesStatusBar() {
-	const {
-		strategies,
-		filteredStrategies,
-		refetch,
-	} = useStrategiesOverview();
+	const { strategies, refetch } = useStrategiesData();
+	const filteredStrategies = useFilteredStrategies(strategies);
 
 	const activeCount = filteredStrategies.filter((s) => s.isActive).length;
 	const inactiveCount = filteredStrategies.filter((s) => !s.isActive).length;

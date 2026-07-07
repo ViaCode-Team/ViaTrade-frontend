@@ -1,6 +1,6 @@
 import { SimpleGrid } from '@mantine/core';
 
-import { createSkeletons } from '@/shared/lib/skeleton';
+import { createSkeletons } from '@/shared/lib/ui-helpers';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
 import { SignalCardSkeleton } from '../signal-card/signal-card.skeleton';

@@ -38,42 +38,46 @@ export function StockLinkedStrategiesList({
 
 	if (!hasAnyStrategies) {
 		return (
-			<AppEmptyState title='Нет стратегий' description='К этой акции пока не привязано ни одной стратегии.' />
+			<AppEmptyState
+				title='Стратегий пока нет'
+				description='К этой акции пока не привязано ни одной стратегии.'
+			/>
+		);
+	}
+
+	if (strategies.length === 0) {
+		return (
+			<AppEmptyState
+				title='Стратегии не найдены'
+				description='Попробуйте изменить поисковый запрос или фильтры.'
+			/>
 		);
 	}
 
 	return (
-		<Stack gap='md'>
-			{strategies.length === 0
-				? (
-						<AppEmptyState title='Ничего не найдено' description='Попробуйте изменить поисковый запрос или фильтры.' />
-					)
-				: (
-						<>
-							<SimpleGrid minColWidth={300} component='ul'>
-								{paginatedStrategies.map((strategy) => (
-									<li key={strategy.id}>
-										<StrategyCard
-											strategy={strategy}
-											onLinkClick={onNavigate}
-											actionSlot={actionSlot?.(strategy, activeStrategyIds.has(strategy.id))}
-										/>
-									</li>
-								))}
-							</SimpleGrid>
+		<Stack>
+			<SimpleGrid minColWidth={300} component='ul'>
+				{paginatedStrategies.map((strategy) => (
+					<li key={strategy.id}>
+						<StrategyCard
+							strategy={strategy}
+							onLinkClick={onNavigate}
+							actionSlot={actionSlot?.(strategy, activeStrategyIds.has(strategy.id))}
+						/>
+					</li>
+				))}
+			</SimpleGrid>
 
-							{totalPages > 1 && (
-								<Group justify='center' mt='sm'>
-									<Pagination
-										total={totalPages}
-										value={page}
-										onChange={setPage}
-										size='sm'
-									/>
-								</Group>
-							)}
-						</>
-					)}
+			{totalPages > 1 && (
+				<Group justify='center' mt='sm'>
+					<Pagination
+						total={totalPages}
+						value={page}
+						onChange={setPage}
+						size='sm'
+					/>
+				</Group>
+			)}
 		</Stack>
 	);
 }

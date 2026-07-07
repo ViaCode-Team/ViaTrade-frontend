@@ -1,26 +1,15 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import {
 	EmptyState,
+	type EmptyStateActionsProps,
+	type EmptyStateDescriptionProps,
+	type EmptyStateIndicatorProps,
 	type EmptyStateProps,
 	type EmptyStateTitleProps,
 } from '@mantine/core';
 
-export type AppEmptyStateIndicatorProps = ComponentPropsWithoutRef<
-	typeof EmptyState.Indicator
->;
-
-export type AppEmptyStateTitleProps = ComponentPropsWithoutRef<
-	typeof EmptyState.Title
->;
-
-export type AppEmptyStateDescriptionProps = ComponentPropsWithoutRef<
-	typeof EmptyState.Description
->;
-
-export type AppEmptyStateActionsProps = ComponentPropsWithoutRef<
-	typeof EmptyState.Actions
->;
+import type { WithoutChildren } from '@/shared/lib/types';
 
 export type AppEmptyStateProps = {
 	icon?: ReactNode;
@@ -29,10 +18,10 @@ export type AppEmptyStateProps = {
 	actions?: ReactNode;
 	titleOrder?: EmptyStateTitleProps['order'];
 
-	indicatorProps?: AppEmptyStateIndicatorProps;
-	titleProps?: AppEmptyStateTitleProps;
-	descriptionProps?: AppEmptyStateDescriptionProps;
-	actionsProps?: AppEmptyStateActionsProps;
+	indicatorProps?: WithoutChildren<EmptyStateIndicatorProps>;
+	titleProps?: WithoutChildren<EmptyStateTitleProps>;
+	descriptionProps?: WithoutChildren<EmptyStateDescriptionProps>;
+	actionsProps?: WithoutChildren<EmptyStateActionsProps>;
 } & Omit<
 	EmptyStateProps,
 	'children' | 'icon' | 'title' | 'description'
@@ -44,7 +33,6 @@ export function AppEmptyState({
 	description,
 	actions,
 	titleOrder = 4,
-	size,
 	align = 'center',
 	indicatorProps,
 	titleProps,
@@ -53,7 +41,7 @@ export function AppEmptyState({
 	...props
 }: AppEmptyStateProps) {
 	return (
-		<EmptyState size={size} align={align} {...props}>
+		<EmptyState align={align} {...props}>
 			{icon && (
 				<EmptyState.Indicator {...indicatorProps}>
 					{icon}

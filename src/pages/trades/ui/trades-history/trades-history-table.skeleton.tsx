@@ -1,6 +1,6 @@
 import { ScrollArea, Skeleton, Table } from '@mantine/core';
 
-import { createSkeletons } from '@/shared/lib/skeleton';
+import { createSkeletons } from '@/shared/lib/ui-helpers';
 
 export function TradesHistoryTableSkeleton() {
 	return (

@@ -29,8 +29,6 @@ export function RemindList({
 	onRemindChange,
 	actionSlot,
 }: RemindListProps) {
-	const hasFilteredReminds = reminds.length > 0;
-
 	if (!hasAnyReminds) {
 		return (
 			<AppEmptyState
@@ -40,7 +38,7 @@ export function RemindList({
 		);
 	}
 
-	if (!hasFilteredReminds) {
+	if (reminds.length > 0) {
 		return (
 			<AppEmptyState
 				title='Ничего не найдено'

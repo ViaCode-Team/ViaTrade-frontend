@@ -1,14 +1,12 @@
 import { Button } from '@mantine/core';
 import { IconTable } from '@tabler/icons-react';
-import { Suspense } from 'react';
 import { Link } from 'react-router';
 
 import { ROUTES } from '@/shared/model';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 
-import { StatisticsDashboardBoundary } from './ui/statistics-dashboard';
-import { StatisticsDashboardSkeleton } from './ui/statistics-dashboard/statistics-dashboard.skeleton';
+import { StatisticsOverview } from './ui/statistics-dashboard';
 import { StatisticsSummaryBoundary } from './ui/statistics-summary/statistics-summary';
 
 
@@ -29,14 +27,13 @@ export function StatisticsPage() {
 					</Button>
 				)}
 			/>
+
 			<Section>
 				<StatisticsSummaryBoundary />
 			</Section>
 
 			<Section>
-				<Suspense fallback={<StatisticsDashboardSkeleton />}>
-					<StatisticsDashboardBoundary />
-				</Suspense>
+				<StatisticsOverview />
 			</Section>
 		</>
 	);

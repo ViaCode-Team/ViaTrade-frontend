@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { generatePath, Link as RouterLink } from 'react-router';
 
-import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
+import { getLeftBorderCardStyle } from '@/shared/lib/ui-helpers';
 import { ROUTES } from '@/shared/model';
 import { InfoPair } from '@/shared/ui/info-pair';
 

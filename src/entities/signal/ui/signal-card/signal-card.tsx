@@ -12,7 +12,7 @@ import { IconChevronRight } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { generatePath, Link } from 'react-router';
 
-import { getLeftBorderCardStyle } from '@/shared/lib/left-border-card';
+import { getLeftBorderCardStyle } from '@/shared/lib/ui-helpers';
 import { ROUTES } from '@/shared/model';
 import { InfoPair } from '@/shared/ui/info-pair';
 

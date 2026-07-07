@@ -1,12 +1,10 @@
 import { StrategiesList, StrategiesListSkeleton } from '@/entities/strategy';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-import { useStrategiesOverview } from '@/widgets/strategies-overview';
+import { useFilteredStrategies, useStrategiesData } from '@/widgets/strategies-overview';
 
 function DashboardStrategies() {
-	const {
-		strategies,
-		filteredStrategies: allFilteredStrategies,
-	} = useStrategiesOverview();
+	const { strategies } = useStrategiesData();
+	const allFilteredStrategies = useFilteredStrategies(strategies);
 
 	const filteredStrategies = allFilteredStrategies.filter((s: any) => s.isActive).slice(0, 4);
 

@@ -20,11 +20,21 @@ export type StrategiesListProps = {
 
 export function StrategiesList({ strategies, hasAnyStrategies, actionSlot, bottomActionSlot }: StrategiesListProps) {
 	if (!hasAnyStrategies) {
-		return <AppEmptyState title='Стратегий пока нет' description='Нажмите «Создать», чтобы добавить первую стратегию.' />;
+		return (
+			<AppEmptyState
+				title='Стратегий пока нет'
+				description='Нажмите «Создать», чтобы добавить первую стратегию.'
+			/>
+		);
 	}
 
 	if (strategies.length === 0) {
-		return <AppEmptyState title='Стратегии не найдены' description='Очистите поиск или измените параметры фильтрации.' />;
+		return (
+			<AppEmptyState
+				title='Стратегии не найдены'
+				description='Попробуйте изменить поисковый запрос или фильтры.'
+			/>
+		);
 	}
 
 	return (

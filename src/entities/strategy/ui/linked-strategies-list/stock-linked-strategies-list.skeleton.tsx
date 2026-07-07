@@ -1,6 +1,6 @@
 import { SimpleGrid, Stack } from '@mantine/core';
 
-import { createSkeletons } from '@/shared/lib/skeleton';
+import { createSkeletons } from '@/shared/lib/ui-helpers';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
 import { StrategyCardSkeleton } from '../strategy-card/strategy-card.skeleton';

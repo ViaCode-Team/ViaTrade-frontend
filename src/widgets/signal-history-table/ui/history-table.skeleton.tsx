@@ -1,6 +1,6 @@
 import { Skeleton, Stack } from '@mantine/core';
 
-import { createSkeletons } from '@/shared/lib/skeleton';
+import { createSkeletons } from '@/shared/lib/ui-helpers';
 
 export function SignalHistoryTableSkeleton() {
 	return (

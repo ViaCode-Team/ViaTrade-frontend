@@ -5,9 +5,9 @@ import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import type { StrategySortOption, StrategyStatusFilter } from './filters';
+import type { StrategySortOption, StrategyStatusFilter } from '../lib/filters';
 
-import { strategyFiltersSchema, strategySortOptions } from './filters';
+import { strategyFiltersSchema, strategySortOptions } from '../lib/filters';
 
 export function StrategiesControls() {
 	const { filters, setFilter } = useUrlFilters(strategyFiltersSchema);

@@ -1,6 +1,6 @@
 import { SimpleGrid } from '@mantine/core';
 
-import { createSkeletons } from '@/shared/lib/skeleton';
+import { createSkeletons } from '@/shared/lib/ui-helpers';
 
 import { StrategyInfoCardSkeleton } from '../strategy-info-card/strategy-info-card.skeleton';
 

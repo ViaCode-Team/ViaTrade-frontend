@@ -1,14 +1,14 @@
 import { Skeleton } from '@mantine/core';
 import clsx from 'clsx';
 
-import cls from './statistics-dashboard.module.css';
+import cls from './statistics-charts.module.css';
 
 type OverviewChartCardSkeletonProps = {
 	className?: string;
 	height?: number;
 };
 
-export function OverviewChartCardSkeleton({
+export function StatisticsChartCardSkeleton({
 	className,
 	height = 300,
 }: OverviewChartCardSkeletonProps) {

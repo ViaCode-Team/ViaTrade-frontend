@@ -54,7 +54,6 @@ export function ExampleSignals() {
 
 				<SignalsList
 					signals={exampleSignals}
-					hasAnySignals={true}
 					onSignalSelect={() => {}}
 				/>
 			</Stack>

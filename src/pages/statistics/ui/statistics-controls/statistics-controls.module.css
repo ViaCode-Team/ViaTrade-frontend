@@ -1,0 +1,26 @@
+.controls {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--mantine-spacing-md);
+	align-items: flex-end;
+}
+
+@container (max-width: 860px) {
+	.controls {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.granularityControl {
+		grid-column: 1 / -1;
+	}
+}
+
+@container (max-width: 520px) {
+	.controls {
+		grid-template-columns: 1fr;
+	}
+
+	.granularityControl {
+		grid-column: auto;
+	}
+}

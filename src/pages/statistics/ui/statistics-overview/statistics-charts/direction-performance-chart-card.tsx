@@ -7,10 +7,10 @@ import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import {
 	formatChartCurrency,
 	getDirectionPerformanceChartData,
-} from '../../model/statistics-dashboard';
-import { useProfitChartData } from '../../model/use-profit-chart-data';
-import { OverviewChartCardSkeleton } from './overview-chart-card.skeleton';
-import cls from './statistics-dashboard.module.css';
+} from '../../../model/statistics-dashboard';
+import { useProfitChartData } from '../../../model/use-profit-chart-data';
+import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
+import cls from './statistics-charts.module.css';
 
 export function DirectionPerformanceChartCard() {
 	const { trades } = useProfitChartData();
@@ -40,6 +40,6 @@ export function DirectionPerformanceChartCard() {
 
 export const DirectionPerformanceChartCardBoundary = withQueryBoundary(DirectionPerformanceChartCard, {
 	suspenseProps: {
-		fallback: <OverviewChartCardSkeleton />,
+		fallback: <StatisticsChartCardSkeleton />,
 	},
 });

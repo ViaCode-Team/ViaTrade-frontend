@@ -14,6 +14,7 @@ import {
 	QUERY_REFETCH_INTERVAL,
 	STATIC_QUERY_STALE_TIME,
 } from '@/shared/model';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 export type SignalsOverviewListProps = {
@@ -40,11 +41,15 @@ function SignalsOverviewList({ filters, onSignalSelect }: SignalsOverviewListPro
 	}, [signals, filters]);
 
 	return (
-		<SignalsList
-			signals={filteredAndSortedSignals}
-			hasAnySignals={signals.length > 0}
-			onSignalSelect={onSignalSelect}
-		/>
+		<DataState
+			hasData={signals.length > 0}
+			hasResults={filteredAndSortedSignals.length > 0}
+		>
+			<SignalsList
+				signals={filteredAndSortedSignals}
+				onSignalSelect={onSignalSelect}
+			/>
+		</DataState>
 	);
 }
 

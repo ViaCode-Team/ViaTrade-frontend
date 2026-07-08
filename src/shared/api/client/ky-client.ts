@@ -2,7 +2,7 @@ import type { KyInstance } from 'ky';
 
 import ky, { isHTTPError } from 'ky';
 
-import { BASE_URL } from '@/shared/lib/config';
+import { BASE_URL } from '@/shared/config';
 
 import { createHttpApiError } from './errors';
 import { getBlockedApiRequestResponse } from './request-gate';

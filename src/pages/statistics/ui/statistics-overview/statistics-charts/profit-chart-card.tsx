@@ -6,11 +6,11 @@ import { useMemo } from 'react';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { getProfitChartData } from '../../model/profit-chart-settings';
-import { formatChartCurrency } from '../../model/statistics-dashboard';
-import { useProfitChartData } from '../../model/use-profit-chart-data';
-import { OverviewChartCardSkeleton } from './overview-chart-card.skeleton';
-import cls from './statistics-dashboard.module.css';
+import { getProfitChartData } from '../../../model/profit-chart-settings';
+import { formatChartCurrency } from '../../../model/statistics-dashboard';
+import { useProfitChartData } from '../../../model/use-profit-chart-data';
+import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
+import cls from './statistics-charts.module.css';
 
 export function ProfitChartCard() {
 	const { trades, settings } = useProfitChartData();
@@ -49,6 +49,6 @@ export function ProfitChartCard() {
 
 export const ProfitChartCardBoundary = withQueryBoundary(ProfitChartCard, {
 	suspenseProps: {
-		fallback: <OverviewChartCardSkeleton height={360} className={cls.profitCard} />,
+		fallback: <StatisticsChartCardSkeleton height={360} className={cls.profitCard} />,
 	},
 });

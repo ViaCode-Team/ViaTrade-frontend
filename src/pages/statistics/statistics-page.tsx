@@ -6,7 +6,7 @@ import { ROUTES } from '@/shared/model';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 
-import { StatisticsOverview } from './ui/statistics-dashboard';
+import { StatisticsOverview } from './ui/statistics-overview/statistics-overview';
 import { StatisticsSummaryBoundary } from './ui/statistics-summary/statistics-summary';
 
 

@@ -5,9 +5,9 @@ import { useMemo } from 'react';
 import { useGetTradeStatisticsSuspense } from '@/entities/trade';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { getWinLossChartData } from '../../model/statistics-dashboard';
-import { OverviewChartCardSkeleton } from './overview-chart-card.skeleton';
-import cls from './statistics-dashboard.module.css';
+import { getWinLossChartData } from '../../../model/statistics-dashboard';
+import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
+import cls from './statistics-charts.module.css';
 
 export function WinLossChartCard() {
 	const { data: statisticsResponse } = useGetTradeStatisticsSuspense();
@@ -38,6 +38,6 @@ export function WinLossChartCard() {
 
 export const WinLossChartCardBoundary = withQueryBoundary(WinLossChartCard, {
 	suspenseProps: {
-		fallback: <OverviewChartCardSkeleton />,
+		fallback: <StatisticsChartCardSkeleton />,
 	},
 });

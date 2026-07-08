@@ -30,7 +30,7 @@ export function NoResultsState({
 			actions={
 				actions
 				?? (onReset && (
-					<Button onClick={onReset}>
+					<Button variant='default' onClick={onReset}>
 						Сбросить фильтры
 					</Button>
 				))

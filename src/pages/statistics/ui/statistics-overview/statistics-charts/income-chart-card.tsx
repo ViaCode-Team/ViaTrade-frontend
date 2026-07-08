@@ -9,9 +9,9 @@ import {
 	formatChartCurrency,
 	formatProfitFactor,
 	getIncomeChartData,
-} from '../../model/statistics-dashboard';
-import { OverviewChartCardSkeleton } from './overview-chart-card.skeleton';
-import cls from './statistics-dashboard.module.css';
+} from '../../../model/statistics-dashboard';
+import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
+import cls from './statistics-charts.module.css';
 
 export function IncomeChartCard() {
 	const { data: statisticsResponse } = useGetTradeStatisticsSuspense();
@@ -48,6 +48,6 @@ export function IncomeChartCard() {
 
 export const IncomeChartCardBoundary = withQueryBoundary(IncomeChartCard, {
 	suspenseProps: {
-		fallback: <OverviewChartCardSkeleton />,
+		fallback: <StatisticsChartCardSkeleton />,
 	},
 });

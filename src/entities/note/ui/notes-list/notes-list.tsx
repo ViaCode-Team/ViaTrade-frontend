@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Flex } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { AppEmptyState } from '@/shared/ui/app-empty-state';
+import { NoDataState, NoResultsState } from '@/shared/ui/app-empty-state';
 
 import cls from './notes-list.module.css';
 
@@ -20,23 +20,11 @@ export function NotesList<T extends { id: number | string }>({
 	hasAnyNotes,
 	noteSlot,
 }: NotesListProps<T>) {
-	if (!hasAnyNotes) {
-		return (
-			<AppEmptyState
-				title='Нет заметок'
-				description='Оставляйте заметки к акциям, они появятся здесь.'
-			/>
-		);
-	}
+	if (!hasAnyNotes)
+		return <NoDataState />;
 
-	if (notes.length === 0) {
-		return (
-			<AppEmptyState
-				title='Ничего не найдено'
-				description='Попробуйте изменить параметры поиска или фильтры.'
-			/>
-		);
-	}
+	if (notes.length === 0)
+		return <NoResultsState />;
 
 	return (
 		<Flex

@@ -12,6 +12,7 @@ import {
 	QUERY_REFETCH_INTERVAL,
 	STATIC_QUERY_STALE_TIME,
 } from '@/shared/model';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 export function DashboardSignals({ onSignalSelect }: { onSignalSelect: (signal: Signal) => void }) {
@@ -26,12 +27,18 @@ export function DashboardSignals({ onSignalSelect }: { onSignalSelect: (signal: 
 		[signalsData.data],
 	);
 
+	const resultsSignals = signals.slice(0, 4);
+
 	return (
-		<SignalsList
-			signals={signals.slice(0, 4)}
-			hasAnySignals={signals.length > 0}
-			onSignalSelect={onSignalSelect}
-		/>
+		<DataState
+			hasData={signals.length > 0}
+			hasResults={resultsSignals.length > 0}
+		>
+			<SignalsList
+				signals={resultsSignals}
+				onSignalSelect={onSignalSelect}
+			/>
+		</DataState>
 	);
 }
 

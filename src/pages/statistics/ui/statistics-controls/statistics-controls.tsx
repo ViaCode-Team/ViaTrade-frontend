@@ -12,9 +12,9 @@ import {
 } from '../../model/profit-chart-settings';
 import { PROFIT_CHART_GRANULARITY_OPTIONS } from '../../model/profit-chart-settings';
 import { useProfitChartControls } from '../../model/use-profit-chart-controls';
-import cls from './statistics-dashboard.module.css';
+import cls from './statistics-controls.module.css';
 
-export function StatisticsDashboardControls() {
+export function StatisticsControls() {
 	const {
 		settings,
 		maxEndDate,
@@ -28,7 +28,7 @@ export function StatisticsDashboardControls() {
 	const minEndDate = getMinProfitChartEndDate(settings.startDate, settings.granularity);
 
 	return (
-		<div className={cls.chartControls} aria-busy={isLoading}>
+		<div className={cls.controls} aria-busy={isLoading}>
 			<DateInput
 				label='Начало'
 				placeholder='Дата начала'

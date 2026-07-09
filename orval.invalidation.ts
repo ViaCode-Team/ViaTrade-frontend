@@ -29,6 +29,7 @@ export const strategyMutationInvalidates = [
 			'getAllInstrumentsLink',
 			{ query: 'getResult', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getResultByStrategyAndTradeCode', file: '@/entities/signal', invalidateMode: 'reset' },
+			{ query: 'getResultStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
 		],
 	},
 	{
@@ -39,6 +40,7 @@ export const strategyMutationInvalidates = [
 			'getAllInstrumentsLink',
 			{ query: 'getResult', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getResultByStrategyAndTradeCode', file: '@/entities/signal', invalidateMode: 'reset' },
+			{ query: 'getResultStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
@@ -72,23 +74,30 @@ export const noteMutationInvalidates = [
 
 export const remindMutationInvalidates = [
 	{
-		onMutations: [
-			'create',
-		],
+		onMutations: ['create'],
 		invalidates: [
 			'getRemindStatistics',
 			'getAllByUser',
 			{ query: 'getByUserInstrument', params: ['idInstrument'] },
+			'getActualRemind',
 		],
 	},
 	{
-		onMutations: [
-			'update',
-			'_delete',
-		],
+		onMutations: ['update', '_delete'],
 		invalidates: [
 			'getRemindStatistics',
 			'getAllByUser',
+			'getActualRemind',
+			{ query: 'getRemindById', params: ['remindId'] },
+		],
+	},
+	{
+		onMutations: ['deleteActualRemind'],
+		invalidates: [
+			'getRemindStatistics',
+			'getAllByUser',
+			'getActualRemind',
+			{ query: 'getRemindById', params: ['remindId'] },
 		],
 	},
 ] satisfies MutationInvalidatesConfig;

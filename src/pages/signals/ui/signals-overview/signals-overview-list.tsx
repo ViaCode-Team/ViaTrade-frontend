@@ -12,7 +12,6 @@ import {
 import { getFilteredSignals } from '@/pages/signals/ui/filter-signals';
 import {
 	QUERY_REFETCH_INTERVAL,
-	STATIC_QUERY_STALE_TIME,
 } from '@/shared/model';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -25,7 +24,6 @@ export type SignalsOverviewListProps = {
 function SignalsOverviewList({ filters, onSignalSelect }: SignalsOverviewListProps) {
 	const { data: signalsData } = useGetResultSuspense(undefined, {
 		query: {
-			staleTime: STATIC_QUERY_STALE_TIME,
 			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},
 	});
@@ -42,8 +40,8 @@ function SignalsOverviewList({ filters, onSignalSelect }: SignalsOverviewListPro
 
 	return (
 		<DataState
-			hasData={signals.length > 0}
-			hasResults={filteredAndSortedSignals.length > 0}
+			hasData={!!signals.length}
+			hasResults={!!filteredAndSortedSignals.length}
 		>
 			<SignalsList
 				signals={filteredAndSortedSignals}

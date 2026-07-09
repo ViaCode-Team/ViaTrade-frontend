@@ -3,29 +3,16 @@ import type { ReactNode } from 'react';
 import { Flex } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { NoDataState, NoResultsState } from '@/shared/ui/app-empty-state';
-
-import cls from './notes-list.module.css';
-
-export { NotesListSkeleton } from './notes-list.skeleton';
 
 export type NotesListProps<T extends { id: number | string }> = {
 	notes: T[];
-	hasAnyNotes: boolean;
 	noteSlot: (note: T) => ReactNode;
 };
 
 export function NotesList<T extends { id: number | string }>({
 	notes,
-	hasAnyNotes,
 	noteSlot,
 }: NotesListProps<T>) {
-	if (!hasAnyNotes)
-		return <NoDataState />;
-
-	if (notes.length === 0)
-		return <NoResultsState />;
-
 	return (
 		<Flex
 			direction='column'
@@ -33,7 +20,7 @@ export function NotesList<T extends { id: number | string }>({
 			gap={CONTENT_GRID_SPACING}
 		>
 			{notes.map((note) => (
-				<li key={note.id} className={cls.item}>
+				<li key={note.id}>
 					{noteSlot(note)}
 				</li>
 			))}

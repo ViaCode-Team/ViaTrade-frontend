@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { useGetTradeStatisticsSuspense } from '@/entities/trade';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { getWinLossChartData } from '../../../model/statistics-dashboard';
+import { getWinLossChartData } from '../../../model/statistics';
 import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
 import cls from './statistics-charts.module.css';
 

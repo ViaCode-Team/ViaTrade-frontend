@@ -4,11 +4,11 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { getGetAllByUserQueryKey, getGetRemindStatisticsQueryKey, useDelete } from '@/entities/remind';
 
-type RemindCardActionsProps = {
+type DeleteRemindButtonProps = {
 	remindId: string;
 };
 
-export function RemindCardActions({ remindId }: RemindCardActionsProps) {
+export function DeleteRemindButton({ remindId }: DeleteRemindButtonProps) {
 	const queryClient = useQueryClient();
 	const deleteRemindMutation = useDelete();
 

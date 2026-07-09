@@ -3,6 +3,7 @@ import type { NotesSourceFilter } from '@/features/note/filter-notes';
 import { NotesList, NotesListSkeleton } from '@/entities/note';
 import { getFilteredNotes } from '@/features/note/filter-notes';
 import { NoteCard } from '@/features/note/manage-note';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { useNotesMutations } from '../lib/hooks/use-notes-mutations';
@@ -17,26 +18,27 @@ function NotesOverviewList({ searchQuery, sourceFilter }: NotesOverviewListProps
 	const { notes: allNotes } = usePersonalNotes();
 	const { isNoteSaving, isNoteDeleting, updateNote, deleteNote } = useNotesMutations();
 
-	const displayNotes = getFilteredNotes({
+	const resultNotes = getFilteredNotes({
 		notes: allNotes,
 		searchQuery,
 		sourceFilter,
 	});
 
 	return (
-		<NotesList
-			notes={displayNotes}
-			hasAnyNotes={allNotes.length > 0}
-			noteSlot={(note) => (
-				<NoteCard
-					note={note}
-					isSaving={isNoteSaving(note)}
-					isDeleting={isNoteDeleting(note)}
-					onSave={updateNote}
-					onDelete={deleteNote}
-				/>
-			)}
-		/>
+		<DataState hasData={!!allNotes.length} hasResults={!!resultNotes.length}>
+			<NotesList
+				notes={resultNotes}
+				noteSlot={(note) => (
+					<NoteCard
+						note={note}
+						isSaving={isNoteSaving(note)}
+						isDeleting={isNoteDeleting(note)}
+						onSave={updateNote}
+						onDelete={deleteNote}
+					/>
+				)}
+			/>
+		</DataState>
 	);
 }
 

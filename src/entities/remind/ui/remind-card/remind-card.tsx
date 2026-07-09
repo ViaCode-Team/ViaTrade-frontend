@@ -22,9 +22,9 @@ import {
 	ROUTES,
 } from '@/shared/model';
 
-import type { RemindItem } from '../model';
+import type { RemindItem } from '../../model';
 
-import { useRemindDraft } from '../lib/use-remind-draft';
+import { useRemindDraft } from '../../lib/use-remind-draft';
 import cls from './remind-card.module.css';
 
 type RemindCardProps = {
@@ -33,14 +33,14 @@ type RemindCardProps = {
 		remindId: string,
 		updates: { text: string; date: string; time: string },
 	) => void;
-	actionSlot?: ReactNode;
+	action?: ReactNode;
 	hideSourceBadge?: boolean;
 };
 
 export function RemindCard({
 	remind,
 	onRemindChange,
-	actionSlot,
+	action,
 	hideSourceBadge,
 }: RemindCardProps) {
 	const [today] = useState(() => new Date());
@@ -123,7 +123,7 @@ export function RemindCard({
 							</ActionIcon>
 						</Tooltip>
 
-						{actionSlot}
+						{action}
 					</Stack>
 				</Group>
 
@@ -140,7 +140,6 @@ export function RemindCard({
 						timePickerProps={{ withDropdown: true }}
 						minDate={today}
 					/>
-
 				</Group>
 			</Stack>
 		</Card>

@@ -5,6 +5,7 @@ import type { Strategy } from '@/entities/strategy';
 
 import { StrategiesList, StrategiesListSkeleton } from '@/entities/strategy';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { useFilteredStrategies } from '../lib/use-filtered-strategies';
@@ -24,26 +25,30 @@ function StrategiesOverviewList() {
 	const filteredStrategies = useFilteredStrategies(strategies);
 
 	return (
-		<StrategiesList
-			strategies={filteredStrategies}
-			hasAnyStrategies={strategies.length > 0}
-			actionSlot={(strategy) => (
-				<StrategyToggleCheckbox
-					strategyId={strategy.id}
-					isActive={strategy.isActive}
-				/>
-			)}
-			bottomActionSlot={(strategy) => (
-				<Button
-					mt='auto'
-					variant='default'
-					style={{ position: 'relative', zIndex: 2 }}
-					onClick={() => openModal(strategy)}
-				>
-					Связать с акцией
-				</Button>
-			)}
-		/>
+		<DataState
+			hasData={strategies.length > 0}
+			hasResults={filteredStrategies.length > 0}
+		>
+			<StrategiesList
+				strategies={filteredStrategies}
+				actionSlot={(strategy) => (
+					<StrategyToggleCheckbox
+						strategyId={strategy.id}
+						isActive={strategy.isActive}
+					/>
+				)}
+				bottomActionSlot={(strategy) => (
+					<Button
+						mt='auto'
+						variant='default'
+						style={{ position: 'relative', zIndex: 2 }}
+						onClick={() => openModal(strategy)}
+					>
+						Связать с акцией
+					</Button>
+				)}
+			/>
+		</DataState>
 	);
 }
 

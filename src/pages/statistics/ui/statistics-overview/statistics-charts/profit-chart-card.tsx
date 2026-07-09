@@ -7,7 +7,7 @@ import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { getProfitChartData } from '../../../model/profit-chart-settings';
-import { formatChartCurrency } from '../../../model/statistics-dashboard';
+import { formatChartCurrency } from '../../../model/statistics';
 import { useProfitChartData } from '../../../model/use-profit-chart-data';
 import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
 import cls from './statistics-charts.module.css';

@@ -1,6 +1,7 @@
 import { NotesList, NotesListSkeleton } from '@/entities/note';
 import { getFilteredNotes, useNotesControls } from '@/features/note/filter-notes';
 import { NoteCard } from '@/features/note/manage-note';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { useNotesMutations, usePersonalNotes } from '@/widgets/notes-overview';
 
@@ -18,19 +19,20 @@ export function DashboardNotes() {
 	const recentNotes = displayNotes.slice(0, 4);
 
 	return (
-		<NotesList
-			notes={recentNotes}
-			hasAnyNotes={allNotes.length > 0}
-			noteSlot={(note) => (
-				<NoteCard
-					note={note}
-					isSaving={isNoteSaving(note)}
-					isDeleting={isNoteDeleting(note)}
-					onSave={updateNote}
-					onDelete={deleteNote}
-				/>
-			)}
-		/>
+		<DataState hasData={!!allNotes.length} hasResults={!!recentNotes.length}>
+			<NotesList
+				notes={recentNotes}
+				noteSlot={(note) => (
+					<NoteCard
+						note={note}
+						isSaving={isNoteSaving(note)}
+						isDeleting={isNoteDeleting(note)}
+						onSave={updateNote}
+						onDelete={deleteNote}
+					/>
+				)}
+			/>
+		</DataState>
 	);
 }
 

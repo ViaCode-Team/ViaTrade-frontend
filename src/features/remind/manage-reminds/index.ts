@@ -1,3 +1,3 @@
 export { useRemindList } from './lib/use-remind-list';
-export { RemindCardActions } from './ui/remind-card-actions';
+export { DeleteRemindButton } from './ui/delete-remind-button';
 export { RemindStatusBarBoundary } from './ui/remind-status-bar';

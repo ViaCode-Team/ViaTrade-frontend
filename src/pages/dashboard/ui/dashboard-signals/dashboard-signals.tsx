@@ -30,10 +30,7 @@ export function DashboardSignals({ onSignalSelect }: { onSignalSelect: (signal: 
 	const resultsSignals = signals.slice(0, 4);
 
 	return (
-		<DataState
-			hasData={signals.length > 0}
-			hasResults={resultsSignals.length > 0}
-		>
+		<DataState hasData={!!resultsSignals.length}>
 			<SignalsList
 				signals={resultsSignals}
 				onSignalSelect={onSignalSelect}

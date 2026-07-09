@@ -56,7 +56,7 @@ export function mapTradeStrategiesToStrategies(
 	);
 }
 
-export function toStrategyCardStrategy(
+export function mapStrategyToStrategyCard(
 	strategy: Omit<StrategyCardStrategy, 'isActive'>,
 	isActive: boolean,
 ): StrategyCardStrategy {

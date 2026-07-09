@@ -7,7 +7,7 @@ import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import {
 	formatChartCurrency,
 	getDirectionPerformanceChartData,
-} from '../../../model/statistics-dashboard';
+} from '../../../model/statistics';
 import { useProfitChartData } from '../../../model/use-profit-chart-data';
 import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
 import cls from './statistics-charts.module.css';

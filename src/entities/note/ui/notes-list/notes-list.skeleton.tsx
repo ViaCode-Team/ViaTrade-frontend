@@ -4,7 +4,6 @@ import { createSkeletons } from '@/shared/lib/ui-helpers';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
 import { NoteCardSkeleton } from './note-card.skeleton';
-import cls from './notes-list.module.css';
 
 export function NotesListSkeleton() {
 	return (
@@ -14,7 +13,7 @@ export function NotesListSkeleton() {
 			gap={CONTENT_GRID_SPACING}
 		>
 			{createSkeletons(3).map((skeleton) => (
-				<li key={skeleton.id} className={cls.item}>
+				<li key={skeleton.id}>
 					<NoteCardSkeleton />
 				</li>
 			))}

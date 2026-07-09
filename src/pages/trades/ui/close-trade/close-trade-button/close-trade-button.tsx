@@ -10,17 +10,15 @@ type CloseTradeButtonProps = {
 };
 
 function openModal(trade: Trade) {
-	return () => modals.open({
+	return modals.open({
 		title: 'Закрытие сделки',
 		children: <CloseTradeForm trade={trade} />,
 	});
 }
 
 export function CloseTradeButton({ trade }: CloseTradeButtonProps) {
-	const handleOpenModal = () => openModal(trade);
-
 	return (
-		<Button onClick={handleOpenModal} size='compact-sm' variant='light'>
+		<Button onClick={() => openModal(trade)} size='compact-sm' variant='light'>
 			Закрыть
 		</Button>
 	);

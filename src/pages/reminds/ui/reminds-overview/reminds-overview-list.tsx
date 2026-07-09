@@ -1,5 +1,6 @@
 import { RemindList, RemindListSkeleton } from '@/entities/remind';
-import { RemindCardActions, useRemindList } from '@/features/remind/manage-reminds';
+import { DeleteRemindButton, useRemindList } from '@/features/remind/manage-reminds';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 function RemindsOverviewList() {
@@ -10,12 +11,13 @@ function RemindsOverviewList() {
 	} = useRemindList();
 
 	return (
-		<RemindList
-			reminds={filteredReminds}
-			hasAnyReminds={reminds.length > 0}
-			onRemindChange={handleRemindChange}
-			actionSlot={(remind) => <RemindCardActions remindId={remind.id} />}
-		/>
+		<DataState hasData={!!reminds.length} hasResults={!!filteredReminds.length}>
+			<RemindList
+				reminds={filteredReminds}
+				onRemindChange={handleRemindChange}
+				renderAction={(remind) => <DeleteRemindButton remindId={remind.id} />}
+			/>
+		</DataState>
 	);
 }
 

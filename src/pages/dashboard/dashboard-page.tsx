@@ -14,7 +14,6 @@ import { SignalHistoryTableBoundary } from '@/widgets/signal-history-table';
 function openSignalHistoryModal(signal: Signal) {
 	modals.open({
 		title: `История сигнала: ${signal.asset}`,
-		size: 'md',
 		children: (
 			<SignalHistoryTableBoundary
 				tradeCode={signal.tradeCode}

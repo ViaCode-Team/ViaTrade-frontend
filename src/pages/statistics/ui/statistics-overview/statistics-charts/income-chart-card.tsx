@@ -9,7 +9,7 @@ import {
 	formatChartCurrency,
 	formatProfitFactor,
 	getIncomeChartData,
-} from '../../../model/statistics-dashboard';
+} from '../../../model/statistics';
 import { StatisticsChartCardSkeleton } from './overview-chart-card.skeleton';
 import cls from './statistics-charts.module.css';
 

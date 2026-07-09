@@ -23,4 +23,5 @@ export type {
 } from './model';
 export { NoteCharactersRemaining } from './ui/note-characters-remaining';
 export { NoteTextarea } from './ui/note-textarea';
-export { NotesList, NotesListSkeleton } from './ui/notes-list/notes-list';
+export { NotesList } from './ui/notes-list/notes-list';
+export { NotesListSkeleton } from './ui/notes-list/notes-list.skeleton';

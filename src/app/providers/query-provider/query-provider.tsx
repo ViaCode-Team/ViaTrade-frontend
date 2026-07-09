@@ -7,7 +7,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { useSecurity } from '@/entities/security';
 import { secureQueryPersister } from '@/shared/lib/secure-storage';
 import { createStorageKey } from '@/shared/lib/storage-key';
-import { QUERY_CACHE_MAX_AGE } from '@/shared/model';
+import { QUERY_PERSIST_MAX_AGE } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import { AppReactQueryDevtools } from './app-react-query-devtools';
@@ -38,7 +38,7 @@ export function QueryProvider({ children }: StoreProviderProps) {
 			client={queryClient}
 			persistOptions={{
 				persister,
-				maxAge: QUERY_CACHE_MAX_AGE,
+				maxAge: QUERY_PERSIST_MAX_AGE,
 			}}
 		>
 			{children}

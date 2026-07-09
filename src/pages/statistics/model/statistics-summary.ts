@@ -2,7 +2,7 @@ import type { GlobalStatistic } from '@/shared/api';
 
 import { TRADE_STATISTICS_CARDS } from '@/entities/trade';
 
-import { formatChartCurrency, formatProfitFactor } from './statistics-dashboard';
+import { formatChartCurrency, formatProfitFactor } from './statistics';
 
 export type StatisticsSummaryCardData = {
 	id: string;

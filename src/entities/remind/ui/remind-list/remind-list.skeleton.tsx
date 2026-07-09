@@ -3,7 +3,7 @@ import { SimpleGrid } from '@mantine/core';
 import { createSkeletons } from '@/shared/lib/ui-helpers';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
-import { RemindCardSkeleton } from '../remind-card.skeleton';
+import { RemindCardSkeleton } from '../remind-card/remind-card.skeleton';
 import cls from './remind-list.module.css';
 
 const REMIND_CARD_SKELETONS = 2;

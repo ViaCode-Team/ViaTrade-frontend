@@ -6,7 +6,7 @@ import '@mantine/nprogress/styles.css';
 import '@mantine/notifications/styles.css';
 import { Notifications } from '@mantine/notifications';
 
-import { theme } from './theme';
+import { theme } from '@/shared/lib/theme';
 
 type ThemeProviderProps = {
 	children: ReactNode;

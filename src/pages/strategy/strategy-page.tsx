@@ -1,17 +1,11 @@
-import { Stack } from '@mantine/core';
+import { Flex, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 import {
 	generatePath,
 	useParams,
 } from 'react-router';
 
-import {
-	mapTradeStrategyToStrategy,
-	StrategyInfoList,
-	StrategyInfoListSkeleton,
-	useGetAllSuspense,
-	useGetByIdSuspense,
-} from '@/entities/strategy';
+import { useGetAllSuspense } from '@/entities/strategy';
 import {
 	useCreateInstrumentsLink,
 	useDeleteInstrumentsLink,
@@ -20,25 +14,14 @@ import {
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { ROUTES } from '@/shared/model';
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
+import { StrategyInfoSectionBoundary } from './ui/stratagy-info-section';
 import { StrategyHeroBoundary } from './ui/strategy-hero';
 import { StrategyNotFound } from './ui/strategy-not-found';
-
-const INACTIVE_STRATEGY_IDS = new Set<number>();
-
-function StrategyInfoView({ strategyId }: { strategyId: number }) {
-	const strategyQuery = useGetByIdSuspense(strategyId);
-	const strategy = mapTradeStrategyToStrategy(strategyQuery.data.data, INACTIVE_STRATEGY_IDS);
-
-	return <StrategyInfoList strategy={strategy} />;
-}
-
-const StrategyInfoViewBoundary = withQueryBoundary(StrategyInfoView, {
-	suspenseProps: { fallback: <StrategyInfoListSkeleton /> },
-});
 
 function StrategyPageContent() {
 	const { strategyName } = useParams();
@@ -99,9 +82,11 @@ function StrategyPageContent() {
 
 	return (
 		<>
-			<StrategyHeroBoundary strategyId={strategyId} />
+			<Section>
+				<StrategyHeroBoundary strategyId={strategyId} />
+			</Section>
 
-			<StrategyInfoViewBoundary strategyId={strategyId} />
+			<StrategyInfoSectionBoundary strategyId={strategyId} />
 
 			<Section header={{ title: 'Связанные акции' }}>
 				<StrategyStockBinding
@@ -125,7 +110,10 @@ const StrategyPageContentBoundary = withQueryBoundary(StrategyPageContent);
 export function StrategyPage() {
 	return (
 		<Stack>
-			<BackToStrategiesLink />
+			<Flex justify='space-between' align='center'>
+				<BackToStrategiesLink />
+				<DataFreshness />
+			</Flex>
 			<StrategyPageContentBoundary />
 		</Stack>
 	);

@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
 	Group,
 	Pagination,
@@ -6,39 +8,25 @@ import {
 
 import type { UserSessionDto } from '@/shared/api';
 
-import { AppEmptyState } from '@/shared/ui/app-empty-state';
-
 import { SessionListItem } from '..';
 
-export { SessionsListSkeleton } from './sessions-list.skeleton';
-
 export type SessionsListProps = {
-	sessions: UserSessionDto[];
 	paginatedSessions: UserSessionDto[];
 	currentSessionId: string | undefined;
 	activePage: number;
 	totalPages: number;
 	setPage: (page: number) => void;
-	actionSlot?: (session: UserSessionDto, isCurrent: boolean) => React.ReactNode;
+	renderAction?: (session: UserSessionDto, isCurrent: boolean) => ReactNode;
 };
 
 export function SessionsList({
-	sessions,
 	paginatedSessions,
 	currentSessionId,
 	activePage,
 	totalPages,
 	setPage,
-	actionSlot,
+	renderAction,
 }: SessionsListProps) {
-	if (sessions.length === 0) {
-		return <AppEmptyState title='Нет активных сессий' description='Вы авторизованы только на этом устройстве.' />;
-	}
-
-	if (paginatedSessions.length === 0) {
-		return <AppEmptyState title='Сессии не найдены' description='На этой странице нет активных сессий.' />;
-	}
-
 	return (
 		<Stack gap='md'>
 			<Stack component='ul' gap='xs'>
@@ -50,7 +38,7 @@ export function SessionsList({
 							key={session.id}
 							session={session}
 							isCurrent={isCurrent}
-							actionSlot={actionSlot?.(session, isCurrent)}
+							actionSlot={renderAction?.(session, isCurrent)}
 						/>
 					);
 				})}

@@ -1,6 +1,6 @@
 import { Stack } from '@mantine/core';
 
-import { AppEmptyState } from '@/shared/ui/app-empty-state';
+import { NoResultsState } from '@/shared/ui/app-empty-state';
 
 import { BackToStrategiesLink } from './back-to-strategies-link';
 
@@ -9,7 +9,10 @@ export function StrategyNotFound() {
 		<Stack gap='md'>
 			<BackToStrategiesLink />
 
-			<AppEmptyState title='Стратегия не найдена' description='Проверьте адрес страницы или вернитесь к списку стратегий.'></AppEmptyState>
+			<NoResultsState
+				title='Стратегия не найдена'
+				description='Проверьте адрес страницы или вернитесь к списку стратегий.'
+			/>
 		</Stack>
 	);
 }

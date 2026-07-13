@@ -2,27 +2,27 @@ import type { ReactNode } from 'react';
 
 import { NoDataState, NoResultsState } from '../app-empty-state';
 
-type DataStateProps = {
-	hasData: boolean;
+export type DataStateProps = {
+	hasData?: boolean;
 	hasResults?: boolean;
-	noDataState?: ReactNode;
-	noResultsState?: ReactNode;
+	noDataFallback?: ReactNode;
+	noResultsFallback?: ReactNode;
 	children: ReactNode;
 };
 
 export function DataState({
 	hasData,
 	hasResults,
-	noDataState,
-	noResultsState,
+	noDataFallback,
+	noResultsFallback,
 	children,
 }: DataStateProps) {
-	if (!hasData) {
-		return noDataState ?? <NoDataState />;
+	if (hasData === false) {
+		return noDataFallback === undefined ? <NoDataState /> : noDataFallback;
 	}
 
 	if (hasResults === false) {
-		return noResultsState ?? <NoResultsState />;
+		return noResultsFallback === undefined ? <NoResultsState /> : noResultsFallback;
 	}
 
 	return children;

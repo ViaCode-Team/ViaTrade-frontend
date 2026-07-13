@@ -1,7 +1,5 @@
 import { Group, Pagination, SimpleGrid, Stack } from '@mantine/core';
-import { useMemo } from 'react';
-
-import { AppEmptyState } from '@/shared/ui/app-empty-state';
+import { type ReactNode, useMemo } from 'react';
 
 import type { StrategyCardStrategy } from '../../model';
 
@@ -14,45 +12,25 @@ const PAGE_SIZE = 12;
 export type StockLinkedStrategiesListProps = {
 	strategies: StrategyCardStrategy[];
 	activeStrategyIds: Set<number>;
-	hasAnyStrategies: boolean;
 	page: number;
 	setPage: (page: number) => void;
 	onNavigate?: () => void;
-	actionSlot?: (strategy: StrategyCardStrategy, isActive: boolean) => React.ReactNode;
+	renderAction?: (strategy: StrategyCardStrategy, isActive: boolean) => ReactNode;
 };
 
 export function StockLinkedStrategiesList({
 	strategies,
 	activeStrategyIds,
-	hasAnyStrategies,
 	page,
 	setPage,
 	onNavigate,
-	actionSlot,
+	renderAction,
 }: StockLinkedStrategiesListProps) {
 	const totalPages = Math.ceil(strategies.length / PAGE_SIZE);
 	const paginatedStrategies = useMemo(() => {
 		const start = (page - 1) * PAGE_SIZE;
 		return strategies.slice(start, start + PAGE_SIZE);
 	}, [strategies, page]);
-
-	if (!hasAnyStrategies) {
-		return (
-			<AppEmptyState
-				title='Стратегий пока нет'
-				description='К этой акции пока не привязано ни одной стратегии.'
-			/>
-		);
-	}
-
-	if (strategies.length === 0) {
-		return (
-			<AppEmptyState
-				title='Стратегии не найдены'
-				description='Попробуйте изменить поисковый запрос или фильтры.'
-			/>
-		);
-	}
 
 	return (
 		<Stack>
@@ -62,7 +40,7 @@ export function StockLinkedStrategiesList({
 						<StrategyCard
 							strategy={strategy}
 							onLinkClick={onNavigate}
-							actionSlot={actionSlot?.(strategy, activeStrategyIds.has(strategy.id))}
+							action={renderAction?.(strategy, activeStrategyIds.has(strategy.id))}
 						/>
 					</li>
 				))}

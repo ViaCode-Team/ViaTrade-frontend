@@ -10,7 +10,7 @@ type AuthFooterProps = {
 	to: To;
 };
 
-export function AuthCardFooter({ text, linkText, to }: AuthFooterProps) {
+export function AuthCardLink({ text, linkText, to }: AuthFooterProps) {
 	return (
 		<Text ta='center' size='sm' c='dimmed'>
 			{text}

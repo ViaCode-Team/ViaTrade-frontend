@@ -1,14 +1,9 @@
-import { Button } from '@mantine/core';
-import { IconTable } from '@tabler/icons-react';
-import { Link } from 'react-router';
-
-import { ROUTES } from '@/shared/model';
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 
 import { StatisticsOverview } from './ui/statistics-overview/statistics-overview';
 import { StatisticsSummaryBoundary } from './ui/statistics-summary/statistics-summary';
-
 
 export function StatisticsPage() {
 	return (
@@ -16,16 +11,7 @@ export function StatisticsPage() {
 			<PageHeader
 				title='Статистика'
 				description='Сводка и графики по сделкам и доходу'
-				rightSection={(
-					<Button
-						component={Link}
-						to={ROUTES.TRADES}
-						variant='light'
-						leftSection={<IconTable size={18} />}
-					>
-						Сделки
-					</Button>
-				)}
+				rightSection={<DataFreshness />}
 			/>
 
 			<Section>

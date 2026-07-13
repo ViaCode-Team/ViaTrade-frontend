@@ -4,14 +4,14 @@ import { Flex } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
-export type NotesListProps<T extends { id: number | string }> = {
+type NotesListProps<T extends { id: number | string }> = {
 	notes: T[];
-	noteSlot: (note: T) => ReactNode;
+	renderNote: (note: T) => ReactNode;
 };
 
 export function NotesList<T extends { id: number | string }>({
 	notes,
-	noteSlot,
+	renderNote,
 }: NotesListProps<T>) {
 	return (
 		<Flex
@@ -21,7 +21,7 @@ export function NotesList<T extends { id: number | string }>({
 		>
 			{notes.map((note) => (
 				<li key={note.id}>
-					{noteSlot(note)}
+					{renderNote(note)}
 				</li>
 			))}
 		</Flex>

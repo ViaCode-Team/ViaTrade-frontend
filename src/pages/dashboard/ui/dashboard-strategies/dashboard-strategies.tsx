@@ -16,7 +16,7 @@ function DashboardStrategies() {
 		<DataState
 			hasData={!!strategies.length}
 			hasResults={!!filteredStrategies.length}
-			noResultsState={<NoDataState description='Активных стратегий пока нет. Данные появятся после добавления активных стратегий.' />}
+			noResultsFallback={<NoDataState description='Активных стратегий пока нет. Данные появятся после добавления активных стратегий.' />}
 		>
 			<StrategiesList strategies={filteredStrategies} />
 		</DataState>

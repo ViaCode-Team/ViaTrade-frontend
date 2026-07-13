@@ -1,3 +1,4 @@
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { NotesOverview } from '@/widgets/notes-overview';
@@ -11,6 +12,7 @@ export function NotesPage() {
 			<PageHeader
 				title='Заметки'
 				description='Ваши заметки по акциям и стратегиям'
+				rightSection={<DataFreshness />}
 			/>
 
 			<Section>

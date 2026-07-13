@@ -23,15 +23,15 @@ import cls from './strategy-card.module.css';
 type StrategyCardProps = {
 	strategy: StrategyCardStrategy;
 	onLinkClick?: () => void;
-	actionSlot?: ReactNode;
-	bottomActionSlot?: ReactNode;
+	action?: ReactNode;
+	bottomAction?: ReactNode;
 };
 
 export function StrategyCard({
 	strategy,
 	onLinkClick,
-	actionSlot,
-	bottomActionSlot,
+	action,
+	bottomAction,
 }: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
 		strategyName: strategy.name,
@@ -44,7 +44,6 @@ export function StrategyCard({
 			? 'var(--mantine-color-green-filled)'
 			: 'var(--mantine-color-red-filled)',
 	});
-
 
 	return (
 		<Card
@@ -68,7 +67,7 @@ export function StrategyCard({
 						{strategy.name}
 					</Title>
 
-					{actionSlot || (
+					{action || (
 						<Badge color={strategy.isActive ? 'green' : 'red'} variant='light' size='sm'>
 							{strategy.isActive ? 'Активна' : 'Выключена'}
 						</Badge>
@@ -121,7 +120,7 @@ export function StrategyCard({
 					)
 				: <Box h={33}></Box>}
 
-			{bottomActionSlot}
+			{bottomAction}
 		</Card>
 	);
 }

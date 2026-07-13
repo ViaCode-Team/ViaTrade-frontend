@@ -3,15 +3,11 @@ import { IconAlertTriangle } from '@tabler/icons-react';
 import { IconTargetArrow } from '@tabler/icons-react';
 import { IconTrendingUp } from '@tabler/icons-react';
 
-import { AppEmptyState } from '@/shared/ui/app-empty-state';
-
 import type { Strategy } from '../../model';
 
 import { StrategyInfoCard } from '../strategy-info-card/strategy-info-card';
 
-export { StrategyInfoListSkeleton } from './strategy-info-list.skeleton';
-
-const STRATEGY_INFO_SECTIONS = [
+const STRATEGY_INFO_CONFIGS = [
 	{
 		title: 'Логика стратегии',
 		getDescription: (strategy: Strategy) => strategy.logicDescription,
@@ -27,43 +23,33 @@ const STRATEGY_INFO_SECTIONS = [
 		getDescription: (strategy: Strategy) => strategy.limitDescription,
 		icon: <IconAlertTriangle size={18} stroke={2} />,
 	},
-];
+] as const;
+
+function getInfo(strategy: Strategy) {
+	return STRATEGY_INFO_CONFIGS.flatMap((config) => {
+		const description = config.getDescription(strategy);
+		return description ? [{ ...config, description }] : [];
+	});
+}
 
 export type StrategyInfoListProps = {
-	strategy: Strategy | null;
+	strategy: Strategy;
 };
 
 export function StrategyInfoList({ strategy }: StrategyInfoListProps) {
-	if (!strategy) {
-		return null;
-	}
-
-	const visibleSections = STRATEGY_INFO_SECTIONS
-		.map((section) => ({
-			...section,
-			description: section.getDescription(strategy),
-		}))
-		.filter(
-			(section): section is typeof section & { description: string } =>
-				section.description != null,
-		);
-
-	if (visibleSections.length === 0) {
-		return <AppEmptyState title='Информация о стратегии не заполнена' />;
-	}
+	const strategiesInfo = getInfo(strategy);
 
 	return (
-		<section>
-			<SimpleGrid minColWidth={300} autoFlow='auto-fit'>
-				{visibleSections.map((section) => (
+		<SimpleGrid minColWidth={300} component='ul' autoFlow='auto-fit'>
+			{strategiesInfo.map((info) => (
+				<li key={info.title}>
 					<StrategyInfoCard
-						key={section.title}
-						title={section.title}
-						description={section.description}
-						icon={section.icon}
+						title={info.title}
+						description={info.description}
+						icon={info.icon}
 					/>
-				))}
-			</SimpleGrid>
-		</section>
+				</li>
+			))}
+		</SimpleGrid>
 	);
 }

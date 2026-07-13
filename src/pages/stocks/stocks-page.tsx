@@ -10,6 +10,8 @@ import {
 	StocksControls,
 	useStocksControls,
 } from '@/pages/stocks/ui/filter-stocks';
+import { DataFreshness } from '@/shared/ui/data-freshness';
+import { DataState } from '@/shared/ui/data-state';
 import { PageHeader } from '@/shared/ui/page-header';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
@@ -36,12 +38,13 @@ function StocksListView({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: 
 	}, [instrumentsLinkResponse.data]);
 
 	return (
-		<StocksList
-			stocks={stocks}
-			hasFilters={!!filters.searchQuery}
-			linkCountsByStockId={linkCountsByStockId}
-			onLinkedStrategiesClick={onLinkedStrategiesClick}
-		/>
+		<DataState hasData={!!stocks.length}>
+			<StocksList
+				stocks={stocks}
+				linkCountsByStockId={linkCountsByStockId}
+				onLinkedStrategiesClick={onLinkedStrategiesClick}
+			/>
+		</DataState>
 	);
 }
 
@@ -82,6 +85,7 @@ export function StocksPage() {
 			<PageHeader
 				title='Акции'
 				description='Динамика инструментов и связанные стратегии'
+				rightSection={<DataFreshness />}
 			/>
 
 			<Section>

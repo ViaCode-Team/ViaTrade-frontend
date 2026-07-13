@@ -5,6 +5,7 @@ import {
 	StrategyStockBindingList,
 	StrategyStockBindingListSkeleton,
 } from '@/entities/stock';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { getFilteredStocks, getNextStockIdsAfterStockToggle } from '../model';
@@ -26,15 +27,15 @@ function StrategyStockBindingBase({
 	const [searchQuery, setSearchQuery] = useState('');
 	const [page, setPage] = useState(1);
 
-	const handleSearchQueryChange = (query: string) => {
-		setSearchQuery(query);
-		setPage(1);
-	};
-
 	const { stocks } = useStrategyStockBindingData();
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
 	const totalPages = Math.ceil(visibleStocks.length / ITEMS_PER_PAGE);
 	const paginatedStocks = visibleStocks.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+	const handleSearchQueryChange = (query: string) => {
+		setSearchQuery(query);
+		setPage(1);
+	};
 
 	return (
 		<Stack gap='md'>
@@ -54,17 +55,19 @@ function StrategyStockBindingBase({
 				/>
 			</Stack>
 
-			<StrategyStockBindingList
-				paginatedStocks={paginatedStocks}
-				stocks={stocks}
-				page={page}
-				totalPages={totalPages}
-				selectedStockIds={selectedStockIds}
-				onStockChange={(stockId: string, checked: boolean) => {
-					onSelectedStockIdsChange(getNextStockIdsAfterStockToggle(stocks, selectedStockIds, stockId, checked));
-				}}
-				onPageChange={setPage}
-			/>
+			<DataState hasData={!!stocks.length} hasResults={!!visibleStocks.length}>
+				<StrategyStockBindingList
+					paginatedStocks={paginatedStocks}
+					stocks={stocks}
+					page={page}
+					totalPages={totalPages}
+					selectedStockIds={selectedStockIds}
+					onStockChange={(stockId: string, checked: boolean) => {
+						onSelectedStockIdsChange(getNextStockIdsAfterStockToggle(stocks, selectedStockIds, stockId, checked));
+					}}
+					onPageChange={setPage}
+				/>
+			</DataState>
 		</Stack>
 	);
 }

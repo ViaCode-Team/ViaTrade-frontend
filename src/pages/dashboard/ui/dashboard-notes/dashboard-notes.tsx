@@ -22,7 +22,7 @@ export function DashboardNotes() {
 		<DataState hasData={!!allNotes.length} hasResults={!!recentNotes.length}>
 			<NotesList
 				notes={recentNotes}
-				noteSlot={(note) => (
+				renderNote={(note) => (
 					<NoteCard
 						note={note}
 						isSaving={isNoteSaving(note)}

@@ -27,8 +27,8 @@ export function StrategiesList({ strategies, actionSlot, bottomActionSlot }: Str
 				<li key={strategy.id}>
 					<StrategyCard
 						strategy={mapStrategyToStrategyCard(strategy, strategy.isActive)}
-						actionSlot={actionSlot?.(strategy)}
-						bottomActionSlot={bottomActionSlot?.(strategy)}
+						action={actionSlot?.(strategy)}
+						bottomAction={bottomActionSlot?.(strategy)}
 					/>
 				</li>
 			))}

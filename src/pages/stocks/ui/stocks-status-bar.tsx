@@ -1,7 +1,6 @@
 import { Skeleton } from '@mantine/core';
 
 import { useStocksControls } from '@/pages/stocks/ui/filter-stocks';
-import { QUERY_REFETCH_INTERVAL_TEXT } from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -13,7 +12,7 @@ type StocksStatusBarProps = {
 
 export function StocksStatusBar({ totalCount }: StocksStatusBarProps) {
 	const { filters } = useStocksControls();
-	const { data: filteredStocks, refetch } = useStocksQuerySuspense(
+	const { data: filteredStocks } = useStocksQuerySuspense(
 		filters.searchQuery,
 		filters.sortOption,
 	);
@@ -22,8 +21,6 @@ export function StocksStatusBar({ totalCount }: StocksStatusBarProps) {
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredStocks.length}
-			refreshIntervalText={QUERY_REFETCH_INTERVAL_TEXT}
-			onRefresh={refetch}
 		/>
 	);
 }

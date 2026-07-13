@@ -1,6 +1,5 @@
 import { Skeleton } from '@mantine/core';
 
-import { QUERY_REFETCH_INTERVAL_TEXT } from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
@@ -9,7 +8,7 @@ import { useFilteredStrategies } from '../lib/use-filtered-strategies';
 import { useStrategiesData } from '../lib/use-strategies-data';
 
 export function StrategiesStatusBar() {
-	const { strategies, refetch } = useStrategiesData();
+	const { strategies } = useStrategiesData();
 	const filteredStrategies = useFilteredStrategies(strategies);
 
 	const activeCount = filteredStrategies.filter((s) => s.isActive).length;
@@ -19,8 +18,6 @@ export function StrategiesStatusBar() {
 		<ListStatusBar
 			totalCount={strategies.length}
 			filteredCount={filteredStrategies.length}
-			refreshIntervalText={QUERY_REFETCH_INTERVAL_TEXT}
-			onRefresh={refetch}
 			badges={(
 				<>
 					<ValueBadge variant='dot' color='green' size='sm' label='Активные' value={activeCount} />

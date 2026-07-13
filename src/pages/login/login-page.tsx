@@ -1,4 +1,4 @@
-import { AuthCard } from '@/entities/auth';
+import { AuthCard, AuthCardLink } from '@/entities/auth';
 import { LoginForm } from '@/pages/login/ui/login-feature';
 import { ROUTES } from '@/shared/model';
 import { AuthBackground } from '@/shared/ui/auth-background';
@@ -20,7 +20,7 @@ export function LoginPage() {
 			<AuthCard title='Авторизация'>
 				<LoginForm />
 
-				<AuthCard.Footer text='Нет аккаунта?' linkText='Регистрация' to={ROUTES.REGISTER} />
+				<AuthCardLink text='Нет аккаунта?' linkText='Регистрация' to={ROUTES.REGISTER} />
 			</AuthCard>
 		</AuthBackground>
 	);

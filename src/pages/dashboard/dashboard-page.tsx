@@ -7,6 +7,7 @@ import { DashboardRemindsBoundary } from '@/pages/dashboard/ui/dashboard-reminds
 import { DashboardSignalsBoundary } from '@/pages/dashboard/ui/dashboard-signals';
 import { DashboardStatisticsBoundary } from '@/pages/dashboard/ui/dashboard-statistics';
 import { DashboardStrategiesBoundary } from '@/pages/dashboard/ui/dashboard-strategies';
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { SignalHistoryTableBoundary } from '@/widgets/signal-history-table';
@@ -29,6 +30,7 @@ export function DashboardPage() {
 			<PageHeader
 				title='Главная'
 				description='Сводка по портфелю, сигналам и инструментам'
+				rightSection={<DataFreshness />}
 			/>
 
 			<Section>

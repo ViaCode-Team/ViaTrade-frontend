@@ -13,4 +13,5 @@ export { StrategiesList } from './ui/strategies-list/strategies-list';
 export { StrategiesListSkeleton } from './ui/strategies-list/strategies-list.skeleton';
 export { StrategyCard } from './ui/strategy-card';
 export { StrategyCardSkeleton } from './ui/strategy-card/strategy-card.skeleton';
-export { StrategyInfoList, StrategyInfoListSkeleton } from './ui/strategy-info-list/strategy-info-list';
+export { StrategyInfoList } from './ui/strategy-info-list/strategy-info-list';
+export { StrategyInfoListSkeleton } from './ui/strategy-info-list/strategy-info-list.skeleton';

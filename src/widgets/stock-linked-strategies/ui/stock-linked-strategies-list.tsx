@@ -4,6 +4,7 @@ import type { LinkedStrategyFilters } from '@/widgets/stock-linked-strategies/ui
 
 import { StockLinkedStrategiesList as LinkedStrategiesList, StockLinkedStrategiesListSkeleton } from '@/entities/strategy';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
+import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { filterLinkedStrategies } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
@@ -32,20 +33,21 @@ function StockLinkedStrategiesList({
 	);
 
 	return (
-		<LinkedStrategiesList
-			strategies={filteredStrategies}
-			activeStrategyIds={activeStrategyIds}
-			hasAnyStrategies={allLinkedStrategies.length > 0}
-			page={page}
-			setPage={setPage}
-			onNavigate={onNavigate}
-			actionSlot={(strategy, isActive) => (
-				<StrategyToggleCheckbox
-					strategyId={strategy.id}
-					isActive={isActive}
-				/>
-			)}
-		/>
+		<DataState hasData={!!allLinkedStrategies.length} hasResults={!!filteredStrategies.length}>
+			<LinkedStrategiesList
+				strategies={filteredStrategies}
+				activeStrategyIds={activeStrategyIds}
+				page={page}
+				setPage={setPage}
+				onNavigate={onNavigate}
+				renderAction={(strategy, isActive) => (
+					<StrategyToggleCheckbox
+						strategyId={strategy.id}
+						isActive={isActive}
+					/>
+				)}
+			/>
+		</DataState>
 	);
 }
 

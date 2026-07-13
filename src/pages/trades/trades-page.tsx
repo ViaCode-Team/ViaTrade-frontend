@@ -1,5 +1,6 @@
 import { Stack } from '@mantine/core';
 
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 
@@ -11,6 +12,7 @@ export function TradesPage() {
 			<PageHeader
 				title='Сделки'
 				description='Журнал сделок с поиском, фильтрами и сортировкой'
+				rightSection={<DataFreshness />}
 			/>
 
 			<Section>

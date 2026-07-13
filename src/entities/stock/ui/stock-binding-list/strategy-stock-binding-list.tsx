@@ -1,14 +1,11 @@
 import { Group, Pagination, SimpleGrid, Stack } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
-import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
 import type { Stock } from '../../model';
 
 import { StockBindingCard } from '../stock-binding-card/stock-binding-card';
 import cls from './strategy-stock-binding-list.module.css';
-
-export { StrategyStockBindingListSkeleton } from './strategy-stock-binding-list.skeleton';
 
 export type StrategyStockBindingListProps = {
 	paginatedStocks: Stock[];
@@ -29,10 +26,6 @@ export function StrategyStockBindingList({
 	onPageChange,
 }: StrategyStockBindingListProps) {
 	const selectedStockIdSet = new Set(selectedStockIds);
-
-	if (paginatedStocks.length === 0) {
-		return <AppEmptyState title='Акции не найдены' />;
-	}
 
 	return (
 		<Stack gap='md'>

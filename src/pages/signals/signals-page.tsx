@@ -3,6 +3,7 @@ import { modals } from '@mantine/modals';
 import type { Signal } from '@/entities/signal';
 
 import { SignalsOverview } from '@/pages/signals/ui/signals-overview';
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { SignalHistoryTableBoundary } from '@/widgets/signal-history-table';
@@ -27,6 +28,7 @@ export function SignalsPage() {
 			<PageHeader
 				title='Сигналы'
 				description='Актуальные торговые сигналы по вашим стратегиям'
+				rightSection={<DataFreshness />}
 			/>
 
 			<Section>

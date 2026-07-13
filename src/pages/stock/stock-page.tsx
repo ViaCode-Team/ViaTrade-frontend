@@ -1,4 +1,4 @@
-import { Stack } from '@mantine/core';
+import { Flex, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 import {
 	generatePath,
@@ -10,6 +10,7 @@ import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StockReminds } from '@/pages/stock/ui/stock-reminds';
 import { ROUTES } from '@/shared/model';
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
@@ -81,7 +82,10 @@ const StockPageContentBoundary = withQueryBoundary(StockPageContent);
 export function StockPage() {
 	return (
 		<Stack>
-			<BackToStocksLink />
+			<Flex justify='space-between' align='center'>
+				<BackToStocksLink />
+				<DataFreshness />
+			</Flex>
 			<StockPageContentBoundary />
 		</Stack>
 	);

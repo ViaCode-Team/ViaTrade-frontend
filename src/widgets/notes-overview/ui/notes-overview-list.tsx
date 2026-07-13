@@ -28,7 +28,7 @@ function NotesOverviewList({ searchQuery, sourceFilter }: NotesOverviewListProps
 		<DataState hasData={!!allNotes.length} hasResults={!!resultNotes.length}>
 			<NotesList
 				notes={resultNotes}
-				noteSlot={(note) => (
+				renderNote={(note) => (
 					<NoteCard
 						note={note}
 						isSaving={isNoteSaving(note)}

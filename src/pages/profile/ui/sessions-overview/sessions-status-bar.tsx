@@ -1,6 +1,5 @@
 import { Skeleton } from '@mantine/core';
 
-import { QUERY_REFETCH_INTERVAL_TEXT } from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -10,15 +9,12 @@ export function SessionsStatusBar() {
 	const {
 		sessions,
 		filteredSessions,
-		refetch,
 	} = useSessionsOverview();
 
 	return (
 		<ListStatusBar
 			totalCount={sessions.length}
 			filteredCount={filteredSessions.length}
-			refreshIntervalText={QUERY_REFETCH_INTERVAL_TEXT}
-			onRefresh={refetch}
 		/>
 	);
 }

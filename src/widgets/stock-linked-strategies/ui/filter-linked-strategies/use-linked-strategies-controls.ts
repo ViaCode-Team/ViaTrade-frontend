@@ -1,8 +1,6 @@
 import { useState } from 'react';
 
-import type {
-	LinkedStrategyFilters,
-} from './linked-strategy-filters';
+import type { LinkedStrategyFilters } from './linked-strategy-filters';
 
 export function useLinkedStrategiesControls() {
 	const [filters, setFilters] = useState<LinkedStrategyFilters>({

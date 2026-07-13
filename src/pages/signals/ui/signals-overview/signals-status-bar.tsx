@@ -11,7 +11,6 @@ import { getFilteredSignals } from '@/pages/signals/ui/filter-signals';
 import { useSignalsControls } from '@/pages/signals/ui/filter-signals';
 import {
 	QUERY_REFETCH_INTERVAL,
-	QUERY_REFETCH_INTERVAL_TEXT,
 	STATIC_QUERY_STALE_TIME,
 } from '@/shared/model';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
@@ -20,7 +19,7 @@ import { ValueBadge } from '@/shared/ui/value-badge';
 
 export function SignalsStatusBar() {
 	const { filters } = useSignalsControls();
-	const { data: signalsData, refetch } = useGetResultSuspense(undefined, {
+	const { data: signalsData } = useGetResultSuspense(undefined, {
 		query: {
 			staleTime: STATIC_QUERY_STALE_TIME,
 			refetchInterval: QUERY_REFETCH_INTERVAL,
@@ -43,8 +42,6 @@ export function SignalsStatusBar() {
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredCount}
-			refreshIntervalText={QUERY_REFETCH_INTERVAL_TEXT}
-			onRefresh={refetch}
 			badges={(
 				<>
 					<ValueBadge variant='dot' color='green' size='sm' label='Покупать' value={buyCount} />

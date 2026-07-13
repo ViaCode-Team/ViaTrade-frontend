@@ -1,3 +1,4 @@
+import { DataFreshness } from '@/shared/ui/data-freshness';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
 import { StrategiesOverview } from '@/widgets/strategies-overview';
@@ -10,6 +11,7 @@ export function StrategiesPage() {
 			<PageHeader
 				title='Стратегии'
 				description='Выберите стратегию под свой стиль торговли'
+				rightSection={<DataFreshness />}
 			/>
 
 			<Section>

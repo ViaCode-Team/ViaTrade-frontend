@@ -47,7 +47,6 @@ export function useRemindList(instrumentId?: number) {
 			return;
 		}
 
-
 		updateRemindMutation.mutate({
 			remindId: Number(remindId),
 			data: {

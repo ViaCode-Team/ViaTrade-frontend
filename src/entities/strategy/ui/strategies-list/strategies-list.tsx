@@ -1,6 +1,13 @@
 import type { ReactNode } from 'react';
 
-import { SimpleGrid } from '@mantine/core';
+import {
+	Center,
+	Pagination,
+	SimpleGrid,
+	Stack,
+} from '@mantine/core';
+
+import type { PaginationConfig } from '@/shared/model';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
@@ -14,24 +21,38 @@ export type StrategiesListProps = {
 	strategies: Strategy[];
 	actionSlot?: (strategy: Strategy) => ReactNode;
 	bottomActionSlot?: (strategy: Strategy) => ReactNode;
+	pagination?: PaginationConfig;
 };
 
-export function StrategiesList({ strategies, actionSlot, bottomActionSlot }: StrategiesListProps) {
+export function StrategiesList({
+	strategies,
+	actionSlot,
+	bottomActionSlot,
+	pagination,
+}: StrategiesListProps) {
 	return (
-		<SimpleGrid
-			minColWidth={300}
-			spacing={CONTENT_GRID_SPACING}
-			component='ul'
-		>
-			{strategies.map((strategy) => (
-				<li key={strategy.id}>
-					<StrategyCard
-						strategy={mapStrategyToStrategyCard(strategy, strategy.isActive)}
-						action={actionSlot?.(strategy)}
-						bottomAction={bottomActionSlot?.(strategy)}
+		<Stack>
+			<SimpleGrid minColWidth={300} spacing={CONTENT_GRID_SPACING} component='ul'>
+				{strategies.map((strategy) => (
+					<li key={strategy.id}>
+						<StrategyCard
+							strategy={mapStrategyToStrategyCard(strategy, strategy.isActive)}
+							action={actionSlot?.(strategy)}
+							bottomAction={bottomActionSlot?.(strategy)}
+						/>
+					</li>
+				))}
+			</SimpleGrid>
+
+			{pagination && (
+				<Center>
+					<Pagination
+						total={pagination.totalPages}
+						value={pagination.page}
+						onChange={pagination.onPageChange}
 					/>
-				</li>
-			))}
-		</SimpleGrid>
+				</Center>
+			)}
+		</Stack>
 	);
 }

@@ -3,27 +3,21 @@ import { Badge, Skeleton } from '@mantine/core';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { getFilteredStocks, getStockSelectionState } from '../model';
-import { useStrategyStockBindingData } from '../model/use-strategy-stock-binding';
-
 type StockBindingStatusBarProps = {
-	searchQuery: string;
-	selectedStockIds: string[];
+	totalCount: number;
+	filteredCount: number;
+	selectedCount: number;
 };
 
 export function StockBindingStatusBar({
-	searchQuery,
-	selectedStockIds,
+	totalCount,
+	filteredCount,
+	selectedCount,
 }: StockBindingStatusBarProps) {
-	const { stocks } = useStrategyStockBindingData();
-	const visibleStocks = getFilteredStocks(stocks, searchQuery);
-
-	const { selectedCount } = getStockSelectionState(stocks, visibleStocks, selectedStockIds);
-
 	return (
 		<ListStatusBar
-			totalCount={stocks.length}
-			filteredCount={visibleStocks.length}
+			totalCount={totalCount}
+			filteredCount={filteredCount}
 			badges={(
 				<>
 					{selectedCount > 0 && (

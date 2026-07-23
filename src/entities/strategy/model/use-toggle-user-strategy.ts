@@ -2,12 +2,12 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import type { UserTradeStrategyDto } from '@/shared/api';
 
-import type { GetUsersStrategyQueryResult } from '../api/gen';
+import type { GetUserStrategiesQueryResult } from '../api/gen';
 
 import {
-	getGetUsersStrategyQueryKey,
-	useCreateUsersStrategy,
-	useDeleteUsersStrategy,
+	getGetUserStrategiesQueryKey,
+	useCreateUserStrategy,
+	useDeleteUserStrategy,
 } from '../api/gen';
 
 type ToggleUserStrategyVariables = {
@@ -16,20 +16,20 @@ type ToggleUserStrategyVariables = {
 };
 
 type ToggleUserStrategyContext = {
-	previousUserStrategies?: GetUsersStrategyQueryResult;
+	previousUserStrategies?: GetUserStrategiesQueryResult;
 };
 
 export function useToggleUserStrategy() {
 	const queryClient = useQueryClient();
-	const queryKey = getGetUsersStrategyQueryKey();
+	const queryKey = getGetUserStrategiesQueryKey();
 	const mutationOptions = {
 		onMutate: async (variables: ToggleUserStrategyVariables) => {
 			await queryClient.cancelQueries({ queryKey });
 
 			const previousUserStrategies
-				= queryClient.getQueryData<GetUsersStrategyQueryResult>(queryKey);
+				= queryClient.getQueryData<GetUserStrategiesQueryResult>(queryKey);
 
-			queryClient.setQueryData<GetUsersStrategyQueryResult>(
+			queryClient.setQueryData<GetUserStrategiesQueryResult>(
 				queryKey,
 				(currentUserStrategies) =>
 					getOptimisticUserStrategies(currentUserStrategies, variables),
@@ -47,7 +47,7 @@ export function useToggleUserStrategy() {
 			}
 		},
 	};
-	const createStrategyMutation = useCreateUsersStrategy({
+	const createStrategyMutation = useCreateUserStrategy({
 		mutation: {
 			...mutationOptions,
 			onMutate: (variables) =>
@@ -63,7 +63,7 @@ export function useToggleUserStrategy() {
 			},
 		},
 	});
-	const deleteStrategyMutation = useDeleteUsersStrategy({
+	const deleteStrategyMutation = useDeleteUserStrategy({
 		mutation: {
 			...mutationOptions,
 			onMutate: (variables) =>
@@ -119,26 +119,29 @@ function deleteStrategyVariablesToToggleVariables(
 }
 
 function getOptimisticUserStrategies(
-	currentUserStrategies: GetUsersStrategyQueryResult | undefined,
+	currentUserStrategies: GetUserStrategiesQueryResult | undefined,
 	variables: ToggleUserStrategyVariables,
 ) {
 	if (!currentUserStrategies) {
 		return currentUserStrategies;
 	}
 
-	const userStrategiesWithoutCurrent = currentUserStrategies.data.filter(
+	const userStrategiesWithoutCurrent = currentUserStrategies.data.items.filter(
 		(userStrategy) => userStrategy.tradeStrategyId !== variables.strategyId,
 	);
 	const optimisticUserStrategy: UserTradeStrategyDto = {
 		id: -variables.strategyId,
-		userId: currentUserStrategies.data[0]?.userId ?? 0,
+		userId: currentUserStrategies.data.items[0]?.userId ?? 0,
 		tradeStrategyId: variables.strategyId,
 	};
 
 	return {
 		...currentUserStrategies,
-		data: variables.isActive
-			? [...userStrategiesWithoutCurrent, optimisticUserStrategy]
-			: userStrategiesWithoutCurrent,
+		data: {
+			...currentUserStrategies.data,
+			items: variables.isActive
+				? [...userStrategiesWithoutCurrent, optimisticUserStrategy]
+				: userStrategiesWithoutCurrent,
+		},
 	};
 }

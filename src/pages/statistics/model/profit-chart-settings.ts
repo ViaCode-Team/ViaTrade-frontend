@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import type { Trade } from '@/shared/api';
+import type { TradeResponse } from '@/shared/api';
 
 import { DATE_DISPLAY_FORMAT } from '@/shared/model';
 
@@ -33,7 +33,7 @@ function subtractGranularity(date: string, granularity: ProfitChartGranularity) 
 	return dayjs(date).subtract(1, granularity);
 }
 
-function getTradeChartDate(trade: Trade) {
+function getTradeChartDate(trade: TradeResponse) {
 	return dayjs(trade.dateClose ?? trade.dateOpen).startOf('day');
 }
 
@@ -102,7 +102,7 @@ export function normalizeProfitChartSettings(
 	};
 }
 
-export function getInitialProfitChartSettings(trades: Trade[]): ProfitChartSettings {
+export function getInitialProfitChartSettings(trades: TradeResponse[]): ProfitChartSettings {
 	const tradeDates = trades.map(getTradeChartDate);
 	const fallbackEndDate = dayjs().startOf('day');
 	const lastTradeDate = tradeDates.length > 0
@@ -132,7 +132,7 @@ export function getProfitChartDateRangeParams(settings: ProfitChartSettings) {
 }
 
 export function getProfitChartData(
-	trades: Trade[],
+	trades: TradeResponse[],
 	granularity: ProfitChartGranularity,
 ): ProfitChartPoint[] {
 	const pnlByDate = new Map<string, number>();

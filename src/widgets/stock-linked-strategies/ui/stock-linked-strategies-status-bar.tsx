@@ -8,7 +8,10 @@ import {
 	type LinkedStrategyFilters,
 } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
-import { useStockLinkedStrategies } from '../model/use-stock-linked-strategies';
+import {
+	STOCK_LINKED_STRATEGIES_PAGE_SIZE,
+	useStockLinkedStrategies,
+} from '../model/use-stock-linked-strategies';
 
 type StockLinkedStrategiesStatusBarProps = {
 	stockId: number;
@@ -16,7 +19,7 @@ type StockLinkedStrategiesStatusBarProps = {
 };
 
 export function StockLinkedStrategiesStatusBar({ stockId, filters }: StockLinkedStrategiesStatusBarProps) {
-	const { allLinkedStrategies } = useStockLinkedStrategies(stockId);
+	const { allLinkedStrategies } = useStockLinkedStrategies(stockId, 1, STOCK_LINKED_STRATEGIES_PAGE_SIZE);
 	const filteredStrategies = useMemo(
 		() => filterLinkedStrategies(allLinkedStrategies, filters),
 		[allLinkedStrategies, filters],

@@ -1,6 +1,5 @@
 import { SegmentedControl, Select } from '@mantine/core';
 
-import { useGetAll } from '@/entities/strategy';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
@@ -9,17 +8,19 @@ import type { StrategySortOption, StrategyStatusFilter } from '../lib/filters';
 
 import { strategyFiltersSchema, strategySortOptions } from '../lib/filters';
 
-export function StrategiesControls() {
-	const { filters, setFilter } = useUrlFilters(strategyFiltersSchema);
+export type StrategiesControlsProps = {
+	disabled?: boolean;
+	isLoading?: boolean;
+};
 
-	const { data, isLoading } = useGetAll();
-	const disabled = isLoading || (data?.data.length === 0);
+export function StrategiesControls({ disabled = false, isLoading = false }: StrategiesControlsProps) {
+	const { filters, setFilters } = useUrlFilters(strategyFiltersSchema);
 
 	return (
 		<ControlsGroup>
 			<SearchInput
 				value={filters.q}
-				onChange={(val) => setFilter('q', val)}
+				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Найти стратегию...'
 				disabled={disabled}
 				isLoading={isLoading}
@@ -28,14 +29,14 @@ export function StrategiesControls() {
 			<Select
 				data={strategySortOptions}
 				value={filters.listSort}
-				onChange={(val) => setFilter('listSort', val as StrategySortOption)}
+				onChange={(val) => setFilters({ listSort: val as StrategySortOption, page: '1' })}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
 
 			<SegmentedControl
 				value={filters.statusFilter}
-				onChange={(val) => setFilter('statusFilter', val as StrategyStatusFilter)}
+				onChange={(val) => setFilters({ statusFilter: val as StrategyStatusFilter, page: '1' })}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

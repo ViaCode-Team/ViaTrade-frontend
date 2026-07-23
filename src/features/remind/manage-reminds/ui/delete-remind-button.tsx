@@ -2,15 +2,20 @@ import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getGetAllByUserQueryKey, getGetRemindStatisticsQueryKey, useDelete } from '@/entities/remind';
+import {
+	getGetReminderStatisticsQueryKey,
+	getGetUserRemindersQueryKey,
+	type getUserRemindersResponseSuccess,
+	useDeleteUserReminder,
+} from '@/entities/remind';
 
 type DeleteRemindButtonProps = {
-	remindId: string;
+	id: string;
 };
 
-export function DeleteRemindButton({ remindId }: DeleteRemindButtonProps) {
+export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 	const queryClient = useQueryClient();
-	const deleteRemindMutation = useDelete();
+	const deleteRemindMutation = useDeleteUserReminder();
 
 	return (
 		<>
@@ -21,20 +26,23 @@ export function DeleteRemindButton({ remindId }: DeleteRemindButtonProps) {
 					size='md'
 					aria-label='Удалить напоминание'
 					onClick={() => {
-						deleteRemindMutation.mutate({ remindId: Number(remindId) }, {
+						deleteRemindMutation.mutate({ id: Number(id) }, {
 							onSuccess: () => {
-								queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
+								queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
 
-								const updater = (oldData: any) => {
+								const updater = (oldData: getUserRemindersResponseSuccess | undefined) => {
 									if (!oldData)
 										return oldData;
 									return {
 										...oldData,
-										data: oldData.data.filter((r: any) => r.id !== Number(remindId)),
+										data: {
+											...oldData.data,
+											items: oldData.data.items.filter((r) => r.id !== Number(id)),
+										},
 									};
 								};
 
-								queryClient.setQueriesData({ queryKey: getGetAllByUserQueryKey() }, updater);
+								queryClient.setQueriesData({ queryKey: getGetUserRemindersQueryKey() }, updater);
 								queryClient.setQueriesData(
 									{ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/TradeRemind/byuser/instrument/') },
 									updater,

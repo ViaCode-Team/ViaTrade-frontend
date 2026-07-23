@@ -5,11 +5,13 @@ import type { Strategy } from '@/entities/strategy';
 
 import { StrategiesList, StrategiesListSkeleton } from '@/entities/strategy';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
+import { useUrlFilters } from '@/shared/lib/url-filters';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
+import { strategyFiltersSchema } from '../lib/filters';
 import { useFilteredStrategies } from '../lib/use-filtered-strategies';
-import { useStrategiesData } from '../lib/use-strategies-data';
+import { getStrategiesRequestParams, useStrategiesData } from '../lib/use-strategies-data';
 import { StrategyStockBindingModalBoundary } from './strategy-stock-binding-modal';
 
 function openModal(strategy: Strategy) {
@@ -21,13 +23,18 @@ function openModal(strategy: Strategy) {
 }
 
 function StrategiesOverviewList() {
-	const { strategies } = useStrategiesData();
+	const { filters, setFilter } = useUrlFilters(strategyFiltersSchema);
+	const { strategies, totalPages, totalCount } = useStrategiesData(getStrategiesRequestParams({
+		page: Math.max(Number(filters.page) || 1, 1),
+		sortOption: filters.listSort,
+		statusFilter: filters.statusFilter,
+	}));
 	const filteredStrategies = useFilteredStrategies(strategies);
 
 	return (
 		<DataState
-			hasData={strategies.length > 0}
-			hasResults={filteredStrategies.length > 0}
+			hasData={!!totalCount}
+			hasResults={!!filteredStrategies.length}
 		>
 			<StrategiesList
 				strategies={filteredStrategies}
@@ -47,6 +54,11 @@ function StrategiesOverviewList() {
 						Связать с акцией
 					</Button>
 				)}
+				pagination={{
+					page: Number(filters.page) || 1,
+					totalPages,
+					onPageChange: (page) => setFilter('page', String(page)),
+				}}
 			/>
 		</DataState>
 	);

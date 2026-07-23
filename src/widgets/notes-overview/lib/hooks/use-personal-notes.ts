@@ -1,69 +1,45 @@
-import { useSuspenseQueries } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import {
-	getGetByUserInstrumentAllSuspenseQueryOptions,
-	getGetByUserStrategyAllSuspenseQueryOptions,
+	useGetUserNotesSuspense,
 } from '@/entities/note';
 import { mapTradeCodeToStock } from '@/entities/stock';
-import { getGetAllSuspenseQueryOptions as getGetAllStrategiesSuspenseQueryOptions } from '@/entities/strategy';
-import { getGetAllStocksCodesSuspenseQueryOptions } from '@/entities/trade-code';
-import {
-	mergeApiNotesWithDrafts,
-	useStoredPersonalNotesQuery,
-} from '@/features/note/manage-note';
+import { useGetStrategiesSuspense } from '@/entities/strategy';
+import { useGetStockCodesSuspense } from '@/entities/trade-code';
+import { useNotesControls } from '@/features/note/filter-notes';
+import { mergeApiNotesWithDrafts, useStoredPersonalNotesQuery } from '@/features/note/manage-note';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import { getApiPersonalNotes } from '../../model/api-notes';
 
+const NOTES_PAGE_SIZE = 12;
+
 export function usePersonalNotes() {
 	const storedNotesQuery = useStoredPersonalNotesQuery();
-
-	const [
-		instrumentNotesQuery,
-		strategyNotesQuery,
-		stocksQuery,
-		strategiesQuery,
-	] = useSuspenseQueries({
-		queries: [
-			getGetByUserInstrumentAllSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
-			getGetByUserStrategyAllSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
-			getGetAllStocksCodesSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
-			getGetAllStrategiesSuspenseQueryOptions({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } }) as any,
-		],
-	}) as [any, any, any, any];
+	const { filters, setFilters } = useNotesControls();
+	const notesQuery = useGetUserNotesSuspense({ page: filters.page, pageSize: NOTES_PAGE_SIZE }, { query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
+	const stocksQuery = useGetStockCodesSuspense({ page: 1, pageSize: 100 }, { query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
+	const strategiesQuery = useGetStrategiesSuspense({ page: 1, pageSize: 100 }, { query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
 
 	const apiNotes = useMemo(
 		() => getApiPersonalNotes({
-			instrumentNotes: instrumentNotesQuery.data?.data ?? [],
-			strategyNotes: strategyNotesQuery.data?.data ?? [],
-			stocks: (stocksQuery.data?.data ?? []).map(mapTradeCodeToStock),
-			strategies: strategiesQuery.data?.data ?? [],
+			instrumentNotes: notesQuery.data.data.items.filter((note) => note.tradeCodeId !== undefined),
+			strategyNotes: notesQuery.data.data.items.filter((note) => note.tradeStrategyId !== undefined),
+			stocks: stocksQuery.data.data.items.map(mapTradeCodeToStock),
+			strategies: strategiesQuery.data.data.items,
 		}),
-		[
-			instrumentNotesQuery.data?.data,
-			strategyNotesQuery.data?.data,
-			stocksQuery.data?.data,
-			strategiesQuery.data?.data,
-		],
+		[notesQuery.data.data.items, stocksQuery.data.data.items, strategiesQuery.data.data.items],
 	);
 
-	const notes = useMemo(
-		() => mergeApiNotesWithDrafts({
-			apiNotes,
-			storedNotes: storedNotesQuery.data ?? [],
-		}),
-		[apiNotes, storedNotesQuery.data],
-	);
-
-	const refetch = () => {
-		void instrumentNotesQuery.refetch();
-		void strategyNotesQuery.refetch();
-	};
+	const notes = useMemo(() => mergeApiNotesWithDrafts({ apiNotes, storedNotes: storedNotesQuery.data ?? [] }), [apiNotes, storedNotesQuery.data]);
 
 	return {
 		notes,
 		apiNotes,
-		refetch,
+		refetch: notesQuery.refetch,
+		totalCount: notesQuery.data.data.totalCount,
+		totalPages: notesQuery.data.data.totalPages,
+		page: notesQuery.data.data.page,
+		setPage: (page: number) => setFilters({ page: String(page) }),
 	};
 }

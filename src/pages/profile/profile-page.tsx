@@ -24,13 +24,13 @@ export function ProfilePage() {
 				<Section header={{ title: 'Сторонние сервисы' }}>
 					<ThirdPartyService />
 				</Section>
-
-				<Section header={{ title: 'Настройки приложения' }}>
-					<ClearCacheSettings />
-				</Section>
 			</Stack>
 
 			<SessionsOverview />
+
+			<Section header={{ title: 'Настройки приложения' }}>
+				<ClearCacheSettings />
+			</Section>
 		</>
 	);
 }

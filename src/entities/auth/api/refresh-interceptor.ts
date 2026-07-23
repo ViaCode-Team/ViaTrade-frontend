@@ -5,13 +5,13 @@ import {
 	getLoginUrl,
 	getLogoutAllUrl,
 	getLogoutUrl,
-	getRefreshUrl,
+	getRefreshTokenUrl,
 	getRegisterUrl,
 } from './gen';
 
 const AUTH_ENTRY_URLS = [getRegisterUrl(), getLoginUrl()];
 const AUTH_EXIT_URLS = [getLogoutUrl(), getLogoutAllUrl()];
-const AUTH_REFRESH_URLS = [getRefreshUrl()];
+const AUTH_REFRESH_URLS = [getRefreshTokenUrl()];
 const AUTH_URLS = [...AUTH_ENTRY_URLS, ...AUTH_EXIT_URLS, ...AUTH_REFRESH_URLS];
 
 function matchesAnyUrl(url: string, paths: string[]) {
@@ -31,7 +31,7 @@ async function isPinLocked(): Promise<boolean> {
 }
 
 async function refreshToken(): Promise<void> {
-	await apiClient.post(getRefreshUrl());
+	await apiClient.post(getRefreshTokenUrl());
 }
 
 let refreshPromise: Promise<void> | null = null;

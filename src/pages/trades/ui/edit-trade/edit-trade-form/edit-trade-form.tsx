@@ -26,9 +26,9 @@ import {
 	TRADE_DIRECTION_HELP_TEXT,
 	TRADE_INSTRUMENT_TYPE_OPTIONS,
 	TRADE_SIGNAL_OPTIONS,
-	useUpdateTrade,
+	useUpdateUserTrade,
 } from '@/entities/trade';
-import { useGetAllStocksCodes } from '@/entities/trade-code';
+import { useGetStockCodes } from '@/entities/trade-code';
 import { HELP_TOOLTIP_OPEN_DELAY } from '@/shared/model';
 
 type EditTradeFormProps = {
@@ -48,10 +48,10 @@ type FormValues = {
 };
 
 export function EditTradeForm({ trade }: EditTradeFormProps) {
-	const { mutate: updateTrade, isPending } = useUpdateTrade();
-	const { data: tradeCodesData, isLoading: isLoadingCodes } = useGetAllStocksCodes();
+	const { mutate: updateTrade, isPending } = useUpdateUserTrade();
+	const { data: tradeCodesData, isLoading: isLoadingCodes } = useGetStockCodes();
 
-	const tradeCodes = tradeCodesData?.data ?? [];
+	const tradeCodes = tradeCodesData?.data.items ?? [];
 	const selectOptions = tradeCodes.map((tc) => ({
 		value: String(tc.id),
 		label: `${tc.exchangeId} — ${tc.description || 'Нет описания'}`,

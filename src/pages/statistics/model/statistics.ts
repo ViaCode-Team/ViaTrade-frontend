@@ -1,6 +1,6 @@
 import type {
 	IncomeTradeStatistic,
-	Trade,
+	TradeResponse,
 	TradeStatistic,
 } from '@/shared/api';
 
@@ -34,7 +34,7 @@ export function getIncomeChartData(incomeStatistic: IncomeTradeStatistic): Incom
 	];
 }
 
-export function getDirectionPerformanceChartData(trades: Trade[]): DirectionPerformanceChartPoint[] {
+export function getDirectionPerformanceChartData(trades: TradeResponse[]): DirectionPerformanceChartPoint[] {
 	const performance = {
 		Long: 0,
 		Short: 0,

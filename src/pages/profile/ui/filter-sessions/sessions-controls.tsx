@@ -1,23 +1,22 @@
-import { useGetSessions } from '@/entities/auth';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import { normalizeUserSessions } from '../session-entity';
 import { sessionFiltersSchema } from './filters';
 
-export function SessionsControls() {
-	const { filters, setFilter } = useUrlFilters(sessionFiltersSchema);
+export type SessionsControlsProps = {
+	disabled?: boolean;
+	isLoading?: boolean;
+};
 
-	const { data, isLoading } = useGetSessions();
-	const sessions = data?.data ? normalizeUserSessions(data.data) : [];
-	const disabled = isLoading || (sessions.length === 0);
+export function SessionsControls({ disabled = false, isLoading = false }: SessionsControlsProps = {}) {
+	const { filters, setFilters } = useUrlFilters(sessionFiltersSchema);
 
 	return (
 		<ControlsGroup>
 			<SearchInput
 				value={filters.q}
-				onChange={(val) => setFilter('q', val)}
+				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Поиск сессии...'
 				disabled={disabled}
 				isLoading={isLoading}

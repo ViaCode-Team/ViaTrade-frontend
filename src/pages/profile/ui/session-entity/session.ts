@@ -39,12 +39,3 @@ export function sortUserSessionsByActivity(
 		return toTimestamp(b.lastSeen) - toTimestamp(a.lastSeen);
 	});
 }
-
-export function getSessionsPagesCount(totalSessions: number): number {
-	return Math.ceil(totalSessions / SESSIONS_PER_PAGE);
-}
-
-export function getSessionsPage(sessions: UserSessionDto[], page: number): UserSessionDto[] {
-	const start = (page - 1) * SESSIONS_PER_PAGE;
-	return sessions.slice(start, start + SESSIONS_PER_PAGE);
-}

@@ -2,8 +2,9 @@ import { useIsFetching } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
 import {
-	getGetByUserQueryKey,
-	useGetByUser,
+	getGetUserTradesQueryKey,
+	normalizeTradePage,
+	useGetUserTrades,
 } from '@/entities/trade';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 
@@ -21,12 +22,12 @@ import {
 
 export function useProfitChartControls() {
 	const { filters, setFilters } = useUrlFilters(profitChartFiltersSchema);
-	const tradesQuery = useGetByUser();
-	const isFetchingTrades = useIsFetching({ queryKey: getGetByUserQueryKey() });
+	const tradesQuery = useGetUserTrades({ page: 1, pageSize: 100 });
+	const isFetchingTrades = useIsFetching({ queryKey: getGetUserTradesQueryKey() });
 	const [maxEndDate] = useState(() => formatProfitChartDate(new Date()));
 
 	const trades = useMemo(
-		() => tradesQuery.data?.data ?? [],
+		() => normalizeTradePage(tradesQuery.data?.data).items,
 		[tradesQuery.data?.data],
 	);
 	const settings = useMemo(

@@ -1,10 +1,10 @@
-import { useGetResultStatisticsSuspense } from '@/entities/signal';
+import { useGetStrategyResultStatisticsSuspense } from '@/entities/signal';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 
 function SignalsSummary() {
-	const { data } = useGetResultStatisticsSuspense();
+	const { data } = useGetStrategyResultStatisticsSuspense();
 	const {
 		buySignals,
 		sellSignals,

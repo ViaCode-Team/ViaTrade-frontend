@@ -6,7 +6,7 @@ import {
 } from 'react-router';
 
 import { mapTradeCodeToStock } from '@/entities/stock';
-import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
+import { useGetStockCodesSuspense } from '@/entities/trade-code';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StockReminds } from '@/pages/stock/ui/stock-reminds';
 import { ROUTES } from '@/shared/model';
@@ -21,10 +21,10 @@ import { StockNotFound } from './ui/stock-not-found';
 
 function StockPageContent() {
 	const { stockId } = useParams();
-	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
+	const { data: stocksResponse } = useGetStockCodesSuspense({ page: 1, pageSize: 100 });
 
 	const normalizedStockId = stockId?.toLowerCase();
-	const tradeCode = stocksResponse.data.find((tc) =>
+	const tradeCode = stocksResponse.data.items.find((tc) =>
 		tc.id.toString() === normalizedStockId
 		|| tc.exchangeId.toLowerCase() === normalizedStockId,
 	);

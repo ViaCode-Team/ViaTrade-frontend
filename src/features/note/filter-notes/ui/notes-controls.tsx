@@ -11,13 +11,13 @@ type NotesControlsProps = {
 };
 
 export function NotesControls({ isLoading, disabled }: NotesControlsProps = {}) {
-	const { filters, setFilter } = useNotesControls();
+	const { filters, setFilters } = useNotesControls();
 
 	return (
 		<ControlsGroup>
 			<SearchInput
 				value={filters.searchQuery}
-				onChange={(val) => setFilter('q', val)}
+				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Поиск заметок...'
 				size='sm'
 				disabled={disabled}
@@ -26,7 +26,7 @@ export function NotesControls({ isLoading, disabled }: NotesControlsProps = {}) 
 
 			<SegmentedControl
 				value={filters.sourceFilter}
-				onChange={(val) => setFilter('sourceFilter', val)}
+				onChange={(val) => setFilters({ sourceFilter: val, page: '1' })}
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },

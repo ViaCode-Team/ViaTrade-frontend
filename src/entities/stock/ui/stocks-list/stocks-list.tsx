@@ -1,4 +1,11 @@
-import { SimpleGrid, Stack } from '@mantine/core';
+import {
+	Center,
+	Pagination,
+	SimpleGrid,
+	Stack,
+} from '@mantine/core';
+
+import type { PaginationConfig } from '@/shared/model';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
@@ -10,12 +17,14 @@ export type StocksListProps = {
 	stocks: Stock[];
 	linkCountsByStockId: Map<number, number>;
 	onLinkedStrategiesClick: (stock: Stock) => void;
+	pagination?: PaginationConfig;
 };
 
 export function StocksList({
 	stocks,
 	linkCountsByStockId,
 	onLinkedStrategiesClick,
+	pagination,
 }: StocksListProps) {
 	return (
 		<Stack gap='md'>
@@ -36,6 +45,16 @@ export function StocksList({
 					</li>
 				))}
 			</SimpleGrid>
+
+			{pagination && (
+				<Center>
+					<Pagination
+						total={pagination.totalPages}
+						value={pagination.page}
+						onChange={pagination.onPageChange}
+					/>
+				</Center>
+			)}
 		</Stack>
 	);
 }

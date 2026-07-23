@@ -1,14 +1,21 @@
 import { Skeleton } from '@mantine/core';
 
+import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
+import { strategyFiltersSchema } from '../lib/filters';
 import { useFilteredStrategies } from '../lib/use-filtered-strategies';
-import { useStrategiesData } from '../lib/use-strategies-data';
+import { getStrategiesRequestParams, useStrategiesData } from '../lib/use-strategies-data';
 
 export function StrategiesStatusBar() {
-	const { strategies } = useStrategiesData();
+	const { filters } = useUrlFilters(strategyFiltersSchema);
+	const { strategies, totalCount } = useStrategiesData(getStrategiesRequestParams({
+		page: Math.max(Number(filters.page) || 1, 1),
+		sortOption: filters.listSort,
+		statusFilter: filters.statusFilter,
+	}));
 	const filteredStrategies = useFilteredStrategies(strategies);
 
 	const activeCount = filteredStrategies.filter((s) => s.isActive).length;
@@ -16,7 +23,7 @@ export function StrategiesStatusBar() {
 
 	return (
 		<ListStatusBar
-			totalCount={strategies.length}
+			totalCount={totalCount}
 			filteredCount={filteredStrategies.length}
 			badges={(
 				<>

@@ -94,7 +94,7 @@ export default defineConfig({
 			},
 		},
 	}),
-	usersApi: createApiConfig('User', 'user', {
+	usersApi: createApiConfig('Users', 'user', {
 		output: {
 			override: {
 				query: {
@@ -103,8 +103,8 @@ export default defineConfig({
 			},
 		},
 	}),
-	signalApi: createApiConfig('Result', 'signal'),
-	tradeApi: createApiConfig('Trade', 'trade', {
+	signalApi: createApiConfig('Results', 'signal'),
+	tradeApi: createApiConfig('Trades', 'trade', {
 		output: {
 			override: {
 				query: {
@@ -113,8 +113,8 @@ export default defineConfig({
 			},
 		},
 	}),
-	tradeCodeApi: createApiConfig('TradeCode', 'trade-code'),
-	remindApi: createApiConfig('TradeRemind', 'remind', {
+	tradeCodeApi: createApiConfig('TradeCodes', 'trade-code'),
+	remindApi: createApiConfig('Reminders', 'remind', {
 		output: {
 			override: {
 				query: {
@@ -123,7 +123,7 @@ export default defineConfig({
 			},
 		},
 	}),
-	strategyApi: createApiConfig('Strategy', 'strategy', {
+	strategyApi: createApiConfig('Strategies', 'strategy', {
 		output: {
 			override: {
 				query: {
@@ -132,7 +132,7 @@ export default defineConfig({
 			},
 		},
 	}),
-	noteApi: createApiConfig('Note', 'note', {
+	noteApi: createApiConfig('Notes', 'note', {
 		output: {
 			override: {
 				query: {

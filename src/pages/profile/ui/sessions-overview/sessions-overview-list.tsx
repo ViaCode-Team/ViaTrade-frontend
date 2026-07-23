@@ -2,27 +2,28 @@ import { LogoutCurrentSessionAction } from '@/features/auth/logout';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { SessionsList, SessionsListSkeleton } from '../session-entity';
+import {
+	SessionsList,
+	SessionsListSkeleton,
+} from '../session-entity';
 import { useSessionsOverview } from './use-sessions-overview';
 
 function SessionsOverviewList() {
 	const {
-		sessions,
-		paginatedSessions,
+		filteredSessions,
 		currentSessionId,
-		activePage,
+		page,
 		totalPages,
+		totalCount,
 		setPage,
 	} = useSessionsOverview();
 
 	return (
-		<DataState hasData={!!sessions.length} hasResults={!!paginatedSessions.length}>
+		<DataState hasData={!!totalCount} hasResults={!!filteredSessions.length}>
 			<SessionsList
-				paginatedSessions={paginatedSessions}
+				paginatedSessions={filteredSessions}
 				currentSessionId={currentSessionId}
-				activePage={activePage}
-				totalPages={totalPages}
-				setPage={setPage}
+				pagination={{ page, totalPages, onPageChange: setPage }}
 				renderAction={(_, isCurrent) => {
 					if (!isCurrent)
 						return null;

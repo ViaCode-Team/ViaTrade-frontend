@@ -7,9 +7,9 @@ import {
 	mapStrategyResultResponseToSignals,
 	SignalsList,
 	SignalsListSkeleton,
-	useGetResultSuspense,
+	useGetStrategyResultsSuspense,
 } from '@/entities/signal';
-import { getFilteredSignals } from '@/pages/signals/ui/filter-signals';
+import { getFilteredSignals, getSignalRequestParams } from '@/pages/signals/ui/filter-signals';
 import {
 	QUERY_REFETCH_INTERVAL,
 } from '@/shared/model';
@@ -22,7 +22,7 @@ export type SignalsOverviewListProps = {
 };
 
 function SignalsOverviewList({ filters, onSignalSelect }: SignalsOverviewListProps) {
-	const { data: signalsData } = useGetResultSuspense(undefined, {
+	const { data: signalsData } = useGetStrategyResultsSuspense(getSignalRequestParams(filters.sortOption), {
 		query: {
 			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},

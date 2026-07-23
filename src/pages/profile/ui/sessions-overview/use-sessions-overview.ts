@@ -1,32 +1,27 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
-import { useGetSessionsSuspense } from '@/entities/auth';
+import { useGetUserSessionsSuspense } from '@/entities/auth';
 import { sessionFiltersSchema } from '@/pages/profile/ui/filter-sessions';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import {
 	getCurrentSessionId,
-	getSessionsPage,
-	getSessionsPagesCount,
 	normalizeUserSessions,
+	SESSIONS_PER_PAGE,
 	sortUserSessionsByActivity,
 } from '../session-entity';
 
 export function useSessionsOverview() {
-	const { filters } = useUrlFilters(sessionFiltersSchema);
+	const { filters, setFilter } = useUrlFilters(sessionFiltersSchema);
 	const searchQuery = filters.q;
-	const [page, setPage] = useState(1);
-	const [prevSearchQuery, setPrevSearchQuery] = useState(searchQuery);
+	const page = Math.max(Number(filters.page) || 1, 1);
+	const { data: sessionsData, refetch } = useGetUserSessionsSuspense(
+		{ page, pageSize: SESSIONS_PER_PAGE },
+		{ query: { refetchInterval: QUERY_REFETCH_INTERVAL } },
+	);
 
-	if (searchQuery !== prevSearchQuery) {
-		setPrevSearchQuery(searchQuery);
-		setPage(1);
-	}
-
-	const { data: sessionsData, refetch } = useGetSessionsSuspense({ query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
-
-	const sessions = useMemo(() => normalizeUserSessions(sessionsData.data), [sessionsData.data]);
+	const sessions = useMemo(() => normalizeUserSessions(sessionsData.data.items), [sessionsData.data.items]);
 	const currentSessionId = useMemo(() => getCurrentSessionId(sessions), [sessions]);
 	const sortedSessions = useMemo(
 		() => sortUserSessionsByActivity(sessions, currentSessionId),
@@ -42,21 +37,14 @@ export function useSessionsOverview() {
 		);
 	}, [sortedSessions, searchQuery]);
 
-	const totalPages = getSessionsPagesCount(filteredSessions.length);
-	const activePage = totalPages > 0 ? Math.min(page, totalPages) : 1;
-	const paginatedSessions = useMemo(
-		() => getSessionsPage(filteredSessions, activePage),
-		[filteredSessions, activePage],
-	);
-
 	return {
 		sessions,
 		filteredSessions,
-		paginatedSessions,
 		currentSessionId,
-		activePage,
-		totalPages,
-		setPage,
+		page,
+		totalPages: sessionsData.data.totalPages,
+		totalCount: sessionsData.data.totalCount,
+		setPage: (nextPage: number) => setFilter('page', String(nextPage)),
 		refetch,
 	};
 }

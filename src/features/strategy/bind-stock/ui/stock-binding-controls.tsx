@@ -4,32 +4,33 @@ import {
 	Stack,
 } from '@mantine/core';
 
+import type { Stock } from '@/entities/stock';
+
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
-import { getFilteredStocks, getNextStockIdsAfterVisibleToggle, getStockSelectionState } from '../model';
-import { ITEMS_PER_PAGE, useStrategyStockBindingDataQuery } from '../model/use-strategy-stock-binding';
+import { getNextStockIdsAfterVisibleToggle, getStockSelectionState } from '../model';
 
 type StockBindingControlsProps = {
 	searchPlaceholder?: string;
 	searchQuery: string;
 	onSearchQueryChange: (query: string) => void;
-	page: number;
 	selectedStockIds: string[];
 	onSelectedStockIdsChange: (stockIds: string[]) => void;
+	stocks: Stock[];
+	paginatedStocks: Stock[];
 };
 
 export function StockBindingControls({
 	searchPlaceholder = 'Найти акцию',
 	searchQuery,
 	onSearchQueryChange,
-	page,
 	selectedStockIds,
 	onSelectedStockIdsChange,
+	stocks,
+	paginatedStocks,
 }: StockBindingControlsProps) {
-	const { stocks, isLoading } = useStrategyStockBindingDataQuery();
-	const visibleStocks = getFilteredStocks(stocks, searchQuery);
-	const paginatedStocks = visibleStocks.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+	const isLoading = false;
 
 	const { allChecked, indeterminate } = getStockSelectionState(stocks, paginatedStocks, selectedStockIds);
 

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import type { Trade } from '@/shared/api';
+import type { TradeResponse } from '@/shared/api';
 
 import { v } from '@/shared/lib/validation';
 
@@ -39,7 +39,7 @@ function getDateFilterValue(value: string, fallback: string) {
 
 export function getProfitChartSettingsFromFilters(
 	filters: ProfitChartFilters,
-	trades: Trade[],
+	trades: TradeResponse[],
 	maxEndDate: string,
 ): ProfitChartSettings {
 	const initialSettings = getInitialProfitChartSettings(trades);

@@ -1,15 +1,9 @@
 import type { QueryClient } from '@tanstack/react-query';
 
-import type {
-	getByUserInstrumentAllResponseSuccess,
-	getByUserStrategyAllResponseSuccess,
-} from '@/entities/note';
+import type { getUserNotesResponseSuccess } from '@/entities/note';
 import type { DraftedPersonalNote } from '@/features/note/manage-note';
 
-import {
-	getGetByUserInstrumentAllQueryKey,
-	getGetByUserStrategyAllQueryKey,
-} from '@/entities/note';
+import { getGetUserNotesQueryKey } from '@/entities/note';
 
 export function setApiNoteTextInCache({
 	queryClient,
@@ -23,8 +17,8 @@ export function setApiNoteTextInCache({
 	if (note.source.type === 'stock') {
 		const sourceId = Number(note.source.id);
 
-		queryClient.setQueryData<getByUserInstrumentAllResponseSuccess>(
-			getGetByUserInstrumentAllQueryKey(),
+		queryClient.setQueryData<getUserNotesResponseSuccess>(
+			getGetUserNotesQueryKey(),
 			(data) => updateInstrumentNotesData(data, sourceId, text),
 		);
 		return;
@@ -32,8 +26,8 @@ export function setApiNoteTextInCache({
 
 	const sourceId = Number(note.source.id);
 
-	queryClient.setQueryData<getByUserStrategyAllResponseSuccess>(
-		getGetByUserStrategyAllQueryKey(),
+	queryClient.setQueryData<getUserNotesResponseSuccess>(
+		getGetUserNotesQueryKey(),
 		(data) => updateStrategyNotesData(data, sourceId, text),
 	);
 }
@@ -48,8 +42,8 @@ export function deleteApiNoteFromCache({
 	if (note.source.type === 'stock') {
 		const sourceId = Number(note.source.id);
 
-		queryClient.setQueryData<getByUserInstrumentAllResponseSuccess>(
-			getGetByUserInstrumentAllQueryKey(),
+		queryClient.setQueryData<getUserNotesResponseSuccess>(
+			getGetUserNotesQueryKey(),
 			(data) => deleteInstrumentNoteData(data, sourceId),
 		);
 		return;
@@ -57,14 +51,14 @@ export function deleteApiNoteFromCache({
 
 	const sourceId = Number(note.source.id);
 
-	queryClient.setQueryData<getByUserStrategyAllResponseSuccess>(
-		getGetByUserStrategyAllQueryKey(),
+	queryClient.setQueryData<getUserNotesResponseSuccess>(
+		getGetUserNotesQueryKey(),
 		(data) => deleteStrategyNoteData(data, sourceId),
 	);
 }
 
 function updateInstrumentNotesData(
-	data: getByUserInstrumentAllResponseSuccess | undefined,
+	data: getUserNotesResponseSuccess | undefined,
 	sourceId: number,
 	text: string,
 ) {
@@ -72,34 +66,40 @@ function updateInstrumentNotesData(
 		return data;
 	}
 
-	const exists = data.data.some((note) => note.tradeCodeId === sourceId);
+	const exists = data.data.items.some((note) => note.tradeCodeId === sourceId);
 
 	if (!exists) {
 		return {
 			...data,
-			data: [
+			data: {
 				...data.data,
-				{
-					id: Date.now(),
-					tradeCodeId: sourceId,
-					noteText: text,
-					isFavourite: false,
-					updateTime: new Date().toISOString(),
-				} as any,
-			],
+				items: [
+					...data.data.items,
+					{
+						id: Date.now(),
+						tradeCodeId: sourceId,
+						noteText: text,
+						isFavourite: false,
+						updateTime: new Date().toISOString(),
+					} as any,
+				],
+			},
 		};
 	}
 
 	return {
 		...data,
-		data: data.data.map((note) => note.tradeCodeId === sourceId
-			? { ...note, noteText: text }
-			: note),
+		data: {
+			...data.data,
+			items: data.data.items.map((note) => note.tradeCodeId === sourceId
+				? { ...note, noteText: text }
+				: note),
+		},
 	};
 }
 
 function deleteInstrumentNoteData(
-	data: getByUserInstrumentAllResponseSuccess | undefined,
+	data: getUserNotesResponseSuccess | undefined,
 	sourceId: number,
 ) {
 	if (!data) {
@@ -108,12 +108,15 @@ function deleteInstrumentNoteData(
 
 	return {
 		...data,
-		data: data.data.filter((note) => note.tradeCodeId !== sourceId),
+		data: {
+			...data.data,
+			items: data.data.items.filter((note) => note.tradeCodeId !== sourceId),
+		},
 	};
 }
 
 function deleteStrategyNoteData(
-	data: getByUserStrategyAllResponseSuccess | undefined,
+	data: getUserNotesResponseSuccess | undefined,
 	sourceId: number,
 ) {
 	if (!data) {
@@ -122,12 +125,15 @@ function deleteStrategyNoteData(
 
 	return {
 		...data,
-		data: data.data.filter((note) => note.tradeStrategyId !== sourceId),
+		data: {
+			...data.data,
+			items: data.data.items.filter((note) => note.tradeStrategyId !== sourceId),
+		},
 	};
 }
 
 function updateStrategyNotesData(
-	data: getByUserStrategyAllResponseSuccess | undefined,
+	data: getUserNotesResponseSuccess | undefined,
 	sourceId: number,
 	text: string,
 ) {
@@ -135,28 +141,34 @@ function updateStrategyNotesData(
 		return data;
 	}
 
-	const exists = data.data.some((note) => note.tradeStrategyId === sourceId);
+	const exists = data.data.items.some((note) => note.tradeStrategyId === sourceId);
 
 	if (!exists) {
 		return {
 			...data,
-			data: [
+			data: {
 				...data.data,
-				{
-					id: Date.now(),
-					tradeStrategyId: sourceId,
-					noteText: text,
-					isFavourite: false,
-					updateTime: new Date().toISOString(),
-				} as any,
-			],
+				items: [
+					...data.data.items,
+					{
+						id: Date.now(),
+						tradeStrategyId: sourceId,
+						noteText: text,
+						isFavourite: false,
+						updateTime: new Date().toISOString(),
+					} as any,
+				],
+			},
 		};
 	}
 
 	return {
 		...data,
-		data: data.data.map((note) => note.tradeStrategyId === sourceId
-			? { ...note, noteText: text }
-			: note),
+		data: {
+			...data.data,
+			items: data.data.items.map((note) => note.tradeStrategyId === sourceId
+				? { ...note, noteText: text }
+				: note),
+		},
 	};
 }

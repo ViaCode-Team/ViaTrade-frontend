@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import type { Stock } from '@/entities/stock';
 
 import { StocksList, StocksListSkeleton } from '@/entities/stock';
-import { useGetAllInstrumentsLinkSuspense } from '@/entities/strategy';
+import { useGetUserStrategyCodesSuspense } from '@/entities/strategy';
 import {
 	StocksControls,
 	useStocksControls,
@@ -22,27 +22,33 @@ import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
 import { UserStockLinkedStrategiesModal } from './ui/user-stock-linked-strategies-modal';
 
 function StocksListView({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: (stock: Stock) => void }) {
-	const { filters } = useStocksControls();
-	const { data: stocks } = useStocksQuerySuspense(
+	const { filters, setFilters } = useStocksControls();
+	const { data: stocksResponse } = useStocksQuerySuspense(
 		filters.searchQuery,
 		filters.sortOption,
+		filters.page,
 	);
-	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
+	const { data: instrumentsLinkResponse } = useGetUserStrategyCodesSuspense({ page: 1, pageSize: 100 });
 
 	const linkCountsByStockId = useMemo(() => {
 		const counts = new Map<number, number>();
-		instrumentsLinkResponse.data.forEach((link) => {
+		instrumentsLinkResponse.data.items.forEach((link) => {
 			counts.set(link.tradeCodeId, (counts.get(link.tradeCodeId) || 0) + 1);
 		});
 		return counts;
 	}, [instrumentsLinkResponse.data]);
 
 	return (
-		<DataState hasData={!!stocks.length}>
+		<DataState hasData={!!stocksResponse.data.totalCount} hasResults={!!stocksResponse.data.items.length}>
 			<StocksList
-				stocks={stocks}
+				stocks={stocksResponse.data.items}
 				linkCountsByStockId={linkCountsByStockId}
 				onLinkedStrategiesClick={onLinkedStrategiesClick}
+				pagination={{
+					page: stocksResponse.data.page,
+					totalPages: stocksResponse.data.totalPages,
+					onPageChange: (page) => setFilters({ page: String(page) }),
+				}}
 			/>
 		</DataState>
 	);
@@ -55,8 +61,8 @@ const StocksListViewBoundary = withQueryBoundary(StocksListView, {
 });
 
 export function StocksPage() {
-	const { data: stocksResponse, isLoading } = useStocksQuery('', 'name-asc');
-	const stocks = useMemo(() => stocksResponse ?? [], [stocksResponse]);
+	const { data: stocksResponse, isLoading } = useStocksQuery('', 'name-asc', 1);
+	const stocks = useMemo(() => stocksResponse?.data.items ?? [], [stocksResponse]);
 
 	function handleLinkedStrategyNavigate(modalId: string) {
 		modals.close(modalId);
@@ -98,7 +104,7 @@ export function StocksPage() {
 						<StocksControls disabled={isLoading || stocks.length === 0} isLoading={isLoading} />
 
 						<StocksStatusBarBoundary
-							totalCount={stocks.length}
+							totalCount={stocksResponse?.data.totalCount ?? 0}
 						/>
 					</Stack>
 

@@ -15,7 +15,7 @@ export type NotesOverviewListProps = {
 };
 
 function NotesOverviewList({ searchQuery, sourceFilter }: NotesOverviewListProps) {
-	const { notes: allNotes } = usePersonalNotes();
+	const { notes: allNotes, page, totalPages, setPage } = usePersonalNotes();
 	const { isNoteSaving, isNoteDeleting, updateNote, deleteNote } = useNotesMutations();
 
 	const resultNotes = getFilteredNotes({
@@ -37,6 +37,7 @@ function NotesOverviewList({ searchQuery, sourceFilter }: NotesOverviewListProps
 						onDelete={deleteNote}
 					/>
 				)}
+				pagination={{ page, totalPages, onPageChange: setPage }}
 			/>
 		</DataState>
 	);

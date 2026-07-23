@@ -1,4 +1,6 @@
-import { Group, Pagination, SimpleGrid, Stack } from '@mantine/core';
+import { Center, Pagination, SimpleGrid, Stack } from '@mantine/core';
+
+import type { PaginationConfig } from '@/shared/model';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
@@ -10,20 +12,16 @@ import cls from './strategy-stock-binding-list.module.css';
 export type StrategyStockBindingListProps = {
 	paginatedStocks: Stock[];
 	stocks: Stock[];
-	page: number;
-	totalPages: number;
 	selectedStockIds: string[];
 	onStockChange: (stockId: string, checked: boolean) => void;
-	onPageChange: (page: number) => void;
+	pagination?: PaginationConfig;
 };
 
 export function StrategyStockBindingList({
 	paginatedStocks,
-	page,
-	totalPages,
 	selectedStockIds,
 	onStockChange,
-	onPageChange,
+	pagination,
 }: StrategyStockBindingListProps) {
 	const selectedStockIdSet = new Set(selectedStockIds);
 
@@ -45,15 +43,14 @@ export function StrategyStockBindingList({
 				))}
 			</SimpleGrid>
 
-			{totalPages > 1 && (
-				<Group justify='center' mt='sm'>
+			{pagination && (
+				<Center>
 					<Pagination
-						total={totalPages}
-						value={page}
-						onChange={onPageChange}
-						size='sm'
+						total={pagination.totalPages}
+						value={pagination.page}
+						onChange={pagination.onPageChange}
 					/>
-				</Group>
+				</Center>
 			)}
 		</Stack>
 	);

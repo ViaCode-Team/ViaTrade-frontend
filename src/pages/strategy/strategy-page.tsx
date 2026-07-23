@@ -5,11 +5,11 @@ import {
 	useParams,
 } from 'react-router';
 
-import { useGetAllSuspense } from '@/entities/strategy';
+import { useGetStrategiesSuspense } from '@/entities/strategy';
 import {
-	useCreateInstrumentsLink,
-	useDeleteInstrumentsLink,
-	useGetAllInstrumentsLinkSuspense,
+	useCreateUserStrategyCode,
+	useDeleteUserStrategyCode,
+	useGetUserStrategyCodesSuspense,
 } from '@/entities/strategy';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StrategyStockBinding } from '@/features/strategy/bind-stock';
@@ -19,31 +19,31 @@ import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
-import { StrategyInfoSectionBoundary } from './ui/stratagy-info-section';
 import { StrategyHeroBoundary } from './ui/strategy-hero';
+import { StrategyInfoSectionBoundary } from './ui/strategy-info-section';
 import { StrategyNotFound } from './ui/strategy-not-found';
 
 function StrategyPageContent() {
 	const { strategyName } = useParams();
-	const strategiesQuery = useGetAllSuspense();
+	const strategiesQuery = useGetStrategiesSuspense({ page: 1, pageSize: 100 });
 	const decodedName = decodeURIComponent(strategyName || '').toLowerCase();
-	const strategySummary = strategiesQuery.data.data.find(
+	const strategySummary = strategiesQuery.data.data.items.find(
 		(s) => s.name.toLowerCase() === decodedName,
 	);
 	const strategyId = strategySummary ? strategySummary.id : null;
 	const hasStrategyId = strategyId !== null;
 
-	const { data: instrumentsLinkResponse } = useGetAllInstrumentsLinkSuspense();
+	const { data: instrumentsLinkResponse } = useGetUserStrategyCodesSuspense({ page: 1, pageSize: 100 });
 	const serverSelectedStockIds = useMemo(
 		() =>
-			instrumentsLinkResponse.data
+			instrumentsLinkResponse.data.items
 				.filter((link) => link.strategyId === strategyId)
 				.map((link) => String(link.tradeCodeId)),
-		[instrumentsLinkResponse.data, strategyId],
+		[instrumentsLinkResponse.data.items, strategyId],
 	);
 
-	const { mutate: createLink } = useCreateInstrumentsLink();
-	const { mutate: deleteLink } = useDeleteInstrumentsLink();
+	const { mutate: createLink } = useCreateUserStrategyCode();
+	const { mutate: deleteLink } = useDeleteUserStrategyCode();
 
 	const strategyNoteSource = useMemo(() => {
 		if (strategyId === null) {

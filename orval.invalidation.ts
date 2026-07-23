@@ -4,18 +4,18 @@ export const authMutationInvalidates = [
 	{
 		onMutations: ['login', 'register'],
 		invalidates: [
-			'getSessions',
+			'getUserSessions',
 			{ query: 'getMe', file: '@/entities/user' },
 		],
 	},
 	{
-		onMutations: ['refresh'],
-		invalidates: ['getSessions'],
+		onMutations: ['refreshToken'],
+		invalidates: ['getUserSessions'],
 	},
 	{
 		onMutations: ['logout', 'logoutAll'],
 		invalidates: [
-			{ query: 'getSessions', invalidateMode: 'reset' },
+			{ query: 'getUserSessions', invalidateMode: 'reset' },
 			{ query: 'getMe', file: '@/entities/user', invalidateMode: 'reset' },
 		],
 	},
@@ -23,24 +23,24 @@ export const authMutationInvalidates = [
 
 export const strategyMutationInvalidates = [
 	{
-		onMutations: ['createInstrumentsLink', 'deleteInstrumentsLink'],
+		onMutations: ['createUserStrategyCode', 'deleteUserStrategyCode'],
 		invalidates: [
 			'getStrategyStatistics',
-			'getAllInstrumentsLink',
-			{ query: 'getResult', file: '@/entities/signal', invalidateMode: 'reset' },
-			{ query: 'getResultByStrategyAndTradeCode', file: '@/entities/signal', invalidateMode: 'reset' },
-			{ query: 'getResultStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
+			'getUserStrategyCodes',
+			{ query: 'getStrategyResults', file: '@/entities/signal', invalidateMode: 'reset' },
+			{ query: 'getStrategyResultsByCode', file: '@/entities/signal', invalidateMode: 'reset' },
+			{ query: 'getStrategyResultStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
 		],
 	},
 	{
-		onMutations: ['createUsersStrategy', 'deleteUsersStrategy'],
+		onMutations: ['createUserStrategy', 'deleteUserStrategy'],
 		invalidates: [
 			'getStrategyStatistics',
-			'getUsersStrategy',
-			'getAllInstrumentsLink',
-			{ query: 'getResult', file: '@/entities/signal', invalidateMode: 'reset' },
-			{ query: 'getResultByStrategyAndTradeCode', file: '@/entities/signal', invalidateMode: 'reset' },
-			{ query: 'getResultStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
+			'getUserStrategies',
+			'getUserStrategyCodes',
+			{ query: 'getStrategyResults', file: '@/entities/signal', invalidateMode: 'reset' },
+			{ query: 'getStrategyResultsByCode', file: '@/entities/signal', invalidateMode: 'reset' },
+			{ query: 'getStrategyResultStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
@@ -48,69 +48,69 @@ export const strategyMutationInvalidates = [
 export const noteMutationInvalidates = [
 	{
 		onMutations: [
-			'createInstrumentNote',
-			'updateInstrumentNote',
-			'deleteInstrumentNote',
+			'addUserInstrumentNote',
+			'updateUserInstrumentNote',
+			'deleteUserInstrumentNote',
 		],
 		invalidates: [
 			'getNoteStatistics',
-			'getByUserInstrumentAll',
-			{ query: 'getNoteByUserInstrument', params: ['idInstrument'] },
+			'getUserNotes',
+			{ query: 'getUserInstrumentNote', params: ['tradeCodeId'] },
 		],
 	},
 	{
 		onMutations: [
-			'createStrategyNote',
-			'updateStrategyNote',
-			'deleteStrategyNote',
+			'addUserStrategyNote',
+			'updateUserStrategyNote',
+			'deleteUserStrategyNote',
 		],
 		invalidates: [
 			'getNoteStatistics',
-			'getByUserStrategyAll',
-			{ query: 'getByUserStrategy', params: ['idStrategy'] },
+			'getUserNotes',
+			{ query: 'getUserStrategyNote', params: ['strategyId'] },
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
 
 export const remindMutationInvalidates = [
 	{
-		onMutations: ['create'],
+		onMutations: ['createUserRemind'],
 		invalidates: [
-			'getRemindStatistics',
-			'getAllByUser',
-			{ query: 'getByUserInstrument', params: ['idInstrument'] },
-			'getActualRemind',
+			'getReminderStatistics',
+			'getUserReminders',
+			{ query: 'getUserRemindersByInstrument', params: ['tradeCodeId'] },
+			'getDueReminders',
 		],
 	},
 	{
-		onMutations: ['update', '_delete'],
+		onMutations: ['updateUserReminder', 'deleteUserReminder'],
 		invalidates: [
-			'getRemindStatistics',
-			'getAllByUser',
-			'getActualRemind',
-			{ query: 'getRemindById', params: ['remindId'] },
+			'getReminderStatistics',
+			'getUserReminders',
+			'getDueReminders',
+			{ query: 'getUserReminderById', params: ['id'] },
 		],
 	},
 	{
-		onMutations: ['deleteActualRemind'],
+		onMutations: ['deleteDueReminder'],
 		invalidates: [
-			'getRemindStatistics',
-			'getAllByUser',
-			'getActualRemind',
-			{ query: 'getRemindById', params: ['remindId'] },
+			'getReminderStatistics',
+			'getUserReminders',
+			'getDueReminders',
+			{ query: 'getUserReminderById', params: ['id'] },
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
 
 export const tradeMutationInvalidates = [
 	{
-		onMutations: ['createTrade'],
-		invalidates: ['getByUser', 'getTradeStatistics'],
+		onMutations: ['createUserTrade'],
+		invalidates: ['getUserTrades', 'getTradeStatistics'],
 	},
 	{
-		onMutations: ['updateTrade', 'deleteTrade'],
+		onMutations: ['updateUserTrade', 'deleteUserTrade'],
 		invalidates: [
-			'getByUser',
+			'getUserTrades',
 			'getTradeStatistics',
 			{ query: 'getTradeById', params: ['id'] },
 		],
@@ -119,7 +119,7 @@ export const tradeMutationInvalidates = [
 
 export const userMutationInvalidates = [
 	{
-		onMutations: ['postTgToken'],
-		invalidates: ['getTgToken', 'getMe'],
+		onMutations: ['linkTelegramToken'],
+		invalidates: ['generateTelegramToken', 'getMe'],
 	},
 ] satisfies MutationInvalidatesConfig;

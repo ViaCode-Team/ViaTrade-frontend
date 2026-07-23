@@ -12,6 +12,7 @@ export const strategySortOptions = [
 
 export const strategyFiltersSchema = v.object({
 	q: v.fallback(v.string(), ''),
+	page: v.fallback(v.string(), '1'),
 	listSort: v.fallback(
 		v.picklist(['name-asc', 'name-desc', 'accuracy-desc', 'accuracy-asc']),
 		'name-asc',

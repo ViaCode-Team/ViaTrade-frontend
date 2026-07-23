@@ -8,7 +8,10 @@ export {
 	mapStrategyToStrategyCard as toStrategyCardStrategy,
 	useToggleUserStrategy,
 } from './model';
-export { StockLinkedStrategiesList, StockLinkedStrategiesListSkeleton } from './ui/linked-strategies-list/stock-linked-strategies-list';
+export {
+	StockLinkedStrategiesList,
+	StockLinkedStrategiesListSkeleton,
+} from './ui/linked-strategies-list/stock-linked-strategies-list';
 export { StrategiesList } from './ui/strategies-list/strategies-list';
 export { StrategiesListSkeleton } from './ui/strategies-list/strategies-list.skeleton';
 export { StrategyCard } from './ui/strategy-card';

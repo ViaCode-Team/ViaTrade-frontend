@@ -55,6 +55,11 @@ export const theme = createTheme({
 				variant: 'filled',
 			},
 		},
+		Pagination: {
+			defaultProps: {
+				hideWithOnePage: true,
+			},
+		},
 		Title: {
 			styles: {
 				root: {

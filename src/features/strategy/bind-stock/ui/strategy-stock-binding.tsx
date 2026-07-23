@@ -8,8 +8,8 @@ import {
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
-import { getFilteredStocks, getNextStockIdsAfterStockToggle } from '../model';
-import { ITEMS_PER_PAGE, useStrategyStockBindingData } from '../model/use-strategy-stock-binding';
+import { getFilteredStocks, getNextStockIdsAfterStockToggle, getStockSelectionState } from '../model';
+import { useStrategyStockBindingData } from '../model/use-strategy-stock-binding';
 import { StockBindingControls } from './stock-binding-controls';
 import { StockBindingStatusBarBoundary } from './stock-binding-status-bar';
 
@@ -27,10 +27,9 @@ function StrategyStockBindingBase({
 	const [searchQuery, setSearchQuery] = useState('');
 	const [page, setPage] = useState(1);
 
-	const { stocks } = useStrategyStockBindingData();
+	const { stocks, totalPages, totalCount } = useStrategyStockBindingData(page);
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
-	const totalPages = Math.ceil(visibleStocks.length / ITEMS_PER_PAGE);
-	const paginatedStocks = visibleStocks.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+	const paginatedStocks = visibleStocks;
 
 	const handleSearchQueryChange = (query: string) => {
 		setSearchQuery(query);
@@ -44,28 +43,24 @@ function StrategyStockBindingBase({
 					searchPlaceholder={searchPlaceholder}
 					searchQuery={searchQuery}
 					onSearchQueryChange={handleSearchQueryChange}
-					page={page}
 					selectedStockIds={selectedStockIds}
+					stocks={stocks}
+					paginatedStocks={paginatedStocks}
 					onSelectedStockIdsChange={onSelectedStockIdsChange}
 				/>
 
-				<StockBindingStatusBarBoundary
-					searchQuery={searchQuery}
-					selectedStockIds={selectedStockIds}
-				/>
+				<StockBindingStatusBarBoundary totalCount={totalCount} filteredCount={visibleStocks.length} selectedCount={getStockSelectionState(stocks, visibleStocks, selectedStockIds).selectedCount} />
 			</Stack>
 
 			<DataState hasData={!!stocks.length} hasResults={!!visibleStocks.length}>
 				<StrategyStockBindingList
 					paginatedStocks={paginatedStocks}
 					stocks={stocks}
-					page={page}
-					totalPages={totalPages}
+					pagination={{ page, totalPages, onPageChange: setPage }}
 					selectedStockIds={selectedStockIds}
 					onStockChange={(stockId: string, checked: boolean) => {
-						onSelectedStockIdsChange(getNextStockIdsAfterStockToggle(stocks, selectedStockIds, stockId, checked));
+						onSelectedStockIdsChange(getNextStockIdsAfterStockToggle(selectedStockIds, stockId, checked));
 					}}
-					onPageChange={setPage}
 				/>
 			</DataState>
 		</Stack>

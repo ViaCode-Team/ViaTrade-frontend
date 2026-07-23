@@ -1,30 +1,23 @@
 import type { ReactNode } from 'react';
 
-import {
-	Group,
-	Pagination,
-	Stack,
-} from '@mantine/core';
+import { Center, Pagination, Stack } from '@mantine/core';
 
 import type { UserSessionDto } from '@/shared/api';
+import type { PaginationConfig } from '@/shared/model';
 
 import { SessionListItem } from '..';
 
 export type SessionsListProps = {
 	paginatedSessions: UserSessionDto[];
 	currentSessionId: string | undefined;
-	activePage: number;
-	totalPages: number;
-	setPage: (page: number) => void;
+	pagination?: PaginationConfig;
 	renderAction?: (session: UserSessionDto, isCurrent: boolean) => ReactNode;
 };
 
 export function SessionsList({
 	paginatedSessions,
 	currentSessionId,
-	activePage,
-	totalPages,
-	setPage,
+	pagination,
 	renderAction,
 }: SessionsListProps) {
 	return (
@@ -44,15 +37,14 @@ export function SessionsList({
 				})}
 			</Stack>
 
-			{totalPages > 1 && (
-				<Group justify='center' mt='sm'>
+			{pagination && (
+				<Center>
 					<Pagination
-						total={totalPages}
-						value={activePage}
-						onChange={setPage}
-						size='sm'
+						total={pagination.totalPages}
+						value={pagination.page}
+						onChange={pagination.onPageChange}
 					/>
-				</Group>
+				</Center>
 			)}
 		</Stack>
 	);

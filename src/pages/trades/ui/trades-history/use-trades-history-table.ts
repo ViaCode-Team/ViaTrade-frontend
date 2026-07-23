@@ -2,15 +2,15 @@ import { useIsFetching } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import type { Trade } from '@/shared/api';
+import type { TradeResponse, TradeSignal } from '@/shared/api';
 
-import { getGetByUserQueryKey, useGetByUserSuspense } from '@/entities/trade';
-import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
+import { getGetUserTradesQueryKey, normalizeTradePage, useGetUserTradesSuspense } from '@/entities/trade';
+import { useGetStockCodes } from '@/entities/trade-code';
 import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
 
 import { type TradeFilters, useTradesHistory } from '../filter-trades';
 
-export type ProcessedTrade = Trade & {
+export type ProcessedTrade = TradeResponse & {
 	ticker: string;
 	isLong: boolean;
 	income: number;
@@ -28,23 +28,42 @@ export function useTradesHistoryTable() {
 		setFilters,
 		setFilter,
 	} = useTradesHistory();
+	const tradeParams = {
+		page,
+		pageSize: 10,
+		status: statusFilter === 'all' ? undefined : statusFilter,
+		signal: (typeFilter === 'all' ? undefined : typeFilter === 'long' ? 1 : -1) as TradeSignal | undefined,
+	};
 
-	const { data: tradesResponse } = useGetByUserSuspense();
-	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
-	const isFetchingTrades = useIsFetching({ queryKey: getGetByUserQueryKey() });
+	const { data: tradesResponse } = useGetUserTradesSuspense({
+		...tradeParams,
+	});
+	const tradesPage = normalizeTradePage(tradesResponse.data);
+	const { data: stocksResponse } = useGetStockCodes({
+		page: 1,
+		pageSize: 100,
+	});
+	const isFetchingTrades = useIsFetching({ queryKey: getGetUserTradesQueryKey() });
 
-	const trades = tradesResponse.data;
-	const stocks = stocksResponse.data;
+	const trades = tradesPage.items;
+	const stocks = getList<{ id: number; exchangeId: string }>(stocksResponse?.data);
 
 	const processedTrades = useMemo(() => {
 		let result = trades.map((trade) => {
+			const normalizedTrade = {
+				...trade,
+				tradeOpen: toNumber(trade.tradeOpen),
+				tradeClose: toOptionalNumber(trade.tradeClose),
+				price: toNumber(trade.price),
+				netIncome: toOptionalNumber(trade.netIncome),
+			};
 			const stock = stocks.find((s) => s.id === trade.tradeCodeId);
 			return {
-				...trade,
-				ticker: stock?.exchangeId || '-',
+				...normalizedTrade,
+				ticker: stock?.exchangeId ?? `Инструмент #${trade.tradeCodeId}`,
 				isLong: trade.tradeSignal !== -1,
-				income: trade.price,
-				percent: trade.netIncome,
+				income: normalizedTrade.price,
+				percent: normalizedTrade.netIncome,
 			};
 		});
 
@@ -74,13 +93,6 @@ export function useTradesHistoryTable() {
 				return searchableString.includes(lowerSearch);
 			});
 		}
-		if (typeFilter !== 'all') {
-			result = result.filter((t) => (typeFilter === 'long' ? t.isLong : !t.isLong));
-		}
-		if (statusFilter !== 'all') {
-			result = result.filter((t) => (statusFilter === 'open' ? !t.dateClose : !!t.dateClose));
-		}
-
 		result.sort((a, b) => {
 			let aVal: string | number;
 			let bVal: string | number;
@@ -134,10 +146,10 @@ export function useTradesHistoryTable() {
 		});
 
 		return result;
-	}, [trades, stocks, q, typeFilter, statusFilter, fieldSort, directionSort]);
+	}, [trades, stocks, q, fieldSort, directionSort]);
 
-	const totalPages = Math.ceil(processedTrades.length / 10);
-	const paginatedTrades = processedTrades.slice((page - 1) * 10, page * 10);
+	const totalPages = tradesPage.totalPages;
+	const paginatedTrades = processedTrades;
 
 	const setSorting = (field: TradeFilters['fieldSort']) => {
 		const reversed = field === fieldSort ? directionSort === 'desc' : false;
@@ -164,4 +176,22 @@ export function useTradesHistoryTable() {
 		setSorting,
 		setPage,
 	};
+}
+
+function getList<T>(value: unknown): T[] {
+	if (Array.isArray(value))
+		return value as T[];
+
+	if (typeof value === 'object' && value !== null && 'items' in value && Array.isArray(value.items))
+		return value.items as T[];
+
+	return [];
+}
+
+function toNumber(value: number | null | undefined): number {
+	return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
+function toOptionalNumber(value: number | null | undefined): number | undefined {
+	return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
 }

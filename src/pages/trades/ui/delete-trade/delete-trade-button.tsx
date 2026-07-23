@@ -4,14 +4,14 @@ import { IconTrash } from '@tabler/icons-react';
 
 import type { Trade } from '@/shared/api';
 
-import { useDeleteTrade } from '@/entities/trade';
+import { useDeleteUserTrade } from '@/entities/trade';
 
 type DeleteTradeButtonProps = {
 	trade: Trade;
 };
 
 export function DeleteTradeButton({ trade }: DeleteTradeButtonProps) {
-	const { mutate: deleteTrade, isPending } = useDeleteTrade();
+	const { mutate: deleteTrade, isPending } = useDeleteUserTrade();
 
 	const openDeleteModal = () =>
 		modals.openConfirmModal({

@@ -9,7 +9,7 @@ import { useState } from 'react';
 import type { Trade } from '@/shared/api';
 import type { TradeRequest } from '@/shared/api';
 
-import { useUpdateTrade } from '@/entities/trade';
+import { useUpdateUserTrade } from '@/entities/trade';
 
 type FormValues = {
 	tradeClose: number | '';
@@ -21,7 +21,7 @@ type CloseTradeFormProps = {
 };
 
 export function CloseTradeForm({ trade }: CloseTradeFormProps) {
-	const { mutate: updateTrade, isPending } = useUpdateTrade();
+	const { mutate: updateTrade, isPending } = useUpdateUserTrade();
 	const [initialDate] = useState(() => new Date());
 
 	const form = useForm<FormValues>({

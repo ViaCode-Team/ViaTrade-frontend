@@ -50,17 +50,12 @@ export function getStockSelectionState(
 }
 
 export function getNextStockIdsAfterStockToggle(
-	stocks: Stock[],
 	selectedStockIds: string[],
 	stockId: string,
 	checked: boolean,
 ) {
-	const selectedStockIdSet = new Set(selectedStockIds);
-
 	if (checked) {
-		return stocks
-			.filter((stock) => stock.id === stockId || selectedStockIdSet.has(stock.id))
-			.map((stock) => stock.id);
+		return selectedStockIds.includes(stockId) ? selectedStockIds : [...selectedStockIds, stockId];
 	}
 
 	return selectedStockIds.filter((selectedStockId) => selectedStockId !== stockId);
@@ -72,14 +67,14 @@ export function getNextStockIdsAfterVisibleToggle({
 	selectedStockIds,
 	allChecked,
 }: ToggleVisibleStockSelectionParams) {
-	const selectedStockIdSet = new Set(selectedStockIds);
 	const visibleStockIdSet = new Set(visibleStocks.map((stock) => stock.id));
 
 	if (allChecked) {
 		return selectedStockIds.filter((stockId) => !visibleStockIdSet.has(stockId));
 	}
 
-	return stocks
-		.filter((stock) => selectedStockIdSet.has(stock.id) || visibleStockIdSet.has(stock.id))
-		.map((stock) => stock.id);
+	return [...new Set([
+		...selectedStockIds,
+		...stocks.filter((stock) => visibleStockIdSet.has(stock.id)).map((stock) => stock.id),
+	])];
 }

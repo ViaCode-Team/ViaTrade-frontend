@@ -5,6 +5,7 @@ import { v } from '@/shared/lib/validation';
 
 export const noteFiltersSchema = v.object({
 	q: v.fallback(v.string(), ''),
+	page: v.fallback(v.string(), '1'),
 	sourceFilter: v.fallback(
 		v.picklist(['all', 'stock', 'strategy']),
 		'all',
@@ -12,15 +13,16 @@ export const noteFiltersSchema = v.object({
 });
 
 export function useNotesControls() {
-	const { filters: urlFilters, setFilter } = useUrlFilters(noteFiltersSchema);
+	const { filters: urlFilters, setFilters } = useUrlFilters(noteFiltersSchema);
 
 	const filters = useMemo(
 		() => ({
 			searchQuery: urlFilters.q,
 			sourceFilter: urlFilters.sourceFilter,
+			page: Math.max(Number(urlFilters.page) || 1, 1),
 		}),
-		[urlFilters.q, urlFilters.sourceFilter],
+		[urlFilters.q, urlFilters.sourceFilter, urlFilters.page],
 	);
 
-	return { filters, setFilter };
+	return { filters, setFilters };
 }

@@ -12,13 +12,13 @@ type StocksControlsProps = {
 };
 
 export function StocksControls({ disabled, isLoading }: StocksControlsProps) {
-	const { filters, setFilter } = useStocksControls();
+	const { filters, setFilters } = useStocksControls();
 
 	return (
 		<ControlsGroup>
 			<SearchInput
 				value={filters.searchQuery}
-				onChange={(val) => setFilter('q', val)}
+				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Найти по тикеру или названию'
 				aria-label='Поиск акции'
 				disabled={disabled}
@@ -28,7 +28,7 @@ export function StocksControls({ disabled, isLoading }: StocksControlsProps) {
 			<Select
 				data={stockSortOptions}
 				value={filters.sortOption}
-				onChange={(value) => value && setFilter('listSort', value)}
+				onChange={(value) => value && setFilters({ listSort: value, page: '1' })}
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>

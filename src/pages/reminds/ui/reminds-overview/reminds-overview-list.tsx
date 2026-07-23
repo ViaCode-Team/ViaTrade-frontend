@@ -8,6 +8,9 @@ function RemindsOverviewList() {
 		reminds,
 		filteredReminds,
 		handleRemindChange,
+		page,
+		totalPages,
+		setPage,
 	} = useRemindList();
 
 	return (
@@ -15,7 +18,8 @@ function RemindsOverviewList() {
 			<RemindList
 				reminds={filteredReminds}
 				onRemindChange={handleRemindChange}
-				renderAction={(remind) => <DeleteRemindButton remindId={remind.id} />}
+				renderAction={(remind) => <DeleteRemindButton id={remind.id} />}
+				pagination={{ page, totalPages, onPageChange: setPage }}
 			/>
 		</DataState>
 	);

@@ -1,12 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
-	useCreateInstrumentNote,
-	useCreateStrategyNote,
-	useDeleteInstrumentNote,
-	useDeleteStrategyNote,
-	useUpdateInstrumentNote,
-	useUpdateStrategyNote,
+	useAddUserInstrumentNote,
+	useAddUserStrategyNote,
+	useDeleteUserInstrumentNote,
+	useDeleteUserStrategyNote,
+	useUpdateUserInstrumentNote,
+	useUpdateUserStrategyNote,
 } from '@/entities/note';
 import {
 	type DraftedPersonalNote,
@@ -21,12 +21,12 @@ import {
 export function useNotesMutations() {
 	const queryClient = useQueryClient();
 
-	const createInstrumentNoteMutation = useCreateInstrumentNote();
-	const createStrategyNoteMutation = useCreateStrategyNote();
-	const updateInstrumentNoteMutation = useUpdateInstrumentNote();
-	const updateStrategyNoteMutation = useUpdateStrategyNote();
-	const deleteInstrumentNoteMutation = useDeleteInstrumentNote();
-	const deleteStrategyNoteMutation = useDeleteStrategyNote();
+	const createInstrumentNoteMutation = useAddUserInstrumentNote();
+	const createStrategyNoteMutation = useAddUserStrategyNote();
+	const updateInstrumentNoteMutation = useUpdateUserInstrumentNote();
+	const updateStrategyNoteMutation = useUpdateUserStrategyNote();
+	const deleteInstrumentNoteMutation = useDeleteUserInstrumentNote();
+	const deleteStrategyNoteMutation = useDeleteUserStrategyNote();
 
 	function isNoteSaving(note: DraftedPersonalNote) {
 		const sourceId = getApiSourceId(note.source.id);
@@ -35,12 +35,12 @@ export function useNotesMutations() {
 		}
 
 		if (note.source.type === 'stock') {
-			return (updateInstrumentNoteMutation.isPending && updateInstrumentNoteMutation.variables?.idInstrument === sourceId)
-				|| (createInstrumentNoteMutation.isPending && createInstrumentNoteMutation.variables?.idInstrument === sourceId);
+			return (updateInstrumentNoteMutation.isPending && updateInstrumentNoteMutation.variables?.tradeCodeId === sourceId)
+				|| (createInstrumentNoteMutation.isPending && createInstrumentNoteMutation.variables?.tradeCodeId === sourceId);
 		}
 
-		return (updateStrategyNoteMutation.isPending && updateStrategyNoteMutation.variables?.idStrategy === sourceId)
-			|| (createStrategyNoteMutation.isPending && createStrategyNoteMutation.variables?.idStrategy === sourceId);
+		return (updateStrategyNoteMutation.isPending && updateStrategyNoteMutation.variables?.strategyId === sourceId)
+			|| (createStrategyNoteMutation.isPending && createStrategyNoteMutation.variables?.strategyId === sourceId);
 	}
 
 	function isNoteDeleting(note: DraftedPersonalNote) {
@@ -50,10 +50,10 @@ export function useNotesMutations() {
 		}
 
 		if (note.source.type === 'stock') {
-			return deleteInstrumentNoteMutation.isPending && deleteInstrumentNoteMutation.variables?.idInstrument === sourceId;
+			return deleteInstrumentNoteMutation.isPending && deleteInstrumentNoteMutation.variables?.tradeCodeId === sourceId;
 		}
 
-		return deleteStrategyNoteMutation.isPending && deleteStrategyNoteMutation.variables?.idStrategy === sourceId;
+		return deleteStrategyNoteMutation.isPending && deleteStrategyNoteMutation.variables?.strategyId === sourceId;
 	}
 
 	function updateNote(
@@ -79,13 +79,13 @@ export function useNotesMutations() {
 		if (note.source.type === 'stock') {
 			if (isNewNote) {
 				createInstrumentNoteMutation.mutate(
-					{ idInstrument: sourceId, data },
+					{ tradeCodeId: sourceId, data },
 					mutationOptions,
 				);
 			}
 			else {
 				updateInstrumentNoteMutation.mutate(
-					{ idInstrument: sourceId, data },
+					{ tradeCodeId: sourceId, data },
 					mutationOptions,
 				);
 			}
@@ -94,13 +94,13 @@ export function useNotesMutations() {
 
 		if (isNewNote) {
 			createStrategyNoteMutation.mutate(
-				{ idStrategy: sourceId, data },
+				{ strategyId: sourceId, data },
 				mutationOptions,
 			);
 		}
 		else {
 			updateStrategyNoteMutation.mutate(
-				{ idStrategy: sourceId, data },
+				{ strategyId: sourceId, data },
 				mutationOptions,
 			);
 		}
@@ -115,7 +115,7 @@ export function useNotesMutations() {
 
 		if (note.source.type === 'stock') {
 			deleteInstrumentNoteMutation.mutate(
-				{ idInstrument: sourceId },
+				{ tradeCodeId: sourceId },
 				{
 					onSuccess: () => {
 						deleteApiNoteFromCache({ queryClient, note });
@@ -127,7 +127,7 @@ export function useNotesMutations() {
 		}
 
 		deleteStrategyNoteMutation.mutate(
-			{ idStrategy: sourceId },
+			{ strategyId: sourceId },
 			{
 				onSuccess: () => {
 					deleteApiNoteFromCache({ queryClient, note });

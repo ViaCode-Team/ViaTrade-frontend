@@ -9,6 +9,7 @@ export const remindSortOptions = [
 
 export const remindFiltersSchema = v.object({
 	q: v.fallback(v.string(), ''),
+	page: v.fallback(v.string(), '1'),
 	listSort: v.fallback(
 		v.picklist(['date-asc', 'date-desc']),
 		'date-desc',

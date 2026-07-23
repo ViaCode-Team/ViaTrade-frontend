@@ -1,4 +1,4 @@
-import type { TradeRemind } from '@/shared/api';
+import type { ReminderResponse } from '@/shared/api';
 
 export type RemindSource = {
 	type: 'stock';
@@ -16,14 +16,14 @@ export type RemindItem = {
 
 export type RemindEditableField = Exclude<keyof RemindItem, 'id'>;
 
-export function mapTradeRemindToRemindItem(tradeRemind: TradeRemind): RemindItem {
+export function mapTradeRemindToRemindItem(tradeRemind: ReminderResponse): RemindItem {
 	const dt = new Date(tradeRemind.dateTime);
 	const date = formatRemindDate(dt);
 	const time = formatRemindTime(dt);
 
 	return {
 		id: tradeRemind.id.toString(),
-		text: tradeRemind.textRemind,
+		text: tradeRemind.text,
 		date,
 		time,
 		source: {

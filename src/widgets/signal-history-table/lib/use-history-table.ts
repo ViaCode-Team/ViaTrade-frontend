@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 
 import {
 	mapStrategyResultResponseToTradeHistory,
-	useGetResultByStrategyAndTradeCodeSuspense,
+	useGetStrategyResultsByCodeSuspense,
 } from '@/entities/signal';
 import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 
@@ -15,7 +15,7 @@ export function useSignalHistoryTable({ strategyName, tradeCode }: UseHistoryTab
 	const [page, setPage] = useState(1);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
-	const { data: historyData } = useGetResultByStrategyAndTradeCodeSuspense(
+	const { data: historyData } = useGetStrategyResultsByCodeSuspense(
 		strategyName,
 		tradeCode,
 		undefined,

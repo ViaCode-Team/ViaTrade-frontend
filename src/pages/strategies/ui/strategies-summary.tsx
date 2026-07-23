@@ -6,16 +6,16 @@ import { SummaryList } from '@/shared/ui/summary-list';
 function StrategiesSummary() {
 	const { data: response } = useGetStrategyStatisticsSuspense();
 	const {
-		activeStrategies,
-		disabledStrategies,
-		totalStrategies,
+		activeStrategiesCount,
+		notLinkedStrategiesCount,
+		totalStrategiesCount,
 	} = response.data;
 
 	return (
 		<SummaryList>
-			<SummaryCard title='Всего' value={totalStrategies} />
-			<SummaryCard title='Активные' value={activeStrategies} color='green' />
-			<SummaryCard title='Отключены' value={disabledStrategies} color='gray' />
+			<SummaryCard title='Всего' value={totalStrategiesCount} />
+			<SummaryCard title='Активные' value={activeStrategiesCount} color='green' />
+			<SummaryCard title='Не привязаны' value={notLinkedStrategiesCount} color='gray' />
 		</SummaryList>
 	);
 }

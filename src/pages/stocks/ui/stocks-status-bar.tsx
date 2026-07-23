@@ -15,12 +15,13 @@ export function StocksStatusBar({ totalCount }: StocksStatusBarProps) {
 	const { data: filteredStocks } = useStocksQuerySuspense(
 		filters.searchQuery,
 		filters.sortOption,
+		filters.page,
 	);
 
 	return (
 		<ListStatusBar
 			totalCount={totalCount}
-			filteredCount={filteredStocks.length}
+			filteredCount={filteredStocks.data.items.length}
 		/>
 	);
 }

@@ -11,20 +11,20 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import {
-	getGetAllByUserQueryKey,
-	getGetByUserInstrumentQueryKey,
-	getGetRemindStatisticsQueryKey,
-	useCreate,
+	getGetReminderStatisticsQueryKey,
+	getGetUserRemindersByInstrumentQueryKey,
+	getGetUserRemindersQueryKey,
+	useCreateUserRemind,
 } from '@/entities/remind';
 import { mapTradeCodeToStock } from '@/entities/stock';
-import { useGetAllStocksCodesSuspense } from '@/entities/trade-code';
+import { useGetStockCodesSuspense } from '@/entities/trade-code';
 
 export function AddRemind() {
 	const queryClient = useQueryClient();
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
-	const { data: stocksResponse } = useGetAllStocksCodesSuspense();
-	const stocks = stocksResponse.data.map(mapTradeCodeToStock);
-	const createRemindMutation = useCreate();
+	const { data: stocksResponse } = useGetStockCodesSuspense({ page: 1, pageSize: 100 });
+	const stocks = stocksResponse.data.items.map(mapTradeCodeToStock);
+	const createRemindMutation = useCreateUserRemind();
 
 	const stockSelectData = stocks.map((stock) => ({
 		value: stock.id,
@@ -48,16 +48,16 @@ export function AddRemind() {
 		now.setHours(now.getHours() + 3);
 
 		createRemindMutation.mutate({
-			idInstrument: stock.instrumentId,
+			tradeCodeId: stock.instrumentId,
 			data: {
-				textRemind: 'Новое напоминание',
+				text: 'Новое напоминание',
 				dateTime: dayjs(now).format('YYYY-MM-DDTHH:mm:ss'),
 			},
 		}, {
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
-				queryClient.invalidateQueries({ queryKey: getGetAllByUserQueryKey() });
-				queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(stock.instrumentId) });
+				queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
+				queryClient.invalidateQueries({ queryKey: getGetUserRemindersQueryKey() });
+				queryClient.invalidateQueries({ queryKey: getGetUserRemindersByInstrumentQueryKey(stock.instrumentId) });
 				modals.closeAll();
 			},
 		});

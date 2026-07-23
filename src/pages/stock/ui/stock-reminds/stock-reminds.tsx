@@ -6,10 +6,10 @@ import dayjs from 'dayjs';
 import type { Stock } from '@/entities/stock';
 
 import {
-	getGetAllByUserQueryKey,
-	getGetByUserInstrumentQueryKey,
-	getGetRemindStatisticsQueryKey,
-	useCreate,
+	getGetReminderStatisticsQueryKey,
+	getGetUserRemindersByInstrumentQueryKey,
+	getGetUserRemindersQueryKey,
+	useCreateUserRemind,
 } from '@/entities/remind';
 import { RemindsControls } from '@/features/remind/filter-reminds';
 import { RemindStatusBarBoundary } from '@/features/remind/manage-reminds';
@@ -23,7 +23,7 @@ type StockRemindsProps = {
 
 export function StockReminds({ stock }: StockRemindsProps) {
 	const queryClient = useQueryClient();
-	const createRemindMutation = useCreate();
+	const createRemindMutation = useCreateUserRemind();
 
 	const handleAddClick = () => {
 		const now = new Date();
@@ -32,17 +32,17 @@ export function StockReminds({ stock }: StockRemindsProps) {
 
 		createRemindMutation.mutate(
 			{
-				idInstrument: stock.instrumentId,
+				tradeCodeId: stock.instrumentId,
 				data: {
-					textRemind: 'Новое напоминание',
+					text: 'Новое напоминание',
 					dateTime: dayjs(now).format('YYYY-MM-DDTHH:mm:ss'),
 				},
 			},
 			{
 				onSuccess: () => {
-					queryClient.invalidateQueries({ queryKey: getGetRemindStatisticsQueryKey() });
-					queryClient.invalidateQueries({ queryKey: getGetAllByUserQueryKey() });
-					queryClient.invalidateQueries({ queryKey: getGetByUserInstrumentQueryKey(stock.instrumentId) });
+					queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
+					queryClient.invalidateQueries({ queryKey: getGetUserRemindersQueryKey() });
+					queryClient.invalidateQueries({ queryKey: getGetUserRemindersByInstrumentQueryKey(stock.instrumentId) });
 				},
 			},
 		);

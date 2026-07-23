@@ -12,6 +12,9 @@ function StockRemindsList({ instrumentId }: StockRemindsListProps) {
 		reminds,
 		filteredReminds,
 		handleRemindChange,
+		page,
+		totalPages,
+		setPage,
 	} = useRemindList(instrumentId);
 
 	return (
@@ -20,7 +23,8 @@ function StockRemindsList({ instrumentId }: StockRemindsListProps) {
 				reminds={filteredReminds}
 				hideSourceBadge
 				onRemindChange={handleRemindChange}
-				renderAction={(remind) => <DeleteRemindButton remindId={remind.id} />}
+				renderAction={(remind) => <DeleteRemindButton id={remind.id} />}
+				pagination={{ page, totalPages, onPageChange: setPage }}
 			/>
 		</DataState>
 	);

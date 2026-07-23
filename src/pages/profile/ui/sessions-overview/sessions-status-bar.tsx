@@ -7,13 +7,13 @@ import { useSessionsOverview } from './use-sessions-overview';
 
 export function SessionsStatusBar() {
 	const {
-		sessions,
 		filteredSessions,
+		totalCount,
 	} = useSessionsOverview();
 
 	return (
 		<ListStatusBar
-			totalCount={sessions.length}
+			totalCount={totalCount}
 			filteredCount={filteredSessions.length}
 		/>
 	);

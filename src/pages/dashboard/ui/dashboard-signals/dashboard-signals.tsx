@@ -6,7 +6,7 @@ import {
 	mapStrategyResultResponseToSignals,
 	SignalsList,
 	SignalsListSkeleton,
-	useGetResultSuspense,
+	useGetStrategyResultsSuspense,
 } from '@/entities/signal';
 import {
 	QUERY_REFETCH_INTERVAL,
@@ -16,7 +16,7 @@ import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 export function DashboardSignals({ onSignalSelect }: { onSignalSelect: (signal: Signal) => void }) {
-	const { data: signalsData } = useGetResultSuspense(undefined, {
+	const { data: signalsData } = useGetStrategyResultsSuspense(undefined, {
 		query: {
 			staleTime: STATIC_QUERY_STALE_TIME,
 			refetchInterval: QUERY_REFETCH_INTERVAL,

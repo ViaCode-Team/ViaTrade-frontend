@@ -5,9 +5,9 @@ import { useMemo } from 'react';
 
 import {
 	mapStrategyResultResponseToSignals,
-	useGetResultSuspense,
+	useGetStrategyResultsSuspense,
 } from '@/entities/signal';
-import { getFilteredSignals } from '@/pages/signals/ui/filter-signals';
+import { getFilteredSignals, getSignalRequestParams } from '@/pages/signals/ui/filter-signals';
 import { useSignalsControls } from '@/pages/signals/ui/filter-signals';
 import {
 	QUERY_REFETCH_INTERVAL,
@@ -19,7 +19,7 @@ import { ValueBadge } from '@/shared/ui/value-badge';
 
 export function SignalsStatusBar() {
 	const { filters } = useSignalsControls();
-	const { data: signalsData } = useGetResultSuspense(undefined, {
+	const { data: signalsData } = useGetStrategyResultsSuspense(getSignalRequestParams(filters.sortOption), {
 		query: {
 			staleTime: STATIC_QUERY_STALE_TIME,
 			refetchInterval: QUERY_REFETCH_INTERVAL,

@@ -12,7 +12,7 @@ function DashboardReminds() {
 			<RemindList
 				reminds={filteredReminds}
 				onRemindChange={handleRemindChange}
-				renderAction={(remind) => <DeleteRemindButton remindId={remind.id} />}
+				renderAction={(remind) => <DeleteRemindButton id={remind.id} />}
 			/>
 		</DataState>
 	);

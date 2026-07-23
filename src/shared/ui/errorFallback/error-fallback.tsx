@@ -61,6 +61,11 @@ function getErrorDetails(error: unknown, isOnline: boolean): ErrorDetails {
 		if (errorMessage) {
 			return errorMessage;
 		}
+
+		return {
+			title: error.details.title,
+			description: error.details.detail,
+		};
 	}
 
 	return ERROR_MESSAGES.default;

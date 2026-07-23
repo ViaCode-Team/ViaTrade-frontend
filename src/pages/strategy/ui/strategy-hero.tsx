@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import {
 	getUserStrategyIdSet,
 	mapTradeStrategyToStrategy,
-	useGetByIdSuspense,
-	useGetUsersStrategySuspense,
+	useGetStrategyByIdSuspense,
+	useGetUserStrategiesSuspense,
 	useToggleUserStrategy,
 } from '@/entities/strategy';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -19,12 +19,12 @@ type StrategyHeroProps = {
 };
 
 function StrategyHero({ strategyId }: StrategyHeroProps) {
-	const strategyQuery = useGetByIdSuspense(strategyId);
-	const userStrategiesQuery = useGetUsersStrategySuspense();
+	const strategyQuery = useGetStrategyByIdSuspense(strategyId);
+	const userStrategiesQuery = useGetUserStrategiesSuspense();
 	const strategyToggle = useToggleUserStrategy();
 	const activeStrategyIds = useMemo(
-		() => getUserStrategyIdSet(userStrategiesQuery.data?.data ?? []),
-		[userStrategiesQuery.data?.data],
+		() => getUserStrategyIdSet(userStrategiesQuery.data?.data.items ?? []),
+		[userStrategiesQuery.data?.data.items],
 	);
 	const strategy = mapTradeStrategyToStrategy(strategyQuery.data.data, activeStrategyIds);
 

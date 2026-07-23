@@ -1,15 +1,15 @@
-import { useGetRemindStatisticsSuspense } from '@/entities/remind';
+import { useGetReminderStatisticsSuspense } from '@/entities/remind';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 
 export function RemindsSummary() {
-	const { data: response } = useGetRemindStatisticsSuspense();
-	const { totalReminds } = response.data;
+	const { data: response } = useGetReminderStatisticsSuspense();
+	const { totalReminders } = response.data;
 
 	return (
 		<SummaryList>
-			<SummaryCard title='Всего' value={totalReminds} />
+			<SummaryCard title='Всего' value={totalReminders} />
 		</SummaryList>
 	);
 }

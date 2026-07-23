@@ -7,12 +7,11 @@ import {
 	type NoteFormData,
 	type NoteSource,
 	type PersonalNote,
-	useCreateInstrumentNote,
-	useCreateStrategyNote,
-	useGetByUserInstrumentAll,
-	useGetByUserStrategyAll,
-	useUpdateInstrumentNote,
-	useUpdateStrategyNote,
+	useAddUserInstrumentNote,
+	useAddUserStrategyNote,
+	useGetUserNotes,
+	useUpdateUserInstrumentNote,
+	useUpdateUserStrategyNote,
 } from '@/entities/note';
 
 import {
@@ -61,25 +60,25 @@ export function usePersonalNote({
 		? storedNotesQuery.data?.find((note) => note.id === sourceId)
 		: undefined;
 
-	const instrumentNotesQuery = useGetByUserInstrumentAll({
+	const instrumentNotesQuery = useGetUserNotes(undefined, {
 		query: {
 			enabled: isStockNote && isApiSource,
 		},
 	});
-	const strategyNotesQuery = useGetByUserStrategyAll({
+	const strategyNotesQuery = useGetUserNotes(undefined, {
 		query: {
 			enabled: isStrategyNote && isApiSource,
 		},
 	});
-	const createInstrumentNoteMutation = useCreateInstrumentNote();
-	const updateInstrumentNoteMutation = useUpdateInstrumentNote();
-	const createStrategyNoteMutation = useCreateStrategyNote();
-	const updateStrategyNoteMutation = useUpdateStrategyNote();
+	const createInstrumentNoteMutation = useAddUserInstrumentNote();
+	const updateInstrumentNoteMutation = useUpdateUserInstrumentNote();
+	const createStrategyNoteMutation = useAddUserStrategyNote();
+	const updateStrategyNoteMutation = useUpdateUserStrategyNote();
 	const sourceNote = source?.type === 'stock'
-		? instrumentNotesQuery.data?.data.find(
+		? instrumentNotesQuery.data?.data.items.find(
 				(note) => note.tradeCodeId === apiSourceId,
 			)
-		: strategyNotesQuery.data?.data.find(
+		: strategyNotesQuery.data?.data.items.find(
 				(note) => note.tradeStrategyId === apiSourceId,
 			);
 	const storedValue = sourceNote?.noteText ?? defaultValue;
@@ -196,7 +195,7 @@ export function usePersonalNote({
 				: createInstrumentNoteMutation;
 
 			mutation.mutate(
-				{ idInstrument: sourceId, data: requestData },
+				{ tradeCodeId: sourceId, data: requestData },
 				{ onSuccess },
 			);
 			return;
@@ -207,7 +206,7 @@ export function usePersonalNote({
 			: createStrategyNoteMutation;
 
 		mutation.mutate(
-			{ idStrategy: sourceId, data: requestData },
+			{ strategyId: sourceId, data: requestData },
 			{ onSuccess },
 		);
 	};

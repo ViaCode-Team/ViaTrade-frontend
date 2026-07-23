@@ -7,6 +7,9 @@ export const NETWORK_ERROR_DETAILS: ProblemDetails = {
 	title: 'Network Error',
 	status: 0,
 	detail: 'Network request failed',
+	instance: '',
+	code: 'network_error',
+	traceId: '',
 };
 
 const CLIENT_ERROR_DETAILS: ProblemDetails = {
@@ -14,6 +17,9 @@ const CLIENT_ERROR_DETAILS: ProblemDetails = {
 	title: 'Client Error',
 	status: 0,
 	detail: 'Unexpected client error',
+	instance: '',
+	code: 'client_error',
+	traceId: '',
 };
 
 export function getHttpProblemDetails(error: HTTPError<unknown>): ProblemDetails {
@@ -29,6 +35,9 @@ export function getHttpProblemDetails(error: HTTPError<unknown>): ProblemDetails
 		title,
 		status,
 		detail: getHttpErrorDetail(error) ?? 'HTTP error',
+		instance: error.response.url,
+		code: `http_${status}`,
+		traceId: '',
 	};
 }
 

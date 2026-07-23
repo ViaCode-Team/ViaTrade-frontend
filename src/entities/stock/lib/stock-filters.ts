@@ -10,7 +10,7 @@ export const stockSortOptions = [
 export function getFilteredStocks({
 	stocks,
 	searchQuery,
-	sortOption = 'name-asc',
+	sortOption: _sortOption = 'name-asc',
 }: {
 	stocks: Stock[];
 	searchQuery: string;
@@ -29,19 +29,5 @@ export function getFilteredStocks({
 		return true;
 	});
 
-	if (sortOption === 'name-asc') {
-		// we still sort it natively if needed, but it's handled in switch.
-		// wait, let's just let it fall through to switch.
-	}
-
-	return filtered.sort((a, b) => {
-		switch (sortOption) {
-			case 'name-asc':
-				return a.name.localeCompare(b.name);
-			case 'name-desc':
-				return b.name.localeCompare(a.name);
-			default:
-				return 0;
-		}
-	});
+	return filtered;
 }

@@ -4,7 +4,7 @@ import { ValueBadge } from '@/shared/ui/value-badge';
 import { usePersonalNotes } from '@/widgets/notes-overview';
 
 export function NotesStatusBar() {
-	const { notes } = usePersonalNotes();
+	const { notes, totalCount } = usePersonalNotes();
 	const { filters } = useNotesControls();
 
 	const filteredNotes = getFilteredNotes({
@@ -15,7 +15,7 @@ export function NotesStatusBar() {
 
 	return (
 		<ListStatusBar
-			totalCount={notes.length}
+			totalCount={totalCount}
 			filteredCount={filteredNotes.length}
 			badges={(
 				<>

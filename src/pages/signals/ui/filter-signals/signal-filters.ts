@@ -1,4 +1,5 @@
 import type { Signal } from '@/entities/signal';
+import type { GetStrategyResultsParams } from '@/shared/api';
 
 export type SortOption = 'date-desc' | 'date-asc' | 'asset-asc' | 'asset-desc' | 'confidence-desc' | 'confidence-asc';
 export type DirectionFilter = 'all' | 'buy' | 'sell';
@@ -24,6 +25,19 @@ export const directionOptions: Array<{ value: DirectionFilter; label: string }> 
 	{ value: 'sell', label: 'Продавать' },
 ];
 
+export function getSignalRequestParams(sortOption: SortOption): GetStrategyResultsParams {
+	const sortBy = {
+		'date-desc': 'dateTimeDesc',
+		'date-asc': 'dateTimeAsc',
+		'asset-asc': 'assetAsc',
+		'asset-desc': 'assetDesc',
+		'confidence-desc': 'accuracyDesc',
+		'confidence-asc': 'accuracyAsc',
+	} as const;
+
+	return { sortBy: [sortBy[sortOption]] };
+}
+
 function filterSignalsByDirection(signals: Signal[], directionFilter: DirectionFilter) {
 	if (directionFilter === 'all')
 		return signals;
@@ -43,34 +57,7 @@ function filterSignalsBySearch(signals: Signal[], searchQuery: string) {
 	);
 }
 
-function sortSignals(signals: Signal[], sortOption: SortOption) {
-	return [...signals].sort((a, b) => {
-		switch (sortOption) {
-			case 'date-desc':
-				return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
-			case 'date-asc':
-				return new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime();
-			case 'confidence-desc':
-				return getConfidenceSortValue(b) - getConfidenceSortValue(a);
-			case 'confidence-asc':
-				return getConfidenceSortValue(a) - getConfidenceSortValue(b);
-			case 'asset-asc':
-				return a.asset.localeCompare(b.asset);
-			case 'asset-desc':
-				return b.asset.localeCompare(a.asset);
-			default:
-				return 0;
-		}
-	});
-}
-
 export function getFilteredSignals(signals: Signal[], filters: SignalFilters) {
 	const byDirection = filterSignalsByDirection(signals, filters.directionFilter);
-	const bySearch = filterSignalsBySearch(byDirection, filters.searchQuery);
-
-	return sortSignals(bySearch, filters.sortOption);
-}
-
-function getConfidenceSortValue(signal: Signal) {
-	return signal.confidence ?? -1;
+	return filterSignalsBySearch(byDirection, filters.searchQuery);
 }

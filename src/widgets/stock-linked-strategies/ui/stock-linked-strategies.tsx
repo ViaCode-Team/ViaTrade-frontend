@@ -14,7 +14,7 @@ type StockLinkedStrategiesProps = {
 };
 
 export function StockLinkedStrategies({ stockId, onNavigate }: StockLinkedStrategiesProps) {
-	const { filters, setFilter, page, setPage } = useLinkedStrategiesControls();
+	const { filters, setFilter } = useLinkedStrategiesControls();
 
 	return (
 		<Stack gap='md'>
@@ -26,8 +26,6 @@ export function StockLinkedStrategies({ stockId, onNavigate }: StockLinkedStrate
 			<StockLinkedStrategiesListBoundary
 				stockId={stockId}
 				filters={filters}
-				page={page}
-				setPage={setPage}
 				onNavigate={onNavigate}
 			/>
 		</Stack>

@@ -4,14 +4,13 @@ import {
 	Stack,
 	Text,
 } from '@mantine/core';
-import { useMemo } from 'react';
 
-import { useGetSessions } from '@/entities/auth';
+import { useGetUserSessions } from '@/entities/auth';
 import { LogoutAllSessionsButton } from '@/features/auth/logout';
 import { SessionsControls } from '@/pages/profile/ui/filter-sessions';
 import { Section } from '@/shared/ui/section';
 
-import { normalizeUserSessions } from '../session-entity';
+import { SESSIONS_PER_PAGE } from '../session-entity';
 import { SessionsOverviewListBoundary } from './sessions-overview-list';
 import { SessionsStatusBarBoundary } from './sessions-status-bar';
 
@@ -29,8 +28,7 @@ function SessionsCount({ isLoading, total }: { isLoading: boolean; total: number
 }
 
 export function SessionsOverview() {
-	const { data: sessionsData, isLoading } = useGetSessions();
-	const sessionsRaw = useMemo(() => normalizeUserSessions(sessionsData?.data), [sessionsData?.data]);
+	const { data: sessionsData, isLoading } = useGetUserSessions({ page: 1, pageSize: SESSIONS_PER_PAGE });
 
 	const headerActions = (
 		<Group gap='sm'>
@@ -42,14 +40,14 @@ export function SessionsOverview() {
 		<>
 			Активные сессии
 			{' '}
-			<SessionsCount isLoading={isLoading} total={sessionsRaw.length} />
+			<SessionsCount isLoading={isLoading} total={sessionsData?.data.totalCount ?? 0} />
 		</>
 	);
 
 	return (
 		<Section header={{ title, actions: headerActions }}>
 			<Stack gap='xs'>
-				<SessionsControls />
+				<SessionsControls disabled={isLoading || (sessionsData?.data.totalCount ?? 0) === 0} isLoading={isLoading} />
 				<SessionsStatusBarBoundary />
 			</Stack>
 

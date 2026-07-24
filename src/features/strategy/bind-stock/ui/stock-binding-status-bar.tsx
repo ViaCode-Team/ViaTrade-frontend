@@ -1,7 +1,6 @@
-import { Badge, Skeleton } from '@mantine/core';
+import { Badge } from '@mantine/core';
 
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 type StockBindingStatusBarProps = {
 	totalCount: number;
@@ -39,10 +38,3 @@ export function StockBindingStatusBar({
 		/>
 	);
 }
-
-export const StockBindingStatusBarBoundary = withQueryBoundary(StockBindingStatusBar, {
-	suspenseProps: {
-		fallback: <Skeleton height={20} width='100%' />,
-
-	},
-});

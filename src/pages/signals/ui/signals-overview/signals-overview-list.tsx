@@ -15,9 +15,9 @@ import {
 	QUERY_REFETCH_INTERVAL,
 } from '@/shared/model';
 import { DataState } from '@/shared/ui/data-state';
-import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-import { ValueBadge } from '@/shared/ui/value-badge';
+
+import { SignalsOverviewStatusBar } from './signals-overview-status-bar';
 
 export type SignalsOverviewListProps = {
 	filters: SignalFilters;
@@ -52,19 +52,12 @@ function SignalsOverviewList({ filters, onResetFilters, onSignalSelect }: Signal
 			onResetFilters={onResetFilters}
 		>
 			<Stack gap='md'>
-				<ListStatusBar
+				<SignalsOverviewStatusBar
 					totalCount={signals.length}
 					filteredCount={filteredAndSortedSignals.length}
-					badges={(
-						<>
-							{filters.directionFilter === 'all' && buyCount > 0 && (
-								<ValueBadge variant='dot' color='green' size='sm' label='Покупать' value={buyCount} />
-							)}
-							{filters.directionFilter === 'all' && sellCount > 0 && (
-								<ValueBadge variant='dot' color='red' size='sm' label='Продавать' value={sellCount} />
-							)}
-						</>
-					)}
+					showDirectionBadges={filters.directionFilter === 'all'}
+					buyCount={buyCount}
+					sellCount={sellCount}
 				/>
 				<SignalsList
 					signals={filteredAndSortedSignals}

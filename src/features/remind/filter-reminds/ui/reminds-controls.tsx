@@ -10,10 +10,9 @@ import { SearchInput } from '@/shared/ui/search-input';
 type RemindsControlsProps = {
 	actionSlot?: ReactNode;
 	instrumentId?: number;
-	disabled?: boolean;
 };
 
-export function RemindsControls({ actionSlot, disabled = false }: RemindsControlsProps = {}) {
+export function RemindsControls({ actionSlot }: RemindsControlsProps = {}) {
 	const { filters, setFilters } = useUrlFilters(remindFiltersSchema);
 
 	return (
@@ -22,7 +21,6 @@ export function RemindsControls({ actionSlot, disabled = false }: RemindsControl
 				value={filters.q}
 				onChange={(value) => setFilters({ q: value, page: '1' })}
 				placeholder='Поиск напоминаний...'
-				disabled={disabled}
 			/>
 
 			<Select
@@ -30,7 +28,6 @@ export function RemindsControls({ actionSlot, disabled = false }: RemindsControl
 				value={filters.listSort}
 				onChange={(value) => setFilters({ listSort: value, page: '1' })}
 				w={{ base: '100%', sm: 220 }}
-				disabled={disabled}
 			/>
 			{actionSlot && <Group ml='auto'>{actionSlot}</Group>}
 		</ControlsGroup>

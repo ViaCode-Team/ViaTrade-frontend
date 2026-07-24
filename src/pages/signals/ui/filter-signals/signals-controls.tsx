@@ -6,11 +6,7 @@ import { SearchInput } from '@/shared/ui/search-input';
 import { directionOptions, sortOptions } from './signal-filters';
 import { useSignalsControls } from './use-signals-controls';
 
-type SignalsControlsProps = {
-	disabled?: boolean;
-};
-
-export function SignalsControls({ disabled }: SignalsControlsProps) {
+export function SignalsControls() {
 	const { filters, setFilter } = useSignalsControls();
 
 	return (
@@ -19,20 +15,17 @@ export function SignalsControls({ disabled }: SignalsControlsProps) {
 				placeholder='Поиск сигнала...'
 				value={filters.searchQuery}
 				onChange={(val) => setFilter('q', val)}
-				disabled={disabled}
 			/>
 			<Select
 				data={sortOptions}
 				value={filters.sortOption}
 				onChange={(val) => val && setFilter('listSort', val)}
 				w={{ base: '100%', sm: 220 }}
-				disabled={disabled}
 			/>
 			<SegmentedControl
 				data={directionOptions}
 				value={filters.directionFilter}
 				onChange={(val) => setFilter('directionFilter', val)}
-				disabled={disabled}
 			/>
 		</ControlsGroup>
 	);

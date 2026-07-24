@@ -8,11 +8,7 @@ import type { StrategySortOption, StrategyStatusFilter } from '../lib/filters';
 
 import { strategyFiltersSchema, strategySortOptions } from '../lib/filters';
 
-export type StrategiesControlsProps = {
-	disabled?: boolean;
-};
-
-export function StrategiesControls({ disabled = false }: StrategiesControlsProps) {
+export function StrategiesControls() {
 	const { filters, setFilters } = useUrlFilters(strategyFiltersSchema);
 
 	return (
@@ -21,7 +17,6 @@ export function StrategiesControls({ disabled = false }: StrategiesControlsProps
 				value={filters.q}
 				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Найти стратегию...'
-				disabled={disabled}
 			/>
 
 			<Select
@@ -29,7 +24,6 @@ export function StrategiesControls({ disabled = false }: StrategiesControlsProps
 				value={filters.listSort}
 				onChange={(val) => setFilters({ listSort: val as StrategySortOption, page: '1' })}
 				w={{ base: '100%', sm: 220 }}
-				disabled={disabled}
 			/>
 
 			<SegmentedControl
@@ -41,7 +35,6 @@ export function StrategiesControls({ disabled = false }: StrategiesControlsProps
 					{ label: 'Активные', value: 'active' },
 					{ label: 'Неактивные', value: 'inactive' },
 				]}
-				disabled={disabled}
 			/>
 		</ControlsGroup>
 	);

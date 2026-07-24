@@ -4,11 +4,7 @@ import { SearchInput } from '@/shared/ui/search-input';
 
 import { sessionFiltersSchema } from './filters';
 
-export type SessionsControlsProps = {
-	disabled?: boolean;
-};
-
-export function SessionsControls({ disabled = false }: SessionsControlsProps = {}) {
+export function SessionsControls() {
 	const { filters, setFilters } = useUrlFilters(sessionFiltersSchema);
 
 	return (
@@ -17,7 +13,6 @@ export function SessionsControls({ disabled = false }: SessionsControlsProps = {
 				value={filters.q}
 				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Поиск сессии...'
-				disabled={disabled}
 			/>
 		</ControlsGroup>
 	);

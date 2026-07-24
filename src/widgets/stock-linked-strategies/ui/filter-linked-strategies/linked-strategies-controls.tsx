@@ -10,13 +10,11 @@ import { linkedStrategySortOptions } from './linked-strategy-filters';
 type LinkedStrategiesControlsProps = {
 	filters: LinkedStrategyFilters;
 	setFilter: <K extends keyof LinkedStrategyFilters>(key: K, value: LinkedStrategyFilters[K]) => void;
-	disabled?: boolean;
 };
 
 export function LinkedStrategiesControls({
 	filters,
 	setFilter,
-	disabled,
 }: LinkedStrategiesControlsProps) {
 	return (
 		<ControlsGroup>
@@ -24,7 +22,6 @@ export function LinkedStrategiesControls({
 				value={filters.searchQuery}
 				onChange={(val) => setFilter('searchQuery', val)}
 				placeholder='Найти стратегию...'
-				disabled={disabled}
 			/>
 
 			<Select
@@ -32,7 +29,6 @@ export function LinkedStrategiesControls({
 				value={filters.sortOption}
 				onChange={(val) => val && setFilter('sortOption', val as LinkedStrategyFilters['sortOption'])}
 				w={{ base: '100%', sm: 220 }}
-				disabled={disabled}
 			/>
 
 			<SegmentedControl
@@ -44,7 +40,6 @@ export function LinkedStrategiesControls({
 					{ label: 'Активные', value: 'active' },
 					{ label: 'Неактивные', value: 'inactive' },
 				]}
-				disabled={disabled}
 			/>
 		</ControlsGroup>
 	);

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { SecurityProvider } from '@/entities/security';
 
-import { PwaProvider, QueryProvider, ThemeProvider } from '../providers';
+import { PwaProvider, QueryProvider, ThemeProvider } from '../config';
 import { AppSecurityRuntime } from '../security';
 
 type AppProvidersProps = {

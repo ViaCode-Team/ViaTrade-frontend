@@ -9,7 +9,6 @@ import {
 } from '@/entities/strategy';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { DataState } from '@/shared/ui/data-state';
-import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { filterLinkedStrategies } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
@@ -17,6 +16,7 @@ import {
 	STOCK_LINKED_STRATEGIES_PAGE_SIZE,
 	useStockLinkedStrategies,
 } from '../model/use-stock-linked-strategies';
+import { StockLinkedStrategiesListStatusBar } from './stock-linked-strategies-list-status-bar';
 
 export type StockLinkedStrategiesListProps = {
 	stockId: number;
@@ -50,16 +50,15 @@ function StockLinkedStrategiesList({
 			hasResults={!!filteredStrategies.length}
 			onResetFilters={onResetFilters}
 		>
-			<Stack gap='md'>
-				<ListStatusBar
+			<Stack>
+				<StockLinkedStrategiesListStatusBar
 					totalCount={totalCount}
 					filteredCount={filteredStrategies.length}
-					pagination={{
-						page,
-						pageSize: STOCK_LINKED_STRATEGIES_PAGE_SIZE,
-						showRange: !filters.searchQuery.trim() && filters.statusFilter === 'all',
-					}}
+					page={page}
+					pageSize={STOCK_LINKED_STRATEGIES_PAGE_SIZE}
+					showRange={!filters.searchQuery.trim() && filters.statusFilter === 'all'}
 				/>
+
 				<LinkedStrategiesList
 					strategies={filteredStrategies}
 					activeStrategyIds={activeStrategyIds}

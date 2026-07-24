@@ -6,11 +6,7 @@ import { SearchInput } from '@/shared/ui/search-input';
 
 import { useStocksControls } from './use-stocks-controls';
 
-type StocksControlsProps = {
-	disabled?: boolean;
-};
-
-export function StocksControls({ disabled }: StocksControlsProps) {
+export function StocksControls() {
 	const { filters, setFilters } = useStocksControls();
 
 	return (
@@ -20,7 +16,6 @@ export function StocksControls({ disabled }: StocksControlsProps) {
 				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Найти по тикеру или названию'
 				aria-label='Поиск акции'
-				disabled={disabled}
 			/>
 
 			<Select
@@ -28,7 +23,6 @@ export function StocksControls({ disabled }: StocksControlsProps) {
 				value={filters.sortOption}
 				onChange={(value) => value && setFilters({ listSort: value, page: '1' })}
 				w={{ base: '100%', sm: 220 }}
-				disabled={disabled}
 			/>
 		</ControlsGroup>
 	);

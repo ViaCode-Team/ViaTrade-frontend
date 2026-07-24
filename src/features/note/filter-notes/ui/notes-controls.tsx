@@ -5,11 +5,7 @@ import { SearchInput } from '@/shared/ui/search-input';
 
 import { useNotesControls } from '../lib/use-notes-controls';
 
-type NotesControlsProps = {
-	disabled?: boolean;
-};
-
-export function NotesControls({ disabled }: NotesControlsProps = {}) {
+export function NotesControls() {
 	const { filters, setFilters } = useNotesControls();
 
 	return (
@@ -19,7 +15,6 @@ export function NotesControls({ disabled }: NotesControlsProps = {}) {
 				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Поиск заметок...'
 				size='sm'
-				disabled={disabled}
 			/>
 
 			<SegmentedControl
@@ -31,7 +26,6 @@ export function NotesControls({ disabled }: NotesControlsProps = {}) {
 					{ label: 'Акции', value: 'stock' },
 					{ label: 'Стратегии', value: 'strategy' },
 				]}
-				disabled={disabled}
 			/>
 		</ControlsGroup>
 	);

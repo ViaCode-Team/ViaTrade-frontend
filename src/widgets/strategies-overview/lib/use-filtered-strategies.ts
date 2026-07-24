@@ -11,20 +11,14 @@ export function useFilteredStrategies(strategies: Strategy[]) {
 
 	const searchQuery = filters.q;
 
-	return useMemo(() => {
-		let result = strategies;
+	return useMemo(() => getFilteredStrategies(strategies, searchQuery), [strategies, searchQuery]);
+}
 
-		const normalizedSearch = searchQuery.trim().toLowerCase();
+export function getFilteredStrategies(strategies: Strategy[], searchQuery: string) {
+	const normalizedSearch = searchQuery.trim().toLowerCase();
 
-		if (normalizedSearch) {
-			result = result.filter((strategy) =>
-				strategy.name.toLowerCase().includes(normalizedSearch),
-			);
-		}
+	if (!normalizedSearch)
+		return strategies;
 
-		return result;
-	}, [
-		strategies,
-		searchQuery,
-	]);
+	return strategies.filter((strategy) => strategy.name.toLowerCase().includes(normalizedSearch));
 }

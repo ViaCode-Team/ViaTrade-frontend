@@ -1,18 +1,25 @@
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 
-type LinkedStrategiesStatusBarProps = {
+type StocksListStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
+	page: number;
+	pageSize: number;
+	showRange: boolean;
 };
 
-export function LinkedStrategiesStatusBar({
+export function StocksOverviewStatusBar({
 	totalCount,
 	filteredCount,
-}: LinkedStrategiesStatusBarProps) {
+	page,
+	pageSize,
+	showRange,
+}: StocksListStatusBarProps) {
 	return (
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredCount}
+			pagination={{ page, pageSize, showRange }}
 		/>
 	);
 }

@@ -1,9 +1,8 @@
+import { queryClient } from '@/app/config';
 import { getLogoutUrl } from '@/entities/auth';
 import { apiClient } from '@/shared/api';
 import { clearLocalData } from '@/shared/lib/auth';
 import { clearLocalAuthBlocked, setLocalAuthBlocked } from '@/shared/lib/secure-storage';
-
-import { queryClient } from '../../providers/query-provider/query-client';
 
 export type LocalAuthBlockResult = 'resolved' | 'blocked';
 

@@ -3,8 +3,9 @@ import { Stack } from '@mantine/core';
 import { RemindList, RemindListSkeleton } from '@/entities/remind';
 import { DeleteRemindButton, REMINDERS_PAGE_SIZE, useRemindList } from '@/features/remind/manage-reminds';
 import { DataState } from '@/shared/ui/data-state';
-import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+
+import { RemindsOverviewStatusBar } from './reminds-overview-status-bar';
 
 function RemindsOverviewList() {
 	const {
@@ -26,10 +27,12 @@ function RemindsOverviewList() {
 			onResetFilters={resetFilters}
 		>
 			<Stack gap='md'>
-				<ListStatusBar
+				<RemindsOverviewStatusBar
 					totalCount={totalCount}
 					filteredCount={filteredReminds.length}
-					pagination={{ page, pageSize: REMINDERS_PAGE_SIZE, showRange: !hasSearchQuery }}
+					page={page}
+					pageSize={REMINDERS_PAGE_SIZE}
+					showRange={!hasSearchQuery}
 				/>
 
 				<RemindList

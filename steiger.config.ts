@@ -12,7 +12,6 @@ export default defineConfig([
 		ignores: [
 			'./src/**/gen/**',
 			'./src/shared/assets/**',
-			'./src/app/providers/**',
 		],
 	},
 ]);

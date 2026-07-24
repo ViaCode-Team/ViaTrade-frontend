@@ -1,6 +1,5 @@
 export { filterLinkedStrategies } from './filter-linked-strategies';
 export { LinkedStrategiesControls } from './linked-strategies-controls';
-export { LinkedStrategiesStatusBar } from './linked-strategies-status-bar';
 export type {
 	LinkedStrategyFilters,
 	LinkedStrategySortOption,

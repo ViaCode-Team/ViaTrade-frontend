@@ -2,10 +2,10 @@ import { Stack } from '@mantine/core';
 
 import { LogoutCurrentSessionAction } from '@/features/auth/logout';
 import { DataState } from '@/shared/ui/data-state';
-import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { SESSIONS_PER_PAGE, SessionsList, SessionsListSkeleton } from '../session-entity';
+import { SessionsOverviewStatusBar } from './sessions-overview-status-bar';
 import { useSessionsOverview } from './use-sessions-overview';
 
 function SessionsOverviewList() {
@@ -27,10 +27,12 @@ function SessionsOverviewList() {
 			onResetFilters={resetFilters}
 		>
 			<Stack gap='md'>
-				<ListStatusBar
+				<SessionsOverviewStatusBar
 					totalCount={totalCount}
 					filteredCount={filteredSessions.length}
-					pagination={{ page, pageSize: SESSIONS_PER_PAGE, showRange: !hasSearchQuery }}
+					page={page}
+					pageSize={SESSIONS_PER_PAGE}
+					showRange={!hasSearchQuery}
 				/>
 
 				<SessionsList

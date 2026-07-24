@@ -16,11 +16,11 @@ import { useGetStockCodesSuspense } from '@/entities/trade-code';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
-const REMINDERS_PAGE_SIZE = 12;
+export const REMINDERS_PAGE_SIZE = 12;
 
 export function useRemindList(instrumentId?: number) {
 	const queryClient = useQueryClient();
-	const { filters, setFilter } = useUrlFilters(remindFiltersSchema);
+	const { filters, setFilter, resetFilters } = useUrlFilters(remindFiltersSchema);
 	const page = Math.max(Number(filters.page) || 1, 1);
 	const sortBy: ReminderSortField[] = [filters.listSort === 'date-asc' ? 'dateTimeAsc' : 'dateTimeDesc'];
 	const params = { page, pageSize: REMINDERS_PAGE_SIZE, sortBy };
@@ -70,5 +70,7 @@ export function useRemindList(instrumentId?: number) {
 		totalPages: response.data.totalPages,
 		page: response.data.page,
 		setPage: (nextPage: number) => setFilter('page', String(nextPage)),
+		hasSearchQuery: Boolean(searchQuery),
+		resetFilters,
 	};
 }

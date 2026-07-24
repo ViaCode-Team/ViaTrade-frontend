@@ -74,6 +74,6 @@ export function useProfitChartControls() {
 		handleEndDateChange,
 		handleGranularityChange,
 		isLoading,
-		isDisabled: isLoading || tradesQuery.isError || trades.length === 0,
+		isDisabled: tradesQuery.isError || trades.length === 0,
 	};
 }

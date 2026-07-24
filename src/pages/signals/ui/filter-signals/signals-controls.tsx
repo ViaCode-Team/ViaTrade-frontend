@@ -8,10 +8,9 @@ import { useSignalsControls } from './use-signals-controls';
 
 type SignalsControlsProps = {
 	disabled?: boolean;
-	isLoading?: boolean;
 };
 
-export function SignalsControls({ disabled, isLoading }: SignalsControlsProps) {
+export function SignalsControls({ disabled }: SignalsControlsProps) {
 	const { filters, setFilter } = useSignalsControls();
 
 	return (
@@ -21,7 +20,6 @@ export function SignalsControls({ disabled, isLoading }: SignalsControlsProps) {
 				value={filters.searchQuery}
 				onChange={(val) => setFilter('q', val)}
 				disabled={disabled}
-				isLoading={isLoading}
 			/>
 			<Select
 				data={sortOptions}

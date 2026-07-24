@@ -8,10 +8,9 @@ import { useStocksControls } from './use-stocks-controls';
 
 type StocksControlsProps = {
 	disabled?: boolean;
-	isLoading?: boolean;
 };
 
-export function StocksControls({ disabled, isLoading }: StocksControlsProps) {
+export function StocksControls({ disabled }: StocksControlsProps) {
 	const { filters, setFilters } = useStocksControls();
 
 	return (
@@ -22,7 +21,6 @@ export function StocksControls({ disabled, isLoading }: StocksControlsProps) {
 				placeholder='Найти по тикеру или названию'
 				aria-label='Поиск акции'
 				disabled={disabled}
-				isLoading={isLoading}
 			/>
 
 			<Select

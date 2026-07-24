@@ -7,17 +7,24 @@ type StockBindingStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
 	selectedCount: number;
+	pagination: {
+		page: number;
+		pageSize: number;
+		showRange?: boolean;
+	};
 };
 
 export function StockBindingStatusBar({
 	totalCount,
 	filteredCount,
 	selectedCount,
+	pagination,
 }: StockBindingStatusBarProps) {
 	return (
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredCount}
+			pagination={pagination}
 			badges={(
 				<>
 					{selectedCount > 0 && (

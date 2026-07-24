@@ -10,10 +10,9 @@ import { strategyFiltersSchema, strategySortOptions } from '../lib/filters';
 
 export type StrategiesControlsProps = {
 	disabled?: boolean;
-	isLoading?: boolean;
 };
 
-export function StrategiesControls({ disabled = false, isLoading = false }: StrategiesControlsProps) {
+export function StrategiesControls({ disabled = false }: StrategiesControlsProps) {
 	const { filters, setFilters } = useUrlFilters(strategyFiltersSchema);
 
 	return (
@@ -23,7 +22,6 @@ export function StrategiesControls({ disabled = false, isLoading = false }: Stra
 				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Найти стратегию...'
 				disabled={disabled}
-				isLoading={isLoading}
 			/>
 
 			<Select

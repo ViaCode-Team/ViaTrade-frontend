@@ -12,17 +12,17 @@ import {
 } from '@/pages/stocks/ui/filter-stocks';
 import { DataFreshness } from '@/shared/ui/data-freshness';
 import { DataState } from '@/shared/ui/data-state';
+import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { PageHeader } from '@/shared/ui/page-header';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
-import { useStocksQuery, useStocksQuerySuspense } from './api/stocks-query';
+import { STOCKS_PAGE_SIZE, useStocksQuerySuspense } from './api/stocks-query';
 import { StocksMarketSummary } from './ui/stocks-market-summary';
-import { StocksStatusBarBoundary } from './ui/stocks-status-bar';
 import { UserStockLinkedStrategiesModal } from './ui/user-stock-linked-strategies-modal';
 
 function StocksListView({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: (stock: Stock) => void }) {
-	const { filters, setFilters } = useStocksControls();
+	const { filters, setFilters, resetFilters } = useStocksControls();
 	const { data: stocksResponse } = useStocksQuerySuspense(
 		filters.searchQuery,
 		filters.sortOption,
@@ -39,17 +39,32 @@ function StocksListView({ onLinkedStrategiesClick }: { onLinkedStrategiesClick: 
 	}, [instrumentsLinkResponse.data]);
 
 	return (
-		<DataState hasData={!!stocksResponse.data.totalCount} hasResults={!!stocksResponse.data.items.length}>
-			<StocksList
-				stocks={stocksResponse.data.items}
-				linkCountsByStockId={linkCountsByStockId}
-				onLinkedStrategiesClick={onLinkedStrategiesClick}
-				pagination={{
-					page: stocksResponse.data.page,
-					totalPages: stocksResponse.data.totalPages,
-					onPageChange: (page) => setFilters({ page: String(page) }),
-				}}
-			/>
+		<DataState
+			hasData={!!stocksResponse.data.totalCount}
+			hasResults={!!stocksResponse.data.items.length}
+			onResetFilters={resetFilters}
+		>
+			<Stack gap='md'>
+				<ListStatusBar
+					totalCount={stocksResponse.data.totalCount}
+					filteredCount={stocksResponse.data.items.length}
+					pagination={{
+						page: stocksResponse.data.page,
+						pageSize: STOCKS_PAGE_SIZE,
+						showRange: !filters.searchQuery.trim(),
+					}}
+				/>
+				<StocksList
+					stocks={stocksResponse.data.items}
+					linkCountsByStockId={linkCountsByStockId}
+					onLinkedStrategiesClick={onLinkedStrategiesClick}
+					pagination={{
+						page: stocksResponse.data.page,
+						totalPages: stocksResponse.data.totalPages,
+						onPageChange: (page) => setFilters({ page: String(page) }),
+					}}
+				/>
+			</Stack>
 		</DataState>
 	);
 }
@@ -61,9 +76,6 @@ const StocksListViewBoundary = withQueryBoundary(StocksListView, {
 });
 
 export function StocksPage() {
-	const { data: stocksResponse, isLoading } = useStocksQuery('', 'name-asc', 1);
-	const stocks = useMemo(() => stocksResponse?.data.items ?? [], [stocksResponse]);
-
 	function handleLinkedStrategyNavigate(modalId: string) {
 		modals.close(modalId);
 	}
@@ -95,18 +107,12 @@ export function StocksPage() {
 			/>
 
 			<Section>
-				<StocksMarketSummary isLoading={isLoading} />
+				<StocksMarketSummary />
 			</Section>
 
 			<Section header={{ title: 'Список акций' }}>
 				<Stack>
-					<Stack gap='xs'>
-						<StocksControls disabled={isLoading || stocks.length === 0} isLoading={isLoading} />
-
-						<StocksStatusBarBoundary
-							totalCount={stocksResponse?.data.totalCount ?? 0}
-						/>
-					</Stack>
+					<StocksControls />
 
 					<StocksListViewBoundary
 						onLinkedStrategiesClick={openLinkedStrategiesModal}

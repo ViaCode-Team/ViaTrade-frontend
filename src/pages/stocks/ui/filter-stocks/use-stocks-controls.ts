@@ -15,7 +15,11 @@ export const stockFiltersSchema = v.object({
 });
 
 export function useStocksControls() {
-	const { filters: urlFilters, setFilters } = useUrlFilters(stockFiltersSchema);
+	const {
+		filters: urlFilters,
+		setFilters,
+		resetFilters,
+	} = useUrlFilters(stockFiltersSchema);
 
 	const filters = useMemo(
 		() => ({
@@ -26,5 +30,5 @@ export function useStocksControls() {
 		[urlFilters.q, urlFilters.listSort, urlFilters.page],
 	);
 
-	return { filters, setFilters };
+	return { filters, setFilters, resetFilters };
 }

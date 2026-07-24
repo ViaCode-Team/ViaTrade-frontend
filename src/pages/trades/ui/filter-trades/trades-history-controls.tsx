@@ -13,7 +13,6 @@ export function TradesHistoryControls() {
 		handleTypeFilter,
 		statusFilter,
 		handleStatusFilter,
-		isFetching,
 	} = useTradesHistoryControls();
 
 	return (
@@ -23,8 +22,6 @@ export function TradesHistoryControls() {
 				value={q}
 				onChange={handleSearch}
 				miw={{ base: '100%', sm: 250 }}
-				isLoading={isFetching}
-				disabled={isFetching}
 			/>
 			<SegmentedControl
 				data={[
@@ -35,7 +32,6 @@ export function TradesHistoryControls() {
 				value={typeFilter}
 				onChange={(val) => handleTypeFilter(val)}
 				w={{ base: '100%', sm: 'auto' }}
-				disabled={isFetching}
 			/>
 			<SegmentedControl
 				data={[
@@ -46,7 +42,6 @@ export function TradesHistoryControls() {
 				value={statusFilter}
 				onChange={(val) => handleStatusFilter(val)}
 				w={{ base: '100%', sm: 'auto' }}
-				disabled={isFetching}
 			/>
 		</ControlsGroup>
 	);

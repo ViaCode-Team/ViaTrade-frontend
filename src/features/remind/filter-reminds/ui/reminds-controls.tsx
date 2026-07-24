@@ -11,10 +11,9 @@ type RemindsControlsProps = {
 	actionSlot?: ReactNode;
 	instrumentId?: number;
 	disabled?: boolean;
-	isLoading?: boolean;
 };
 
-export function RemindsControls({ actionSlot, disabled = false, isLoading = false }: RemindsControlsProps = {}) {
+export function RemindsControls({ actionSlot, disabled = false }: RemindsControlsProps = {}) {
 	const { filters, setFilters } = useUrlFilters(remindFiltersSchema);
 
 	return (
@@ -24,7 +23,6 @@ export function RemindsControls({ actionSlot, disabled = false, isLoading = fals
 				onChange={(value) => setFilters({ q: value, page: '1' })}
 				placeholder='Поиск напоминаний...'
 				disabled={disabled}
-				isLoading={isLoading}
 			/>
 
 			<Select
@@ -34,7 +32,6 @@ export function RemindsControls({ actionSlot, disabled = false, isLoading = fals
 				w={{ base: '100%', sm: 220 }}
 				disabled={disabled}
 			/>
-
 			{actionSlot && <Group ml='auto'>{actionSlot}</Group>}
 		</ControlsGroup>
 	);

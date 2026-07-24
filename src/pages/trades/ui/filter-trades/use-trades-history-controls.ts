@@ -1,14 +1,8 @@
-import { useIsFetching } from '@tanstack/react-query';
-
-import { getGetUserTradesQueryKey } from '@/entities/trade';
-
 import type { TradeFilters } from './trade-filters';
 
 import { useTradesHistoryFilters } from './use-trades-history-filters';
 
 export function useTradesHistoryControls() {
-	const isFetchingTrades = useIsFetching({ queryKey: getGetUserTradesQueryKey() });
-
 	const { q, typeFilter, statusFilter, setFilters } = useTradesHistoryFilters();
 
 	const handleSearch = (val: TradeFilters['q']) => {
@@ -30,6 +24,5 @@ export function useTradesHistoryControls() {
 		handleTypeFilter,
 		statusFilter,
 		handleStatusFilter,
-		isFetching: isFetchingTrades > 0,
 	};
 }

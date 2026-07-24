@@ -13,7 +13,7 @@ import {
 } from '../session-entity';
 
 export function useSessionsOverview() {
-	const { filters, setFilter } = useUrlFilters(sessionFiltersSchema);
+	const { filters, setFilter, resetFilters } = useUrlFilters(sessionFiltersSchema);
 	const searchQuery = filters.q;
 	const page = Math.max(Number(filters.page) || 1, 1);
 	const { data: sessionsData, refetch } = useGetUserSessionsSuspense(
@@ -45,6 +45,8 @@ export function useSessionsOverview() {
 		totalPages: sessionsData.data.totalPages,
 		totalCount: sessionsData.data.totalCount,
 		setPage: (nextPage: number) => setFilter('page', String(nextPage)),
+		hasSearchQuery: Boolean(searchQuery.trim()),
+		resetFilters,
 		refetch,
 	};
 }

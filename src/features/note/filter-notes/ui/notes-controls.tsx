@@ -7,10 +7,9 @@ import { useNotesControls } from '../lib/use-notes-controls';
 
 type NotesControlsProps = {
 	disabled?: boolean;
-	isLoading?: boolean;
 };
 
-export function NotesControls({ isLoading, disabled }: NotesControlsProps = {}) {
+export function NotesControls({ disabled }: NotesControlsProps = {}) {
 	const { filters, setFilters } = useNotesControls();
 
 	return (
@@ -21,7 +20,6 @@ export function NotesControls({ isLoading, disabled }: NotesControlsProps = {}) 
 				placeholder='Поиск заметок...'
 				size='sm'
 				disabled={disabled}
-				isLoading={isLoading}
 			/>
 
 			<SegmentedControl

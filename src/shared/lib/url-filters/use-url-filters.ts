@@ -46,5 +46,20 @@ export function useUrlFilters<TSchema extends v.BaseSchema<any, any, any>>(schem
 		);
 	};
 
-	return { filters, setFilter, setFilters };
+	const resetFilters = () => {
+		setSearchParams(
+			(prev) => {
+				Object.keys(defaultValues).forEach((key) => prev.delete(key));
+				return prev;
+			},
+			{ replace: true },
+		);
+	};
+
+	return {
+		filters,
+		setFilter,
+		setFilters,
+		resetFilters,
+	};
 }

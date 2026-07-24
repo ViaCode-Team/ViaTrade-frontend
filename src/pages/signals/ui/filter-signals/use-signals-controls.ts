@@ -18,7 +18,11 @@ export const signalFiltersSchema = v.object({
 });
 
 export function useSignalsControls() {
-	const { filters: urlFilters, setFilter } = useUrlFilters(signalFiltersSchema);
+	const {
+		filters: urlFilters,
+		setFilter,
+		resetFilters,
+	} = useUrlFilters(signalFiltersSchema);
 
 	const filters = useMemo(
 		() => ({
@@ -29,5 +33,5 @@ export function useSignalsControls() {
 		[urlFilters.q, urlFilters.listSort, urlFilters.directionFilter],
 	);
 
-	return { filters, setFilter };
+	return { filters, setFilter, resetFilters };
 }

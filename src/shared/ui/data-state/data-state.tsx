@@ -5,6 +5,7 @@ import { NoDataState, NoResultsState } from '../app-empty-state';
 export type DataStateProps = {
 	hasData?: boolean;
 	hasResults?: boolean;
+	onResetFilters?: () => void;
 	noDataFallback?: ReactNode;
 	noResultsFallback?: ReactNode;
 	children: ReactNode;
@@ -13,16 +14,26 @@ export type DataStateProps = {
 export function DataState({
 	hasData,
 	hasResults,
+	onResetFilters,
 	noDataFallback,
 	noResultsFallback,
 	children,
 }: DataStateProps) {
 	if (hasData === false) {
-		return noDataFallback === undefined ? <NoDataState /> : noDataFallback;
+		if (noDataFallback !== undefined)
+			return noDataFallback;
+
+		return <NoDataState />;
 	}
 
 	if (hasResults === false) {
-		return noResultsFallback === undefined ? <NoResultsState /> : noResultsFallback;
+		if (noResultsFallback !== undefined)
+			return noResultsFallback;
+
+		if (onResetFilters)
+			return <NoResultsState onReset={onResetFilters} />;
+
+		return <NoResultsState />;
 	}
 
 	return children;

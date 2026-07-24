@@ -1,10 +1,9 @@
-import { useIsFetching } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
 import type { TradeResponse, TradeSignal } from '@/shared/api';
 
-import { getGetUserTradesQueryKey, normalizeTradePage, useGetUserTradesSuspense } from '@/entities/trade';
+import { normalizeTradePage, useGetUserTradesSuspense } from '@/entities/trade';
 import { useGetStockCodes } from '@/entities/trade-code';
 import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
 
@@ -43,8 +42,6 @@ export function useTradesHistoryTable() {
 		page: 1,
 		pageSize: 100,
 	});
-	const isFetchingTrades = useIsFetching({ queryKey: getGetUserTradesQueryKey() });
-
 	const trades = tradesPage.items;
 	const stocks = getList<{ id: number; exchangeId: string }>(stocksResponse?.data);
 
@@ -172,7 +169,6 @@ export function useTradesHistoryTable() {
 		fieldSort,
 		directionSort,
 		page,
-		isFetching: isFetchingTrades > 0,
 		setSorting,
 		setPage,
 	};

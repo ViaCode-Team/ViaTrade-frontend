@@ -12,7 +12,7 @@ import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import { getApiPersonalNotes } from '../../model/api-notes';
 
-const NOTES_PAGE_SIZE = 12;
+export const NOTES_PAGE_SIZE = 12;
 
 export function usePersonalNotes() {
 	const storedNotesQuery = useStoredPersonalNotesQuery();

@@ -1,3 +1,4 @@
+import { Stack } from '@mantine/core';
 import { useMemo } from 'react';
 
 import type { Signal } from '@/entities/signal';
@@ -14,14 +15,17 @@ import {
 	QUERY_REFETCH_INTERVAL,
 } from '@/shared/model';
 import { DataState } from '@/shared/ui/data-state';
+import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { ValueBadge } from '@/shared/ui/value-badge';
 
 export type SignalsOverviewListProps = {
 	filters: SignalFilters;
+	onResetFilters: () => void;
 	onSignalSelect: (signal: Signal) => void;
 };
 
-function SignalsOverviewList({ filters, onSignalSelect }: SignalsOverviewListProps) {
+function SignalsOverviewList({ filters, onResetFilters, onSignalSelect }: SignalsOverviewListProps) {
 	const { data: signalsData } = useGetStrategyResultsSuspense(getSignalRequestParams(filters.sortOption), {
 		query: {
 			refetchInterval: QUERY_REFETCH_INTERVAL,
@@ -38,15 +42,35 @@ function SignalsOverviewList({ filters, onSignalSelect }: SignalsOverviewListPro
 		return filtered;
 	}, [signals, filters]);
 
+	const buyCount = filteredAndSortedSignals.filter((signal) => signal.direction === 'buy').length;
+	const sellCount = filteredAndSortedSignals.length - buyCount;
+
 	return (
 		<DataState
 			hasData={!!signals.length}
 			hasResults={!!filteredAndSortedSignals.length}
+			onResetFilters={onResetFilters}
 		>
-			<SignalsList
-				signals={filteredAndSortedSignals}
-				onSignalSelect={onSignalSelect}
-			/>
+			<Stack gap='md'>
+				<ListStatusBar
+					totalCount={signals.length}
+					filteredCount={filteredAndSortedSignals.length}
+					badges={(
+						<>
+							{filters.directionFilter === 'all' && buyCount > 0 && (
+								<ValueBadge variant='dot' color='green' size='sm' label='Покупать' value={buyCount} />
+							)}
+							{filters.directionFilter === 'all' && sellCount > 0 && (
+								<ValueBadge variant='dot' color='red' size='sm' label='Продавать' value={sellCount} />
+							)}
+						</>
+					)}
+				/>
+				<SignalsList
+					signals={filteredAndSortedSignals}
+					onSignalSelect={onSignalSelect}
+				/>
+			</Stack>
 		</DataState>
 	);
 }

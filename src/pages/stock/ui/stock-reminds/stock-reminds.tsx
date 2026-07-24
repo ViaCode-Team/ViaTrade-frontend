@@ -12,7 +12,6 @@ import {
 	useCreateUserRemind,
 } from '@/entities/remind';
 import { RemindsControls } from '@/features/remind/filter-reminds';
-import { RemindStatusBarBoundary } from '@/features/remind/manage-reminds';
 import { brandGradient } from '@/shared/lib/theme';
 
 import { StockRemindsListBoundary } from './stock-reminds-list';
@@ -65,10 +64,7 @@ export function StockReminds({ stock }: StockRemindsProps) {
 
 	return (
 		<Stack>
-			<Stack gap='xs'>
-				<RemindsControls actionSlot={actionSlot} instrumentId={stock.instrumentId} />
-				<RemindStatusBarBoundary instrumentId={stock.instrumentId} />
-			</Stack>
+			<RemindsControls actionSlot={actionSlot} instrumentId={stock.instrumentId} />
 			<StockRemindsListBoundary instrumentId={stock.instrumentId} />
 		</Stack>
 	);

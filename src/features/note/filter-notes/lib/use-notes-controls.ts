@@ -13,7 +13,11 @@ export const noteFiltersSchema = v.object({
 });
 
 export function useNotesControls() {
-	const { filters: urlFilters, setFilters } = useUrlFilters(noteFiltersSchema);
+	const {
+		filters: urlFilters,
+		setFilters,
+		resetFilters,
+	} = useUrlFilters(noteFiltersSchema);
 
 	const filters = useMemo(
 		() => ({
@@ -24,5 +28,5 @@ export function useNotesControls() {
 		[urlFilters.q, urlFilters.sourceFilter, urlFilters.page],
 	);
 
-	return { filters, setFilters };
+	return { filters, setFilters, resetFilters };
 }

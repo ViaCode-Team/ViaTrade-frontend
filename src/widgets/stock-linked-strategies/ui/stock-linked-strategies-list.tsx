@@ -1,3 +1,4 @@
+import { Stack } from '@mantine/core';
 import { useMemo, useState } from 'react';
 
 import type { LinkedStrategyFilters } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
@@ -8,6 +9,7 @@ import {
 } from '@/entities/strategy';
 import { StrategyToggleCheckbox } from '@/features/strategy/toggle-strategy';
 import { DataState } from '@/shared/ui/data-state';
+import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { filterLinkedStrategies } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
@@ -19,12 +21,14 @@ import {
 export type StockLinkedStrategiesListProps = {
 	stockId: number;
 	filters: LinkedStrategyFilters;
+	onResetFilters: () => void;
 	onNavigate?: () => void;
 };
 
 function StockLinkedStrategiesList({
 	stockId,
 	filters,
+	onResetFilters,
 	onNavigate,
 }: StockLinkedStrategiesListProps) {
 	const [page, setPage] = useState(1);
@@ -41,19 +45,34 @@ function StockLinkedStrategiesList({
 	);
 
 	return (
-		<DataState hasData={!!totalCount} hasResults={!!filteredStrategies.length}>
-			<LinkedStrategiesList
-				strategies={filteredStrategies}
-				activeStrategyIds={activeStrategyIds}
-				pagination={{ page, totalPages, onPageChange: setPage }}
-				onNavigate={onNavigate}
-				renderAction={(strategy, isActive) => (
-					<StrategyToggleCheckbox
-						strategyId={strategy.id}
-						isActive={isActive}
-					/>
-				)}
-			/>
+		<DataState
+			hasData={!!totalCount}
+			hasResults={!!filteredStrategies.length}
+			onResetFilters={onResetFilters}
+		>
+			<Stack gap='md'>
+				<ListStatusBar
+					totalCount={totalCount}
+					filteredCount={filteredStrategies.length}
+					pagination={{
+						page,
+						pageSize: STOCK_LINKED_STRATEGIES_PAGE_SIZE,
+						showRange: !filters.searchQuery.trim() && filters.statusFilter === 'all',
+					}}
+				/>
+				<LinkedStrategiesList
+					strategies={filteredStrategies}
+					activeStrategyIds={activeStrategyIds}
+					pagination={{ page, totalPages, onPageChange: setPage }}
+					onNavigate={onNavigate}
+					renderAction={(strategy, isActive) => (
+						<StrategyToggleCheckbox
+							strategyId={strategy.id}
+							isActive={isActive}
+						/>
+					)}
+				/>
+			</Stack>
 		</DataState>
 	);
 }

@@ -34,7 +34,6 @@ type TradesHistoryTableViewProps = {
 	pagination?: PaginationConfig;
 	fieldSort: TradeFilters['fieldSort'];
 	directionSort: TradeFilters['directionSort'];
-	isFetching: boolean;
 	setSorting: (field: TradeFilters['fieldSort']) => void;
 };
 
@@ -44,7 +43,6 @@ export function TradesHistoryTableView({
 	pagination,
 	fieldSort,
 	directionSort,
-	isFetching,
 	setSorting,
 }: TradesHistoryTableViewProps) {
 	if (!hasData)
@@ -62,7 +60,6 @@ export function TradesHistoryTableView({
 									sorted={fieldSort === field}
 									reversed={directionSort === 'desc'}
 									onSort={() => setSorting(field)}
-									disabled={isFetching}
 								>
 									{label}
 								</TradesHistorySortableHead>
@@ -90,7 +87,6 @@ export function TradesHistoryTableView({
 						total={pagination.totalPages}
 						value={pagination.page}
 						onChange={pagination.onPageChange}
-						disabled={isFetching}
 					/>
 				</Center>
 			)}

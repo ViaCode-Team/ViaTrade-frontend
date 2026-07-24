@@ -1,4 +1,4 @@
-import { Loader, TextInput, type TextInputProps } from '@mantine/core';
+import { TextInput, type TextInputProps } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { type ChangeEvent, useState } from 'react';
@@ -7,13 +7,11 @@ import { milliseconds } from '@/shared/lib/milliseconds';
 
 export type SearchInputProps = Omit<TextInputProps, 'onChange'> & {
 	onChange?: (value: string) => void;
-	isLoading?: boolean;
 	debounceMs?: number;
 };
 
 export function SearchInput({
 	onChange,
-	isLoading,
 	debounceMs = milliseconds.fromMilliseconds(300),
 	flex = 1,
 	miw = 300,
@@ -40,9 +38,7 @@ export function SearchInput({
 			miw={miw}
 			value={value}
 			onChange={handleChange}
-			leftSection={
-				isLoading ? <Loader size={16} /> : <IconSearch size={16} />
-			}
+			leftSection={<IconSearch size={16} />}
 		/>
 	);
 }

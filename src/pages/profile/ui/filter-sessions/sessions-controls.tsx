@@ -6,10 +6,9 @@ import { sessionFiltersSchema } from './filters';
 
 export type SessionsControlsProps = {
 	disabled?: boolean;
-	isLoading?: boolean;
 };
 
-export function SessionsControls({ disabled = false, isLoading = false }: SessionsControlsProps = {}) {
+export function SessionsControls({ disabled = false }: SessionsControlsProps = {}) {
 	const { filters, setFilters } = useUrlFilters(sessionFiltersSchema);
 
 	return (
@@ -19,7 +18,6 @@ export function SessionsControls({ disabled = false, isLoading = false }: Sessio
 				onChange={(val) => setFilters({ q: val, page: '1' })}
 				placeholder='Поиск сессии...'
 				disabled={disabled}
-				isLoading={isLoading}
 			/>
 		</ControlsGroup>
 	);

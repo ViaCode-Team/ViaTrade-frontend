@@ -7,22 +7,21 @@ import { CONTENT_GRID_SPACING } from '@/shared/model';
 import type { Stock } from '../../model';
 
 import { StockBindingCard } from '../stock-binding-card/stock-binding-card';
-import cls from './strategy-stock-binding-list.module.css';
+import cls from './selectable-stock-list.module.css';
 
-export type StrategyStockBindingListProps = {
+export type SelectableStockListProps = {
 	paginatedStocks: Stock[];
-	stocks: Stock[];
 	selectedStockIds: string[];
 	onStockChange: (stockId: string, checked: boolean) => void;
 	pagination?: PaginationConfig;
 };
 
-export function StrategyStockBindingList({
+export function SelectableStockList({
 	paginatedStocks,
 	selectedStockIds,
 	onStockChange,
 	pagination,
-}: StrategyStockBindingListProps) {
+}: SelectableStockListProps) {
 	const selectedStockIdSet = new Set(selectedStockIds);
 
 	return (

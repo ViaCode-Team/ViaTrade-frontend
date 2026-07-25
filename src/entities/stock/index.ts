@@ -6,4 +6,4 @@ export {
 export type { Stock, StockLinkedStrategy } from './model';
 export { StockCard, StockCardSkeleton } from './ui';
 export { StocksList, StocksListSkeleton } from './ui';
-export { StrategyStockBindingList, StrategyStockBindingListSkeleton } from './ui';
+export { SelectableStockList, SelectableStockListSkeleton } from './ui';

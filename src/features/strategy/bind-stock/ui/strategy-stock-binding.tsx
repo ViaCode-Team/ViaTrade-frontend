@@ -1,10 +1,15 @@
 import { Stack } from '@mantine/core';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
-	StrategyStockBindingList,
-	StrategyStockBindingListSkeleton,
+	SelectableStockList,
+	SelectableStockListSkeleton,
 } from '@/entities/stock';
+import {
+	useCreateUserStrategyCode,
+	useDeleteUserStrategyCode,
+	useGetUserStrategyCodesSuspense,
+} from '@/entities/strategy';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -14,14 +19,12 @@ import { StockBindingControls } from './stock-binding-controls';
 import { StockBindingStatusBar } from './stock-binding-status-bar';
 
 type StrategyStockBindingProps = {
-	selectedStockIds: string[];
-	onSelectedStockIdsChange: (stockIds: string[]) => void;
+	strategyId: number;
 	searchPlaceholder?: string;
 };
 
 function StrategyStockBindingBase({
-	selectedStockIds,
-	onSelectedStockIdsChange,
+	strategyId,
 	searchPlaceholder = 'Найти по коду или названию',
 }: StrategyStockBindingProps) {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -30,6 +33,31 @@ function StrategyStockBindingBase({
 	const { stocks, totalPages, totalCount } = useStrategyStockBindingData(page);
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
 	const paginatedStocks = visibleStocks;
+
+	const { data: instrumentsLinkResponse } = useGetUserStrategyCodesSuspense({ page: 1, pageSize: 100 });
+	const selectedStockIds = useMemo(
+		() =>
+			instrumentsLinkResponse.data.items
+				.filter((link) => link.strategyId === strategyId)
+				.map((link) => String(link.tradeCodeId)),
+		[instrumentsLinkResponse.data.items, strategyId],
+	);
+
+	const { mutate: createLink } = useCreateUserStrategyCode();
+	const { mutate: deleteLink } = useDeleteUserStrategyCode();
+
+	const handleSelectedStockIdsChange = (nextStockIds: string[]) => {
+		const added = nextStockIds.filter((id) => !selectedStockIds.includes(id));
+		const removed = selectedStockIds.filter((id) => !nextStockIds.includes(id));
+
+		added.forEach((id) => {
+			createLink({ data: { strategyId, tradeCodeId: Number(id) } });
+		});
+
+		removed.forEach((id) => {
+			deleteLink({ params: { strategyId, tradeCodeId: Number(id) } });
+		});
+	};
 
 	const handleSearchQueryChange = (query: string) => {
 		setSearchQuery(query);
@@ -50,7 +78,7 @@ function StrategyStockBindingBase({
 				selectedStockIds={selectedStockIds}
 				stocks={stocks}
 				paginatedStocks={paginatedStocks}
-				onSelectedStockIdsChange={onSelectedStockIdsChange}
+				onSelectedStockIdsChange={handleSelectedStockIdsChange}
 			/>
 
 			<DataState
@@ -65,13 +93,12 @@ function StrategyStockBindingBase({
 						selectedCount={getStockSelectionState(stocks, visibleStocks, selectedStockIds).selectedCount}
 						pagination={{ page, pageSize: ITEMS_PER_PAGE, showRange: !searchQuery.trim() }}
 					/>
-					<StrategyStockBindingList
+					<SelectableStockList
 						paginatedStocks={paginatedStocks}
-						stocks={stocks}
 						pagination={{ page, totalPages, onPageChange: setPage }}
 						selectedStockIds={selectedStockIds}
 						onStockChange={(stockId: string, checked: boolean) => {
-							onSelectedStockIdsChange(getNextStockIdsAfterStockToggle(selectedStockIds, stockId, checked));
+							handleSelectedStockIdsChange(getNextStockIdsAfterStockToggle(selectedStockIds, stockId, checked));
 						}}
 					/>
 				</Stack>
@@ -82,6 +109,6 @@ function StrategyStockBindingBase({
 
 export const StrategyStockBinding = withQueryBoundary(StrategyStockBindingBase, {
 	suspenseProps: {
-		fallback: <StrategyStockBindingListSkeleton />,
+		fallback: <SelectableStockListSkeleton />,
 	},
 });

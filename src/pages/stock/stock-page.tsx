@@ -19,7 +19,22 @@ import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
 import { StockNotFound } from './ui/stock-not-found';
 
-function StockPageContent() {
+const StockPageBoundary = withQueryBoundary(StockPageBase);
+
+export function StockPage() {
+	return (
+		<Stack>
+			<Flex justify='space-between' align='center'>
+				<BackToStocksLink />
+				<DataFreshness />
+			</Flex>
+
+			<StockPageBoundary />
+		</Stack>
+	);
+}
+
+function StockPageBase() {
 	const { stockId } = useParams();
 	const { data: stocksResponse } = useGetStockCodesSuspense({ page: 1, pageSize: 100 });
 
@@ -74,19 +89,5 @@ function StockPageContent() {
 				<StockReminds stock={stock} />
 			</Section>
 		</>
-	);
-}
-
-const StockPageContentBoundary = withQueryBoundary(StockPageContent);
-
-export function StockPage() {
-	return (
-		<Stack>
-			<Flex justify='space-between' align='center'>
-				<BackToStocksLink />
-				<DataFreshness />
-			</Flex>
-			<StockPageContentBoundary />
-		</Stack>
 	);
 }

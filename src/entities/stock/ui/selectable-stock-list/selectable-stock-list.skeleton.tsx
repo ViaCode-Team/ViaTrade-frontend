@@ -3,9 +3,9 @@ import { SimpleGrid, Skeleton } from '@mantine/core';
 import { createSkeletons } from '@/shared/lib/ui-helpers';
 import { CONTENT_GRID_SPACING } from '@/shared/model';
 
-import cls from './strategy-stock-binding-list.module.css';
+import cls from './selectable-stock-list.module.css';
 
-export function StrategyStockBindingListSkeleton() {
+export function SelectableStockListSkeleton() {
 	return (
 		<SimpleGrid
 			minColWidth={300}

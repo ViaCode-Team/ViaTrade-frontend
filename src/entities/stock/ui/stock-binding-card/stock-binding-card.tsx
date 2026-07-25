@@ -17,12 +17,14 @@ type StockBindingCardProps = {
 	stock: Stock;
 	isSelected: boolean;
 	onSelectedChange: (stockId: string, checked: boolean) => void;
+	ariaLabel?: string;
 };
 
 export function StockBindingCard({
 	stock,
 	isSelected,
 	onSelectedChange,
+	ariaLabel,
 }: StockBindingCardProps) {
 	const stockPath = generatePath(ROUTES.STOCK, {
 		stockId: stock.ticker.toLowerCase(),
@@ -45,7 +47,7 @@ export function StockBindingCard({
 							onSelectedChange(stock.id, event.currentTarget.checked);
 						}}
 						size='md'
-						aria-label={`Связать ${stock.ticker} со стратегией`}
+						aria-label={ariaLabel ?? `Связать ${stock.ticker}`}
 					/>
 				</div>
 

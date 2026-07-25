@@ -15,14 +15,12 @@ import { StockCard } from '../stock-card';
 
 export type StocksListProps = {
 	stocks: Stock[];
-	linkCountsByStockId: Map<number, number>;
 	onLinkedStrategiesClick: (stock: Stock) => void;
 	pagination?: PaginationConfig;
 };
 
 export function StocksList({
 	stocks,
-	linkCountsByStockId,
 	onLinkedStrategiesClick,
 	pagination,
 }: StocksListProps) {
@@ -37,7 +35,6 @@ export function StocksList({
 					<li key={stock.id}>
 						<StockCard
 							stock={stock}
-							linkedStrategiesCount={linkCountsByStockId.get(stock.instrumentId) || 0}
 							onLinkedStrategiesClick={() => {
 								onLinkedStrategiesClick(stock);
 							}}

@@ -5,12 +5,9 @@
  * API для платформы инвестиционного анализа ViaTrade
  * OpenAPI spec version: v1
  */
-import type { TradeCodeBriefResponse } from './tradeCodeBriefResponse';
 
-export type ReminderResponse = {
+export type StrategyBriefResponse = {
 	id: number;
-	text: string;
-	dateTime: string;
-	tradeCode?: TradeCodeBriefResponse;
-	userId: number;
+	name: string;
+	description?: string;
 };

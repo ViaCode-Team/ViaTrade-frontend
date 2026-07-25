@@ -26,11 +26,13 @@ export function mapTradeRemindToRemindItem(tradeRemind: ReminderResponse): Remin
 		text: tradeRemind.text,
 		date,
 		time,
-		source: {
-			type: 'stock',
-			id: tradeRemind.tradeCodeId.toString(),
-			label: `Инструмент #${tradeRemind.tradeCodeId}`, // Fallback label, might need joining with TradeCode data
-		},
+		source: tradeRemind.tradeCode
+			? {
+					type: 'stock',
+					id: tradeRemind.tradeCode.ticker.toLowerCase(),
+					label: tradeRemind.tradeCode.ticker,
+				}
+			: undefined,
 	};
 }
 

@@ -9,7 +9,6 @@ import type { ProcessedTrade } from './use-trades-history-table';
 
 export function processTrades(
 	trades: TradeResponse[],
-	stocks: { id: number; exchangeId: string }[],
 	filters: Pick<TradeFilters, 'q' | 'fieldSort' | 'directionSort'>,
 ): ProcessedTrade[] {
 	const { q, fieldSort, directionSort } = filters;
@@ -22,10 +21,9 @@ export function processTrades(
 			price: toNumber(trade.price),
 			netIncome: toOptionalNumber(trade.netIncome),
 		};
-		const stock = stocks.find((s) => s.id === trade.tradeCodeId);
 		return {
 			...normalizedTrade,
-			ticker: stock?.exchangeId ?? `Инструмент #${trade.tradeCodeId}`,
+			ticker: trade.tradeCode?.ticker ?? 'Неизвестный инструмент',
 			isLong: trade.tradeSignal !== -1,
 			income: normalizedTrade.price,
 			percent: normalizedTrade.netIncome,

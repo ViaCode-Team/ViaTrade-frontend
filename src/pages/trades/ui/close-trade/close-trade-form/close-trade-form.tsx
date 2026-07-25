@@ -6,7 +6,7 @@ import { modals } from '@mantine/modals';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import type { Trade } from '@/shared/api';
+import type { TradeResponse } from '@/shared/api';
 import type { TradeRequest } from '@/shared/api';
 
 import { useUpdateUserTrade } from '@/entities/trade';
@@ -17,7 +17,7 @@ type FormValues = {
 };
 
 type CloseTradeFormProps = {
-	trade: Trade;
+	trade: TradeResponse;
 };
 
 export function CloseTradeForm({ trade }: CloseTradeFormProps) {
@@ -37,12 +37,12 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 	});
 
 	const handleSubmit = (values: FormValues) => {
-		if (values.tradeClose === '' || !values.dateClose)
+		if (values.tradeClose === '' || !values.dateClose || !trade.tradeCode)
 			return;
 
 		const request: TradeRequest = {
 			tradeTypeId: trade.tradeTypeId,
-			tradeCodeId: trade.tradeCodeId,
+			tradeCodeId: trade.tradeCode.id,
 			tradeSignal: trade.tradeSignal ?? 0,
 			count: trade.count,
 			tradeOpen: trade.tradeOpen,

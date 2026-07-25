@@ -5,6 +5,7 @@
  * API для платформы инвестиционного анализа ViaTrade
  * OpenAPI spec version: v1
  */
+import type { TradeCodeBriefResponse } from './tradeCodeBriefResponse';
 import type { TradeSignal } from './tradeSignal';
 
 export type TradeResponse = {
@@ -18,6 +19,6 @@ export type TradeResponse = {
 	price: number;
 	tradeSignal: TradeSignal;
 	tradeTypeId: number;
-	tradeCodeId: number;
+	tradeCode?: TradeCodeBriefResponse;
 	userId: number;
 };

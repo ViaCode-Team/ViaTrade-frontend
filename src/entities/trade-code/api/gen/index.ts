@@ -29,6 +29,10 @@ import type {
 } from '../../../../shared/api/types/gen/getStockCodesParams';
 
 import type {
+	GetStrategiesByStockParams,
+} from '../../../../shared/api/types/gen/getStrategiesByStockParams';
+
+import type {
 	ProblemDetails,
 } from '../../../../shared/api/types/gen/problemDetails';
 
@@ -41,8 +45,16 @@ import type {
 } from '../../../../shared/api/types/gen/tradeCodeFileResponse';
 
 import type {
+	TradeCodeResponse,
+} from '../../../../shared/api/types/gen/tradeCodeResponse';
+
+import type {
 	TradeCodeResponsePageResult,
 } from '../../../../shared/api/types/gen/tradeCodeResponsePageResult';
+
+import type {
+	TradeStrategyResponsePageResult,
+} from '../../../../shared/api/types/gen/tradeStrategyResponsePageResult';
 
 import { customInstance } from '../../../../shared/api/client/custom-instance-fetch';
 import type { ErrorType } from '../../../../shared/api/client/custom-instance-fetch';
@@ -458,6 +470,414 @@ export function useGetStockCodesSuspense<TData = Awaited<ReturnType<typeof getSt
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 	const queryOptions = getGetStockCodesSuspenseQueryOptions(params, options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+export type getStockCodeByTickerResponse200 = {
+	data: TradeCodeResponse;
+	status: 200;
+};
+
+export type getStockCodeByTickerResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getStockCodeByTickerResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getStockCodeByTickerResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getStockCodeByTickerResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getStockCodeByTickerResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getStockCodeByTickerResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getStockCodeByTickerResponse422 = {
+	data: ProblemDetails;
+	status: 422;
+};
+
+export type getStockCodeByTickerResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getStockCodeByTickerResponse503 = {
+	data: ProblemDetails;
+	status: 503;
+};
+
+export type getStockCodeByTickerResponseSuccess = (getStockCodeByTickerResponse200) & {
+	headers: Headers;
+};
+export type getStockCodeByTickerResponseError = (getStockCodeByTickerResponse400 | getStockCodeByTickerResponse401 | getStockCodeByTickerResponse403 | getStockCodeByTickerResponse404 | getStockCodeByTickerResponse408 | getStockCodeByTickerResponse409 | getStockCodeByTickerResponse422 | getStockCodeByTickerResponse500 | getStockCodeByTickerResponse503) & {
+	headers: Headers;
+};
+
+export function getGetStockCodeByTickerUrl(ticker: string) {
+	return `/api/TradeCodes/stocks/byticker/${ticker}`;
+}
+
+export async function getStockCodeByTicker(ticker: string, options?: RequestInit): Promise<getStockCodeByTickerResponseSuccess> {
+	return customInstance<getStockCodeByTickerResponseSuccess>(getGetStockCodeByTickerUrl(ticker), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetStockCodeByTickerQueryKey(ticker: string) {
+	return [
+		`/api/TradeCodes/stocks/byticker/${ticker}`,
+	] as const;
+}
+
+
+export function getGetStockCodeByTickerQueryOptions<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(ticker: string, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStockCodeByTickerQueryKey(ticker);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStockCodeByTicker>>> = ({ signal }) => getStockCodeByTicker(ticker, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, enabled: ticker !== null && ticker !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStockCodeByTickerQueryResult = NonNullable<Awaited<ReturnType<typeof getStockCodeByTicker>>>;
+export type GetStockCodeByTickerQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStockCodeByTicker<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStockCodeByTicker>>,
+			TError,
+			Awaited<ReturnType<typeof getStockCodeByTicker>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockCodeByTicker<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStockCodeByTicker>>,
+			TError,
+			Awaited<ReturnType<typeof getStockCodeByTicker>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockCodeByTicker<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStockCodeByTicker<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string,
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStockCodeByTickerQueryOptions(ticker, options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetStockCodeByTickerQuery<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, ticker: string, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetStockCodeByTickerQueryOptions(ticker, options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetStockCodeByTicker(queryClient: QueryClient, ticker: string, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetStockCodeByTickerQueryKey(ticker) }, options);
+
+	return queryClient;
+}
+
+
+export function getGetStockCodeByTickerSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(ticker: string, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStockCodeByTickerQueryKey(ticker);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStockCodeByTicker>>> = ({ signal }) => getStockCodeByTicker(ticker, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStockCodeByTickerSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getStockCodeByTicker>>>;
+export type GetStockCodeByTickerSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStockCodeByTickerSuspense<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockCodeByTickerSuspense<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStockCodeByTickerSuspense<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStockCodeByTickerSuspense<TData = Awaited<ReturnType<typeof getStockCodeByTicker>>, TError = ErrorType<ProblemDetails>>(
+	ticker: string,
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStockCodeByTicker>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStockCodeByTickerSuspenseQueryOptions(ticker, options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+export type getStrategiesByStockResponse200 = {
+	data: TradeStrategyResponsePageResult;
+	status: 200;
+};
+
+export type getStrategiesByStockResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getStrategiesByStockResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getStrategiesByStockResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getStrategiesByStockResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getStrategiesByStockResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getStrategiesByStockResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getStrategiesByStockResponse422 = {
+	data: ProblemDetails;
+	status: 422;
+};
+
+export type getStrategiesByStockResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getStrategiesByStockResponse503 = {
+	data: ProblemDetails;
+	status: 503;
+};
+
+export type getStrategiesByStockResponseSuccess = (getStrategiesByStockResponse200) & {
+	headers: Headers;
+};
+export type getStrategiesByStockResponseError = (getStrategiesByStockResponse400 | getStrategiesByStockResponse401 | getStrategiesByStockResponse403 | getStrategiesByStockResponse404 | getStrategiesByStockResponse408 | getStrategiesByStockResponse409 | getStrategiesByStockResponse422 | getStrategiesByStockResponse500 | getStrategiesByStockResponse503) & {
+	headers: Headers;
+};
+
+export function getGetStrategiesByStockUrl(tradeCodeId: number, params?: GetStrategiesByStockParams) {
+	const normalizedParams = new URLSearchParams();
+
+	Object.entries(params || {}).forEach(([key, value]) => {
+		const explodeParameters = ['sortBy'];
+
+		if (Array.isArray(value) && explodeParameters.includes(key)) {
+			value.forEach((v) => {
+				normalizedParams.append(key, v === null ? 'null' : String(v));
+			});
+			return;
+		}
+
+		if (value !== undefined) {
+			normalizedParams.append(key, value === null ? 'null' : String(value));
+		}
+	});
+
+	const stringifiedParams = normalizedParams.toString();
+
+	return stringifiedParams.length > 0 ? `/api/TradeCodes/stocks/${tradeCodeId}/strategies?${stringifiedParams}` : `/api/TradeCodes/stocks/${tradeCodeId}/strategies`;
+}
+
+export async function getStrategiesByStock(tradeCodeId: number, params?: GetStrategiesByStockParams, options?: RequestInit): Promise<getStrategiesByStockResponseSuccess> {
+	return customInstance<getStrategiesByStockResponseSuccess>(getGetStrategiesByStockUrl(tradeCodeId, params), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetStrategiesByStockQueryKey(tradeCodeId: number, params?: GetStrategiesByStockParams) {
+	return [
+		`/api/TradeCodes/stocks/${tradeCodeId}/strategies`,
+		...(params ? [params] : []),
+	] as const;
+}
+
+
+export function getGetStrategiesByStockQueryOptions<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(tradeCodeId: number, params?: GetStrategiesByStockParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStrategiesByStockQueryKey(tradeCodeId, params);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStrategiesByStock>>> = ({ signal }) => getStrategiesByStock(tradeCodeId, params, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, enabled: tradeCodeId !== null && tradeCodeId !== undefined, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStrategiesByStockQueryResult = NonNullable<Awaited<ReturnType<typeof getStrategiesByStock>>>;
+export type GetStrategiesByStockQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStrategiesByStock<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params: undefined | GetStrategiesByStockParams, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStrategiesByStock>>,
+			TError,
+			Awaited<ReturnType<typeof getStrategiesByStock>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategiesByStock<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params?: GetStrategiesByStockParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getStrategiesByStock>>,
+			TError,
+			Awaited<ReturnType<typeof getStrategiesByStock>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategiesByStock<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params?: GetStrategiesByStockParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStrategiesByStock<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params?: GetStrategiesByStockParams,
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStrategiesByStockQueryOptions(tradeCodeId, params, options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetStrategiesByStockQuery<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, tradeCodeId: number, params?: GetStrategiesByStockParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetStrategiesByStockQueryOptions(tradeCodeId, params, options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetStrategiesByStock(queryClient: QueryClient, tradeCodeId: number, params?: GetStrategiesByStockParams, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetStrategiesByStockQueryKey(tradeCodeId, params) }, options);
+
+	return queryClient;
+}
+
+
+export function getGetStrategiesByStockSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(tradeCodeId: number, params?: GetStrategiesByStockParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetStrategiesByStockQueryKey(tradeCodeId, params);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getStrategiesByStock>>> = ({ signal }) => getStrategiesByStock(tradeCodeId, params, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetStrategiesByStockSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getStrategiesByStock>>>;
+export type GetStrategiesByStockSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetStrategiesByStockSuspense<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params: undefined | GetStrategiesByStockParams, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategiesByStockSuspense<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params?: GetStrategiesByStockParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetStrategiesByStockSuspense<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params?: GetStrategiesByStockParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetStrategiesByStockSuspense<TData = Awaited<ReturnType<typeof getStrategiesByStock>>, TError = ErrorType<ProblemDetails>>(
+	tradeCodeId: number,
+	params?: GetStrategiesByStockParams,
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getStrategiesByStock>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetStrategiesByStockSuspenseQueryOptions(tradeCodeId, params, options);
 
 	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

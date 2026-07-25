@@ -4,39 +4,31 @@ import type {
 	NoteSource,
 	StoredPersonalNote,
 } from '@/entities/note';
-import type { Stock } from '@/entities/stock';
-import type { Note } from '@/shared/api';
-import type { TradeStrategy } from '@/shared/api';
+import type { NoteResponse } from '@/shared/api';
 
 import { getNoteId } from '@/entities/note';
 import { ROUTES } from '@/shared/model';
 
 type GetApiNotesOptions = {
-	instrumentNotes: Note[];
-	strategyNotes: Note[];
-	stocks: Stock[];
-	strategies: TradeStrategy[];
+	instrumentNotes: NoteResponse[];
+	strategyNotes: NoteResponse[];
 };
 
 export function getApiPersonalNotes({
 	instrumentNotes,
 	strategyNotes,
-	stocks,
-	strategies,
 }: GetApiNotesOptions): StoredPersonalNote[] {
 	return [
-		...instrumentNotes.map((note) => mapApiNoteToStoredNote(note, 'stock', stocks, strategies)),
-		...strategyNotes.map((note) => mapApiNoteToStoredNote(note, 'strategy', stocks, strategies)),
+		...instrumentNotes.map((note) => mapApiNoteToStoredNote(note, 'stock')),
+		...strategyNotes.map((note) => mapApiNoteToStoredNote(note, 'strategy')),
 	].filter((note): note is StoredPersonalNote => note !== null);
 }
 
 function mapApiNoteToStoredNote(
-	note: Note,
+	note: NoteResponse,
 	sourceType: NoteSource['type'],
-	stocks: Stock[],
-	strategies: TradeStrategy[],
 ): StoredPersonalNote | null {
-	const source = getApiNoteSource(note, sourceType, stocks, strategies);
+	const source = getApiNoteSource(note, sourceType);
 
 	if (!source) {
 		return null;
@@ -50,50 +42,42 @@ function mapApiNoteToStoredNote(
 }
 
 function getApiNoteSource(
-	note: Note,
+	note: NoteResponse,
 	sourceType: NoteSource['type'],
-	stocks: Stock[],
-	strategies: TradeStrategy[],
 ): NoteSource | null {
 	if (sourceType === 'stock') {
-		return getStockNoteSource(note.tradeCodeId, stocks);
+		return getStockNoteSource(note.tradeCode);
 	}
 
-	return getStrategyNoteSource(note.tradeStrategyId, strategies);
+	return getStrategyNoteSource(note.strategy);
 }
 
-function getStockNoteSource(instrumentId: number | undefined, stocks: Stock[]): NoteSource | null {
-	if (!instrumentId) {
+function getStockNoteSource(tradeCode: NoteResponse['tradeCode']): NoteSource | null {
+	if (!tradeCode) {
 		return null;
 	}
-
-	const stock = stocks.find((s) => s.instrumentId === instrumentId);
 
 	return {
 		type: 'stock',
-		id: String(instrumentId),
-		label: stock?.ticker ?? `Инструмент #${instrumentId}`,
-		description: stock?.name,
-		path: stock
-			? generatePath(ROUTES.STOCK, { stockId: stock.ticker.toLowerCase() })
-			: ROUTES.STOCKS,
+		id: String(tradeCode.id),
+		label: tradeCode.ticker,
+		description: tradeCode.name,
+		path: generatePath(ROUTES.STOCK, { stockId: tradeCode.ticker.toLowerCase() }),
 	};
 }
 
-function getStrategyNoteSource(strategyId: number | undefined, strategies: TradeStrategy[]): NoteSource | null {
-	if (!strategyId) {
+function getStrategyNoteSource(strategy: NoteResponse['strategy']): NoteSource | null {
+	if (!strategy) {
 		return null;
 	}
 
-	const strategy = strategies.find((s) => s.id === strategyId);
-
 	return {
 		type: 'strategy',
-		id: String(strategyId),
-		label: strategy?.name ?? `Стратегия #${strategyId}`,
-		description: strategy?.description ?? 'Торговая стратегия',
+		id: String(strategy.id),
+		label: strategy.name,
+		description: strategy.description ?? 'Торговая стратегия',
 		path: generatePath(ROUTES.STRATEGY, {
-			strategyName: strategy?.name ?? String(strategyId),
+			strategyName: strategy.name,
 		}),
 	};
 }

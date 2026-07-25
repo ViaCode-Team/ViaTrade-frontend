@@ -70,7 +70,7 @@ function updateInstrumentNotesData(
 		...data,
 		data: {
 			...data.data,
-			items: data.data.items.map((note) => note.tradeCodeId === sourceId
+			items: data.data.items.map((note) => note.tradeCode?.id === sourceId
 				? { ...note, noteText: text }
 				: note),
 		},
@@ -89,7 +89,7 @@ function deleteInstrumentNoteData(
 		...data,
 		data: {
 			...data.data,
-			items: data.data.items.filter((note) => note.tradeCodeId !== sourceId),
+			items: data.data.items.filter((note) => note.tradeCode?.id !== sourceId),
 		},
 	};
 }
@@ -106,7 +106,7 @@ function deleteStrategyNoteData(
 		...data,
 		data: {
 			...data.data,
-			items: data.data.items.filter((note) => note.tradeStrategyId !== sourceId),
+			items: data.data.items.filter((note) => note.strategy?.id !== sourceId),
 		},
 	};
 }
@@ -124,7 +124,7 @@ function updateStrategyNotesData(
 		...data,
 		data: {
 			...data.data,
-			items: data.data.items.map((note) => note.tradeStrategyId === sourceId
+			items: data.data.items.map((note) => note.strategy?.id === sourceId
 				? { ...note, noteText: text }
 				: note),
 		},

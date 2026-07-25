@@ -8,7 +8,7 @@ import {
 import {
 	useCreateUserStrategyCode,
 	useDeleteUserStrategyCode,
-	useGetUserStrategyCodesSuspense,
+	useGetStocksByStrategySuspense,
 } from '@/entities/strategy';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -34,13 +34,15 @@ function StrategyStockBindingBase({
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
 	const paginatedStocks = visibleStocks;
 
-	const { data: instrumentsLinkResponse } = useGetUserStrategyCodesSuspense({ page: 1, pageSize: 100 });
+	const { data: linkedStocksResponse } = useGetStocksByStrategySuspense(strategyId, {
+		page,
+		pageSize: ITEMS_PER_PAGE,
+		sortBy: ['nameAsc'],
+	});
 	const selectedStockIds = useMemo(
 		() =>
-			instrumentsLinkResponse.data.items
-				.filter((link) => link.strategyId === strategyId)
-				.map((link) => String(link.tradeCodeId)),
-		[instrumentsLinkResponse.data.items, strategyId],
+			linkedStocksResponse.data.items.map((stock) => String(stock.id)),
+		[linkedStocksResponse.data.items],
 	);
 
 	const { mutate: createLink } = useCreateUserStrategyCode();

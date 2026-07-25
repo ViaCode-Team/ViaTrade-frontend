@@ -37,7 +37,7 @@ function StockLinkedStrategiesList({
 		activeStrategyIds,
 		totalCount,
 		totalPages,
-	} = useStockLinkedStrategies(stockId, page, STOCK_LINKED_STRATEGIES_PAGE_SIZE);
+	} = useStockLinkedStrategies(stockId, page, STOCK_LINKED_STRATEGIES_PAGE_SIZE, filters);
 
 	const filteredStrategies = useMemo(
 		() => filterLinkedStrategies(allLinkedStrategies, filters),

@@ -1,11 +1,8 @@
 import { Grid } from '@mantine/core';
-import { useMemo } from 'react';
 
 import {
-	getUserStrategyIdSet,
 	mapTradeStrategyToStrategy,
 	useGetStrategyByIdSuspense,
-	useGetUserStrategiesSuspense,
 	useToggleUserStrategy,
 } from '@/entities/strategy';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -20,12 +17,8 @@ type StrategyHeroProps = {
 
 function StrategyHero({ strategyId }: StrategyHeroProps) {
 	const strategyQuery = useGetStrategyByIdSuspense(strategyId);
-	const userStrategiesQuery = useGetUserStrategiesSuspense();
 	const strategyToggle = useToggleUserStrategy();
-	const activeStrategyIds = useMemo(
-		() => getUserStrategyIdSet(userStrategiesQuery.data?.data.items ?? []),
-		[userStrategiesQuery.data?.data.items],
-	);
+	const activeStrategyIds = new Set(strategyQuery.data.data.isActive ? [strategyId] : []);
 	const strategy = mapTradeStrategyToStrategy(strategyQuery.data.data, activeStrategyIds);
 
 	if (!strategy) {

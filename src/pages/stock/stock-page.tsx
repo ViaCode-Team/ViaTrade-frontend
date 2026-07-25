@@ -6,7 +6,7 @@ import {
 } from 'react-router';
 
 import { mapTradeCodeToStock } from '@/entities/stock';
-import { useGetStockCodesSuspense } from '@/entities/trade-code';
+import { useGetStockCodeByTickerSuspense } from '@/entities/trade-code';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StockReminds } from '@/pages/stock/ui/stock-reminds';
 import { ROUTES } from '@/shared/model';
@@ -17,7 +17,6 @@ import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
 
 import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
-import { StockNotFound } from './ui/stock-not-found';
 
 const StockPageBoundary = withQueryBoundary(StockPageBase);
 
@@ -36,15 +35,8 @@ export function StockPage() {
 
 function StockPageBase() {
 	const { stockId } = useParams();
-	const { data: stocksResponse } = useGetStockCodesSuspense({ page: 1, pageSize: 100 });
-
-	const normalizedStockId = stockId?.toLowerCase();
-	const tradeCode = stocksResponse.data.items.find((tc) =>
-		tc.id.toString() === normalizedStockId
-		|| tc.exchangeId.toLowerCase() === normalizedStockId,
-	);
-
-	const stock = tradeCode ? mapTradeCodeToStock(tradeCode) : null;
+	const { data: stockResponse } = useGetStockCodeByTickerSuspense(stockId ?? '');
+	const stock = mapTradeCodeToStock(stockResponse.data);
 
 	const stockNoteSource = useMemo(
 		() => stock
@@ -60,10 +52,6 @@ function StockPageBase() {
 	);
 
 	const stockNote = usePersonalNote({ source: stockNoteSource });
-
-	if (!stock) {
-		return <StockNotFound />;
-	}
 
 	return (
 		<>

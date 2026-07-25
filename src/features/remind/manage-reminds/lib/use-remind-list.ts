@@ -12,7 +12,6 @@ import {
 	remindFiltersSchema,
 	useUpdateUserReminder,
 } from '@/entities/remind';
-import { useGetStockCodesSuspense } from '@/entities/trade-code';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
@@ -31,17 +30,7 @@ export function useRemindList(instrumentId?: number) {
 		: getGetUserRemindersByInstrumentSuspenseQueryOptions(instrumentId, params);
 	const activeQuery = useSuspenseQuery({ ...queryOptions, refetchInterval: QUERY_REFETCH_INTERVAL });
 	const response = activeQuery.data;
-	const { data: stocksResponse } = useGetStockCodesSuspense({ page: 1, pageSize: 100 });
-
-	const reminds = response.data.items.map((reminder) => {
-		const item = mapTradeRemindToRemindItem(reminder);
-		const tradeCode = stocksResponse.data.items.find((stock) => stock.id === reminder.tradeCodeId);
-		if (item.source && tradeCode) {
-			item.source.label = tradeCode.exchangeId;
-			item.source.id = tradeCode.exchangeId.toLowerCase();
-		}
-		return item;
-	});
+	const reminds = response.data.items.map(mapTradeRemindToRemindItem);
 
 	const updateRemindMutation = useUpdateUserReminder();
 	const handleRemindChange = (id: string, updates: { text: string; date: string; time: string }, onSuccess?: () => void) => {

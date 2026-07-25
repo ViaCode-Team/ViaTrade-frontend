@@ -76,10 +76,10 @@ export function usePersonalNote({
 	const updateStrategyNoteMutation = useUpdateUserStrategyNote();
 	const sourceNote = source?.type === 'stock'
 		? instrumentNotesQuery.data?.data.items.find(
-				(note) => note.tradeCodeId === apiSourceId,
+				(note) => note.tradeCode?.id === apiSourceId,
 			)
 		: strategyNotesQuery.data?.data.items.find(
-				(note) => note.tradeStrategyId === apiSourceId,
+				(note) => note.strategy?.id === apiSourceId,
 			);
 	const storedValue = sourceNote?.noteText ?? defaultValue;
 	const isLoading = source?.type === 'stock'

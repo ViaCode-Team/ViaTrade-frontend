@@ -3,14 +3,14 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import type { TradeFormValues } from '@/entities/trade';
-import type { Trade } from '@/shared/api';
+import type { TradeResponse } from '@/shared/api';
 
 import { mapTradeFormValuesToRequest, useUpdateUserTrade } from '@/entities/trade';
 import { TradeForm } from '@/entities/trade';
 import { useTradeCodeOptions } from '@/entities/trade-code';
 
 type EditTradeFormProps = {
-	trade: Trade;
+	trade: TradeResponse;
 };
 
 export function EditTradeForm({ trade }: EditTradeFormProps) {
@@ -21,7 +21,7 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 
 	const initialValues: TradeFormValues = {
 		tradeTypeId: String(trade.tradeTypeId),
-		tradeCodeId: String(trade.tradeCodeId),
+		tradeCodeId: String(trade.tradeCode?.id ?? ''),
 		tradeSignal: String(trade.tradeSignal ?? 0),
 		count: trade.count,
 		tradeOpen: trade.tradeOpen,

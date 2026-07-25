@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import type { TradeResponse, TradeSignal } from '@/shared/api';
 
 import { normalizeTradePage, useGetUserTradesSuspense } from '@/entities/trade';
-import { useGetStockCodes } from '@/entities/trade-code';
 
 import { type TradeFilters, useTradesHistory } from '../filter-trades';
 import { processTrades } from './process-trades';
@@ -37,17 +36,11 @@ export function useTradesHistoryTable() {
 	const { data: tradesResponse } = useGetUserTradesSuspense({ ...tradeParams });
 	const tradesPage = normalizeTradePage(tradesResponse.data);
 
-	const { data: stocksResponse } = useGetStockCodes({
-		page: 1,
-		pageSize: 100,
-	});
-
 	const trades = tradesPage.items;
-	const stocks = getList<{ id: number; exchangeId: string }>(stocksResponse?.data);
 
 	const processedTrades = useMemo(
-		() => processTrades(trades, stocks, { q, fieldSort, directionSort }),
-		[trades, stocks, q, fieldSort, directionSort],
+		() => processTrades(trades, { q, fieldSort, directionSort }),
+		[trades, q, fieldSort, directionSort],
 	);
 
 	const setSorting = (field: TradeFilters['fieldSort']) => {
@@ -74,12 +67,4 @@ export function useTradesHistoryTable() {
 		setSorting,
 		setPage,
 	};
-}
-
-function getList<T>(value: unknown): T[] {
-	if (Array.isArray(value))
-		return value as T[];
-	if (typeof value === 'object' && value !== null && 'items' in value && Array.isArray(value.items))
-		return value.items as T[];
-	return [];
 }

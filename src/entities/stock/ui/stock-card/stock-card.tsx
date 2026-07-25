@@ -16,13 +16,11 @@ import cls from './stock-card.module.css';
 
 type StockCardProps = {
 	stock: Stock;
-	linkedStrategiesCount?: number;
 	onLinkedStrategiesClick: () => void;
 };
 
 export function StockCard({
 	stock,
-	linkedStrategiesCount = 0,
 	onLinkedStrategiesClick,
 }: StockCardProps) {
 	const stockPath = generatePath(ROUTES.STOCK, {
@@ -60,9 +58,7 @@ export function StockCard({
 				className={cls.strategiesButton}
 				onClick={onLinkedStrategiesClick}
 			>
-				Связанные стратегии (
-				{linkedStrategiesCount}
-				)
+				Связанные стратегии
 			</Button>
 		</Card>
 	);

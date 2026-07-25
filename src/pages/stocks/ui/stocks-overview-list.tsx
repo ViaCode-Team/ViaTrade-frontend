@@ -1,10 +1,8 @@
 import { Stack } from '@mantine/core';
-import { useMemo } from 'react';
 
 import type { Stock } from '@/entities/stock';
 
 import { StocksList, StocksListSkeleton } from '@/entities/stock';
-import { useGetUserStrategyCodesSuspense } from '@/entities/strategy';
 import { useStocksControls } from '@/pages/stocks/ui/filter-stocks';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -24,16 +22,6 @@ function StocksOverviewList({ onLinkedStrategiesClick }: StocksListViewProps) {
 		filters.page,
 	);
 
-	const { data: instrumentsLinkResponse } = useGetUserStrategyCodesSuspense({ page: 1, pageSize: 100 });
-
-	const linkCountsByStockId = useMemo(() => {
-		const counts = new Map<number, number>();
-		instrumentsLinkResponse.data.items.forEach((link) => {
-			counts.set(link.tradeCodeId, (counts.get(link.tradeCodeId) || 0) + 1);
-		});
-		return counts;
-	}, [instrumentsLinkResponse.data]);
-
 	return (
 		<DataState
 			hasData={!!stocksResponse.data.totalCount}
@@ -51,7 +39,6 @@ function StocksOverviewList({ onLinkedStrategiesClick }: StocksListViewProps) {
 
 				<StocksList
 					stocks={stocksResponse.data.items}
-					linkCountsByStockId={linkCountsByStockId}
 					onLinkedStrategiesClick={onLinkedStrategiesClick}
 					pagination={{
 						page: stocksResponse.data.page,

@@ -2,12 +2,12 @@ import { ActionIcon, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { IconTrash } from '@tabler/icons-react';
 
-import type { Trade } from '@/shared/api';
+import type { TradeResponse } from '@/shared/api';
 
 import { useDeleteUserTrade } from '@/entities/trade';
 
 type DeleteTradeButtonProps = {
-	trade: Trade;
+	trade: TradeResponse;
 };
 
 export function DeleteTradeButton({ trade }: DeleteTradeButtonProps) {

@@ -1,15 +1,15 @@
 import { Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
-import type { Trade } from '@/shared/api';
+import type { TradeResponse } from '@/shared/api';
 
 import { CloseTradeForm } from '../close-trade-form/close-trade-form';
 
 type CloseTradeButtonProps = {
-	trade: Trade;
+	trade: TradeResponse;
 };
 
-function openModal(trade: Trade) {
+function openModal(trade: TradeResponse) {
 	return modals.open({
 		title: 'Закрытие сделки',
 		children: <CloseTradeForm trade={trade} />,

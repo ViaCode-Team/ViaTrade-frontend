@@ -5,11 +5,13 @@
  * API для платформы инвестиционного анализа ViaTrade
  * OpenAPI spec version: v1
  */
+import type { StrategyBriefResponse } from './strategyBriefResponse';
+import type { TradeCodeBriefResponse } from './tradeCodeBriefResponse';
 
 export type NoteResponse = {
 	id: number;
 	noteText: string;
 	userId: number;
-	tradeCodeId?: number;
-	tradeStrategyId?: number;
+	tradeCode?: TradeCodeBriefResponse;
+	strategy?: StrategyBriefResponse;
 };

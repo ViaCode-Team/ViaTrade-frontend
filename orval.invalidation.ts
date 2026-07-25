@@ -27,6 +27,8 @@ export const strategyMutationInvalidates = [
 		invalidates: [
 			'getStrategyStatistics',
 			'getUserStrategyCodes',
+			'getStocksByStrategy',
+			{ query: 'getStrategiesByStock', file: '@/entities/trade-code' },
 			{ query: 'getStrategyResults', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getStrategyResultsByCode', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getStrategyResultStatistics', file: '@/entities/signal', invalidateMode: 'reset' },

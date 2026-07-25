@@ -58,13 +58,13 @@ export function TradeForm({
 		mode: 'uncontrolled',
 		initialValues,
 		validate: {
-			tradeTypeId: (value) => (!value ? 'Выберите тип сделки' : null),
-			tradeCodeId: (value) => (!value ? 'Выберите инструмент' : null),
-			count: (value) => (value < 1 ? 'Минимум 1' : null),
-			tradeOpen: (value) => (value < 0 ? 'Цена должна быть больше 0' : null),
-			dateOpen: (value) => (!value ? 'Выберите дату открытия' : null),
-			tradeClose: (value, values) => (values.isClosed && value === undefined ? 'Введите цену' : null),
-			dateClose: (value, values) => (values.isClosed && !value ? 'Выберите дату закрытия' : null),
+			tradeTypeId: (value) => (!value && 'Выберите тип сделки'),
+			tradeCodeId: (value) => (!value && 'Выберите инструмент'),
+			count: (value) => (value < 1 && 'Минимум 1'),
+			tradeOpen: (value) => (value < 0 && 'Цена должна быть больше 0'),
+			dateOpen: (value) => (!value && 'Выберите дату открытия'),
+			tradeClose: (value, values) => (values.isClosed && value === undefined && 'Введите цену'),
+			dateClose: (value, values) => (values.isClosed && !value && 'Выберите дату закрытия'),
 		},
 	});
 

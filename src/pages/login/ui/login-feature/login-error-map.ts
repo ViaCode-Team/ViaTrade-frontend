@@ -5,7 +5,7 @@ export function mapLoginApiError(error: LoginMutationError): string {
 		return 'Ошибка сети, проверьте подключение';
 	}
 
-	const status = 'details' in error ? error.details?.status : undefined;
+	const status = 'details' in error && error.details?.status;
 
 	switch (status) {
 		case 401:

@@ -44,7 +44,7 @@ export function useTradesHistoryTable() {
 	);
 
 	const setSorting = (field: TradeFilters['fieldSort']) => {
-		const reversed = field === fieldSort ? directionSort === 'desc' : false;
+		const reversed = field === fieldSort && directionSort === 'desc';
 
 		setFilters({
 			directionSort: reversed ? 'asc' : 'desc',

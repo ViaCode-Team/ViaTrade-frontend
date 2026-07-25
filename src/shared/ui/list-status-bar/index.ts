@@ -1,1 +1,1 @@
-export { ListStatusBar } from './list-status-bar';
+export { ListStatusBar, type StatusBarPaginationConfig } from './list-status-bar';

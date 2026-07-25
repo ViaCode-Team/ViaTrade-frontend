@@ -54,9 +54,13 @@ function StockLinkedStrategiesList({
 				<StockLinkedStrategiesListStatusBar
 					totalCount={totalCount}
 					filteredCount={filteredStrategies.length}
-					page={page}
-					pageSize={STOCK_LINKED_STRATEGIES_PAGE_SIZE}
-					showRange={!filters.searchQuery.trim() && filters.statusFilter === 'all'}
+					pagination={{
+						page,
+						pageSize: STOCK_LINKED_STRATEGIES_PAGE_SIZE,
+						totalPages,
+						onPageChange: setPage,
+						showRange: !filters.searchQuery.trim() && filters.statusFilter === 'all',
+					}}
 				/>
 
 				<LinkedStrategiesList

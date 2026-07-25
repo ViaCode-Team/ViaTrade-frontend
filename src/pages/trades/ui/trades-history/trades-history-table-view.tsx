@@ -49,7 +49,7 @@ export function TradesHistoryTableView({
 		return <AppEmptyState title='Нет сделок' description='Запишите вашу первую сделку в дневник.' />;
 
 	return (
-		<Stack gap='xs'>
+		<Stack>
 			<ScrollArea>
 				<Table highlightOnHover>
 					<Table.Thead>
@@ -68,6 +68,8 @@ export function TradesHistoryTableView({
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>
+
+
 						{paginatedTrades.length
 							? paginatedTrades.map((trade) => <TradesHistoryTableRow key={trade.id} trade={trade} />)
 							: (

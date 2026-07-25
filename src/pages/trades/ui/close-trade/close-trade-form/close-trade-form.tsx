@@ -31,8 +31,8 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 			dateClose: initialDate,
 		},
 		validate: {
-			tradeClose: (value) => (value === '' || value < 0 ? 'Введите корректную цену закрытия' : null),
-			dateClose: (value) => (!value ? 'Выберите дату закрытия' : null),
+			tradeClose: (value) => ((value === '' || value < 0) && 'Введите корректную цену закрытия'),
+			dateClose: (value) => (!value && 'Выберите дату закрытия'),
 		},
 	});
 

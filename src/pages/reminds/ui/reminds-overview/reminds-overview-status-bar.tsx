@@ -1,19 +1,17 @@
+import type { StatusBarPaginationConfig } from '@/shared/ui/list-status-bar';
+
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 
 type RemindsOverviewStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
-	page: number;
-	pageSize: number;
-	showRange: boolean;
+	pagination: StatusBarPaginationConfig;
 };
 
 export function RemindsOverviewStatusBar({
 	totalCount,
 	filteredCount,
-	page,
-	pageSize,
-	showRange,
+	pagination,
 }: RemindsOverviewStatusBarProps) {
-	return <ListStatusBar totalCount={totalCount} filteredCount={filteredCount} pagination={{ page, pageSize, showRange }} />;
+	return <ListStatusBar totalCount={totalCount} filteredCount={filteredCount} pagination={pagination} />;
 }

@@ -35,6 +35,7 @@ export function StockPage() {
 
 function StockPageBase() {
 	const { stockId } = useParams();
+
 	const { data: stockResponse } = useGetStockCodeByTickerSuspense(stockId ?? '');
 	const stock = mapTradeCodeToStock(stockResponse.data);
 
@@ -60,7 +61,7 @@ function StockPageBase() {
 			<Section
 				header={{
 					title: 'Привязанные стратегии',
-					description: stock.ticker ? `Стратегии, которые привязаны к ${stock.ticker}.` : undefined,
+					description: stock.ticker && `Стратегии, которые привязаны к ${stock.ticker}.`,
 				}}
 			>
 				<StockLinkedStrategies stockId={stock.instrumentId} />

@@ -8,7 +8,7 @@ import {
 } from '@/entities/strategy';
 import { useGetStrategiesByStockSuspense } from '@/entities/trade-code';
 
-export const STOCK_LINKED_STRATEGIES_PAGE_SIZE = 12;
+export const STOCK_LINKED_STRATEGIES_PAGE_SIZE = 15;
 
 export function useStockLinkedStrategies(
 	stockId: number,

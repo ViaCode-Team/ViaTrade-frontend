@@ -1,12 +1,12 @@
+import type { StatusBarPaginationConfig } from '@/shared/ui/list-status-bar';
+
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { ValueBadge } from '@/shared/ui/value-badge';
 
 type StrategiesOverviewStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
-	page: number;
-	pageSize: number;
-	showRange: boolean;
+	pagination: StatusBarPaginationConfig;
 	showActivityBadges: boolean;
 	activeCount: number;
 	inactiveCount: number;
@@ -15,9 +15,7 @@ type StrategiesOverviewStatusBarProps = {
 export function StrategiesOverviewStatusBar({
 	totalCount,
 	filteredCount,
-	page,
-	pageSize,
-	showRange,
+	pagination,
 	showActivityBadges,
 	activeCount,
 	inactiveCount,
@@ -26,7 +24,7 @@ export function StrategiesOverviewStatusBar({
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredCount}
-			pagination={{ page, pageSize, showRange }}
+			pagination={pagination}
 			badges={showActivityBadges
 				&& (
 					<>

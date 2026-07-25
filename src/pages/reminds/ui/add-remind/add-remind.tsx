@@ -19,7 +19,7 @@ import {
 } from '@/entities/trade-code';
 import { useCreateRemind } from '@/features/remind/manage-reminds';
 
-const STOCKS_PAGE_SIZE = 20;
+const STOCKS_PAGE_SIZE = 15;
 
 export function AddRemind() {
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);

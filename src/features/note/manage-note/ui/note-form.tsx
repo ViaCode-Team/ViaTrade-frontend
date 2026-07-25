@@ -65,17 +65,15 @@ export function NoteForm({
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>
 			<Stack gap='sm'>
-				{errorMessage
-					? (
-							<Alert
-								color='red'
-								variant='outline'
-								icon={<IconAlertTriangle size={18} />}
-							>
-								{errorMessage}
-							</Alert>
-						)
-					: null}
+				{errorMessage && (
+					<Alert
+						color='red'
+						variant='outline'
+						icon={<IconAlertTriangle size={18} />}
+					>
+						{errorMessage}
+					</Alert>
+				)}
 
 				<NoteTextarea
 					value={form.values.text}

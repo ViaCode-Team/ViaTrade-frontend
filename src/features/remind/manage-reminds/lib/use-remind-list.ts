@@ -17,7 +17,7 @@ import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import { getReminderDateTimeFromLocalParts } from './remind-date-time';
 
-export const REMINDERS_PAGE_SIZE = 12;
+export const REMINDERS_PAGE_SIZE = 15;
 
 export function useRemindList(instrumentId?: number) {
 	const queryClient = useQueryClient();

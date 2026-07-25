@@ -1,4 +1,5 @@
 import type { NotesSourceFilter } from '@/features/note/filter-notes';
+import type { StatusBarPaginationConfig } from '@/shared/ui/list-status-bar';
 
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 import { ValueBadge } from '@/shared/ui/value-badge';
@@ -6,9 +7,7 @@ import { ValueBadge } from '@/shared/ui/value-badge';
 type NotesOverviewStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
-	page: number;
-	pageSize: number;
-	showRange: boolean;
+	pagination: StatusBarPaginationConfig;
 	sourceFilter: NotesSourceFilter;
 	stockNotesCount: number;
 	strategyNotesCount: number;
@@ -17,9 +16,7 @@ type NotesOverviewStatusBarProps = {
 export function NotesOverviewStatusBar({
 	totalCount,
 	filteredCount,
-	page,
-	pageSize,
-	showRange,
+	pagination,
 	sourceFilter,
 	stockNotesCount,
 	strategyNotesCount,
@@ -30,15 +27,13 @@ export function NotesOverviewStatusBar({
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredCount}
-			pagination={{ page, pageSize, showRange }}
-			badges={showSourceBadges
-				? (
-						<>
-							{stockNotesCount > 0 && <ValueBadge variant='dot' color='blue' size='sm' label='К акциям' value={stockNotesCount} />}
-							{strategyNotesCount > 0 && <ValueBadge variant='dot' color='violet' size='sm' label='К стратегиям' value={strategyNotesCount} />}
-						</>
-					)
-				: null}
+			pagination={pagination}
+			badges={showSourceBadges && (
+				<>
+					{stockNotesCount > 0 && <ValueBadge variant='dot' color='blue' size='sm' label='К акциям' value={stockNotesCount} />}
+					{strategyNotesCount > 0 && <ValueBadge variant='dot' color='violet' size='sm' label='К стратегиям' value={strategyNotesCount} />}
+				</>
+			)}
 		/>
 	);
 }

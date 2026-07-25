@@ -46,13 +46,18 @@ function NotesOverviewList({ searchQuery, sourceFilter, onResetFilters }: NotesO
 				<NotesOverviewStatusBar
 					totalCount={totalCount}
 					filteredCount={resultNotes.length}
-					page={page}
-					pageSize={NOTES_PAGE_SIZE}
-					showRange={!searchQuery.trim() && sourceFilter === 'all'}
+					pagination={{
+						page,
+						pageSize: NOTES_PAGE_SIZE,
+						totalPages,
+						onPageChange: setPage,
+						showRange: !searchQuery.trim() && sourceFilter === 'all',
+					}}
 					sourceFilter={sourceFilter}
 					stockNotesCount={stockNotesCount}
 					strategyNotesCount={strategyNotesCount}
 				/>
+
 				<NotesList
 					notes={resultNotes}
 					renderNote={(note) => (

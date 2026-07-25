@@ -8,7 +8,7 @@ import {
 } from '@/entities/strategy';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
-export const STRATEGIES_PAGE_SIZE = 20;
+export const STRATEGIES_PAGE_SIZE = 15;
 
 export function getStrategiesRequestParams(filters: {
 	page: number;

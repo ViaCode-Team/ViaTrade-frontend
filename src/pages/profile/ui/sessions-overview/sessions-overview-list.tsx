@@ -30,9 +30,13 @@ function SessionsOverviewList() {
 				<SessionsOverviewStatusBar
 					totalCount={totalCount}
 					filteredCount={filteredSessions.length}
-					page={page}
-					pageSize={SESSIONS_PER_PAGE}
-					showRange={!hasSearchQuery}
+					pagination={{
+						page,
+						pageSize: SESSIONS_PER_PAGE,
+						totalPages,
+						onPageChange: setPage,
+						showRange: !hasSearchQuery,
+					}}
 				/>
 
 				<SessionsList

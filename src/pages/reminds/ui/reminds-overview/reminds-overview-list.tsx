@@ -30,9 +30,13 @@ function RemindsOverviewList() {
 				<RemindsOverviewStatusBar
 					totalCount={totalCount}
 					filteredCount={filteredReminds.length}
-					page={page}
-					pageSize={REMINDERS_PAGE_SIZE}
-					showRange={!hasSearchQuery}
+					pagination={{
+						page,
+						pageSize: REMINDERS_PAGE_SIZE,
+						totalPages,
+						onPageChange: setPage,
+						showRange: !hasSearchQuery,
+					}}
 				/>
 
 				<RemindList

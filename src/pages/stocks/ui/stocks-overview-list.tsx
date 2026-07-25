@@ -32,9 +32,13 @@ function StocksOverviewList({ onLinkedStrategiesClick }: StocksListViewProps) {
 				<StocksOverviewStatusBar
 					totalCount={stocksResponse.data.totalCount}
 					filteredCount={stocksResponse.data.items.length}
-					page={stocksResponse.data.page}
-					pageSize={STOCKS_PAGE_SIZE}
-					showRange={!filters.searchQuery.trim()}
+					pagination={{
+						page: stocksResponse.data.page,
+						pageSize: STOCKS_PAGE_SIZE,
+						totalPages: stocksResponse.data.totalPages,
+						onPageChange: (page) => setFilters({ page: String(page) }),
+						showRange: !filters.searchQuery.trim(),
+					}}
 				/>
 
 				<StocksList

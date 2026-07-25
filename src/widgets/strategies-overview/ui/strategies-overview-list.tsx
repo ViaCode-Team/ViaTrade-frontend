@@ -33,9 +33,13 @@ function StrategiesOverviewList() {
 				<StrategiesOverviewStatusBar
 					totalCount={totalCount}
 					filteredCount={filteredStrategies.length}
-					page={page}
-					pageSize={STRATEGIES_PAGE_SIZE}
-					showRange={!filters.q.trim()}
+					pagination={{
+						page,
+						pageSize: STRATEGIES_PAGE_SIZE,
+						totalPages,
+						onPageChange: setPage,
+						showRange: !filters.q.trim(),
+					}}
 					showActivityBadges={filters.statusFilter === 'all'}
 					activeCount={activeCount}
 					inactiveCount={inactiveCount}

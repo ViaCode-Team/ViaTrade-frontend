@@ -24,6 +24,6 @@ export function mapTradeCodeToStock(tradeCode: TradeCode): Stock {
 		instrumentId: tradeCode.id,
 		ticker: tradeCode.exchangeId,
 		name: tradeCode.description || tradeCode.exchangeId,
-		linkedStrategies: [], // Mocked until API supports
+		linkedStrategies: [],
 	};
 }

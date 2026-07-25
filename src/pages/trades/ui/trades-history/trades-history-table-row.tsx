@@ -1,7 +1,9 @@
 import { Badge, Group, Table, Text } from '@mantine/core';
 import dayjs from 'dayjs';
+import { generatePath } from 'react-router';
 
-import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
+import { DATE_TIME_DISPLAY_FORMAT, ROUTES } from '@/shared/model';
+import { AppLink } from '@/shared/ui/app-link';
 
 import type { ProcessedTrade } from './use-trades-history-table';
 
@@ -14,15 +16,17 @@ export type TradesHistoryTableRowProps = {
 };
 
 export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
-	const isWin = trade.percent ? trade.percent > 0 : false;
-	const isLoss = trade.percent ? trade.percent < 0 : false;
+	const isWin = (trade.percent ?? 0) > 0;
+	const isLoss = (trade.percent ?? 0) < 0;
 
 	return (
 		<Table.Tr>
 			<Table.Td>
-				<Text size='sm' fw={500}>{trade.ticker}</Text>
+				<AppLink to={generatePath(ROUTES.STOCK, { stockId: trade.ticker })} size='sm' fw={500}>
+					{trade.ticker}
+				</AppLink>
 				<Text size='xs' c='dimmed'>
-					{trade.tradeTypeId === 1 ? 'Акция' : trade.tradeTypeId === 2 ? 'Фьючерс' : null}
+					{trade.tradeTypeId === 1 ? 'Акция' : trade.tradeTypeId === 2 && 'Фьючерс'}
 				</Text>
 			</Table.Td>
 			<Table.Td>
@@ -54,7 +58,7 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 				{trade.percent !== undefined
 					? (
 							<Text c={isWin ? 'teal' : isLoss ? 'red' : 'dimmed'} fw={500}>
-								{trade.percent > 0 ? '+' : ''}
+								{trade.percent > 0 && '+'}
 								{trade.percent.toFixed(2)}
 								{' '}
 								%

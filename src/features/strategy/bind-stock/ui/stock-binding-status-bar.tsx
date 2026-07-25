@@ -1,16 +1,14 @@
 import { Badge } from '@mantine/core';
 
+import type { StatusBarPaginationConfig } from '@/shared/ui/list-status-bar';
+
 import { ListStatusBar } from '@/shared/ui/list-status-bar';
 
 type StockBindingStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
 	selectedCount: number;
-	pagination: {
-		page: number;
-		pageSize: number;
-		showRange?: boolean;
-	};
+	pagination: StatusBarPaginationConfig;
 };
 
 export function StockBindingStatusBar({

@@ -93,7 +93,13 @@ function StrategyStockBindingBase({
 						totalCount={totalCount}
 						filteredCount={visibleStocks.length}
 						selectedCount={getStockSelectionState(stocks, visibleStocks, selectedStockIds).selectedCount}
-						pagination={{ page, pageSize: ITEMS_PER_PAGE, showRange: !searchQuery.trim() }}
+						pagination={{
+							page,
+							pageSize: ITEMS_PER_PAGE,
+							totalPages,
+							onPageChange: setPage,
+							showRange: !searchQuery.trim(),
+						}}
 					/>
 					<SelectableStockList
 						paginatedStocks={paginatedStocks}

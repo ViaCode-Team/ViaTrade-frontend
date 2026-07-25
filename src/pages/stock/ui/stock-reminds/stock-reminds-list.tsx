@@ -33,9 +33,13 @@ function StockRemindsList({ instrumentId }: StockRemindsListProps) {
 				<StockRemindsStatusBar
 					totalCount={reminds.length}
 					filteredCount={filteredReminds.length}
-					page={page}
-					pageSize={REMINDERS_PAGE_SIZE}
-					showRange={!hasSearchQuery}
+					pagination={{
+						page,
+						pageSize: REMINDERS_PAGE_SIZE,
+						totalPages,
+						onPageChange: setPage,
+						showRange: !hasSearchQuery,
+					}}
 				/>
 				<RemindList
 					reminds={filteredReminds}

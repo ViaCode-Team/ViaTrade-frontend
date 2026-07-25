@@ -1,3 +1,5 @@
+import type { QueryKey } from '@tanstack/react-query';
+
 import { useQueryClient } from '@tanstack/react-query';
 
 import type { UserTradeStrategyDto } from '@/shared/api';
@@ -16,24 +18,31 @@ type ToggleUserStrategyVariables = {
 };
 
 type ToggleUserStrategyContext = {
-	previousUserStrategies?: GetUserStrategiesQueryResult;
+	previousUserStrategies: Array<[QueryKey, GetUserStrategiesQueryResult | undefined]>;
 };
 
 export function useToggleUserStrategy() {
 	const queryClient = useQueryClient();
-	const queryKey = getGetUserStrategiesQueryKey();
+	const queryKeys = [
+		getGetUserStrategiesQueryKey(),
+		getGetUserStrategiesQueryKey({ page: 1, pageSize: 100 }),
+	];
 	const mutationOptions = {
 		onMutate: async (variables: ToggleUserStrategyVariables) => {
-			await queryClient.cancelQueries({ queryKey });
+			await Promise.all(queryKeys.map((queryKey) => queryClient.cancelQueries({ queryKey, exact: true })));
 
-			const previousUserStrategies
-				= queryClient.getQueryData<GetUserStrategiesQueryResult>(queryKey);
-
-			queryClient.setQueryData<GetUserStrategiesQueryResult>(
+			const previousUserStrategies = queryKeys.map((queryKey) => [
 				queryKey,
-				(currentUserStrategies) =>
-					getOptimisticUserStrategies(currentUserStrategies, variables),
-			);
+				queryClient.getQueryData<GetUserStrategiesQueryResult>(queryKey),
+			] as [QueryKey, GetUserStrategiesQueryResult | undefined]);
+
+			queryKeys.forEach((queryKey) => {
+				queryClient.setQueryData<GetUserStrategiesQueryResult>(
+					queryKey,
+					(currentUserStrategies) =>
+						getOptimisticUserStrategies(currentUserStrategies, variables),
+				);
+			});
 
 			return { previousUserStrategies };
 		},
@@ -42,9 +51,9 @@ export function useToggleUserStrategy() {
 			_variables: ToggleUserStrategyVariables,
 			context: ToggleUserStrategyContext | undefined,
 		) => {
-			if (context?.previousUserStrategies) {
-				queryClient.setQueryData(queryKey, context.previousUserStrategies);
-			}
+			context?.previousUserStrategies.forEach(([queryKey, data]) => {
+				queryClient.setQueryData(queryKey, data);
+			});
 		},
 	};
 	const createStrategyMutation = useCreateUserStrategy({

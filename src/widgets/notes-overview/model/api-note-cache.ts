@@ -17,8 +17,8 @@ export function setApiNoteTextInCache({
 	if (note.source.type === 'stock') {
 		const sourceId = Number(note.source.id);
 
-		queryClient.setQueryData<getUserNotesResponseSuccess>(
-			getGetUserNotesQueryKey(),
+		queryClient.setQueriesData<getUserNotesResponseSuccess>(
+			{ queryKey: getGetUserNotesQueryKey() },
 			(data) => updateInstrumentNotesData(data, sourceId, text),
 		);
 		return;
@@ -26,8 +26,8 @@ export function setApiNoteTextInCache({
 
 	const sourceId = Number(note.source.id);
 
-	queryClient.setQueryData<getUserNotesResponseSuccess>(
-		getGetUserNotesQueryKey(),
+	queryClient.setQueriesData<getUserNotesResponseSuccess>(
+		{ queryKey: getGetUserNotesQueryKey() },
 		(data) => updateStrategyNotesData(data, sourceId, text),
 	);
 }
@@ -42,8 +42,8 @@ export function deleteApiNoteFromCache({
 	if (note.source.type === 'stock') {
 		const sourceId = Number(note.source.id);
 
-		queryClient.setQueryData<getUserNotesResponseSuccess>(
-			getGetUserNotesQueryKey(),
+		queryClient.setQueriesData<getUserNotesResponseSuccess>(
+			{ queryKey: getGetUserNotesQueryKey() },
 			(data) => deleteInstrumentNoteData(data, sourceId),
 		);
 		return;
@@ -51,8 +51,8 @@ export function deleteApiNoteFromCache({
 
 	const sourceId = Number(note.source.id);
 
-	queryClient.setQueryData<getUserNotesResponseSuccess>(
-		getGetUserNotesQueryKey(),
+	queryClient.setQueriesData<getUserNotesResponseSuccess>(
+		{ queryKey: getGetUserNotesQueryKey() },
 		(data) => deleteStrategyNoteData(data, sourceId),
 	);
 }
@@ -64,27 +64,6 @@ function updateInstrumentNotesData(
 ) {
 	if (!data) {
 		return data;
-	}
-
-	const exists = data.data.items.some((note) => note.tradeCodeId === sourceId);
-
-	if (!exists) {
-		return {
-			...data,
-			data: {
-				...data.data,
-				items: [
-					...data.data.items,
-					{
-						id: Date.now(),
-						tradeCodeId: sourceId,
-						noteText: text,
-						isFavourite: false,
-						updateTime: new Date().toISOString(),
-					} as any,
-				],
-			},
-		};
 	}
 
 	return {
@@ -139,27 +118,6 @@ function updateStrategyNotesData(
 ) {
 	if (!data) {
 		return data;
-	}
-
-	const exists = data.data.items.some((note) => note.tradeStrategyId === sourceId);
-
-	if (!exists) {
-		return {
-			...data,
-			data: {
-				...data.data,
-				items: [
-					...data.data.items,
-					{
-						id: Date.now(),
-						tradeStrategyId: sourceId,
-						noteText: text,
-						isFavourite: false,
-						updateTime: new Date().toISOString(),
-					} as any,
-				],
-			},
-		};
 	}
 
 	return {

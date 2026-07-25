@@ -1,7 +1,3 @@
-import { modals } from '@mantine/modals';
-
-import type { Signal } from '@/entities/signal';
-
 import { DashboardNotesBoundary } from '@/pages/dashboard/ui/dashboard-notes';
 import { DashboardRemindsBoundary } from '@/pages/dashboard/ui/dashboard-reminds';
 import { DashboardSignalsBoundary } from '@/pages/dashboard/ui/dashboard-signals';
@@ -10,19 +6,7 @@ import { DashboardStrategiesBoundary } from '@/pages/dashboard/ui/dashboard-stra
 import { DataFreshness } from '@/shared/ui/data-freshness';
 import { PageHeader } from '@/shared/ui/page-header';
 import { Section } from '@/shared/ui/section';
-import { SignalHistoryTableBoundary } from '@/widgets/signal-history-table';
-
-function openSignalHistoryModal(signal: Signal) {
-	modals.open({
-		title: `История сигнала: ${signal.asset}`,
-		children: (
-			<SignalHistoryTableBoundary
-				tradeCode={signal.tradeCode}
-				strategyName={signal.strategy}
-			/>
-		),
-	});
-}
+import { openSignalHistoryModal } from '@/widgets/signal-history-table';
 
 export function DashboardPage() {
 	return (

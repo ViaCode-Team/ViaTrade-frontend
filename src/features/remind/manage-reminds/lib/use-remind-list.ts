@@ -16,6 +16,8 @@ import { useGetStockCodesSuspense } from '@/entities/trade-code';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
+import { getReminderDateTimeFromLocalParts } from './remind-date-time';
+
 export const REMINDERS_PAGE_SIZE = 12;
 
 export function useRemindList(instrumentId?: number) {
@@ -26,7 +28,7 @@ export function useRemindList(instrumentId?: number) {
 	const params = { page, pageSize: REMINDERS_PAGE_SIZE, sortBy };
 	const queryOptions = instrumentId === undefined
 		? getGetUserRemindersSuspenseQueryOptions(params)
-		: getGetUserRemindersByInstrumentSuspenseQueryOptions(instrumentId ?? 0, params);
+		: getGetUserRemindersByInstrumentSuspenseQueryOptions(instrumentId, params);
 	const activeQuery = useSuspenseQuery({ ...queryOptions, refetchInterval: QUERY_REFETCH_INTERVAL });
 	const response = activeQuery.data;
 	const { data: stocksResponse } = useGetStockCodesSuspense({ page: 1, pageSize: 100 });
@@ -47,7 +49,7 @@ export function useRemindList(instrumentId?: number) {
 		if (!remind)
 			return;
 
-		updateRemindMutation.mutate({ id: Number(id), data: { text: updates.text, dateTime: `${updates.date}T${updates.time}:00.000Z` } }, {
+		updateRemindMutation.mutate({ id: Number(id), data: { text: updates.text, dateTime: getReminderDateTimeFromLocalParts(updates.date, updates.time) } }, {
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
 				queryClient.invalidateQueries({ queryKey: instrumentId === undefined ? getGetUserRemindersQueryKey() : getGetUserRemindersByInstrumentQueryKey(instrumentId) });

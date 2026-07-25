@@ -6,25 +6,17 @@ import {
 	Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useQueryClient } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import {
-	getGetReminderStatisticsQueryKey,
-	getGetUserRemindersByInstrumentQueryKey,
-	getGetUserRemindersQueryKey,
-	useCreateUserRemind,
-} from '@/entities/remind';
 import { mapTradeCodeToStock } from '@/entities/stock';
 import { useGetStockCodesSuspense } from '@/entities/trade-code';
+import { useCreateRemind } from '@/features/remind/manage-reminds';
 
 export function AddRemind() {
-	const queryClient = useQueryClient();
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
 	const { data: stocksResponse } = useGetStockCodesSuspense({ page: 1, pageSize: 100 });
 	const stocks = stocksResponse.data.items.map(mapTradeCodeToStock);
-	const createRemindMutation = useCreateUserRemind();
+	const { createRemind, isPending } = useCreateRemind();
 
 	const stockSelectData = stocks.map((stock) => ({
 		value: stock.id,
@@ -42,25 +34,7 @@ export function AddRemind() {
 			return;
 		}
 
-		const now = new Date();
-		// Round down to the nearest minute to avoid seconds
-		now.setSeconds(0, 0);
-		now.setHours(now.getHours() + 3);
-
-		createRemindMutation.mutate({
-			tradeCodeId: stock.instrumentId,
-			data: {
-				text: 'Новое напоминание',
-				dateTime: dayjs(now).format('YYYY-MM-DDTHH:mm:ss'),
-			},
-		}, {
-			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
-				queryClient.invalidateQueries({ queryKey: getGetUserRemindersQueryKey() });
-				queryClient.invalidateQueries({ queryKey: getGetUserRemindersByInstrumentQueryKey(stock.instrumentId) });
-				modals.closeAll();
-			},
-		});
+		createRemind(stock.instrumentId, () => modals.closeAll());
 	};
 
 	return (
@@ -78,14 +52,14 @@ export function AddRemind() {
 				searchable
 				nothingFoundMessage='Акции не найдены'
 				withAsterisk
-				disabled={createRemindMutation.isPending}
+				disabled={isPending}
 			/>
 
 			<Group justify='flex-end' mt='md'>
-				<Button variant='default' onClick={() => modals.closeAll()} disabled={createRemindMutation.isPending}>
+				<Button variant='default' onClick={() => modals.closeAll()} disabled={isPending}>
 					Отмена
 				</Button>
-				<Button onClick={handleAdd} disabled={!selectedStockId || createRemindMutation.isPending} loading={createRemindMutation.isPending}>
+				<Button onClick={handleAdd} disabled={!selectedStockId || isPending} loading={isPending}>
 					Создать
 				</Button>
 			</Group>

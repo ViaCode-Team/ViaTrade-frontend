@@ -73,7 +73,7 @@
 		"globals": "^17.7.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^17.0.8",
-		"orval": "^8.21.0",
+		"orval": "^8.23.0",
 		"prettier": "^3.9.5",
 		"steiger": "^0.5.13",
 		"typescript": "^6.0.3",

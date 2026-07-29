@@ -5,12 +5,13 @@ import { SignalHistoryTableView } from './history-table-view';
 import { SignalHistoryTableSkeleton } from './history-table.skeleton';
 
 type HistoryTableProps = {
-	tradeCode: string;
+	instrumentId: number;
+	strategyId: number;
 	strategyName: string;
 };
 
-export function SignalHistoryTable({ tradeCode, strategyName }: HistoryTableProps) {
-	const table = useSignalHistoryTable({ strategyName, tradeCode });
+export function SignalHistoryTable({ instrumentId, strategyId, strategyName }: HistoryTableProps) {
+	const table = useSignalHistoryTable({ strategyId, instrumentId });
 	const { activePage, totalPages, setPage, ...viewProps } = table;
 
 	return (

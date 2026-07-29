@@ -20,7 +20,7 @@ function NotesSummaryFallback({ isLoading }: NotesSummaryProps = {}) {
 export function NotesSummary() {
 	const { data: response } = useGetNoteStatisticsSuspense();
 	const {
-		stockNotes,
+		instrumentNotes,
 		strategyNotes,
 		totalNotes,
 	} = response.data;
@@ -28,7 +28,7 @@ export function NotesSummary() {
 	return (
 		<SummaryList>
 			<SummaryCard title='Всего' value={totalNotes} />
-			<SummaryCard title='По акциям' value={stockNotes} />
+			<SummaryCard title='По акциям' value={instrumentNotes} />
 			<SummaryCard title='По стратегиям' value={strategyNotes} />
 		</SummaryList>
 	);

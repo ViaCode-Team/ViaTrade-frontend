@@ -27,7 +27,7 @@ export function StockBindingCard({
 	ariaLabel,
 }: StockBindingCardProps) {
 	const stockPath = generatePath(ROUTES.STOCK, {
-		stockId: stock.ticker.toLowerCase(),
+		stockId: stock.id,
 	});
 
 	return (

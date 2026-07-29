@@ -16,27 +16,29 @@ export function processTrades(
 	let result = trades.map((trade) => {
 		const normalizedTrade = {
 			...trade,
-			tradeOpen: toNumber(trade.tradeOpen),
-			tradeClose: toOptionalNumber(trade.tradeClose),
-			price: toNumber(trade.price),
+			entryPrice: toNumber(trade.entryPrice),
+			exitPrice: toOptionalNumber(trade.exitPrice),
+			totalPrice: toNumber(trade.totalPrice),
 			netIncome: toOptionalNumber(trade.netIncome),
 		};
 		return {
 			...normalizedTrade,
-			ticker: trade.tradeCode?.ticker ?? 'Неизвестный инструмент',
-			isLong: trade.tradeSignal !== -1,
-			income: normalizedTrade.price,
-			percent: normalizedTrade.netIncome,
+			ticker: trade.instrument?.symbol ?? 'Неизвестный инструмент',
+			isLong: trade.signal !== -1,
+			income: normalizedTrade.netIncome ?? 0,
+			percent: normalizedTrade.totalPrice
+				? (normalizedTrade.netIncome ?? 0) / normalizedTrade.totalPrice * 100
+				: undefined,
 		};
 	});
 
 	if (q) {
 		const lowerSearch = q.toLowerCase();
 		result = result.filter((t) => {
-			const dateOpenStr = dayjs(t.dateOpen).format(DATE_TIME_DISPLAY_FORMAT);
-			const dateCloseStr = t.dateClose ? dayjs(t.dateClose).format(DATE_TIME_DISPLAY_FORMAT) : '—';
-			const tradeOpenStr = `${t.tradeOpen.toFixed(2)} ₽`;
-			const tradeCloseStr = t.tradeClose ? `${t.tradeClose.toFixed(2)} ₽` : '—';
+			const openedAtStr = dayjs(t.openedAt).format(DATE_TIME_DISPLAY_FORMAT);
+			const closedAtStr = t.closedAt ? dayjs(t.closedAt).format(DATE_TIME_DISPLAY_FORMAT) : '—';
+			const entryPriceStr = `${t.entryPrice.toFixed(2)} ₽`;
+			const exitPriceStr = t.exitPrice ? `${t.exitPrice.toFixed(2)} ₽` : '—';
 			const sumStr = t.income > 0 ? `+${t.income.toFixed(2)} ₽` : `${t.income.toFixed(2)} ₽`;
 			const percentStr = t.percent ? (t.percent > 0 ? `+${t.percent.toFixed(2)}%` : `${t.percent.toFixed(2)}%`) : '—';
 			const typeStr = t.isLong ? 'Long' : 'Short';
@@ -44,11 +46,11 @@ export function processTrades(
 			const searchableString = [
 				t.ticker,
 				typeStr,
-				dateOpenStr,
-				dateCloseStr,
-				tradeOpenStr,
-				tradeCloseStr,
-				String(t.count),
+				openedAtStr,
+				closedAtStr,
+				entryPriceStr,
+				exitPriceStr,
+				String(t.quantity),
 				sumStr,
 				percentStr,
 			].join(' ').toLowerCase();
@@ -70,25 +72,25 @@ export function processTrades(
 				aVal = a.isLong ? 1 : 0;
 				bVal = b.isLong ? 1 : 0;
 				break;
-			case 'dateOpen':
-				aVal = dayjs(a.dateOpen).valueOf();
-				bVal = dayjs(b.dateOpen).valueOf();
+			case 'openedAt':
+				aVal = dayjs(a.openedAt).valueOf();
+				bVal = dayjs(b.openedAt).valueOf();
 				break;
-			case 'dateClose':
-				aVal = a.dateClose ? dayjs(a.dateClose).valueOf() : 0;
-				bVal = b.dateClose ? dayjs(b.dateClose).valueOf() : 0;
+			case 'closedAt':
+				aVal = a.closedAt ? dayjs(a.closedAt).valueOf() : 0;
+				bVal = b.closedAt ? dayjs(b.closedAt).valueOf() : 0;
 				break;
-			case 'tradeOpen':
-				aVal = a.tradeOpen;
-				bVal = b.tradeOpen;
+			case 'entryPrice':
+				aVal = a.entryPrice;
+				bVal = b.entryPrice;
 				break;
-			case 'tradeClose':
-				aVal = a.tradeClose || 0;
-				bVal = b.tradeClose || 0;
+			case 'exitPrice':
+				aVal = a.exitPrice || 0;
+				bVal = b.exitPrice || 0;
 				break;
-			case 'count':
-				aVal = a.count;
-				bVal = b.count;
+			case 'quantity':
+				aVal = a.quantity;
+				bVal = b.quantity;
 				break;
 			case 'sum':
 				aVal = a.income;
@@ -99,8 +101,8 @@ export function processTrades(
 				bVal = b.percent ?? 0;
 				break;
 			default:
-				aVal = dayjs(a.dateOpen).valueOf();
-				bVal = dayjs(b.dateOpen).valueOf();
+				aVal = dayjs(a.openedAt).valueOf();
+				bVal = dayjs(b.openedAt).valueOf();
 		}
 
 		if (aVal === bVal)

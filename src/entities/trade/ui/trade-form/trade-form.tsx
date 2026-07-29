@@ -27,14 +27,14 @@ import {
 
 export type TradeFormValues = {
 	tradeTypeId: string;
-	tradeCodeId: string;
-	tradeSignal: string;
-	count: number;
-	tradeOpen: number;
-	dateOpen: Date | null;
+	instrumentId: string;
+	signal: string;
+	quantity: number;
+	entryPrice: number;
+	openedAt: Date | null;
 	isClosed: boolean;
-	tradeClose?: number;
-	dateClose?: Date | null;
+	exitPrice?: number;
+	closedAt?: Date | null;
 };
 
 export type TradeFormProps = {
@@ -42,8 +42,8 @@ export type TradeFormProps = {
 	onSubmit: (values: TradeFormValues) => void;
 	submitText: string;
 	isPending: boolean;
-	tradeCodesOptions: { value: string; label: string }[];
-	isLoadingCodes: boolean;
+	instrumentsOptions: { value: string; label: string }[];
+	isLoadingInstruments: boolean;
 };
 
 export function TradeForm({
@@ -51,20 +51,20 @@ export function TradeForm({
 	onSubmit,
 	submitText,
 	isPending,
-	tradeCodesOptions,
-	isLoadingCodes,
+	instrumentsOptions,
+	isLoadingInstruments,
 }: TradeFormProps) {
 	const form = useForm<TradeFormValues>({
 		mode: 'uncontrolled',
 		initialValues,
 		validate: {
 			tradeTypeId: (value) => (!value && 'Выберите тип сделки'),
-			tradeCodeId: (value) => (!value && 'Выберите инструмент'),
-			count: (value) => (value < 1 && 'Минимум 1'),
-			tradeOpen: (value) => (value < 0 && 'Цена должна быть больше 0'),
-			dateOpen: (value) => (!value && 'Выберите дату открытия'),
-			tradeClose: (value, values) => (values.isClosed && value === undefined && 'Введите цену'),
-			dateClose: (value, values) => (values.isClosed && !value && 'Выберите дату закрытия'),
+			instrumentId: (value) => (!value && 'Выберите инструмент'),
+			quantity: (value) => (value < 1 && 'Минимум 1'),
+			entryPrice: (value) => (value < 0 && 'Цена должна быть больше 0'),
+			openedAt: (value) => (!value && 'Выберите дату открытия'),
+			exitPrice: (value, values) => (values.isClosed && value === undefined && 'Введите цену'),
+			closedAt: (value, values) => (values.isClosed && !value && 'Выберите дату закрытия'),
 		},
 	});
 
@@ -109,20 +109,20 @@ export function TradeForm({
 					<SegmentedControl
 						data={[...TRADE_SIGNAL_OPTIONS]}
 						fullWidth
-						key={form.key('tradeSignal')}
-						{...form.getInputProps('tradeSignal')}
+						key={form.key('signal')}
+						{...form.getInputProps('signal')}
 					/>
 				</Input.Wrapper>
 
 				<Select
 					label='Инструмент'
 					placeholder='Тикер'
-					data={tradeCodesOptions}
+					data={instrumentsOptions}
 					searchable
-					disabled={isLoadingCodes}
+					disabled={isLoadingInstruments}
 					withAsterisk
-					key={form.key('tradeCodeId')}
-					{...form.getInputProps('tradeCodeId')}
+					key={form.key('instrumentId')}
+					{...form.getInputProps('instrumentId')}
 				/>
 
 				<Group grow>
@@ -131,8 +131,8 @@ export function TradeForm({
 						placeholder='10'
 						min={1}
 						withAsterisk
-						key={form.key('count')}
-						{...form.getInputProps('count')}
+						key={form.key('quantity')}
+						{...form.getInputProps('quantity')}
 					/>
 					<NumberInput
 						label='Цена открытия'
@@ -140,8 +140,8 @@ export function TradeForm({
 						min={0}
 						decimalScale={2}
 						withAsterisk
-						key={form.key('tradeOpen')}
-						{...form.getInputProps('tradeOpen')}
+						key={form.key('entryPrice')}
+						{...form.getInputProps('entryPrice')}
 					/>
 				</Group>
 
@@ -150,8 +150,8 @@ export function TradeForm({
 					placeholder='Дата и время'
 					withAsterisk
 					maxDate={maxDate}
-					key={form.key('dateOpen')}
-					{...form.getInputProps('dateOpen')}
+					key={form.key('openedAt')}
+					{...form.getInputProps('openedAt')}
 				/>
 
 				<Switch
@@ -172,17 +172,17 @@ export function TradeForm({
 							min={0}
 							decimalScale={2}
 							withAsterisk
-							key={form.key('tradeClose')}
-							{...form.getInputProps('tradeClose')}
+							key={form.key('exitPrice')}
+							{...form.getInputProps('exitPrice')}
 						/>
 						<DateTimePicker
 							label='Дата закрытия'
 							placeholder='Дата и время'
 							withAsterisk
-							minDate={form.getValues().dateOpen || undefined}
+							minDate={form.getValues().openedAt || undefined}
 							maxDate={maxDate}
-							key={form.key('dateClose')}
-							{...form.getInputProps('dateClose')}
+							key={form.key('closedAt')}
+							{...form.getInputProps('closedAt')}
 						/>
 					</>
 				)}

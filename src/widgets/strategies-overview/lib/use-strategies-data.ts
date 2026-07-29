@@ -26,7 +26,6 @@ export function getStrategiesRequestParams(filters: {
 		page: filters.page,
 		pageSize: STRATEGIES_PAGE_SIZE,
 		sortBy: [sortBy[filters.sortOption]],
-		isActive: filters.statusFilter === 'all' ? undefined : filters.statusFilter === 'active',
 	};
 }
 

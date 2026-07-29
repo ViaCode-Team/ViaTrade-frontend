@@ -1,4 +1,4 @@
-import { RemindList, RemindListSkeleton } from '@/entities/remind';
+import { RemindList, RemindListSkeleton } from '@/entities/reminder';
 import { DeleteRemindButton, useRemindList } from '@/features/remind/manage-reminds';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';

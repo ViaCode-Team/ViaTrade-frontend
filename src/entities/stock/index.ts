@@ -1,7 +1,7 @@
 export { getFilteredStocks, stockSortOptions } from './lib/stock-filters';
 export type { StockSortOption } from './lib/stock-filters';
 export {
-	mapTradeCodeToStock,
+	mapInstrumentToStock,
 } from './model';
 export type { Stock, StockLinkedStrategy } from './model';
 export { StockCard, StockCardSkeleton } from './ui';

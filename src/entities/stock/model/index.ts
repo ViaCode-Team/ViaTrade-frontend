@@ -1,2 +1,2 @@
-export { mapTradeCodeToStock } from './stock';
+export { mapInstrumentToStock } from './stock';
 export type { Stock, StockLinkedStrategy } from './stock';

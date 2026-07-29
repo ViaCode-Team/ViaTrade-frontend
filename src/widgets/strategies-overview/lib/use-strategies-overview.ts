@@ -17,8 +17,8 @@ export function useStrategiesOverview() {
 	}));
 
 	const filteredStrategies = useMemo(
-		() => getFilteredStrategies(strategies, filters.q),
-		[filters.q, strategies],
+		() => getFilteredStrategies(strategies, filters.q, filters.statusFilter),
+		[filters.q, filters.statusFilter, strategies],
 	);
 
 	const activeCount = filteredStrategies.filter((strategy) => strategy.isActive).length;

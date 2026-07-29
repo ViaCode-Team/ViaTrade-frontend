@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Group, Select } from '@mantine/core';
 
-import { remindFiltersSchema, remindSortOptions } from '@/entities/remind';
+import { remindFiltersSchema, remindSortOptions } from '@/entities/reminder';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';

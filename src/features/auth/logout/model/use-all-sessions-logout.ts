@@ -1,10 +1,10 @@
-import { useLogoutAll } from '@/entities/auth';
+import { useDeleteSessions } from '@/entities/session';
 
 import { useSessionLogoutFlow } from './use-session-logout-flow';
 
 export function useAllSessionsLogout() {
 	const { mutationOptions, requestLogout } = useSessionLogoutFlow();
-	const { mutate: logoutAll, isPending } = useLogoutAll({
+	const { mutate: logoutAll, isPending } = useDeleteSessions({
 		skipInvalidation: true,
 		mutation: mutationOptions,
 	});

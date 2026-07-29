@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import type { Signal } from '@/entities/signal';
 
 import {
-	mapStrategyResultResponseToSignals,
+	mapSignalResponsePageToSignals,
 	SignalsList,
 	SignalsListSkeleton,
-	useGetStrategyResultsSuspense,
+	useGetLatestSignalsSuspense,
 } from '@/entities/signal';
 import {
 	QUERY_REFETCH_INTERVAL,
@@ -16,14 +16,14 @@ import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 export function DashboardSignals({ onSignalSelect }: { onSignalSelect: (signal: Signal) => void }) {
-	const { data: signalsData } = useGetStrategyResultsSuspense(undefined, {
+	const { data: signalsData } = useGetLatestSignalsSuspense(undefined, {
 		query: {
 			staleTime: STATIC_QUERY_STALE_TIME,
 			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},
 	});
 	const signals = useMemo(
-		() => mapStrategyResultResponseToSignals(signalsData.data),
+		() => mapSignalResponsePageToSignals(signalsData.data),
 		[signalsData.data],
 	);
 

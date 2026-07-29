@@ -5,14 +5,14 @@ import process from 'node:process';
 const require = createRequire(import.meta.url);
 const ORVAL_PATH = require.resolve('orval/bin/orval');
 const ORVAL_PROJECTS = [
-	'authApi',
-	'usersApi',
-	'signalApi',
-	'tradeApi',
-	'tradeCodeApi',
-	'remindApi',
-	'strategyApi',
+	'instrumentApi',
 	'noteApi',
+	'reminderApi',
+	'sessionApi',
+	'signalApi',
+	'strategyApi',
+	'tradeApi',
+	'userApi',
 ];
 
 function generateProject(project) {

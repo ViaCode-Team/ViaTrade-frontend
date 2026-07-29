@@ -5,8 +5,8 @@ import {
 	useParams,
 } from 'react-router';
 
-import { mapTradeCodeToStock } from '@/entities/stock';
-import { useGetStockCodeByTickerSuspense } from '@/entities/trade-code';
+import { useGetInstrumentByIdSuspense } from '@/entities/instrument';
+import { mapInstrumentToStock } from '@/entities/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StockReminds } from '@/pages/stock/ui/stock-reminds';
 import { ROUTES } from '@/shared/model';
@@ -36,8 +36,13 @@ export function StockPage() {
 function StockPageBase() {
 	const { stockId } = useParams();
 
-	const { data: stockResponse } = useGetStockCodeByTickerSuspense(stockId ?? '');
-	const stock = mapTradeCodeToStock(stockResponse.data);
+	const instrumentId = Number(stockId);
+	if (!Number.isInteger(instrumentId) || instrumentId < 1) {
+		throw new Error('Некорректный идентификатор инструмента');
+	}
+
+	const { data: stockResponse } = useGetInstrumentByIdSuspense(instrumentId);
+	const stock = mapInstrumentToStock(stockResponse.data);
 
 	const stockNoteSource = useMemo(
 		() => stock
@@ -46,7 +51,7 @@ function StockPageBase() {
 					id: String(stock.instrumentId),
 					label: stock.ticker,
 					description: stock.name,
-					path: generatePath(ROUTES.STOCK, { stockId: stock.ticker.toLowerCase() }),
+					path: generatePath(ROUTES.STOCK, { stockId: String(stock.instrumentId) }),
 				}
 			: undefined,
 		[stock],

@@ -39,7 +39,7 @@ export function ProfileInfo() {
 					<Text c='dimmed' ta='center'>
 						Дата регистрации:
 						{' '}
-						{dayjs(user.registerDate).format(DATE_DISPLAY_FORMAT)}
+						{dayjs(user.registeredAt).format(DATE_DISPLAY_FORMAT)}
 					</Text>
 				</Flex>
 			</Stack>

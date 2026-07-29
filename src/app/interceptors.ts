@@ -1,3 +1,3 @@
-import { registerAuthRefreshInterceptor } from '@/entities/auth';
+import { registerAuthRefreshInterceptor } from '@/entities/session';
 
 registerAuthRefreshInterceptor();

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useGetUserSessionsSuspense } from '@/entities/auth';
+import { useGetSessionsSuspense } from '@/entities/session';
 import { sessionFiltersSchema } from '@/pages/profile/ui/filter-sessions';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
@@ -16,7 +16,7 @@ export function useSessionsOverview() {
 	const { filters, setFilter, resetFilters } = useUrlFilters(sessionFiltersSchema);
 	const searchQuery = filters.q;
 	const page = Math.max(Number(filters.page) || 1, 1);
-	const { data: sessionsData, refetch } = useGetUserSessionsSuspense(
+	const { data: sessionsData, refetch } = useGetSessionsSuspense(
 		{ page, pageSize: SESSIONS_PER_PAGE },
 		{ query: { refetchInterval: QUERY_REFETCH_INTERVAL } },
 	);

@@ -1,6 +1,6 @@
 import { Stack } from '@mantine/core';
 
-import { RemindList, RemindListSkeleton } from '@/entities/remind';
+import { RemindList, RemindListSkeleton } from '@/entities/reminder';
 import { DeleteRemindButton, REMINDERS_PAGE_SIZE, useRemindList } from '@/features/remind/manage-reminds';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';

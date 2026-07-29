@@ -19,11 +19,11 @@ import { TradesHistoryTableRow } from './trades-history-table-row';
 const COLUMNS: { field: TradeFilters['fieldSort']; label: string }[] = [
 	{ field: 'ticker', label: 'Тикер' },
 	{ field: 'type', label: 'Тип' },
-	{ field: 'dateOpen', label: 'Открытие' },
-	{ field: 'dateClose', label: 'Закрытие' },
-	{ field: 'tradeOpen', label: 'Цена откр.' },
-	{ field: 'tradeClose', label: 'Цена закр.' },
-	{ field: 'count', label: 'Кол-во' },
+	{ field: 'openedAt', label: 'Открытие' },
+	{ field: 'closedAt', label: 'Закрытие' },
+	{ field: 'entryPrice', label: 'Цена откр.' },
+	{ field: 'exitPrice', label: 'Цена закр.' },
+	{ field: 'quantity', label: 'Кол-во' },
 	{ field: 'sum', label: 'Сумма' },
 	{ field: 'income', label: 'Прибыль, %' },
 ];

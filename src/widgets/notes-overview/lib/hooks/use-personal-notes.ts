@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import {
-	useGetUserNotesSuspense,
+	useGetNotesSuspense,
 } from '@/entities/note';
 import { useNotesControls } from '@/features/note/filter-notes';
 import { mergeApiNotesWithDrafts, useStoredPersonalNotesQuery } from '@/features/note/manage-note';
@@ -14,11 +14,11 @@ export const NOTES_PAGE_SIZE = 15;
 export function usePersonalNotes() {
 	const storedNotesQuery = useStoredPersonalNotesQuery();
 	const { filters, setFilters } = useNotesControls();
-	const notesQuery = useGetUserNotesSuspense({ page: filters.page, pageSize: NOTES_PAGE_SIZE }, { query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
+	const notesQuery = useGetNotesSuspense({ page: filters.page, pageSize: NOTES_PAGE_SIZE }, { query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
 
 	const apiNotes = useMemo(
 		() => getApiPersonalNotes({
-			instrumentNotes: notesQuery.data.data.items.filter((note) => note.tradeCode !== undefined),
+			instrumentNotes: notesQuery.data.data.items.filter((note) => note.instrument !== undefined),
 			strategyNotes: notesQuery.data.data.items.filter((note) => note.strategy !== undefined),
 		}),
 		[notesQuery.data.data.items],

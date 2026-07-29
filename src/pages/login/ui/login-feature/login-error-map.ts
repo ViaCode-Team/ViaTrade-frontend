@@ -1,4 +1,4 @@
-import type { LoginMutationError } from '@/entities/auth';
+import type { LoginMutationError } from '@/entities/session';
 
 export function mapLoginApiError(error: LoginMutationError): string {
 	if (error.name === 'NetworkError') {

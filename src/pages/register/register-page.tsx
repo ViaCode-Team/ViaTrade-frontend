@@ -1,4 +1,4 @@
-import { AuthCard, AuthCardLink } from '@/entities/auth';
+import { AuthCard, AuthCardLink } from '@/entities/session';
 import { ROUTES } from '@/shared/model';
 import { AuthBackground } from '@/shared/ui/auth-background';
 

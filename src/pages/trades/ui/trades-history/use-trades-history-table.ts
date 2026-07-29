@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import type { TradeResponse, TradeSignal } from '@/shared/api';
 
-import { normalizeTradePage, useGetUserTradesSuspense } from '@/entities/trade';
+import { normalizeTradePage, useGetTradesSuspense } from '@/entities/trade';
 
 import { type TradeFilters, useTradesHistory } from '../filter-trades';
 import { processTrades } from './process-trades';
@@ -33,7 +33,7 @@ export function useTradesHistoryTable() {
 		signal: (typeFilter === 'all' ? undefined : typeFilter === 'long' ? 1 : -1) as TradeSignal | undefined,
 	};
 
-	const { data: tradesResponse } = useGetUserTradesSuspense({ ...tradeParams });
+	const { data: tradesResponse } = useGetTradesSuspense({ ...tradeParams });
 	const tradesPage = normalizeTradePage(tradesResponse.data);
 
 	const trades = tradesPage.items;

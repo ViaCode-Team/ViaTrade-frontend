@@ -3,26 +3,26 @@ import { useState } from 'react';
 
 import type { TradeFormValues } from '@/entities/trade';
 
-import { mapTradeFormValuesToRequest, useCreateUserTrade } from '@/entities/trade';
+import { useInstrumentOptions } from '@/entities/instrument';
+import { mapTradeFormValuesToRequest, useCreateTrade } from '@/entities/trade';
 import { TradeForm } from '@/entities/trade';
-import { useTradeCodeOptions } from '@/entities/trade-code';
 
 export function AddTradeForm() {
-	const { mutate: createTrade, isPending } = useCreateUserTrade();
-	const { selectOptions, isLoadingCodes } = useTradeCodeOptions();
+	const { mutate: createTrade, isPending } = useCreateTrade();
+	const { selectOptions, isLoadingInstruments } = useInstrumentOptions();
 
 	const [initialDate] = useState(() => new Date());
 
 	const initialValues: TradeFormValues = {
 		tradeTypeId: '1',
-		tradeCodeId: '',
-		tradeSignal: '1',
-		count: 1,
-		tradeOpen: 0,
-		dateOpen: initialDate,
+		instrumentId: '',
+		signal: '1',
+		quantity: 1,
+		entryPrice: 0,
+		openedAt: initialDate,
 		isClosed: false,
-		tradeClose: undefined,
-		dateClose: undefined,
+		exitPrice: undefined,
+		closedAt: undefined,
 	};
 
 	const handleSubmit = (values: TradeFormValues) => {
@@ -46,8 +46,8 @@ export function AddTradeForm() {
 			onSubmit={handleSubmit}
 			submitText='Добавить сделку'
 			isPending={isPending}
-			tradeCodesOptions={selectOptions}
-			isLoadingCodes={isLoadingCodes}
+			instrumentsOptions={selectOptions}
+			isLoadingInstruments={isLoadingInstruments}
 		/>
 	);
 }

@@ -17,7 +17,7 @@ export type RemindItem = {
 export type RemindEditableField = Exclude<keyof RemindItem, 'id'>;
 
 export function mapTradeRemindToRemindItem(tradeRemind: ReminderResponse): RemindItem {
-	const dt = new Date(tradeRemind.dateTime);
+	const dt = new Date(tradeRemind.remindAt);
 	const date = formatRemindDate(dt);
 	const time = formatRemindTime(dt);
 
@@ -26,11 +26,11 @@ export function mapTradeRemindToRemindItem(tradeRemind: ReminderResponse): Remin
 		text: tradeRemind.text,
 		date,
 		time,
-		source: tradeRemind.tradeCode
+		source: tradeRemind.instrument
 			? {
 					type: 'stock',
-					id: tradeRemind.tradeCode.ticker.toLowerCase(),
-					label: tradeRemind.tradeCode.ticker,
+					id: tradeRemind.instrument.symbol.toLowerCase(),
+					label: tradeRemind.instrument.symbol,
 				}
 			: undefined,
 	};

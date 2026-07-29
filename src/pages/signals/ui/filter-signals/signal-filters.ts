@@ -1,5 +1,4 @@
 import type { Signal } from '@/entities/signal';
-import type { GetStrategyResultsParams } from '@/shared/api';
 
 export type SortOption = 'date-desc' | 'date-asc' | 'asset-asc' | 'asset-desc' | 'confidence-desc' | 'confidence-asc';
 export type DirectionFilter = 'all' | 'buy' | 'sell';
@@ -25,19 +24,6 @@ export const directionOptions: Array<{ value: DirectionFilter; label: string }> 
 	{ value: 'sell', label: 'Продавать' },
 ];
 
-export function getSignalRequestParams(sortOption: SortOption): GetStrategyResultsParams {
-	const sortBy = {
-		'date-desc': 'dateTimeDesc',
-		'date-asc': 'dateTimeAsc',
-		'asset-asc': 'assetAsc',
-		'asset-desc': 'assetDesc',
-		'confidence-desc': 'accuracyDesc',
-		'confidence-asc': 'accuracyAsc',
-	} as const;
-
-	return { sortBy: [sortBy[sortOption]] };
-}
-
 function filterSignalsByDirection(signals: Signal[], directionFilter: DirectionFilter) {
 	if (directionFilter === 'all')
 		return signals;
@@ -59,5 +45,24 @@ function filterSignalsBySearch(signals: Signal[], searchQuery: string) {
 
 export function getFilteredSignals(signals: Signal[], filters: SignalFilters) {
 	const byDirection = filterSignalsByDirection(signals, filters.directionFilter);
-	return filterSignalsBySearch(byDirection, filters.searchQuery);
+	const filtered = filterSignalsBySearch(byDirection, filters.searchQuery);
+
+	return [...filtered].sort((left, right) => {
+		switch (filters.sortOption) {
+			case 'date-asc':
+				return new Date(left.occurredAt).getTime() - new Date(right.occurredAt).getTime();
+			case 'date-desc':
+				return new Date(right.occurredAt).getTime() - new Date(left.occurredAt).getTime();
+			case 'asset-asc':
+				return left.asset.localeCompare(right.asset);
+			case 'asset-desc':
+				return right.asset.localeCompare(left.asset);
+			case 'confidence-asc':
+				return (left.confidence ?? 0) - (right.confidence ?? 0);
+			case 'confidence-desc':
+				return (right.confidence ?? 0) - (left.confidence ?? 0);
+		}
+
+		return 0;
+	});
 }

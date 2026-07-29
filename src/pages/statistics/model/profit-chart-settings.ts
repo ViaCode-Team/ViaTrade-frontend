@@ -34,7 +34,7 @@ function subtractGranularity(date: string, granularity: ProfitChartGranularity) 
 }
 
 function getTradeChartDate(trade: TradeResponse) {
-	return dayjs(trade.dateClose ?? trade.dateOpen).startOf('day');
+	return dayjs(trade.closedAt ?? trade.openedAt).startOf('day');
 }
 
 function getProfitChartPointDate(date: string, granularity: ProfitChartGranularity) {
@@ -138,7 +138,7 @@ export function getProfitChartData(
 	const pnlByDate = new Map<string, number>();
 
 	for (const trade of trades) {
-		const tradeDate = dayjs(trade.dateClose ?? trade.dateOpen);
+		const tradeDate = dayjs(trade.closedAt ?? trade.openedAt);
 		const pointDate = getProfitChartPointDate(
 			tradeDate.toISOString(),
 			granularity,

@@ -1,4 +1,4 @@
-import { useGetStockStatistics } from '@/entities/trade-code';
+import { useGetInstrumentStatistics } from '@/entities/instrument';
 import { SummaryCard } from '@/shared/ui/summary-card';
 import { SummaryList } from '@/shared/ui/summary-list';
 
@@ -9,8 +9,8 @@ type StocksMarketSummaryProps = {
 export function StocksMarketSummary({
 	isLoading,
 }: StocksMarketSummaryProps) {
-	const { data: response, isLoading: isStatisticsLoading } = useGetStockStatistics();
-	const totalStocks = response?.data.totalStocks ?? 0;
+	const { data: response, isLoading: isStatisticsLoading } = useGetInstrumentStatistics();
+	const totalStocks = response?.data.totalInstruments ?? 0;
 
 	return (
 		<SummaryList>

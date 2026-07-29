@@ -1,4 +1,4 @@
-import type { TradeCode } from '@/shared/api';
+import type { InstrumentResponse } from '@/shared/api';
 
 export type Stock = {
 	id: string;
@@ -18,12 +18,12 @@ export type StockLinkedStrategy = {
 	isActive: boolean;
 };
 
-export function mapTradeCodeToStock(tradeCode: TradeCode): Stock {
+export function mapInstrumentToStock(instrument: InstrumentResponse): Stock {
 	return {
-		id: tradeCode.id.toString(),
-		instrumentId: tradeCode.id,
-		ticker: tradeCode.exchangeId,
-		name: tradeCode.description || tradeCode.exchangeId,
+		id: instrument.id.toString(),
+		instrumentId: instrument.id,
+		ticker: instrument.symbol,
+		name: instrument.description || instrument.symbol,
 		linkedStrategies: [],
 	};
 }

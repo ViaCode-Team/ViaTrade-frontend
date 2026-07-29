@@ -2,16 +2,15 @@ import { apiClient, setApiRequestGate, setUnauthorizedHandler } from '@/shared/a
 import { hasPinSetup, isAppLocked } from '@/shared/lib/secure-storage';
 
 import {
+	getDeleteCurrentSessionUrl,
+	getDeleteSessionsUrl,
 	getLoginUrl,
-	getLogoutAllUrl,
-	getLogoutUrl,
-	getRefreshTokenUrl,
-	getRegisterUrl,
+	getRefreshCurrentSessionUrl,
 } from './gen';
 
-const AUTH_ENTRY_URLS = [getRegisterUrl(), getLoginUrl()];
-const AUTH_EXIT_URLS = [getLogoutUrl(), getLogoutAllUrl()];
-const AUTH_REFRESH_URLS = [getRefreshTokenUrl()];
+const AUTH_ENTRY_URLS = [getLoginUrl()];
+const AUTH_EXIT_URLS = [getDeleteCurrentSessionUrl(), getDeleteSessionsUrl()];
+const AUTH_REFRESH_URLS = [getRefreshCurrentSessionUrl()];
 const AUTH_URLS = [...AUTH_ENTRY_URLS, ...AUTH_EXIT_URLS, ...AUTH_REFRESH_URLS];
 
 function matchesAnyUrl(url: string, paths: string[]) {
@@ -31,7 +30,7 @@ async function isPinLocked(): Promise<boolean> {
 }
 
 async function refreshToken(): Promise<void> {
-	await apiClient.post(getRefreshTokenUrl());
+	await apiClient.post(getRefreshCurrentSessionUrl());
 }
 
 let refreshPromise: Promise<void> | null = null;

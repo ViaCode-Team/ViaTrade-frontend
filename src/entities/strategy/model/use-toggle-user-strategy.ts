@@ -2,8 +2,8 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import {
 	getGetStrategiesQueryKey,
-	useCreateUserStrategy,
-	useDeleteUserStrategy,
+	useActivateStrategy,
+	useDeactivateStrategy,
 } from '../api/gen';
 
 type ToggleUserStrategyVariables = {
@@ -22,12 +22,12 @@ export function useToggleUserStrategy() {
 			});
 		},
 	};
-	const createStrategyMutation = useCreateUserStrategy({
+	const createStrategyMutation = useActivateStrategy({
 		mutation: {
 			...mutationOptions,
 		},
 	});
-	const deleteStrategyMutation = useDeleteUserStrategy({
+	const deleteStrategyMutation = useDeactivateStrategy({
 		mutation: {
 			...mutationOptions,
 		},
@@ -37,14 +37,14 @@ export function useToggleUserStrategy() {
 		mutate: (variables: ToggleUserStrategyVariables) => {
 			if (variables.isActive) {
 				createStrategyMutation.mutate({
-					data: { strategyId: variables.strategyId },
+					strategyId: variables.strategyId,
 				});
 
 				return;
 			}
 
 			deleteStrategyMutation.mutate({
-				params: { strategyId: variables.strategyId },
+				strategyId: variables.strategyId,
 			});
 		},
 		isPending: createStrategyMutation.isPending || deleteStrategyMutation.isPending,
@@ -56,17 +56,17 @@ export function useToggleUserStrategy() {
 }
 
 function createStrategyVariablesToToggleVariables(
-	variables: { data: { strategyId: number } } | undefined,
+	variables: { strategyId: number } | undefined,
 ) {
 	return variables
-		? { strategyId: variables.data.strategyId, isActive: true }
+		? { strategyId: variables.strategyId, isActive: true }
 		: undefined;
 }
 
 function deleteStrategyVariablesToToggleVariables(
-	variables: { params: { strategyId: number } } | undefined,
+	variables: { strategyId: number } | undefined,
 ) {
 	return variables
-		? { strategyId: variables.params.strategyId, isActive: false }
+		? { strategyId: variables.strategyId, isActive: false }
 		: undefined;
 }

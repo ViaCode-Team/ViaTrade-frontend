@@ -22,7 +22,7 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 	return (
 		<Table.Tr>
 			<Table.Td>
-				<AppLink to={generatePath(ROUTES.STOCK, { stockId: trade.ticker })} size='sm' fw={500}>
+				<AppLink to={generatePath(ROUTES.STOCK, { stockId: String(trade.instrument?.id ?? trade.id) })} size='sm' fw={500}>
 					{trade.ticker}
 				</AppLink>
 				<Text size='xs' c='dimmed'>
@@ -38,15 +38,15 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 					{trade.isLong ? 'Long' : 'Short'}
 				</Badge>
 			</Table.Td>
-			<Table.Td>{dayjs(trade.dateOpen).format(DATE_TIME_DISPLAY_FORMAT)}</Table.Td>
-			<Table.Td>{trade.dateClose ? dayjs(trade.dateClose).format(DATE_TIME_DISPLAY_FORMAT) : '—'}</Table.Td>
+			<Table.Td>{dayjs(trade.openedAt).format(DATE_TIME_DISPLAY_FORMAT)}</Table.Td>
+			<Table.Td>{trade.closedAt ? dayjs(trade.closedAt).format(DATE_TIME_DISPLAY_FORMAT) : '—'}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
-				{trade.tradeOpen.toFixed(2)}
+				{trade.entryPrice.toFixed(2)}
 				{' '}
 				₽
 			</Table.Td>
-			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.tradeClose ? `${trade.tradeClose.toFixed(2)} ₽` : '—'}</Table.Td>
-			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.count}</Table.Td>
+			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.exitPrice ? `${trade.exitPrice.toFixed(2)} ₽` : '—'}</Table.Td>
+			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.quantity}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
 				<Text fw={500}>
 					{trade.income.toFixed(2)}
@@ -70,7 +70,7 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 			</Table.Td>
 			<Table.Td>
 				<Group gap='xs' wrap='nowrap' justify='flex-end' align='center'>
-					{!trade.dateClose && <CloseTradeButton trade={trade} />}
+					{!trade.closedAt && <CloseTradeButton trade={trade} />}
 					<EditTradeButton trade={trade} />
 					<DeleteTradeButton trade={trade} />
 				</Group>

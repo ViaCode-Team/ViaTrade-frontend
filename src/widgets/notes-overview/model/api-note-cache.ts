@@ -1,9 +1,9 @@
 import type { QueryClient } from '@tanstack/react-query';
 
-import type { getUserNotesResponseSuccess } from '@/entities/note';
+import type { getNotesResponseSuccess } from '@/entities/note';
 import type { DraftedPersonalNote } from '@/features/note/manage-note';
 
-import { getGetUserNotesQueryKey } from '@/entities/note';
+import { getGetNotesQueryKey } from '@/entities/note';
 
 export function setApiNoteTextInCache({
 	queryClient,
@@ -17,8 +17,8 @@ export function setApiNoteTextInCache({
 	if (note.source.type === 'stock') {
 		const sourceId = Number(note.source.id);
 
-		queryClient.setQueriesData<getUserNotesResponseSuccess>(
-			{ queryKey: getGetUserNotesQueryKey() },
+		queryClient.setQueriesData<getNotesResponseSuccess>(
+			{ queryKey: getGetNotesQueryKey() },
 			(data) => updateInstrumentNotesData(data, sourceId, text),
 		);
 		return;
@@ -26,8 +26,8 @@ export function setApiNoteTextInCache({
 
 	const sourceId = Number(note.source.id);
 
-	queryClient.setQueriesData<getUserNotesResponseSuccess>(
-		{ queryKey: getGetUserNotesQueryKey() },
+	queryClient.setQueriesData<getNotesResponseSuccess>(
+		{ queryKey: getGetNotesQueryKey() },
 		(data) => updateStrategyNotesData(data, sourceId, text),
 	);
 }
@@ -42,8 +42,8 @@ export function deleteApiNoteFromCache({
 	if (note.source.type === 'stock') {
 		const sourceId = Number(note.source.id);
 
-		queryClient.setQueriesData<getUserNotesResponseSuccess>(
-			{ queryKey: getGetUserNotesQueryKey() },
+		queryClient.setQueriesData<getNotesResponseSuccess>(
+			{ queryKey: getGetNotesQueryKey() },
 			(data) => deleteInstrumentNoteData(data, sourceId),
 		);
 		return;
@@ -51,14 +51,14 @@ export function deleteApiNoteFromCache({
 
 	const sourceId = Number(note.source.id);
 
-	queryClient.setQueriesData<getUserNotesResponseSuccess>(
-		{ queryKey: getGetUserNotesQueryKey() },
+	queryClient.setQueriesData<getNotesResponseSuccess>(
+		{ queryKey: getGetNotesQueryKey() },
 		(data) => deleteStrategyNoteData(data, sourceId),
 	);
 }
 
 function updateInstrumentNotesData(
-	data: getUserNotesResponseSuccess | undefined,
+	data: getNotesResponseSuccess | undefined,
 	sourceId: number,
 	text: string,
 ) {
@@ -70,15 +70,15 @@ function updateInstrumentNotesData(
 		...data,
 		data: {
 			...data.data,
-			items: data.data.items.map((note) => note.tradeCode?.id === sourceId
-				? { ...note, noteText: text }
+			items: data.data.items.map((note) => note.instrument?.id === sourceId
+				? { ...note, text }
 				: note),
 		},
 	};
 }
 
 function deleteInstrumentNoteData(
-	data: getUserNotesResponseSuccess | undefined,
+	data: getNotesResponseSuccess | undefined,
 	sourceId: number,
 ) {
 	if (!data) {
@@ -89,13 +89,13 @@ function deleteInstrumentNoteData(
 		...data,
 		data: {
 			...data.data,
-			items: data.data.items.filter((note) => note.tradeCode?.id !== sourceId),
+			items: data.data.items.filter((note) => note.instrument?.id !== sourceId),
 		},
 	};
 }
 
 function deleteStrategyNoteData(
-	data: getUserNotesResponseSuccess | undefined,
+	data: getNotesResponseSuccess | undefined,
 	sourceId: number,
 ) {
 	if (!data) {
@@ -112,7 +112,7 @@ function deleteStrategyNoteData(
 }
 
 function updateStrategyNotesData(
-	data: getUserNotesResponseSuccess | undefined,
+	data: getNotesResponseSuccess | undefined,
 	sourceId: number,
 	text: string,
 ) {
@@ -125,7 +125,7 @@ function updateStrategyNotesData(
 		data: {
 			...data.data,
 			items: data.data.items.map((note) => note.strategy?.id === sourceId
-				? { ...note, noteText: text }
+				? { ...note, text }
 				: note),
 		},
 	};

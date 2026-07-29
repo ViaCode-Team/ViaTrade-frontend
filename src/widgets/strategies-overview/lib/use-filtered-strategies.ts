@@ -4,7 +4,7 @@ import type { Strategy } from '@/entities/strategy';
 
 import { useUrlFilters } from '@/shared/lib/url-filters';
 
-import { strategyFiltersSchema } from './filters';
+import { strategyFiltersSchema, type StrategyStatusFilter } from './filters';
 
 export function useFilteredStrategies(strategies: Strategy[]) {
 	const { filters } = useUrlFilters(strategyFiltersSchema);
@@ -14,11 +14,18 @@ export function useFilteredStrategies(strategies: Strategy[]) {
 	return useMemo(() => getFilteredStrategies(strategies, searchQuery), [strategies, searchQuery]);
 }
 
-export function getFilteredStrategies(strategies: Strategy[], searchQuery: string) {
+export function getFilteredStrategies(
+	strategies: Strategy[],
+	searchQuery: string,
+	statusFilter: StrategyStatusFilter = 'all',
+) {
 	const normalizedSearch = searchQuery.trim().toLowerCase();
 
-	if (!normalizedSearch)
-		return strategies;
+	return strategies.filter((strategy) => {
+		const matchesSearch = !normalizedSearch || strategy.name.toLowerCase().includes(normalizedSearch);
+		const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' && strategy.isActive)
+			|| (statusFilter === 'inactive' && !strategy.isActive);
 
-	return strategies.filter((strategy) => strategy.name.toLowerCase().includes(normalizedSearch));
+		return matchesSearch && matchesStatus;
+	});
 }

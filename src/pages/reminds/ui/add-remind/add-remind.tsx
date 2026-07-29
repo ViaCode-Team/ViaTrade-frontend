@@ -12,11 +12,11 @@ import { useMemo, useState } from 'react';
 
 import type { Stock } from '@/entities/stock';
 
-import { mapTradeCodeToStock } from '@/entities/stock';
 import {
-	getGetStockCodesQueryKey,
-	getStockCodes,
-} from '@/entities/trade-code';
+	getGetInstrumentsQueryKey,
+	getInstruments,
+} from '@/entities/instrument';
+import { mapInstrumentToStock } from '@/entities/stock';
 import { useCreateRemind } from '@/features/remind/manage-reminds';
 
 const STOCKS_PAGE_SIZE = 15;
@@ -24,8 +24,8 @@ const STOCKS_PAGE_SIZE = 15;
 export function AddRemind() {
 	const [selectedStockId, setSelectedStockId] = useState<string | null>(null);
 	const stocksQuery = useInfiniteQuery({
-		queryKey: getGetStockCodesQueryKey({ pageSize: STOCKS_PAGE_SIZE }),
-		queryFn: ({ pageParam }) => getStockCodes({ page: pageParam, pageSize: STOCKS_PAGE_SIZE }),
+		queryKey: getGetInstrumentsQueryKey({ pageSize: STOCKS_PAGE_SIZE }),
+		queryFn: ({ pageParam }) => getInstruments({ page: pageParam, pageSize: STOCKS_PAGE_SIZE }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) =>
 			lastPage.data.page < lastPage.data.totalPages
@@ -94,7 +94,7 @@ export function AddRemind() {
 	);
 }
 
-function getLoadedStocks(pages: Awaited<ReturnType<typeof getStockCodes>>[] | undefined): Stock[] {
+function getLoadedStocks(pages: Awaited<ReturnType<typeof getInstruments>>[] | undefined): Stock[] {
 	if (!pages) {
 		return [];
 	}
@@ -110,5 +110,5 @@ function getLoadedStocks(pages: Awaited<ReturnType<typeof getStockCodes>>[] | un
 			stockIds.add(stock.id);
 			return true;
 		})
-		.map(mapTradeCodeToStock);
+		.map(mapInstrumentToStock);
 }

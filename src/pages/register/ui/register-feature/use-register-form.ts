@@ -1,7 +1,7 @@
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 
-import { useRegister } from '@/entities/auth';
+import { useRegister } from '@/entities/user';
 
 import type { TRegisterData } from './register-data';
 

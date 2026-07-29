@@ -7,13 +7,13 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import type { TradeResponse } from '@/shared/api';
-import type { TradeRequest } from '@/shared/api';
+import type { UpdateTradeRequest } from '@/shared/api';
 
-import { useUpdateUserTrade } from '@/entities/trade';
+import { useUpdateTrade } from '@/entities/trade';
 
 type FormValues = {
-	tradeClose: number | '';
-	dateClose: Date | null;
+	exitPrice: number | '';
+	closedAt: Date | null;
 };
 
 type CloseTradeFormProps = {
@@ -21,38 +21,38 @@ type CloseTradeFormProps = {
 };
 
 export function CloseTradeForm({ trade }: CloseTradeFormProps) {
-	const { mutate: updateTrade, isPending } = useUpdateUserTrade();
+	const { mutate: updateTrade, isPending } = useUpdateTrade();
 	const [initialDate] = useState(() => new Date());
 
 	const form = useForm<FormValues>({
 		mode: 'uncontrolled',
 		initialValues: {
-			tradeClose: '',
-			dateClose: initialDate,
+			exitPrice: '',
+			closedAt: initialDate,
 		},
 		validate: {
-			tradeClose: (value) => ((value === '' || value < 0) && 'Введите корректную цену закрытия'),
-			dateClose: (value) => (!value && 'Выберите дату закрытия'),
+			exitPrice: (value) => ((value === '' || value < 0) && 'Введите корректную цену закрытия'),
+			closedAt: (value) => (!value && 'Выберите дату закрытия'),
 		},
 	});
 
 	const handleSubmit = (values: FormValues) => {
-		if (values.tradeClose === '' || !values.dateClose || !trade.tradeCode)
+		if (values.exitPrice === '' || !values.closedAt || !trade.instrument)
 			return;
 
-		const request: TradeRequest = {
+		const request: UpdateTradeRequest = {
 			tradeTypeId: trade.tradeTypeId,
-			tradeCodeId: trade.tradeCode.id,
-			tradeSignal: trade.tradeSignal ?? 0,
-			count: trade.count,
-			tradeOpen: trade.tradeOpen,
-			dateOpen: trade.dateOpen,
-			tradeClose: Number(values.tradeClose),
-			dateClose: dayjs(values.dateClose).toISOString(),
+			instrumentId: trade.instrument.id,
+			signal: trade.signal ?? 0,
+			quantity: trade.quantity,
+			entryPrice: trade.entryPrice,
+			openedAt: trade.openedAt,
+			exitPrice: Number(values.exitPrice),
+			closedAt: dayjs(values.closedAt).toISOString(),
 		};
 
 		updateTrade(
-			{ id: trade.id, data: request },
+			{ tradeId: trade.id, data: request },
 			{
 				onSuccess: () => {
 					modals.closeAll();
@@ -61,7 +61,7 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 		);
 	};
 
-	const [minDate] = useState(() => dayjs(trade.dateOpen).toDate());
+	const [minDate] = useState(() => dayjs(trade.openedAt).toDate());
 
 	return (
 		<form onSubmit={form.onSubmit(handleSubmit)}>
@@ -72,8 +72,8 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 					min={0}
 					decimalScale={2}
 					withAsterisk
-					key={form.key('tradeClose')}
-					{...form.getInputProps('tradeClose')}
+					key={form.key('exitPrice')}
+					{...form.getInputProps('exitPrice')}
 				/>
 
 				<DateTimePicker
@@ -82,8 +82,8 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 					withAsterisk
 					minDate={minDate}
 					maxDate={initialDate}
-					key={form.key('dateClose')}
-					{...form.getInputProps('dateClose')}
+					key={form.key('closedAt')}
+					{...form.getInputProps('closedAt')}
 				/>
 
 				<Button type='submit' loading={isPending} fullWidth mt='md'>

@@ -1,26 +1,26 @@
 import dayjs from 'dayjs';
 
-import type { TradeRequest, TradeSignal } from '@/shared/api';
+import type { CreateTradeRequest, TradeSignal } from '@/shared/api';
 
 import type { TradeFormValues } from '../ui/trade-form/trade-form';
 
-export function mapTradeFormValuesToRequest(values: TradeFormValues): TradeRequest | null {
-	if (!values.dateOpen) {
+export function mapTradeFormValuesToRequest(values: TradeFormValues): CreateTradeRequest | null {
+	if (!values.openedAt) {
 		return null;
 	}
 
-	const request: TradeRequest = {
+	const request: CreateTradeRequest = {
 		tradeTypeId: Number(values.tradeTypeId),
-		tradeCodeId: Number(values.tradeCodeId),
-		tradeSignal: Number(values.tradeSignal) as TradeSignal,
-		count: values.count,
-		tradeOpen: values.tradeOpen,
-		dateOpen: dayjs(values.dateOpen).toISOString(),
+		instrumentId: Number(values.instrumentId),
+		signal: Number(values.signal) as TradeSignal,
+		quantity: values.quantity,
+		entryPrice: values.entryPrice,
+		openedAt: dayjs(values.openedAt).toISOString(),
 	};
 
-	if (values.isClosed && values.tradeClose !== undefined && values.dateClose) {
-		request.tradeClose = values.tradeClose;
-		request.dateClose = dayjs(values.dateClose).toISOString();
+	if (values.isClosed && values.exitPrice !== undefined && values.closedAt) {
+		request.exitPrice = values.exitPrice;
+		request.closedAt = dayjs(values.closedAt).toISOString();
 	}
 
 	return request;

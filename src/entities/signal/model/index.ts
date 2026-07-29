@@ -1,6 +1,6 @@
 export {
-	mapStrategyResultResponseToSignals,
-	mapStrategyResultResponseToTradeHistory,
+	mapSignalResponsePageToSignals,
+	mapSignalResponsePageToTradeHistory,
 } from './signal';
 export type {
 	Signal,

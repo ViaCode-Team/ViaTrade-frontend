@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import type { StrategySortField } from '@/shared/api';
 import type { LinkedStrategyFilters } from '@/widgets/stock-linked-strategies/ui/filter-linked-strategies';
 
+import { useGetStrategiesByInstrumentSuspense } from '@/entities/instrument';
 import {
 	mapTradeStrategyToStrategy,
 } from '@/entities/strategy';
-import { useGetStrategiesByStockSuspense } from '@/entities/trade-code';
 
 export const STOCK_LINKED_STRATEGIES_PAGE_SIZE = 15;
 
@@ -22,11 +22,10 @@ export function useStockLinkedStrategies(
 		'accuracy-desc': 'accuracyDesc',
 		'accuracy-asc': 'accuracyAsc',
 	};
-	const { data: strategiesResponse } = useGetStrategiesByStockSuspense(stockId, {
+	const { data: strategiesResponse } = useGetStrategiesByInstrumentSuspense(stockId, {
 		page,
 		pageSize,
 		sortBy: [sortBy[filters.sortOption]],
-		isActive: filters.statusFilter === 'all' ? undefined : filters.statusFilter === 'active',
 	});
 	const activeStrategyIds = useMemo(
 		() => new Set(strategiesResponse.data.items.filter((strategy) => strategy.isActive).map((strategy) => strategy.id)),

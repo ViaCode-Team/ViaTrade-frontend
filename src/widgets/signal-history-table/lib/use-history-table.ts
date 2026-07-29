@@ -1,24 +1,22 @@
 import { useMemo, useState } from 'react';
 
 import {
-	mapStrategyResultResponseToTradeHistory,
-	useGetStrategyResultsByCodeSuspense,
+	mapSignalResponsePageToTradeHistory,
+	useGetSignalsSuspense,
 } from '@/entities/signal';
 import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 
 type UseHistoryTableOptions = {
-	strategyName: string;
-	tradeCode: string;
+	strategyId: number;
+	instrumentId: number;
 };
 
-export function useSignalHistoryTable({ strategyName, tradeCode }: UseHistoryTableOptions) {
+export function useSignalHistoryTable({ strategyId, instrumentId }: UseHistoryTableOptions) {
 	const [page, setPage] = useState(1);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
-	const { data: historyData } = useGetStrategyResultsByCodeSuspense(
-		strategyName,
-		tradeCode,
-		undefined,
+	const { data: historyData } = useGetSignalsSuspense(
+		{ strategyId, instrumentId, page: 1, pageSize: 100 },
 		{
 			query: {
 				staleTime: STATIC_QUERY_STALE_TIME,
@@ -28,12 +26,8 @@ export function useSignalHistoryTable({ strategyName, tradeCode }: UseHistoryTab
 
 	const history = useMemo(
 		() =>
-			mapStrategyResultResponseToTradeHistory(
-				historyData.data,
-				strategyName,
-				tradeCode,
-			),
-		[historyData.data, strategyName, tradeCode],
+			mapSignalResponsePageToTradeHistory(historyData.data),
+		[historyData.data],
 	);
 
 	const totalPages = Math.max(1, Math.ceil(history.length / rowsPerPage));

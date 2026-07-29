@@ -6,9 +6,9 @@ import {
 	SelectableStockListSkeleton,
 } from '@/entities/stock';
 import {
-	useCreateUserStrategyCode,
-	useDeleteUserStrategyCode,
-	useGetStocksByStrategySuspense,
+	useAddInstrumentToStrategy,
+	useDeleteInstrumentFromStrategy,
+	useGetInstrumentsByStrategySuspense,
 } from '@/entities/strategy';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -34,10 +34,10 @@ function StrategyStockBindingBase({
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
 	const paginatedStocks = visibleStocks;
 
-	const { data: linkedStocksResponse } = useGetStocksByStrategySuspense(strategyId, {
+	const { data: linkedStocksResponse } = useGetInstrumentsByStrategySuspense(strategyId, {
 		page,
 		pageSize: ITEMS_PER_PAGE,
-		sortBy: ['nameAsc'],
+		sortBy: ['symbolAsc'],
 	});
 	const selectedStockIds = useMemo(
 		() =>
@@ -45,19 +45,19 @@ function StrategyStockBindingBase({
 		[linkedStocksResponse.data.items],
 	);
 
-	const { mutate: createLink } = useCreateUserStrategyCode();
-	const { mutate: deleteLink } = useDeleteUserStrategyCode();
+	const { mutate: createLink } = useAddInstrumentToStrategy();
+	const { mutate: deleteLink } = useDeleteInstrumentFromStrategy();
 
 	const handleSelectedStockIdsChange = (nextStockIds: string[]) => {
 		const added = nextStockIds.filter((id) => !selectedStockIds.includes(id));
 		const removed = selectedStockIds.filter((id) => !nextStockIds.includes(id));
 
 		added.forEach((id) => {
-			createLink({ data: { strategyId, tradeCodeId: Number(id) } });
+			createLink({ strategyId, instrumentId: Number(id) });
 		});
 
 		removed.forEach((id) => {
-			deleteLink({ params: { strategyId, tradeCodeId: Number(id) } });
+			deleteLink({ strategyId, instrumentId: Number(id) });
 		});
 	};
 

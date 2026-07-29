@@ -37,7 +37,7 @@ function mapApiNoteToStoredNote(
 	return {
 		id: getNoteId(source),
 		source,
-		text: note.noteText,
+		text: note.text,
 	};
 }
 
@@ -46,23 +46,23 @@ function getApiNoteSource(
 	sourceType: NoteSource['type'],
 ): NoteSource | null {
 	if (sourceType === 'stock') {
-		return getStockNoteSource(note.tradeCode);
+		return getStockNoteSource(note.instrument);
 	}
 
 	return getStrategyNoteSource(note.strategy);
 }
 
-function getStockNoteSource(tradeCode: NoteResponse['tradeCode']): NoteSource | null {
-	if (!tradeCode) {
+function getStockNoteSource(instrument: NoteResponse['instrument']): NoteSource | null {
+	if (!instrument) {
 		return null;
 	}
 
 	return {
 		type: 'stock',
-		id: String(tradeCode.id),
-		label: tradeCode.ticker,
-		description: tradeCode.name,
-		path: generatePath(ROUTES.STOCK, { stockId: tradeCode.ticker.toLowerCase() }),
+		id: String(instrument.id),
+		label: instrument.symbol,
+		description: instrument.name,
+		path: generatePath(ROUTES.STOCK, { stockId: String(instrument.id) }),
 	};
 }
 

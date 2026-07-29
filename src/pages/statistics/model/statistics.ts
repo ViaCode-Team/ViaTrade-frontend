@@ -41,7 +41,7 @@ export function getDirectionPerformanceChartData(trades: TradeResponse[]): Direc
 	};
 
 	for (const trade of trades) {
-		const direction = trade.tradeSignal === -1 ? 'Short' : 'Long';
+		const direction = trade.signal === -1 ? 'Short' : 'Long';
 		performance[direction] += trade.netIncome ?? 0;
 	}
 

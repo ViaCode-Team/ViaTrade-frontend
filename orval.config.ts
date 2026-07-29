@@ -4,9 +4,9 @@ import { deepmerge } from 'deepmerge-ts';
 import { defineConfig } from 'orval';
 
 import {
-	authMutationInvalidates,
-	noteMutationInvalidates,
-	remindMutationInvalidates,
+	instrumentMutationInvalidates,
+	reminderMutationInvalidates,
+	sessionMutationInvalidates,
 	strategyMutationInvalidates,
 	tradeMutationInvalidates,
 	userMutationInvalidates,
@@ -85,44 +85,35 @@ function createApiConfig(
 }
 
 export default defineConfig({
-	authApi: createApiConfig('Auth', 'auth', {
+	instrumentApi: createApiConfig('Instruments', 'instrument', {
 		output: {
 			override: {
 				query: {
-					mutationInvalidates: authMutationInvalidates,
+					mutationInvalidates: instrumentMutationInvalidates,
 				},
 			},
 		},
 	}),
-	usersApi: createApiConfig('Users', 'user', {
+	noteApi: createApiConfig('Notes', 'note'),
+	reminderApi: createApiConfig('Reminders', 'reminder', {
 		output: {
 			override: {
 				query: {
-					mutationInvalidates: userMutationInvalidates,
+					mutationInvalidates: reminderMutationInvalidates,
 				},
 			},
 		},
 	}),
-	signalApi: createApiConfig('Results', 'signal'),
-	tradeApi: createApiConfig('Trades', 'trade', {
+	sessionApi: createApiConfig('Sessions', 'session', {
 		output: {
 			override: {
 				query: {
-					mutationInvalidates: tradeMutationInvalidates,
+					mutationInvalidates: sessionMutationInvalidates,
 				},
 			},
 		},
 	}),
-	tradeCodeApi: createApiConfig('TradeCodes', 'trade-code'),
-	remindApi: createApiConfig('Reminders', 'remind', {
-		output: {
-			override: {
-				query: {
-					mutationInvalidates: remindMutationInvalidates,
-				},
-			},
-		},
-	}),
+	signalApi: createApiConfig('Signals', 'signal'),
 	strategyApi: createApiConfig('Strategies', 'strategy', {
 		output: {
 			override: {
@@ -132,11 +123,20 @@ export default defineConfig({
 			},
 		},
 	}),
-	noteApi: createApiConfig('Notes', 'note', {
+	tradeApi: createApiConfig('Trades', 'trade', {
 		output: {
 			override: {
 				query: {
-					mutationInvalidates: noteMutationInvalidates,
+					mutationInvalidates: tradeMutationInvalidates,
+				},
+			},
+		},
+	}),
+	userApi: createApiConfig('Users', 'user', {
+		output: {
+			override: {
+				query: {
+					mutationInvalidates: userMutationInvalidates,
 				},
 			},
 		},

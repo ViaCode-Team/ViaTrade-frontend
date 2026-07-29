@@ -5,12 +5,12 @@ import type { Signal } from '@/entities/signal';
 import type { SignalFilters } from '@/pages/signals/ui/filter-signals';
 
 import {
-	mapStrategyResultResponseToSignals,
+	mapSignalResponsePageToSignals,
 	SignalsList,
 	SignalsListSkeleton,
-	useGetStrategyResultsSuspense,
+	useGetLatestSignalsSuspense,
 } from '@/entities/signal';
-import { getFilteredSignals, getSignalRequestParams } from '@/pages/signals/ui/filter-signals';
+import { getFilteredSignals } from '@/pages/signals/ui/filter-signals';
 import {
 	QUERY_REFETCH_INTERVAL,
 } from '@/shared/model';
@@ -26,14 +26,14 @@ export type SignalsOverviewListProps = {
 };
 
 function SignalsOverviewList({ filters, onResetFilters, onSignalSelect }: SignalsOverviewListProps) {
-	const { data: signalsData } = useGetStrategyResultsSuspense(getSignalRequestParams(filters.sortOption), {
+	const { data: signalsData } = useGetLatestSignalsSuspense({ page: 1, pageSize: 100 }, {
 		query: {
 			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},
 	});
 
 	const signals = useMemo(
-		() => mapStrategyResultResponseToSignals(signalsData.data),
+		() => mapSignalResponsePageToSignals(signalsData.data),
 		[signalsData.data],
 	);
 

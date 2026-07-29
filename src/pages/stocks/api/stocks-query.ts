@@ -1,15 +1,15 @@
-import { getFilteredStocks, mapTradeCodeToStock, type StockSortOption } from '@/entities/stock';
 import {
-	useGetStockCodes,
-	useGetStockCodesSuspense,
-} from '@/entities/trade-code';
+	useGetInstruments,
+	useGetInstrumentsSuspense,
+} from '@/entities/instrument';
+import { getFilteredStocks, mapInstrumentToStock, type StockSortOption } from '@/entities/stock';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 export const STOCKS_PAGE_SIZE = 12;
 
 const sortBy = {
-	'name-asc': 'nameAsc',
-	'name-desc': 'nameDesc',
+	'name-asc': 'symbolAsc',
+	'name-desc': 'symbolDesc',
 } as const;
 
 function getStocksParams(page: number, sortOption: StockSortOption) {
@@ -17,14 +17,14 @@ function getStocksParams(page: number, sortOption: StockSortOption) {
 }
 
 export function useStocksQuerySuspense(searchQuery: string, sortOption: StockSortOption = 'name-asc', page = 1) {
-	return useGetStockCodesSuspense(getStocksParams(page, sortOption), {
+	return useGetInstrumentsSuspense(getStocksParams(page, sortOption), {
 		query: {
 			refetchInterval: QUERY_REFETCH_INTERVAL,
 			select: (data) => ({
 				...data,
 				data: {
 					...data.data,
-					items: getFilteredStocks({ stocks: data.data.items.map(mapTradeCodeToStock), searchQuery }),
+					items: getFilteredStocks({ stocks: data.data.items.map(mapInstrumentToStock), searchQuery }),
 				},
 			}),
 		},
@@ -32,14 +32,14 @@ export function useStocksQuerySuspense(searchQuery: string, sortOption: StockSor
 }
 
 export function useStocksQuery(searchQuery: string, sortOption: StockSortOption = 'name-asc', page = 1) {
-	return useGetStockCodes(getStocksParams(page, sortOption), {
+	return useGetInstruments(getStocksParams(page, sortOption), {
 		query: {
 			refetchInterval: QUERY_REFETCH_INTERVAL,
 			select: (data) => ({
 				...data,
 				data: {
 					...data.data,
-					items: getFilteredStocks({ stocks: data.data.items.map(mapTradeCodeToStock), searchQuery }),
+					items: getFilteredStocks({ stocks: data.data.items.map(mapInstrumentToStock), searchQuery }),
 				},
 			}),
 		},

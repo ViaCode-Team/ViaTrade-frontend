@@ -2,8 +2,8 @@ import { useForm } from '@mantine/form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useLogin } from '@/entities/auth';
 import { useSecurity } from '@/entities/security';
+import { useLogin } from '@/entities/session';
 import { getGetMeQueryKey } from '@/entities/user';
 import { clearLocalAuthBlocked, setPinSetupMark } from '@/shared/lib/secure-storage';
 

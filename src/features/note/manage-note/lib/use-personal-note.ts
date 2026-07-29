@@ -2,17 +2,20 @@ import { useDebouncedCallback } from '@mantine/hooks';
 import { useState } from 'react';
 
 import {
+	useGetNote as useGetInstrumentNote,
+	useUpsertNote as useUpsertInstrumentNote,
+} from '@/entities/instrument';
+import {
 	createPersonalNote,
 	getNoteId,
 	type NoteFormData,
 	type NoteSource,
 	type PersonalNote,
-	useAddUserInstrumentNote,
-	useAddUserStrategyNote,
-	useGetUserNotes,
-	useUpdateUserInstrumentNote,
-	useUpdateUserStrategyNote,
 } from '@/entities/note';
+import {
+	useGetNote as useGetStrategyNote,
+	useUpsertNote as useUpsertStrategyNote,
+} from '@/entities/strategy';
 
 import {
 	useDeleteStoredPersonalNoteMutation,
@@ -29,7 +32,7 @@ type UsePersonalNoteOptions = {
 };
 
 type UsePersonalNoteReturn = {
-	noteText: string;
+	text: string;
 	savedValue: string;
 	noteFormProps: {
 		value: string;
@@ -60,49 +63,39 @@ export function usePersonalNote({
 		? storedNotesQuery.data?.find((note) => note.id === sourceId)
 		: undefined;
 
-	const instrumentNotesQuery = useGetUserNotes(undefined, {
+	const instrumentNoteQuery = useGetInstrumentNote(apiSourceId ?? 0, {
 		query: {
 			enabled: isStockNote && isApiSource,
 		},
 	});
-	const strategyNotesQuery = useGetUserNotes(undefined, {
+	const strategyNoteQuery = useGetStrategyNote(apiSourceId ?? 0, {
 		query: {
 			enabled: isStrategyNote && isApiSource,
 		},
 	});
-	const createInstrumentNoteMutation = useAddUserInstrumentNote();
-	const updateInstrumentNoteMutation = useUpdateUserInstrumentNote();
-	const createStrategyNoteMutation = useAddUserStrategyNote();
-	const updateStrategyNoteMutation = useUpdateUserStrategyNote();
+	const upsertInstrumentNoteMutation = useUpsertInstrumentNote();
+	const upsertStrategyNoteMutation = useUpsertStrategyNote();
 	const sourceNote = source?.type === 'stock'
-		? instrumentNotesQuery.data?.data.items.find(
-				(note) => note.tradeCode?.id === apiSourceId,
-			)
-		: strategyNotesQuery.data?.data.items.find(
-				(note) => note.strategy?.id === apiSourceId,
-			);
-	const storedValue = sourceNote?.noteText ?? defaultValue;
+		? instrumentNoteQuery.data?.data
+		: strategyNoteQuery.data?.data;
+	const storedValue = sourceNote?.text ?? defaultValue;
 	const isLoading = source?.type === 'stock'
-		? instrumentNotesQuery.isLoading
+		? instrumentNoteQuery.isLoading
 		: source?.type === 'strategy'
-			? strategyNotesQuery.isLoading
+			? strategyNoteQuery.isLoading
 			: false;
-	const mutationError = createInstrumentNoteMutation.error
-		?? updateInstrumentNoteMutation.error
-		?? createStrategyNoteMutation.error
-		?? updateStrategyNoteMutation.error;
+	const mutationError = upsertInstrumentNoteMutation.error
+		?? upsertStrategyNoteMutation.error;
 	const queryError = source?.type === 'stock'
-		? instrumentNotesQuery.error
+		? instrumentNoteQuery.error
 		: source?.type === 'strategy'
-			? strategyNotesQuery.error
+			? strategyNoteQuery.error
 			: null;
 	const errorMessage = queryError || mutationError
 		? 'Не удалось синхронизировать заметку с API.'
 		: undefined;
-	const isSubmitting = createInstrumentNoteMutation.isPending
-		|| updateInstrumentNoteMutation.isPending
-		|| createStrategyNoteMutation.isPending
-		|| updateStrategyNoteMutation.isPending;
+	const isSubmitting = upsertInstrumentNoteMutation.isPending
+		|| upsertStrategyNoteMutation.isPending;
 	const [localDraft, setLocalDraft] = useState(() => ({
 		sourceId: source ? getNoteId(source) : null,
 		value: storedDraftNote?.text ?? defaultValue,
@@ -130,7 +123,7 @@ export function usePersonalNote({
 					: (storedDraftNote?.text ?? savedValue)
 			)
 		: localDraft.value;
-	const noteText = value ?? uncontrolledValue;
+	const text = value ?? uncontrolledValue;
 
 	const debouncedSaveDraft = useDebouncedCallback((text: string) => {
 		if (!source || sourceId === null) {
@@ -161,15 +154,13 @@ export function usePersonalNote({
 	const saveApiNote = ({
 		source,
 		sourceId,
-		hasNote,
 		text,
 	}: {
 		source: NoteSource;
 		sourceId: number;
-		hasNote: boolean;
 		text: string;
 	}) => {
-		const requestData = { noteText: text };
+		const requestData = { text };
 		const onSuccess = () => {
 			debouncedSaveDraft.cancel();
 			const nextNote = createPersonalNote({ text });
@@ -190,22 +181,14 @@ export function usePersonalNote({
 		};
 
 		if (source.type === 'stock') {
-			const mutation = hasNote
-				? updateInstrumentNoteMutation
-				: createInstrumentNoteMutation;
-
-			mutation.mutate(
-				{ tradeCodeId: sourceId, data: requestData },
+			upsertInstrumentNoteMutation.mutate(
+				{ instrumentId: sourceId, data: requestData },
 				{ onSuccess },
 			);
 			return;
 		}
 
-		const mutation = hasNote
-			? updateStrategyNoteMutation
-			: createStrategyNoteMutation;
-
-		mutation.mutate(
+		upsertStrategyNoteMutation.mutate(
 			{ strategyId: sourceId, data: requestData },
 			{ onSuccess },
 		);
@@ -216,7 +199,6 @@ export function usePersonalNote({
 			saveApiNote({
 				source,
 				sourceId: apiSourceId,
-				hasNote: Boolean(sourceNote),
 				text: formData.text,
 			});
 
@@ -242,10 +224,10 @@ export function usePersonalNote({
 	};
 
 	return {
-		noteText,
+		text,
 		savedValue,
 		noteFormProps: {
-			value: noteText,
+			value: text,
 			savedValue,
 			isLoading,
 			isSubmitting,

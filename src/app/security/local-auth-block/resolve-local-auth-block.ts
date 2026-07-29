@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/config';
-import { getLogoutUrl } from '@/entities/auth';
+import { getDeleteCurrentSessionUrl } from '@/entities/session';
 import { apiClient } from '@/shared/api';
 import { clearLocalData } from '@/shared/lib/auth';
 import { clearLocalAuthBlocked, setLocalAuthBlocked } from '@/shared/lib/secure-storage';
@@ -36,7 +36,7 @@ async function logoutCurrentSession() {
 		return false;
 
 	try {
-		await apiClient.post(getLogoutUrl());
+		await apiClient.delete(getDeleteCurrentSessionUrl());
 		return true;
 	}
 	catch {

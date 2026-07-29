@@ -1,4 +1,4 @@
-import type { RegisterMutationError } from '@/entities/auth';
+import type { RegisterMutationError } from '@/entities/user';
 
 export function mapRegisterApiError(error: RegisterMutationError): string {
 	if (error.name === 'NetworkError') {

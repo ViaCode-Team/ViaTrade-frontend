@@ -3,11 +3,11 @@ import { IconTrash } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
+	getGetRemindersQueryKey,
 	getGetReminderStatisticsQueryKey,
-	getGetUserRemindersQueryKey,
-	type getUserRemindersResponseSuccess,
-	useDeleteUserReminder,
-} from '@/entities/remind';
+	type getRemindersResponseSuccess,
+	useDeleteReminder,
+} from '@/entities/reminder';
 
 type DeleteRemindButtonProps = {
 	id: string;
@@ -15,7 +15,7 @@ type DeleteRemindButtonProps = {
 
 export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 	const queryClient = useQueryClient();
-	const deleteRemindMutation = useDeleteUserReminder();
+	const deleteRemindMutation = useDeleteReminder();
 
 	return (
 		<>
@@ -26,11 +26,11 @@ export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 					size='md'
 					aria-label='Удалить напоминание'
 					onClick={() => {
-						deleteRemindMutation.mutate({ id: Number(id) }, {
+						deleteRemindMutation.mutate({ reminderId: Number(id) }, {
 							onSuccess: () => {
 								queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
 
-								const updater = (oldData: getUserRemindersResponseSuccess | undefined) => {
+								const updater = (oldData: getRemindersResponseSuccess | undefined) => {
 									if (!oldData)
 										return oldData;
 									return {
@@ -42,9 +42,9 @@ export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 									};
 								};
 
-								queryClient.setQueriesData({ queryKey: getGetUserRemindersQueryKey() }, updater);
+								queryClient.setQueriesData({ queryKey: getGetRemindersQueryKey() }, updater);
 								queryClient.setQueriesData(
-									{ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/TradeRemind/byuser/instrument/') },
+									{ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/v1/instruments/') },
 									updater,
 								);
 							},

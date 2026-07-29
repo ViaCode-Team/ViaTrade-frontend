@@ -9,7 +9,8 @@ export function openSignalHistoryModal(signal: Signal) {
 		title: `История сигнала: ${signal.asset}`,
 		children: (
 			<SignalHistoryTableBoundary
-				tradeCode={signal.tradeCode}
+				instrumentId={signal.instrumentId}
+				strategyId={signal.strategyId}
 				strategyName={signal.strategy}
 			/>
 		),

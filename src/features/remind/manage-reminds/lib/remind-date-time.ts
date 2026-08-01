@@ -1,6 +1,7 @@
 export function getCurrentReminderDateTime() {
 	const now = new Date();
 	now.setUTCSeconds(0, 0);
+	now.setUTCMinutes(now.getUTCMinutes() + 1);
 
 	return now.toISOString();
 }

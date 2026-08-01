@@ -6,10 +6,10 @@ import { defineConfig, type PluginOption } from 'vite';
 import { analyzer } from 'vite-bundle-analyzer';
 import { VitePWA } from 'vite-plugin-pwa';
 
-import { analyzerConfig } from './config/vite/analyzer';
-import { proxyConfig } from './config/vite/proxy';
-import { pwaConfig } from './config/vite/pwa';
-import { transformImportsConfig } from './config/vite/transform-imports';
+import { analyzerConfig } from './config/vite/analyzer.ts';
+import { proxyConfig } from './config/vite/proxy.ts';
+import { pwaConfig } from './config/vite/pwa.ts';
+import { transformImportsConfig } from './config/vite/transform-imports.ts';
 
 export default defineConfig(({ command }) => {
 	const isBuild = command === 'build';
@@ -51,7 +51,7 @@ export default defineConfig(({ command }) => {
 
 		resolve: {
 			alias: {
-				'@': resolve(__dirname, './src'),
+				'@': resolve(import.meta.dirname, './src'),
 			},
 		},
 

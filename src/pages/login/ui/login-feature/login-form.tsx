@@ -28,11 +28,16 @@ export function LoginForm() {
 						autoFocus
 						key={form.key('login')}
 						{...form.getInputProps('login')}
+						name='username'
+						autoComplete='username'
+						spellCheck={false}
 					/>
 					<PasswordInput
 						label='Пароль'
 						key={form.key('password')}
 						{...form.getInputProps('password')}
+						name='password'
+						autoComplete='current-password'
 					/>
 				</Stack>
 

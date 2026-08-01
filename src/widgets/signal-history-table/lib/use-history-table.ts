@@ -16,7 +16,7 @@ export function useSignalHistoryTable({ strategyId, instrumentId }: UseHistoryTa
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const { data: historyData } = useGetSignalsSuspense(
-		{ strategyId, instrumentId, page: 1, pageSize: 100 },
+		{ strategyId, instrumentId, page, pageSize: rowsPerPage },
 		{
 			query: {
 				staleTime: STATIC_QUERY_STALE_TIME,
@@ -30,12 +30,11 @@ export function useSignalHistoryTable({ strategyId, instrumentId }: UseHistoryTa
 		[historyData.data],
 	);
 
-	const totalPages = Math.max(1, Math.ceil(history.length / rowsPerPage));
+	const totalCount = historyData.data.totalCount;
+	const totalPages = Math.max(1, historyData.data.totalPages);
 	const activePage = Math.min(page, totalPages);
-	const from = (activePage - 1) * rowsPerPage;
-	const to = Math.min(activePage * rowsPerPage, history.length);
-	const start = history.length === 0 ? 0 : from + 1;
-	const paginatedHistory = history.slice(from, to);
+	const start = totalCount === 0 ? 0 : (activePage - 1) * rowsPerPage + 1;
+	const to = Math.min(activePage * rowsPerPage, totalCount);
 
 	const handleRowsPerPageChange = (v: string | null) => {
 		if (v) {
@@ -50,7 +49,7 @@ export function useSignalHistoryTable({ strategyId, instrumentId }: UseHistoryTa
 		rowsPerPage,
 		handleRowsPerPageChange,
 		history,
-		paginatedHistory,
+		totalCount,
 		totalPages,
 		activePage,
 		start,

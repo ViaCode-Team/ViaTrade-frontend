@@ -9,7 +9,13 @@ import { TradeForm } from '@/entities/trade';
 
 export function AddTradeForm() {
 	const { mutate: createTrade, isPending } = useCreateTrade();
-	const { selectOptions, isLoadingInstruments } = useInstrumentOptions();
+	const {
+		selectOptions,
+		isLoadingInstruments,
+		isLoadingMoreInstruments,
+		hasMoreInstruments,
+		loadMoreInstruments,
+	} = useInstrumentOptions();
 
 	const [initialDate] = useState(() => new Date());
 
@@ -48,6 +54,9 @@ export function AddTradeForm() {
 			isPending={isPending}
 			instrumentsOptions={selectOptions}
 			isLoadingInstruments={isLoadingInstruments}
+			isLoadingMoreInstruments={isLoadingMoreInstruments}
+			hasMoreInstruments={hasMoreInstruments}
+			onLoadMoreInstruments={loadMoreInstruments}
 		/>
 	);
 }

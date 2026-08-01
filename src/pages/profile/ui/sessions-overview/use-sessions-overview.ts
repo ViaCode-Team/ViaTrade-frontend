@@ -6,7 +6,6 @@ import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import {
-	getCurrentSessionId,
 	normalizeUserSessions,
 	SESSIONS_PER_PAGE,
 	sortUserSessionsByActivity,
@@ -22,10 +21,9 @@ export function useSessionsOverview() {
 	);
 
 	const sessions = useMemo(() => normalizeUserSessions(sessionsData.data.items), [sessionsData.data.items]);
-	const currentSessionId = useMemo(() => getCurrentSessionId(sessions), [sessions]);
 	const sortedSessions = useMemo(
-		() => sortUserSessionsByActivity(sessions, currentSessionId),
-		[sessions, currentSessionId],
+		() => sortUserSessionsByActivity(sessions),
+		[sessions],
 	);
 
 	const filteredSessions = useMemo(() => {
@@ -40,7 +38,6 @@ export function useSessionsOverview() {
 	return {
 		sessions,
 		filteredSessions,
-		currentSessionId,
 		page,
 		totalPages: sessionsData.data.totalPages,
 		totalCount: sessionsData.data.totalCount,

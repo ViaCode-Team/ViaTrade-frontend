@@ -26,7 +26,7 @@ type SignalHistoryTableViewProps = {
 	strategyName: string;
 	rowsPerPage: number;
 	history: TradeHistory[];
-	paginatedHistory: TradeHistory[];
+	totalCount: number;
 	pagination?: PaginationConfig;
 	start: number;
 	to: number;
@@ -37,7 +37,7 @@ export function SignalHistoryTableView({
 	strategyName,
 	rowsPerPage,
 	history,
-	paginatedHistory,
+	totalCount,
 	pagination,
 	start,
 	to,
@@ -61,7 +61,7 @@ export function SignalHistoryTableView({
 					</Table.Thead>
 					<Table.Tbody>
 						{history.length
-							? paginatedHistory.map((row) => (
+							? history.map((row) => (
 									<Table.Tr key={row.id} className={getRowClass(row.signal)}>
 										<Table.Td>{row.date}</Table.Td>
 										<Table.Td className={cls.alignCenter}><NumberFormatter value={row.close} suffix=' ₽' decimalScale={3} thousandSeparator='&#8201;' /></Table.Td>
@@ -86,7 +86,7 @@ export function SignalHistoryTableView({
 						{' '}
 						из
 						{' '}
-						{history.length}
+						{totalCount}
 					</Text>
 				</Group>
 

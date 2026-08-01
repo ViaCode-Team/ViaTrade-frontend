@@ -1,3 +1,5 @@
+import type { FallbackProps } from 'react-error-boundary';
+
 import { Flex, Stack } from '@mantine/core';
 import { useMemo } from 'react';
 import {
@@ -9,16 +11,23 @@ import { useGetInstrumentByIdSuspense } from '@/entities/instrument';
 import { mapInstrumentToStock } from '@/entities/stock';
 import { NoteForm, usePersonalNote } from '@/features/note/manage-note';
 import { StockReminds } from '@/pages/stock/ui/stock-reminds';
+import { ApiError, isProblemDetails } from '@/shared/api';
 import { ROUTES } from '@/shared/model';
 import { DataFreshness } from '@/shared/ui/data-freshness';
+import { ErrorFallback } from '@/shared/ui/errorFallback';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 import { StockLinkedStrategies } from '@/widgets/stock-linked-strategies';
 
 import { BackToStocksLink } from './ui/back-to-stocks-link';
 import { StockHero } from './ui/stock-hero';
+import { StockNotFound } from './ui/stock-not-found';
 
-const StockPageBoundary = withQueryBoundary(StockPageBase);
+const StockPageBoundary = withQueryBoundary(StockPageBase, {
+	errorFallbackProps: {
+		FallbackComponent: StockPageErrorFallback,
+	},
+});
 
 export function StockPage() {
 	return (
@@ -38,9 +47,17 @@ function StockPageBase() {
 
 	const instrumentId = Number(stockId);
 	if (!Number.isInteger(instrumentId) || instrumentId < 1) {
-		throw new Error('Некорректный идентификатор инструмента');
+		return <StockNotFound />;
 	}
 
+	return <StockPageContent instrumentId={instrumentId} />;
+}
+
+type StockPageContentProps = {
+	instrumentId: number;
+};
+
+function StockPageContent({ instrumentId }: StockPageContentProps) {
 	const { data: stockResponse } = useGetInstrumentByIdSuspense(instrumentId);
 	const stock = mapInstrumentToStock(stockResponse.data);
 
@@ -84,4 +101,16 @@ function StockPageBase() {
 			</Section>
 		</>
 	);
+}
+
+function StockPageErrorFallback(props: FallbackProps) {
+	if (
+		props.error instanceof ApiError
+		&& isProblemDetails(props.error.details)
+		&& props.error.details.status === 404
+	) {
+		return <StockNotFound />;
+	}
+
+	return <ErrorFallback {...props} />;
 }

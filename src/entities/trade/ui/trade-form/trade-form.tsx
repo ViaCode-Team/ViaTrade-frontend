@@ -44,6 +44,9 @@ export type TradeFormProps = {
 	isPending: boolean;
 	instrumentsOptions: { value: string; label: string }[];
 	isLoadingInstruments: boolean;
+	isLoadingMoreInstruments?: boolean;
+	hasMoreInstruments?: boolean;
+	onLoadMoreInstruments?: () => void;
 };
 
 export function TradeForm({
@@ -53,6 +56,9 @@ export function TradeForm({
 	isPending,
 	instrumentsOptions,
 	isLoadingInstruments,
+	isLoadingMoreInstruments,
+	hasMoreInstruments,
+	onLoadMoreInstruments,
 }: TradeFormProps) {
 	const form = useForm<TradeFormValues>({
 		mode: 'uncontrolled',
@@ -120,6 +126,14 @@ export function TradeForm({
 					data={instrumentsOptions}
 					searchable
 					disabled={isLoadingInstruments}
+					nothingFoundMessage='Инструменты не найдены'
+					scrollAreaProps={{
+						onBottomReached: () => {
+							if (hasMoreInstruments && !isLoadingMoreInstruments) {
+								onLoadMoreInstruments?.();
+							}
+						},
+					}}
 					withAsterisk
 					key={form.key('instrumentId')}
 					{...form.getInputProps('instrumentId')}

@@ -28,16 +28,23 @@ export function RegisterForm() {
 						autoFocus
 						key={form.key('login')}
 						{...form.getInputProps('login')}
+						name='username'
+						autoComplete='username'
+						spellCheck={false}
 					/>
 					<PasswordInput
 						label='Пароль'
 						key={form.key('password')}
 						{...form.getInputProps('password')}
+						name='password'
+						autoComplete='new-password'
 					/>
 					<PasswordInput
 						label='Подтверждение пароля'
 						key={form.key('confirmPassword')}
 						{...form.getInputProps('confirmPassword')}
+						name='confirm-password'
+						autoComplete='new-password'
 					/>
 				</Stack>
 

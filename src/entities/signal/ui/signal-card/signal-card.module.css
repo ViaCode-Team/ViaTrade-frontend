@@ -1,7 +1,7 @@
 .root {
 	gap: var(--mantine-spacing-md);
 	height: 100%;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .root:hover {
@@ -16,10 +16,6 @@
 	border: none;
 	background: transparent;
 	cursor: pointer;
-}
-
-.directionBadge {
-	transition: background-color 0.2s ease;
 }
 
 .root:hover .directionBadge {
@@ -43,9 +39,14 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	transition: color 0.2s ease;
 }
 
 .strategy:hover {
 	color: var(--mantine-color-anchor);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.root {
+		transition-duration: 0.01ms;
+	}
 }

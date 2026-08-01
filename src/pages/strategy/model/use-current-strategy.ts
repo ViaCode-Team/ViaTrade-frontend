@@ -11,13 +11,16 @@ export function useCurrentStrategy() {
 		pageSize: 100,
 	});
 	const strategySummary = strategyQuery.data.data.items.find((strategy) => strategy.name === decodedName);
+
 	if (!strategySummary) {
-		throw new Error('Стратегия не найдена');
+		return {
+			hasStrategyId: false as const,
+		};
 	}
 
 	return {
 		strategyId: strategySummary.id,
-		hasStrategyId: true,
+		hasStrategyId: true as const,
 		strategySummary,
 	};
 }

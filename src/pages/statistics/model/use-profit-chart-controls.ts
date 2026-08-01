@@ -3,7 +3,6 @@ import { useMemo, useState } from 'react';
 
 import {
 	getGetTradesQueryKey,
-	normalizeTradePage,
 	useGetTrades,
 } from '@/entities/trade';
 import { useUrlFilters } from '@/shared/lib/url-filters';
@@ -27,7 +26,7 @@ export function useProfitChartControls() {
 	const [maxEndDate] = useState(() => formatProfitChartDate(new Date()));
 
 	const trades = useMemo(
-		() => normalizeTradePage(tradesQuery.data?.data).items,
+		() => tradesQuery.data?.data.items ?? [],
 		[tradesQuery.data?.data],
 	);
 	const settings = useMemo(

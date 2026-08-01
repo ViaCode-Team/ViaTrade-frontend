@@ -12,4 +12,5 @@ export type UserSessionResponse = {
 	userAgent: string;
 	createdAt: string;
 	lastSeen: string;
+	isCurrent: boolean;
 };

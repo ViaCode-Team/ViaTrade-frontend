@@ -2,7 +2,7 @@
 	position: relative;
 	gap: var(--mantine-spacing-md);
 	height: 100%;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .root:hover {
@@ -32,4 +32,10 @@
 .title {
 	flex: 1;
 	min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.root {
+		transition-duration: 0.01ms;
+	}
 }

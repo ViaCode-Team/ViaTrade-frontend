@@ -32,6 +32,7 @@ export function ThemeSwitcher() {
 					onChange={toggleTheme}
 					role='switch'
 					aria-checked={checked}
+					aria-label={checked ? 'Включить темную тему' : 'Включить светлую тему'}
 				/>
 
 				<span className={cls.slider}>

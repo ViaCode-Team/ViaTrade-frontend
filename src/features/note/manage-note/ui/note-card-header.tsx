@@ -8,6 +8,7 @@ import {
 	Title,
 	Tooltip,
 } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { IconTrash } from '@tabler/icons-react';
 import { Link as RouterLink } from 'react-router';
 
@@ -26,6 +27,17 @@ export function NoteCardHeader({
 	isDeleting,
 	onDelete,
 }: NoteCardHeaderProps) {
+	const openDeleteModal = () => {
+		modals.openConfirmModal({
+			title: 'Удаление заметки',
+			centered: true,
+			children: 'Вы уверены, что хотите удалить заметку? Это действие необратимо.',
+			labels: { confirm: 'Удалить', cancel: 'Отмена' },
+			confirmProps: { color: 'red', loading: isDeleting },
+			onConfirm: onDelete,
+		});
+	};
+
 	return (
 		<Stack gap='xs'>
 			<Group justify='space-between' gap='sm' wrap='nowrap'>
@@ -45,7 +57,7 @@ export function NoteCardHeader({
 							onClick={(event) => {
 								event.preventDefault();
 								event.stopPropagation();
-								onDelete();
+								openDeleteModal();
 							}}
 						>
 							<IconTrash size={20} />

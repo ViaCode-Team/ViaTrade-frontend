@@ -15,7 +15,13 @@ type EditTradeFormProps = {
 
 export function EditTradeForm({ trade }: EditTradeFormProps) {
 	const { mutate: updateTrade, isPending } = useUpdateTrade();
-	const { selectOptions, isLoadingInstruments } = useInstrumentOptions();
+	const {
+		selectOptions,
+		isLoadingInstruments,
+		isLoadingMoreInstruments,
+		hasMoreInstruments,
+		loadMoreInstruments,
+	} = useInstrumentOptions();
 
 	const [initialDate] = useState(() => trade.openedAt ? dayjs(trade.openedAt).toDate() : new Date());
 
@@ -54,6 +60,9 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 			isPending={isPending}
 			instrumentsOptions={selectOptions}
 			isLoadingInstruments={isLoadingInstruments}
+			isLoadingMoreInstruments={isLoadingMoreInstruments}
+			hasMoreInstruments={hasMoreInstruments}
+			onLoadMoreInstruments={loadMoreInstruments}
 		/>
 	);
 }

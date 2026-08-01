@@ -38,9 +38,9 @@ export function processTrades(
 			const openedAtStr = dayjs(t.openedAt).format(DATE_TIME_DISPLAY_FORMAT);
 			const closedAtStr = t.closedAt ? dayjs(t.closedAt).format(DATE_TIME_DISPLAY_FORMAT) : '—';
 			const entryPriceStr = `${t.entryPrice.toFixed(2)} ₽`;
-			const exitPriceStr = t.exitPrice ? `${t.exitPrice.toFixed(2)} ₽` : '—';
+			const exitPriceStr = t.exitPrice !== undefined ? `${t.exitPrice.toFixed(2)} ₽` : '—';
 			const sumStr = t.income > 0 ? `+${t.income.toFixed(2)} ₽` : `${t.income.toFixed(2)} ₽`;
-			const percentStr = t.percent ? (t.percent > 0 ? `+${t.percent.toFixed(2)}%` : `${t.percent.toFixed(2)}%`) : '—';
+			const percentStr = t.percent !== undefined ? (t.percent > 0 ? `+${t.percent.toFixed(2)}%` : `${t.percent.toFixed(2)}%`) : '—';
 			const typeStr = t.isLong ? 'Long' : 'Short';
 
 			const searchableString = [

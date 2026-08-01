@@ -45,7 +45,7 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 				{' '}
 				₽
 			</Table.Td>
-			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.exitPrice ? `${trade.exitPrice.toFixed(2)} ₽` : '—'}</Table.Td>
+			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.exitPrice !== undefined ? `${trade.exitPrice.toFixed(2)} ₽` : '—'}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.quantity}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
 				<Text fw={500}>

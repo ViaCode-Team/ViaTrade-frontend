@@ -29,7 +29,7 @@ export function mapTradeRemindToRemindItem(tradeRemind: ReminderResponse): Remin
 		source: tradeRemind.instrument
 			? {
 					type: 'stock',
-					id: tradeRemind.instrument.symbol.toLowerCase(),
+					id: String(tradeRemind.instrument.id),
 					label: tradeRemind.instrument.symbol,
 				}
 			: undefined,

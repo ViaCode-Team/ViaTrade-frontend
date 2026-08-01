@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { normalizeTradePage, useGetTradesSuspense } from '@/entities/trade';
+import { useGetTradesSuspense } from '@/entities/trade';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 
 import {
@@ -17,7 +17,7 @@ export function useProfitChartData() {
 	const [maxEndDate] = useState(() => formatProfitChartDate(new Date()));
 	const { data: allTradesResponse } = useGetTradesSuspense({ page: 1, pageSize: 100 });
 	const allTrades = useMemo(
-		() => normalizeTradePage(allTradesResponse.data).items,
+		() => allTradesResponse.data.items,
 		[allTradesResponse.data],
 	);
 
@@ -33,6 +33,6 @@ export function useProfitChartData() {
 
 	return {
 		settings,
-		trades: normalizeTradePage(chartTradesResponse.data).items,
+		trades: chartTradesResponse.data.items,
 	};
 }

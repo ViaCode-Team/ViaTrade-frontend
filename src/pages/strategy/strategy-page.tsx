@@ -28,11 +28,13 @@ export function StrategyPage() {
 }
 
 function StrategyPageBase() {
-	const { strategyId, hasStrategyId, strategySummary } = useCurrentStrategy();
+	const currentStrategy = useCurrentStrategy();
 
-	if (!hasStrategyId || strategyId === null) {
+	if (!currentStrategy.hasStrategyId) {
 		return <StrategyNotFound />;
 	}
+
+	const { strategyId, strategySummary } = currentStrategy;
 
 	return (
 		<>

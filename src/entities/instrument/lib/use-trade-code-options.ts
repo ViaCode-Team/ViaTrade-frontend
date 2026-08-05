@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import { getInstruments } from '../api/gen';
 
-const INSTRUMENTS_PAGE_SIZE = 100;
+const INSTRUMENTS_PAGE_SIZE = 20;
 
 export function useInstrumentOptions() {
 	const instrumentsQuery = useInfiniteQuery({

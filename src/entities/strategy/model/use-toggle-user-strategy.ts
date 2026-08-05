@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
-	getGetStrategiesQueryKey,
+	getGetStrategyByIdQueryKey,
 	useActivateStrategy,
 	useDeactivateStrategy,
 } from '../api/gen';
@@ -14,11 +14,9 @@ type ToggleUserStrategyVariables = {
 export function useToggleUserStrategy() {
 	const queryClient = useQueryClient();
 	const mutationOptions = {
-		onSettled: () => {
-			void queryClient.invalidateQueries({ queryKey: getGetStrategiesQueryKey() });
+		onSuccess: (_data: unknown, variables: { strategyId: number }) => {
 			void queryClient.invalidateQueries({
-				predicate: (query) => typeof query.queryKey[0] === 'string'
-					&& query.queryKey[0].startsWith('/api/Strategies/'),
+				queryKey: getGetStrategyByIdQueryKey(variables.strategyId),
 			});
 		},
 	};

@@ -1,14 +1,10 @@
-import { mapTradeStrategyToStrategy, StrategyInfoList, StrategyInfoListSkeleton, useGetStrategyByIdSuspense } from '@/entities/strategy';
+import type { Strategy } from '@/entities/strategy';
+
+import { StrategyInfoList } from '@/entities/strategy';
 import { DataState } from '@/shared/ui/data-state';
-import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 import { Section } from '@/shared/ui/section';
 
-const INACTIVE_STRATEGY_IDS = new Set<number>();
-
-function StrategyInfoSection({ strategyId }: { strategyId: number }) {
-	const strategyQuery = useGetStrategyByIdSuspense(strategyId);
-	const strategy = mapTradeStrategyToStrategy(strategyQuery.data.data, INACTIVE_STRATEGY_IDS);
-
+export function StrategyInfoSection({ strategy }: { strategy: Strategy }) {
 	const hasData = !!strategy.limitDescription || !!strategy.logicDescription || !!strategy.useDescription;
 
 	return (
@@ -19,7 +15,3 @@ function StrategyInfoSection({ strategyId }: { strategyId: number }) {
 		</DataState>
 	);
 }
-
-export const StrategyInfoSectionBoundary = withQueryBoundary(StrategyInfoSection, {
-	suspenseProps: { fallback: <StrategyInfoListSkeleton /> },
-});

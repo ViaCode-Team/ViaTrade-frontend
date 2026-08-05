@@ -5,12 +5,16 @@
  * API для платформы инвестиционного анализа ViaTrade
  * OpenAPI spec version: v1
  */
+import type { SignalDirection } from './signalDirection';
+import type { SignalSortField } from './signalSortField';
 
 export type GetLatestSignalsParams = {
-/**
- * @minimum 1
- * @maximum 21474837
- */
+	direction?: SignalDirection;
+	sortBy?: SignalSortField[];
+	/**
+	 * @minimum 1
+	 * @maximum 21474837
+	 */
 	page?: number;
 	/**
 	 * @minimum 1

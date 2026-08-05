@@ -6,10 +6,6 @@ import { DATE_DISPLAY_FORMAT } from '@/shared/model';
 
 import type { ProfitChartGranularity } from '../../model/profit-chart-settings';
 
-import {
-	getMaxProfitChartStartDate,
-	getMinProfitChartEndDate,
-} from '../../model/profit-chart-settings';
 import { PROFIT_CHART_GRANULARITY_OPTIONS } from '../../model/profit-chart-settings';
 import { useProfitChartControls } from '../../model/use-profit-chart-controls';
 import cls from './statistics-controls.module.css';
@@ -17,16 +13,14 @@ import cls from './statistics-controls.module.css';
 export function StatisticsControls() {
 	const {
 		settings,
-		maxEndDate,
+		minDate,
+		maxDate,
 		handleStartDateChange,
 		handleEndDateChange,
 		handleGranularityChange,
 		isLoading,
 		isDisabled,
 	} = useProfitChartControls();
-	const maxStartDate = getMaxProfitChartStartDate(settings.endDate, settings.granularity);
-	const minEndDate = getMinProfitChartEndDate(settings.startDate, settings.granularity);
-
 	return (
 		<div className={cls.controls} aria-busy={isLoading}>
 			<DateInput
@@ -34,7 +28,8 @@ export function StatisticsControls() {
 				placeholder='Дата начала'
 				value={settings.startDate}
 				onChange={handleStartDateChange}
-				maxDate={maxStartDate}
+				minDate={minDate}
+				maxDate={settings.endDate || maxDate}
 				valueFormat={DATE_DISPLAY_FORMAT}
 				disabled={isDisabled}
 				loading={isLoading}
@@ -45,8 +40,8 @@ export function StatisticsControls() {
 				placeholder='Дата конца'
 				value={settings.endDate}
 				onChange={handleEndDateChange}
-				minDate={minEndDate}
-				maxDate={maxEndDate}
+				minDate={settings.startDate || minDate}
+				maxDate={maxDate}
 				valueFormat={DATE_DISPLAY_FORMAT}
 				disabled={isDisabled}
 				loading={isLoading}

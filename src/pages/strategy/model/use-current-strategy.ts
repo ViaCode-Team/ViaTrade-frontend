@@ -1,26 +1,17 @@
 import { useParams } from 'react-router';
 
-import { useGetStrategiesSuspense } from '@/entities/strategy';
-
 export function useCurrentStrategy() {
-	const { strategyName } = useParams();
-	const decodedName = decodeURIComponent(strategyName || '');
-	const strategyQuery = useGetStrategiesSuspense({
-		name: decodedName || '__missing_strategy__',
-		page: 1,
-		pageSize: 100,
-	});
-	const strategySummary = strategyQuery.data.data.items.find((strategy) => strategy.name === decodedName);
+	const { strategyId: rawStrategyId } = useParams();
+	const strategyId = Number(rawStrategyId);
 
-	if (!strategySummary) {
+	if (!Number.isInteger(strategyId) || strategyId <= 0) {
 		return {
 			hasStrategyId: false as const,
 		};
 	}
 
 	return {
-		strategyId: strategySummary.id,
+		strategyId,
 		hasStrategyId: true as const,
-		strategySummary,
 	};
 }

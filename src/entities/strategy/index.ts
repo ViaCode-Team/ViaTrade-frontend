@@ -2,10 +2,7 @@ export * from './api/gen';
 export { getAccuracyColor } from './model';
 export type { Strategy, StrategyCardStrategy } from './model';
 export {
-	getUserStrategyIdSet,
-	mapTradeStrategiesToStrategies,
-	mapTradeStrategyToStrategy,
-	mapStrategyToStrategyCard as toStrategyCardStrategy,
+	mapStrategyResponseToStrategy,
 	useToggleUserStrategy,
 } from './model';
 export {
@@ -17,4 +14,3 @@ export { StrategiesListSkeleton } from './ui/strategies-list/strategies-list.ske
 export { StrategyCard } from './ui/strategy-card';
 export { StrategyCardSkeleton } from './ui/strategy-card/strategy-card.skeleton';
 export { StrategyInfoList } from './ui/strategy-info-list/strategy-info-list';
-export { StrategyInfoListSkeleton } from './ui/strategy-info-list/strategy-info-list.skeleton';

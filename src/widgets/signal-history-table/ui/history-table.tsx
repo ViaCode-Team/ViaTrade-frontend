@@ -17,6 +17,7 @@ export function SignalHistoryTable({ instrumentId, strategyId, strategyName }: H
 	return (
 		<SignalHistoryTableView
 			strategyName={strategyName}
+			strategyId={strategyId}
 			pagination={{ page: activePage, totalPages, onPageChange: setPage }}
 			{...viewProps}
 		/>

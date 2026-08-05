@@ -1,5 +1,6 @@
 import { Flex, Stack } from '@mantine/core';
 
+import { mapStrategyResponseToStrategy, useGetStrategyByIdSuspense } from '@/entities/strategy';
 import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { DataFreshness } from '@/shared/ui/data-freshness';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -7,12 +8,15 @@ import { Section } from '@/shared/ui/section';
 
 import { useCurrentStrategy } from './model/use-current-strategy';
 import { BackToStrategiesLink } from './ui/back-to-strategies-link';
-import { StrategyHeroBoundary } from './ui/strategy-hero';
-import { StrategyInfoSectionBoundary } from './ui/strategy-info-section';
+import { StrategyHero } from './ui/strategy-hero';
+import { StrategyHeroSkeleton } from './ui/strategy-hero.skeleton';
+import { StrategyInfoSection } from './ui/strategy-info-section';
 import { StrategyNotFound } from './ui/strategy-not-found';
 import { StrategyNoteSection } from './ui/strategy-note-section';
 
-const StrategyPageBoundary = withQueryBoundary(StrategyPageBase);
+const StrategyPageContentBoundary = withQueryBoundary(StrategyPageContent, {
+	suspenseProps: { fallback: <StrategyHeroSkeleton /> },
+});
 
 export function StrategyPage() {
 	return (
@@ -22,7 +26,7 @@ export function StrategyPage() {
 				<DataFreshness />
 			</Flex>
 
-			<StrategyPageBoundary />
+			<StrategyPageBase />
 		</Stack>
 	);
 }
@@ -34,15 +38,20 @@ function StrategyPageBase() {
 		return <StrategyNotFound />;
 	}
 
-	const { strategyId, strategySummary } = currentStrategy;
+	return <StrategyPageContentBoundary strategyId={currentStrategy.strategyId} />;
+}
+
+function StrategyPageContent({ strategyId }: { strategyId: number }) {
+	const strategyQuery = useGetStrategyByIdSuspense(strategyId);
+	const strategySummary = mapStrategyResponseToStrategy(strategyQuery.data.data);
 
 	return (
 		<>
 			<Section>
-				<StrategyHeroBoundary strategyId={strategyId} />
+				<StrategyHero strategy={strategySummary} />
 			</Section>
 
-			<StrategyInfoSectionBoundary strategyId={strategyId} />
+			<StrategyInfoSection strategy={strategySummary} />
 
 			<Section header={{ title: 'Связанные акции' }}>
 				<StrategyStockBinding

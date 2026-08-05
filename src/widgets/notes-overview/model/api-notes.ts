@@ -77,7 +77,7 @@ function getStrategyNoteSource(strategy: NoteResponse['strategy']): NoteSource |
 		label: strategy.name,
 		description: strategy.description ?? 'Торговая стратегия',
 		path: generatePath(ROUTES.STRATEGY, {
-			strategyName: strategy.name,
+			strategyId: String(strategy.id),
 		}),
 	};
 }

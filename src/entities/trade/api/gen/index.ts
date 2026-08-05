@@ -35,6 +35,10 @@ import type {
 } from '../../../../shared/api/types/gen/createTradeRequest';
 
 import type {
+	GetProfitChartParams,
+} from '../../../../shared/api/types/gen/getProfitChartParams';
+
+import type {
 	GetTradesParams,
 } from '../../../../shared/api/types/gen/getTradesParams';
 
@@ -45,6 +49,14 @@ import type {
 import type {
 	ProblemDetails,
 } from '../../../../shared/api/types/gen/problemDetails';
+
+import type {
+	ProfitChartBucketResponse,
+} from '../../../../shared/api/types/gen/profitChartBucketResponse';
+
+import type {
+	TradeDateRangeResponse,
+} from '../../../../shared/api/types/gen/tradeDateRangeResponse';
 
 import type {
 	TradeResponse,
@@ -262,6 +274,395 @@ export function useGetTradeStatisticsSuspense<TData = Awaited<ReturnType<typeof 
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 	const queryOptions = getGetTradeStatisticsSuspenseQueryOptions(options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+export type getProfitChartResponse200 = {
+	data: ProfitChartBucketResponse[];
+	status: 200;
+};
+
+export type getProfitChartResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getProfitChartResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getProfitChartResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getProfitChartResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getProfitChartResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getProfitChartResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getProfitChartResponse422 = {
+	data: ProblemDetails;
+	status: 422;
+};
+
+export type getProfitChartResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getProfitChartResponse503 = {
+	data: ProblemDetails;
+	status: 503;
+};
+
+export type getProfitChartResponseSuccess = (getProfitChartResponse200) & {
+	headers: Headers;
+};
+export type getProfitChartResponseError = (getProfitChartResponse400 | getProfitChartResponse401 | getProfitChartResponse403 | getProfitChartResponse404 | getProfitChartResponse408 | getProfitChartResponse409 | getProfitChartResponse422 | getProfitChartResponse500 | getProfitChartResponse503) & {
+	headers: Headers;
+};
+
+export function getGetProfitChartUrl(params: GetProfitChartParams) {
+	const normalizedParams = new URLSearchParams();
+
+	Object.entries(params || {}).forEach(([key, value]) => {
+		if (value !== undefined) {
+			normalizedParams.append(key, value === null ? 'null' : String(value));
+		}
+	});
+
+	const stringifiedParams = normalizedParams.toString();
+
+	return stringifiedParams.length > 0 ? `/api/v1/trades/profitChart?${stringifiedParams}` : `/api/v1/trades/profitChart`;
+}
+
+export async function getProfitChart(params: GetProfitChartParams, options?: Parameters<typeof customInstance>[1]): Promise<getProfitChartResponseSuccess> {
+	return customInstance<getProfitChartResponseSuccess>(getGetProfitChartUrl(params), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetProfitChartQueryKey(params?: GetProfitChartParams) {
+	return [
+		`/api/v1/trades/profitChart`,
+		...(params ? [params] : []),
+	] as const;
+}
+
+
+export function getGetProfitChartQueryOptions<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(params: GetProfitChartParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetProfitChartQueryKey(params);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getProfitChart>>> = ({ signal }) => getProfitChart(params, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetProfitChartQueryResult = NonNullable<Awaited<ReturnType<typeof getProfitChart>>>;
+export type GetProfitChartQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetProfitChart<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getProfitChart>>,
+			TError,
+			Awaited<ReturnType<typeof getProfitChart>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetProfitChart<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getProfitChart>>,
+			TError,
+			Awaited<ReturnType<typeof getProfitChart>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetProfitChart<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetProfitChart<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams,
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetProfitChartQueryOptions(params, options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetProfitChartQuery<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, params: GetProfitChartParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetProfitChartQueryOptions(params, options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetProfitChart(queryClient: QueryClient, params: GetProfitChartParams, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetProfitChartQueryKey(params) }, options);
+
+	return queryClient;
+}
+
+
+export function getGetProfitChartSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(params: GetProfitChartParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetProfitChartQueryKey(params);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getProfitChart>>> = ({ signal }) => getProfitChart(params, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetProfitChartSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProfitChart>>>;
+export type GetProfitChartSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetProfitChartSuspense<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetProfitChartSuspense<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetProfitChartSuspense<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetProfitChartSuspense<TData = Awaited<ReturnType<typeof getProfitChart>>, TError = ErrorType<ProblemDetails>>(
+	params: GetProfitChartParams,
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProfitChart>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetProfitChartSuspenseQueryOptions(params, options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+export type getTradeDateRangeResponse200 = {
+	data: TradeDateRangeResponse;
+	status: 200;
+};
+
+export type getTradeDateRangeResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getTradeDateRangeResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getTradeDateRangeResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getTradeDateRangeResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getTradeDateRangeResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getTradeDateRangeResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getTradeDateRangeResponse422 = {
+	data: ProblemDetails;
+	status: 422;
+};
+
+export type getTradeDateRangeResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getTradeDateRangeResponse503 = {
+	data: ProblemDetails;
+	status: 503;
+};
+
+export type getTradeDateRangeResponseSuccess = (getTradeDateRangeResponse200) & {
+	headers: Headers;
+};
+export type getTradeDateRangeResponseError = (getTradeDateRangeResponse400 | getTradeDateRangeResponse401 | getTradeDateRangeResponse403 | getTradeDateRangeResponse404 | getTradeDateRangeResponse408 | getTradeDateRangeResponse409 | getTradeDateRangeResponse422 | getTradeDateRangeResponse500 | getTradeDateRangeResponse503) & {
+	headers: Headers;
+};
+
+export function getGetTradeDateRangeUrl() {
+	return `/api/v1/trades/profitChart/dateRange`;
+}
+
+export async function getTradeDateRange(options?: Parameters<typeof customInstance>[1]): Promise<getTradeDateRangeResponseSuccess> {
+	return customInstance<getTradeDateRangeResponseSuccess>(getGetTradeDateRangeUrl(), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetTradeDateRangeQueryKey() {
+	return [
+		`/api/v1/trades/profitChart/dateRange`,
+	] as const;
+}
+
+
+export function getGetTradeDateRangeQueryOptions<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetTradeDateRangeQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getTradeDateRange>>> = ({ signal }) => getTradeDateRange({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetTradeDateRangeQueryResult = NonNullable<Awaited<ReturnType<typeof getTradeDateRange>>>;
+export type GetTradeDateRangeQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetTradeDateRange<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getTradeDateRange>>,
+			TError,
+			Awaited<ReturnType<typeof getTradeDateRange>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetTradeDateRange<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getTradeDateRange>>,
+			TError,
+			Awaited<ReturnType<typeof getTradeDateRange>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetTradeDateRange<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetTradeDateRange<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetTradeDateRangeQueryOptions(options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetTradeDateRangeQuery<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetTradeDateRangeQueryOptions(options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetTradeDateRange(queryClient: QueryClient, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetTradeDateRangeQueryKey() }, options);
+
+	return queryClient;
+}
+
+
+export function getGetTradeDateRangeSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetTradeDateRangeQueryKey();
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getTradeDateRange>>> = ({ signal }) => getTradeDateRange({ signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetTradeDateRangeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTradeDateRange>>>;
+export type GetTradeDateRangeSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetTradeDateRangeSuspense<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetTradeDateRangeSuspense<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetTradeDateRangeSuspense<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetTradeDateRangeSuspense<TData = Awaited<ReturnType<typeof getTradeDateRange>>, TError = ErrorType<ProblemDetails>>(
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTradeDateRange>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetTradeDateRangeSuspenseQueryOptions(options);
 
 	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

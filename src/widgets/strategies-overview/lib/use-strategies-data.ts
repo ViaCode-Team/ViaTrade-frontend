@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import type { GetStrategiesParams } from '@/shared/api';
 
 import {
-	mapTradeStrategyToStrategy,
+	mapStrategyResponseToStrategy,
 	useGetStrategiesSuspense,
 } from '@/entities/strategy';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
@@ -41,7 +41,7 @@ export function useStrategiesData(params: GetStrategiesParams = getStrategiesReq
 			);
 
 			return strategiesQuery.data.data.items.map((strategy) =>
-				mapTradeStrategyToStrategy(strategy, activeStrategyIds),
+				mapStrategyResponseToStrategy(strategy, activeStrategyIds),
 			);
 		},
 		[strategiesQuery.data.data.items],

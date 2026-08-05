@@ -160,7 +160,7 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 			</Flex>
 
 			<Link
-				to={generatePath(ROUTES.STRATEGY, { strategyName: signal.strategy })}
+				to={generatePath(ROUTES.STRATEGY, { strategyId: String(signal.strategyId) })}
 				className={cls.strategy}
 			>
 				<Text span size='sm' lineClamp={1}>

@@ -1,6 +1,6 @@
 import type {
 	IncomeTradeStatistic,
-	TradeResponse,
+	ProfitChartBucketResponse,
 	TradeStatistic,
 } from '@/shared/api';
 
@@ -34,15 +34,15 @@ export function getIncomeChartData(incomeStatistic: IncomeTradeStatistic): Incom
 	];
 }
 
-export function getDirectionPerformanceChartData(trades: TradeResponse[]): DirectionPerformanceChartPoint[] {
+export function getDirectionPerformanceChartData(buckets: ProfitChartBucketResponse[]): DirectionPerformanceChartPoint[] {
 	const performance = {
 		Long: 0,
 		Short: 0,
 	};
 
-	for (const trade of trades) {
-		const direction = trade.signal === -1 ? 'Short' : 'Long';
-		performance[direction] += trade.netIncome ?? 0;
+	for (const bucket of buckets) {
+		performance.Long += bucket.buyNetIncome;
+		performance.Short += bucket.sellNetIncome;
 	}
 
 	return [
@@ -53,6 +53,10 @@ export function getDirectionPerformanceChartData(trades: TradeResponse[]): Direc
 
 export function formatChartCurrency(value: number) {
 	return `${value.toFixed(2)} ₽`;
+}
+
+export function formatProfitChartPercentage(value: number) {
+	return `${value.toFixed(2)} %`;
 }
 
 export function formatProfitFactor(value: number) {

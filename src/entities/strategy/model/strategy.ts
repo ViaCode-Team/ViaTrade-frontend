@@ -1,7 +1,4 @@
-import type {
-	TradeStrategy,
-	UserTradeStrategyDto,
-} from '@/shared/api';
+import type { StrategyResponse } from '@/shared/api';
 
 export type StrategyCardStrategy = {
 	id: number;
@@ -19,41 +16,19 @@ export type Strategy = StrategyCardStrategy & {
 	limitDescription?: string;
 };
 
-export function getUserStrategyIdSet(userStrategies: UserTradeStrategyDto[]) {
-	return new Set(
-		userStrategies
-			.map((userStrategy) => userStrategy.tradeStrategyId)
-			.filter((strategyId): strategyId is number => typeof strategyId === 'number'),
-	);
-}
-
-export function mapTradeStrategyToStrategy(
-	tradeStrategy: TradeStrategy,
-	activeStrategyIds: Set<number>,
-): Strategy {
+export function mapStrategyResponseToStrategy(strategy: StrategyResponse, activeStrategyIds?: Set<number>): Strategy {
 	return {
-		id: tradeStrategy.id,
-		name: tradeStrategy.name,
-		description: normalizeOptionalText(tradeStrategy.description),
-		accuracy: normalizeAccuracy(tradeStrategy.accuracy),
-		signalFrequency: normalizeOptionalText(tradeStrategy.signalFrequency),
-		investmentHorizon: normalizeOptionalText(tradeStrategy.investmentHorizon),
-		logicDescription: normalizeOptionalText(tradeStrategy.logicDesc),
-		useDescription: normalizeOptionalText(tradeStrategy.useDesc),
-		limitDescription: normalizeOptionalText(tradeStrategy.limitDesc),
-		isActive: activeStrategyIds.has(tradeStrategy.id),
+		id: strategy.id,
+		name: strategy.name,
+		description: normalizeOptionalText(strategy.description),
+		accuracy: normalizeAccuracy(strategy.accuracy),
+		signalFrequency: normalizeOptionalText(strategy.signalFrequency),
+		investmentHorizon: normalizeOptionalText(strategy.investmentHorizon),
+		logicDescription: normalizeOptionalText(strategy.logicDescription),
+		useDescription: normalizeOptionalText(strategy.usageDescription),
+		limitDescription: normalizeOptionalText(strategy.limitationsDescription),
+		isActive: activeStrategyIds?.has(strategy.id) ?? strategy.isActive,
 	};
-}
-
-export function mapTradeStrategiesToStrategies(
-	tradeStrategies: TradeStrategy[],
-	userStrategies: UserTradeStrategyDto[],
-) {
-	const activeStrategyIds = getUserStrategyIdSet(userStrategies);
-
-	return tradeStrategies.map((tradeStrategy) =>
-		mapTradeStrategyToStrategy(tradeStrategy, activeStrategyIds),
-	);
 }
 
 export function mapStrategyToStrategyCard(

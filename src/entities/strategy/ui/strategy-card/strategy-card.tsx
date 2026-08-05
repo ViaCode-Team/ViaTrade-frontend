@@ -34,7 +34,7 @@ export function StrategyCard({
 	bottomAction,
 }: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
-		strategyName: strategy.name,
+		strategyId: String(strategy.id),
 	});
 	const leftBorderStyle = getLeftBorderCardStyle({
 		color: strategy.isActive

@@ -5,7 +5,7 @@ import type { LinkedStrategyFilters } from '@/widgets/stock-linked-strategies/ui
 
 import { useGetStrategiesByInstrumentSuspense } from '@/entities/instrument';
 import {
-	mapTradeStrategyToStrategy,
+	mapStrategyResponseToStrategy,
 } from '@/entities/strategy';
 
 export const STOCK_LINKED_STRATEGIES_PAGE_SIZE = 15;
@@ -32,7 +32,7 @@ export function useStockLinkedStrategies(
 		[strategiesResponse.data.items],
 	);
 	const allLinkedStrategies = useMemo(
-		() => strategiesResponse.data.items.map((strategy) => mapTradeStrategyToStrategy(strategy, activeStrategyIds)),
+		() => strategiesResponse.data.items.map((strategy) => mapStrategyResponseToStrategy(strategy, activeStrategyIds)),
 		[activeStrategyIds, strategiesResponse.data.items],
 	);
 

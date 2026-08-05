@@ -23,6 +23,7 @@ export function useProtectedRouteUser({
 	const { data, isPending } = useGetMe({
 		query: {
 			enabled: canFetchUser,
+			refetchOnWindowFocus: false,
 		},
 	});
 

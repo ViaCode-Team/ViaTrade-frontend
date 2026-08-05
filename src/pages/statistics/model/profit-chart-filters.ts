@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import type { TradeResponse } from '@/shared/api';
+import type { TradeDateRangeResponse } from '@/shared/api';
 
 import { v } from '@/shared/lib/validation';
 
@@ -39,10 +39,9 @@ function getDateFilterValue(value: string, fallback: string) {
 
 export function getProfitChartSettingsFromFilters(
 	filters: ProfitChartFilters,
-	trades: TradeResponse[],
-	maxEndDate: string,
+	dateRange?: TradeDateRangeResponse,
 ): ProfitChartSettings {
-	const initialSettings = getInitialProfitChartSettings(trades);
+	const initialSettings = getInitialProfitChartSettings(dateRange);
 
 	return normalizeProfitChartSettings(
 		{
@@ -50,13 +49,13 @@ export function getProfitChartSettingsFromFilters(
 			endDate: getDateFilterValue(filters.endDateFilter, initialSettings.endDate),
 			granularity: filters.granularityFilter as ProfitChartGranularity,
 		},
-		maxEndDate,
+		dateRange,
 	);
 }
 
 export function getProfitChartFiltersFromSettings(
 	settings: ProfitChartSettings,
-): Partial<ProfitChartFilters> {
+): ProfitChartFilters {
 	return {
 		startDateFilter: settings.startDate,
 		endDateFilter: settings.endDate,

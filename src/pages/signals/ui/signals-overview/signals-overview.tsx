@@ -7,7 +7,7 @@ import { SignalsControls, useSignalsControls } from '@/pages/signals/ui/filter-s
 import { SignalsOverviewListBoundary } from './signals-overview-list';
 
 export function SignalsOverview({ onSignalSelect }: { onSignalSelect: (signal: Signal) => void }) {
-	const { filters, resetFilters } = useSignalsControls();
+	const { filters, resetFilters, setPage } = useSignalsControls();
 
 	return (
 		<Stack>
@@ -15,6 +15,7 @@ export function SignalsOverview({ onSignalSelect }: { onSignalSelect: (signal: S
 
 			<SignalsOverviewListBoundary
 				filters={filters}
+				onPageChange={setPage}
 				onResetFilters={resetFilters}
 				onSignalSelect={onSignalSelect}
 			/>

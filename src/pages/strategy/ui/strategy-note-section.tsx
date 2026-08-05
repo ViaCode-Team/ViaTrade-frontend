@@ -23,7 +23,7 @@ export function StrategyNoteSection({ strategyId, strategySummary }: StrategyNot
 			id: String(strategyId),
 			label: strategySummary?.name ?? `Стратегия #${strategyId}`,
 			description: strategySummary?.description ?? 'Торговая стратегия',
-			path: generatePath(ROUTES.STRATEGY, { strategyName: strategySummary?.name ?? String(strategyId) }),
+			path: generatePath(ROUTES.STRATEGY, { strategyId: String(strategyId) }),
 		};
 	}, [strategyId, strategySummary]);
 

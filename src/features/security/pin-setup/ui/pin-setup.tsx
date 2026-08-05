@@ -44,6 +44,8 @@ export function PinSetup({ actionSlot, onLocalAuthBlockRequired }: PinSetupProps
 
 			<Container size='xs' style={{ width: '100%', maxWidth: '400px' }}>
 				<Paper p='xl' withBorder style={{ position: 'relative' }}>
+					{actionSlot}
+
 					{step === 2 && (
 						<ActionIcon
 							variant='subtle'
@@ -117,12 +119,6 @@ export function PinSetup({ actionSlot, onLocalAuthBlockRequired }: PinSetupProps
 
 				</Paper>
 			</Container>
-
-			{actionSlot && (
-				<div style={{ position: 'absolute', top: 32, right: 32 }}>
-					{actionSlot}
-				</div>
-			)}
 		</Center>
 	);
 }

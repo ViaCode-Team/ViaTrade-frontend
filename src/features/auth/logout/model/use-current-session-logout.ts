@@ -1,24 +1,20 @@
-import { useDeleteCurrentSession } from '@/entities/session';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
 
-import { useSessionLogoutFlow } from './use-session-logout-flow';
+import { useSecurity } from '@/entities/security';
+import { ROUTES } from '@/shared/model';
+
+import { resolveCurrentSessionLogout } from './current-session-logout';
 
 export function useCurrentSessionLogout() {
-	const { mutationOptions, requestLogout } = useSessionLogoutFlow();
-	const { mutate: logoutCurrentSession, isPending } = useDeleteCurrentSession({
-		skipInvalidation: true,
-		mutation: mutationOptions,
-	});
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	const { checkSecurityState } = useSecurity();
 
-	const requestLogoutCurrentSession = () => {
-		requestLogout({
-			title: 'Выйти из текущей сессии?',
-			description: 'После подтверждения текущая сессия будет завершена, и потребуется войти заново.',
-			confirmLabel: 'Выйти',
-		}, logoutCurrentSession);
-	};
-
-	return {
-		isLoggingOutCurrentSession: isPending,
-		requestLogoutCurrentSession,
-	};
+	return useCallback(async () => {
+		await resolveCurrentSessionLogout(queryClient);
+		await checkSecurityState();
+		navigate(ROUTES.LOGIN);
+	}, [checkSecurityState, navigate, queryClient]);
 }

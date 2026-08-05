@@ -15,8 +15,11 @@ export function normalizeUserSessions(data: SessionsResponseData): UserSessionRe
 	return Array.isArray(data) ? data : [data];
 }
 
-export function sortUserSessionsByActivity(sessions: UserSessionResponse[]): UserSessionResponse[] {
+export function sortUserSessionsByPriority(sessions: UserSessionResponse[]): UserSessionResponse[] {
 	return [...sessions].sort((a, b) => {
+		if (a.isCurrent !== b.isCurrent)
+			return a.isCurrent ? -1 : 1;
+
 		return toTimestamp(b.lastSeen) - toTimestamp(a.lastSeen);
 	});
 }

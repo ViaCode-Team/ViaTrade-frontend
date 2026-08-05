@@ -22,6 +22,7 @@ flowchart TD
 	reload["Reload continuity"]
 	lock["Local lock"]
 	cooldown["PIN cooldown"]
+	logout["Logout from PIN screen"]
 
 	login --> setup --> privateUi
 	locked --> unlock
@@ -29,6 +30,7 @@ flowchart TD
 	unlock -->|wrong PIN| cooldown --> locked
 	privateUi --> reload --> privateUi
 	privateUi --> lock --> locked
+	locked --> logout --> login
 ```
 
 ## Flow details
@@ -39,13 +41,15 @@ flowchart TD
 
 `Locked local state` means sensitive local data is unavailable to the app. The encrypted cache can stay in IndexedDB, but there is no usable master key in memory, and query restoration/API requests are gated.
 
-`PIN unlock` decrypts the stored master key with the PIN-derived key. A valid PIN opens secure storage; a wrong PIN updates local lockout state and can move the app into cooldown.
+`PIN unlock` decrypts the stored master key with the PIN-derived key. A valid PIN opens secure storage; a wrong PIN updates local lockout state and can move the app into cooldown. The PIN screen also offers an explicit logout action, so the user is not forced to remember the PIN to remove their data from this browser.
 
 `Unlocked private UI` is the only state where encrypted frontend data can be decrypted and rendered. React Query can restore encrypted cache only after security state is ready and the master key is available.
 
 `Reload continuity` keeps the app unlocked across page refreshes until the 6-hour deadline by restoring a non-extractable session `CryptoKey`. This is convenient, but still a same-origin browser capability, so it is removed on lock or deadline expiry.
 
 `Local lock` happens on inactivity, the absolute 6-hour deadline, local cleanup, or a cross-tab lock event. It removes runtime key access, clears plaintext query memory, cancels active queries, and keeps only encrypted persisted data.
+
+`Logout from PIN screen` uses the same local-auth-block resolution as PIN setup integrity failures. The app first tries to terminate the current backend session, then clears all local application data. When server logout succeeds, the local block marker is cleared and the login screen opens. When the browser is offline or the request fails, local data is still cleared and a local-auth-block marker is stored; the app retries server logout when connectivity returns.
 
 `PIN cooldown` is a best-effort browser-local delay after repeated wrong PIN entries. It improves normal-device protection but is not tamper-proof against DevTools or full browser control.
 
@@ -124,9 +128,9 @@ This is browser-local best-effort protection. A user with DevTools can edit Inde
 ## Network and logout rules
 
 - While PIN locked, the API request gate blocks domain requests and refresh retry.
-- Auth entry and exit requests are handled separately, but the PIN-locked screen does not expose logout.
-- True logout is available only online through the backend logout endpoint.
-- Offline frontend code can clear local data, but it cannot delete `Secure; HttpOnly` backend cookies and must not claim that the server session was revoked.
+- Auth entry and exit requests are handled separately. The PIN-locked screen exposes an explicit logout action that follows the local-auth-block flow.
+- When online, the action ends the current backend session and clears all local application data before opening the login screen.
+- When offline or when the logout request fails, the frontend clears local data and stores the local-auth-block marker. It cannot delete `Secure; HttpOnly` backend cookies and must not claim that the server session was revoked; it retries the backend logout when connectivity returns.
 
 ## What this does not protect against
 

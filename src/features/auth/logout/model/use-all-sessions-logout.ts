@@ -1,20 +1,66 @@
-import { useDeleteSessions } from '@/entities/session';
+import { notifications } from '@mantine/notifications';
+import { IconAlertCircle } from '@tabler/icons-react';
+import { onlineManager, useQueryClient } from '@tanstack/react-query';
+import { createElement } from 'react';
+import { useNavigate } from 'react-router';
 
-import { useSessionLogoutFlow } from './use-session-logout-flow';
+import { useSecurity } from '@/entities/security';
+import { useDeleteSessions } from '@/entities/session';
+import { clearLocalData } from '@/shared/lib/auth';
+import { useAppNetwork } from '@/shared/lib/hooks';
+import { showNoNetworkNotification } from '@/shared/lib/no-network';
+import { ROUTES } from '@/shared/model';
+
+import { openLogoutConfirmation } from './logout-confirmation';
+
+function showLogoutErrorNotification() {
+	notifications.show({
+		title: 'Не удалось выйти',
+		message: 'Не удалось выйти из аккаунта.',
+		color: 'red',
+		icon: createElement(IconAlertCircle, { size: 18 }),
+	});
+}
 
 export function useAllSessionsLogout() {
-	const { mutationOptions, requestLogout } = useSessionLogoutFlow();
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	const { checkSecurityState } = useSecurity();
+	const { isOnline, networkState } = useAppNetwork();
 	const { mutate: logoutAll, isPending } = useDeleteSessions({
 		skipInvalidation: true,
-		mutation: mutationOptions,
+		mutation: {
+			networkMode: 'online',
+			onSuccess: async () => {
+				await clearLocalData(queryClient);
+				await checkSecurityState();
+				navigate(ROUTES.LOGIN);
+			},
+			onError: showLogoutErrorNotification,
+		},
 	});
 
+	const canRequestLogout = () => isOnline && networkState.online && onlineManager.isOnline() && navigator.onLine;
+
 	const requestLogoutAll = () => {
-		requestLogout({
+		if (!canRequestLogout()) {
+			showNoNetworkNotification();
+			return;
+		}
+
+		openLogoutConfirmation({
 			title: 'Выйти из всех сессий?',
 			description: 'После подтверждения все активные сессии будут завершены, и потребуется войти заново.',
 			confirmLabel: 'Выйти',
-		}, logoutAll);
+			onConfirm: () => {
+				if (!canRequestLogout()) {
+					showNoNetworkNotification();
+					return;
+				}
+
+				logoutAll();
+			},
+		});
 	};
 
 	return {

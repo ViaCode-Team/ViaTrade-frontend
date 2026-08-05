@@ -1,23 +1,24 @@
-import { queryClient } from '@/app/config';
+import type { QueryClient } from '@tanstack/react-query';
+
 import { getDeleteCurrentSessionUrl } from '@/entities/session';
 import { apiClient } from '@/shared/api';
 import { clearLocalData } from '@/shared/lib/auth';
 import { clearLocalAuthBlocked, setLocalAuthBlocked } from '@/shared/lib/secure-storage';
 
-export type LocalAuthBlockResult = 'resolved' | 'blocked';
+export type CurrentSessionLogoutResult = 'resolved' | 'blocked';
 
-let localAuthBlockPromise: Promise<LocalAuthBlockResult> | null = null;
+let currentSessionLogoutPromise: Promise<CurrentSessionLogoutResult> | null = null;
 
-export function resolveLocalAuthBlock() {
-	localAuthBlockPromise ??= runLocalAuthBlockResolution()
+export function resolveCurrentSessionLogout(queryClient: QueryClient) {
+	currentSessionLogoutPromise ??= runCurrentSessionLogout(queryClient)
 		.finally(() => {
-			localAuthBlockPromise = null;
+			currentSessionLogoutPromise = null;
 		});
 
-	return localAuthBlockPromise;
+	return currentSessionLogoutPromise;
 }
 
-async function runLocalAuthBlockResolution(): Promise<LocalAuthBlockResult> {
+async function runCurrentSessionLogout(queryClient: QueryClient): Promise<CurrentSessionLogoutResult> {
 	const isLoggedOut = await logoutCurrentSession();
 
 	await clearLocalData(queryClient);

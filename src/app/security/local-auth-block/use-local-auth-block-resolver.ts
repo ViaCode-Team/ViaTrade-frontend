@@ -1,12 +1,16 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { type LocalAuthBlockResult, resolveLocalAuthBlock } from './resolve-local-auth-block';
+import {
+	type CurrentSessionLogoutResult,
+	resolveCurrentSessionLogout,
+} from '@/features/auth/logout';
 
 type UseLocalAuthBlockResolverParams = {
 	isActive?: boolean;
 	retryOnOnline?: boolean;
 	onResolved?: () => Promise<void> | void;
-	onSettled?: (result: LocalAuthBlockResult) => Promise<void> | void;
+	onSettled?: (result: CurrentSessionLogoutResult) => Promise<void> | void;
 };
 
 export function useLocalAuthBlockResolver({
@@ -15,6 +19,8 @@ export function useLocalAuthBlockResolver({
 	onResolved,
 	onSettled,
 }: UseLocalAuthBlockResolverParams) {
+	const queryClient = useQueryClient();
+
 	useEffect(() => {
 		if (!isActive)
 			return;
@@ -22,7 +28,7 @@ export function useLocalAuthBlockResolver({
 		let isDisposed = false;
 
 		const resolveBlock = async () => {
-			const result = await resolveLocalAuthBlock();
+			const result = await resolveCurrentSessionLogout(queryClient);
 
 			if (isDisposed)
 				return;
@@ -48,5 +54,5 @@ export function useLocalAuthBlockResolver({
 			isDisposed = true;
 			window.removeEventListener('online', resolveBlock);
 		};
-	}, [isActive, retryOnOnline, onResolved, onSettled]);
+	}, [isActive, retryOnOnline, onResolved, onSettled, queryClient]);
 }

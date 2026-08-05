@@ -3,11 +3,7 @@ import { IconLogout } from '@tabler/icons-react';
 
 import { useAllSessionsLogout } from '../model/use-all-sessions-logout';
 
-type LogoutAllSessionsButtonProps = {
-	disabled?: boolean;
-};
-
-export function LogoutAllSessionsButton({ disabled }: LogoutAllSessionsButtonProps) {
+export function LogoutAllSessionsButton() {
 	const sessionLogout = useAllSessionsLogout();
 
 	return (
@@ -17,7 +13,7 @@ export function LogoutAllSessionsButton({ disabled }: LogoutAllSessionsButtonPro
 			size='xs'
 			leftSection={<IconLogout size={16} />}
 			onClick={sessionLogout.requestLogoutAll}
-			disabled={disabled || sessionLogout.isLoggingOutAll}
+			disabled={sessionLogout.isLoggingOutAll}
 		>
 			Выйти из всех
 		</Button>

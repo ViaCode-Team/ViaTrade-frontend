@@ -36,7 +36,9 @@ export function PinUnlock({ actionSlot }: PinUnlockProps) {
 			</div>
 
 			<Container size='xs' style={{ width: '100%', maxWidth: '400px' }}>
-				<Paper p='xl' withBorder>
+				<Paper p='xl' withBorder style={{ position: 'relative' }}>
+					{actionSlot}
+
 					<Title order={2} ta='center' mt='md' mb='xs'>
 						С возвращением
 					</Title>
@@ -69,13 +71,6 @@ export function PinUnlock({ actionSlot }: PinUnlockProps) {
 					</Stack>
 				</Paper>
 			</Container>
-
-			{actionSlot && (
-				<div style={{ position: 'absolute', top: 32, right: 32 }}>
-					{actionSlot}
-				</div>
-			)}
-
 		</Center>
 	);
 }

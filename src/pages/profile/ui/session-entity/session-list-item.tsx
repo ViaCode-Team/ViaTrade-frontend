@@ -5,6 +5,7 @@ import {
 
 import type { UserSessionResponse } from '@/shared/api';
 
+import { LogoutCurrentSessionButton } from '@/features/auth/logout';
 import { InfoRow } from '@/shared/ui/info-row';
 
 import { parseUserAgent } from './parse-user-agent';
@@ -26,6 +27,7 @@ export function SessionListItem({ session }: SessionListItemProps) {
 					</Title>
 				)}
 				description={<SessionMeta createdAt={session.createdAt} lastSeen={session.lastSeen} />}
+				rightSection={session.isCurrent ? <LogoutCurrentSessionButton placement='inline' /> : undefined}
 			/>
 		</Box>
 	);

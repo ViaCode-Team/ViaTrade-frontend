@@ -1,28 +1,25 @@
 import { useIsRestoring } from '@tanstack/react-query';
-import { useCallback } from 'react';
 import { lazily } from 'react-lazily';
 import {
 	Navigate,
 	Outlet,
 	type To,
 	useLocation,
-	useNavigate,
 } from 'react-router';
 
 import { useSecurity } from '@/entities/security';
+import { LogoutCurrentSessionButton, useCurrentSessionLogout } from '@/features/auth/logout';
 import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
 import {
 	LocalAuthBlock,
 	LocalAuthBlockedRoute,
-	resolveLocalAuthBlock,
 } from '../../security/local-auth-block';
 import { useProtectedRouteUser } from './use-protected-route-user';
 
 const { PinSetup } = lazily(() => import('@/features/security/pin-setup'));
 const { PinUnlock } = lazily(() => import('@/features/security/pin-unlock'));
-const { LogoutCurrentSessionAction } = lazily(() => import('@/features/auth/logout'));
 
 export type ProtectedRouteProps = {
 	isPrivate?: boolean;
@@ -36,7 +33,6 @@ export function ProtectedRoute({
 	authRedirectTo = ROUTES.DASHBOARD,
 }: ProtectedRouteProps) {
 	const location = useLocation();
-	const navigate = useNavigate();
 	const isRestoring = useIsRestoring();
 	const {
 		hasPin,
@@ -44,14 +40,9 @@ export function ProtectedRoute({
 		isReady,
 		isPinSetupMark,
 		isLocalAuthBlocked,
-		checkSecurityState,
 	} = useSecurity();
 
-	const handleLocalAuthBlockRequired = useCallback(async () => {
-		await resolveLocalAuthBlock();
-		await checkSecurityState();
-		navigate(ROUTES.LOGIN);
-	}, [checkSecurityState, navigate]);
+	const handleLocalAuthBlockRequired = useCurrentSessionLogout();
 
 	const { isAuthChecked, isUserAuthenticated } = useProtectedRouteUser({
 		isReady,
@@ -77,7 +68,7 @@ export function ProtectedRoute({
 	// Если приложение заблокировано (есть ПИН и он не введен),
 	// мы не можем прочитать кэш пользователя, поэтому показываем разблокировку до всех проверок.
 	if (hasPin && isLocked) {
-		return <PinUnlock actionSlot={<LogoutCurrentSessionAction />} />;
+		return <PinUnlock actionSlot={<LogoutCurrentSessionButton />} />;
 	}
 
 	// Пока идёт чекаут пользователя, показываем прелоадер
@@ -89,7 +80,7 @@ export function ProtectedRoute({
 		if (isPinSetupMark) {
 			return (
 				<PinSetup
-					actionSlot={<LogoutCurrentSessionAction />}
+					actionSlot={<LogoutCurrentSessionButton />}
 					onLocalAuthBlockRequired={handleLocalAuthBlockRequired}
 				/>
 			);

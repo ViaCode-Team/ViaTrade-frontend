@@ -8,7 +8,7 @@ import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 import {
 	normalizeUserSessions,
 	SESSIONS_PER_PAGE,
-	sortUserSessionsByActivity,
+	sortUserSessionsByPriority,
 } from '../session-entity';
 
 export function useSessionsOverview() {
@@ -22,7 +22,7 @@ export function useSessionsOverview() {
 
 	const sessions = useMemo(() => normalizeUserSessions(sessionsData.data.items), [sessionsData.data.items]);
 	const sortedSessions = useMemo(
-		() => sortUserSessionsByActivity(sessions),
+		() => sortUserSessionsByPriority(sessions),
 		[sessions],
 	);
 

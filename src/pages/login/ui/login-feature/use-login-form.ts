@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useSecurity } from '@/entities/security';
 import { useLogin } from '@/entities/session';
 import { getGetMeQueryKey } from '@/entities/user';
+import { useCurrentUserQueryControl } from '@/shared/lib/auth';
 import { clearLocalAuthBlocked, setPinSetupMark } from '@/shared/lib/secure-storage';
 
 import type { TLoginData } from './login-data';
@@ -16,6 +17,7 @@ export function useLoginForm() {
 	const [apiError, setApiError] = useState<string | null>(null);
 	const queryClient = useQueryClient();
 	const { checkSecurityState } = useSecurity();
+	const { resumeCurrentUserQuery } = useCurrentUserQueryControl();
 
 	const { mutate, isPending } = useLogin({
 		skipInvalidation: true,
@@ -24,6 +26,7 @@ export function useLoginForm() {
 				await clearLocalAuthBlocked();
 				await setPinSetupMark();
 				await checkSecurityState();
+				resumeCurrentUserQuery();
 				queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
 			},
 			onError: (error) => {

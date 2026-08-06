@@ -1,7 +1,6 @@
 import { LogoutAllSessionsButton } from '@/features/auth/logout';
 import { Section } from '@/shared/ui/section';
 
-import { SessionsControls } from '../filter-sessions';
 import { SessionsOverviewListBoundary } from './sessions-overview-list';
 
 export function SessionsOverview() {
@@ -12,8 +11,6 @@ export function SessionsOverview() {
 				actions: <LogoutAllSessionsButton />,
 			}}
 		>
-			<SessionsControls />
-
 			<SessionsOverviewListBoundary />
 		</Section>
 	);

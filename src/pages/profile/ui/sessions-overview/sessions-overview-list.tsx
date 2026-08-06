@@ -9,36 +9,32 @@ import { useSessionsOverview } from './use-sessions-overview';
 
 function SessionsOverviewList() {
 	const {
-		filteredSessions,
+		sessions,
 		page,
 		totalPages,
 		totalCount,
 		setPage,
-		hasSearchQuery,
-		resetFilters,
 	} = useSessionsOverview();
 
 	return (
 		<DataState
 			hasData={!!totalCount}
-			hasResults={!!filteredSessions.length}
-			onResetFilters={resetFilters}
+			hasResults={!!sessions.length}
 		>
 			<Stack gap='md'>
 				<SessionsOverviewStatusBar
 					totalCount={totalCount}
-					filteredCount={filteredSessions.length}
+					filteredCount={sessions.length}
 					pagination={{
 						page,
 						pageSize: SESSIONS_PER_PAGE,
 						totalPages,
 						onPageChange: setPage,
-						showRange: !hasSearchQuery,
 					}}
 				/>
 
 				<SessionsList
-					paginatedSessions={filteredSessions}
+					paginatedSessions={sessions}
 					pagination={{ page, totalPages, onPageChange: setPage }}
 				/>
 			</Stack>

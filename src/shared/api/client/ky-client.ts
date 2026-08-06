@@ -13,7 +13,6 @@ function createApiClient(): KyInstance {
 		prefix: BASE_URL || undefined,
 		retry: {
 			limit: 1,
-			shouldRetry: () => false,
 		},
 		hooks: {
 			beforeRequest: [

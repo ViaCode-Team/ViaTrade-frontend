@@ -9,6 +9,7 @@ import {
 
 import { useSecurity } from '@/entities/security';
 import { LogoutCurrentSessionButton, useCurrentSessionLogout } from '@/features/auth/logout';
+import { useCurrentUserQueryControl } from '@/shared/lib/auth';
 import { ROUTES } from '@/shared/model';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 
@@ -43,6 +44,7 @@ export function ProtectedRoute({
 	} = useSecurity();
 
 	const handleLocalAuthBlockRequired = useCurrentSessionLogout();
+	const { isCurrentUserQueryEnabled } = useCurrentUserQueryControl();
 
 	const { isAuthChecked, isUserAuthenticated } = useProtectedRouteUser({
 		isReady,
@@ -50,6 +52,7 @@ export function ProtectedRoute({
 		isLocalAuthBlocked,
 		hasPin,
 		isLocked,
+		isCurrentUserQueryEnabled,
 	});
 
 	if (!isReady || isRestoring)

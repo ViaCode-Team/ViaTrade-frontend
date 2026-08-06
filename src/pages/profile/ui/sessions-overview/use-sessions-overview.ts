@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
 import { useGetSessionsSuspense } from '@/entities/session';
-import { sessionFiltersSchema } from '@/pages/profile/ui/filter-sessions';
 import { useUrlFilters } from '@/shared/lib/url-filters';
+import { v } from '@/shared/lib/validation';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import {
@@ -11,9 +11,12 @@ import {
 	sortUserSessionsByPriority,
 } from '../session-entity';
 
+const sessionPaginationSchema = v.object({
+	page: v.fallback(v.string(), '1'),
+});
+
 export function useSessionsOverview() {
-	const { filters, setFilter, resetFilters } = useUrlFilters(sessionFiltersSchema);
-	const searchQuery = filters.q;
+	const { filters, setFilter } = useUrlFilters(sessionPaginationSchema);
 	const page = Math.max(Number(filters.page) || 1, 1);
 	const { data: sessionsData, refetch } = useGetSessionsSuspense(
 		{ page, pageSize: SESSIONS_PER_PAGE },
@@ -26,24 +29,12 @@ export function useSessionsOverview() {
 		[sessions],
 	);
 
-	const filteredSessions = useMemo(() => {
-		if (!searchQuery.trim())
-			return sortedSessions;
-		const query = searchQuery.toLowerCase().trim();
-		return sortedSessions.filter((session) =>
-			session.userAgent.toLowerCase().includes(query),
-		);
-	}, [sortedSessions, searchQuery]);
-
 	return {
-		sessions,
-		filteredSessions,
+		sessions: sortedSessions,
 		page,
 		totalPages: sessionsData.data.totalPages,
 		totalCount: sessionsData.data.totalCount,
 		setPage: (nextPage: number) => setFilter('page', String(nextPage)),
-		hasSearchQuery: Boolean(searchQuery.trim()),
-		resetFilters,
 		refetch,
 	};
 }

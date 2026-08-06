@@ -6,6 +6,7 @@ type UseProtectedRouteUserParams = {
 	isLocalAuthBlocked: boolean;
 	hasPin: boolean;
 	isLocked: boolean;
+	isCurrentUserQueryEnabled: boolean;
 };
 
 export function useProtectedRouteUser({
@@ -14,11 +15,13 @@ export function useProtectedRouteUser({
 	isLocalAuthBlocked,
 	hasPin,
 	isLocked,
+	isCurrentUserQueryEnabled,
 }: UseProtectedRouteUserParams) {
 	const canFetchUser = isReady
 		&& !isLocalAuthBlocked
 		&& (!hasPin || !isLocked)
-		&& !isRestoring;
+		&& !isRestoring
+		&& isCurrentUserQueryEnabled;
 
 	const { data, isPending } = useGetMe({
 		query: {
@@ -28,7 +31,7 @@ export function useProtectedRouteUser({
 	});
 
 	return {
-		isAuthChecked: !isPending,
+		isAuthChecked: !canFetchUser || !isPending,
 		isUserAuthenticated: Boolean(data?.data),
 	};
 }

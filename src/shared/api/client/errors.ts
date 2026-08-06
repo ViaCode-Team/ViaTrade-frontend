@@ -53,6 +53,12 @@ export function createClientApiError(error: unknown): ApiError<ProblemDetails> {
 	});
 }
 
+export function isApiErrorWithStatus(error: unknown, status: number): boolean {
+	return error instanceof ApiError
+		&& isProblemDetails(error.details)
+		&& error.details.status === status;
+}
+
 function getApiErrorMessage(details: unknown): string {
 	if (isProblemDetails(details)) {
 		return details.title;

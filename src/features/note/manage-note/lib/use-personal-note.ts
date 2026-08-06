@@ -16,6 +16,7 @@ import {
 	useGetNote as useGetStrategyNote,
 	useUpsertNote as useUpsertStrategyNote,
 } from '@/entities/strategy';
+import { isApiErrorWithStatus } from '@/shared/api';
 
 import {
 	useDeleteStoredPersonalNoteMutation,
@@ -91,7 +92,7 @@ export function usePersonalNote({
 		: source?.type === 'strategy'
 			? strategyNoteQuery.error
 			: null;
-	const errorMessage = queryError || mutationError
+	const errorMessage = (!isApiErrorWithStatus(queryError, 404) && queryError) || mutationError
 		? 'Не удалось синхронизировать заметку с API.'
 		: undefined;
 	const isSubmitting = upsertInstrumentNoteMutation.isPending

@@ -9,7 +9,7 @@ import {
 export const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			retry: 1,
+			retry: false,
 			networkMode: 'offlineFirst',
 			gcTime: QUERY_PERSIST_MAX_AGE,
 			staleTime: QUERY_STALE_TIME,

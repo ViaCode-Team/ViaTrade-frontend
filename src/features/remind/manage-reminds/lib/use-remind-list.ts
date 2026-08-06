@@ -5,6 +5,7 @@ import type { ReminderSortField } from '@/shared/api';
 import {
 	getGetRemindersQueryKey as getGetInstrumentRemindersQueryKey,
 	getGetRemindersSuspenseQueryOptions as getGetInstrumentRemindersSuspenseQueryOptions,
+	getReminders as getInstrumentReminders,
 } from '@/entities/instrument';
 import { mapTradeRemindToRemindItem } from '@/entities/reminder';
 import {
@@ -14,6 +15,7 @@ import {
 	remindFiltersSchema,
 	useUpdateReminder,
 } from '@/entities/reminder';
+import { isApiErrorWithStatus } from '@/shared/api';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
@@ -29,7 +31,22 @@ export function useRemindList(instrumentId?: number) {
 	const params = { page, pageSize: REMINDERS_PAGE_SIZE, sortBy };
 	const queryOptions = instrumentId === undefined
 		? getGetRemindersSuspenseQueryOptions(params)
-		: getGetInstrumentRemindersSuspenseQueryOptions(instrumentId, params);
+		: getGetInstrumentRemindersSuspenseQueryOptions(instrumentId, params, {
+				query: {
+					queryFn: async ({ signal }) => {
+						try {
+							return await getInstrumentReminders(instrumentId, params, { signal });
+						}
+						catch (error) {
+							if (isApiErrorWithStatus(error, 404)) {
+								return createEmptyRemindersResponse();
+							}
+
+							throw error;
+						}
+					},
+				},
+			});
 	const activeQuery = useSuspenseQuery({ ...queryOptions, refetchInterval: QUERY_REFETCH_INTERVAL });
 	const response = activeQuery.data;
 	const reminds = response.data.items.map(mapTradeRemindToRemindItem);
@@ -65,5 +82,19 @@ export function useRemindList(instrumentId?: number) {
 		setPage: (nextPage: number) => setFilter('page', String(nextPage)),
 		hasSearchQuery: Boolean(searchQuery),
 		resetFilters,
+	};
+}
+
+function createEmptyRemindersResponse(): Awaited<ReturnType<typeof getInstrumentReminders>> {
+	return {
+		data: {
+			items: [],
+			totalCount: 0,
+			page: 1,
+			pageSize: REMINDERS_PAGE_SIZE,
+			totalPages: 0,
+		},
+		headers: new Headers(),
+		status: 200,
 	};
 }

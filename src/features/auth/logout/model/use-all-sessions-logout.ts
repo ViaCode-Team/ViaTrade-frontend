@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 
 import { useSecurity } from '@/entities/security';
 import { useDeleteSessions } from '@/entities/session';
-import { clearLocalData } from '@/shared/lib/auth';
+import { clearLocalData, useCurrentUserQueryControl } from '@/shared/lib/auth';
 import { useAppNetwork } from '@/shared/lib/hooks';
 import { showNoNetworkNotification } from '@/shared/lib/no-network';
 import { ROUTES } from '@/shared/model';
@@ -26,6 +26,7 @@ export function useAllSessionsLogout() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const { checkSecurityState } = useSecurity();
+	const { resumeCurrentUserQuery, suspendCurrentUserQuery } = useCurrentUserQueryControl();
 	const { isOnline, networkState } = useAppNetwork();
 	const { mutate: logoutAll, isPending } = useDeleteSessions({
 		skipInvalidation: true,
@@ -36,7 +37,10 @@ export function useAllSessionsLogout() {
 				await checkSecurityState();
 				navigate(ROUTES.LOGIN);
 			},
-			onError: showLogoutErrorNotification,
+			onError: () => {
+				resumeCurrentUserQuery();
+				showLogoutErrorNotification();
+			},
 		},
 	});
 
@@ -58,6 +62,7 @@ export function useAllSessionsLogout() {
 					return;
 				}
 
+				suspendCurrentUserQuery();
 				logoutAll();
 			},
 		});

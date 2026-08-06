@@ -1,6 +1,8 @@
 import { Box, Stack, Text, Title } from '@mantine/core';
+import { useNavigate } from 'react-router';
 
 import { type Signal, SignalsList } from '@/entities/signal';
+import { ROUTES } from '@/shared/model';
 
 const exampleSignals: Signal[] = [
 	{
@@ -12,6 +14,7 @@ const exampleSignals: Signal[] = [
 		occurredAt: '2024-03-10T10:00:00Z',
 		close: 295.4,
 		direction: 'buy',
+		confidence: 87,
 		strategy: 'Импульс',
 	},
 	{
@@ -23,6 +26,7 @@ const exampleSignals: Signal[] = [
 		occurredAt: '2024-03-12T14:30:00Z',
 		close: 162.8,
 		direction: 'sell',
+		confidence: 76,
 		strategy: 'Возврат к среднему',
 	},
 	{
@@ -34,11 +38,14 @@ const exampleSignals: Signal[] = [
 		occurredAt: '2024-03-14T11:15:00Z',
 		close: 7350.0,
 		direction: 'hold',
+		confidence: 68,
 		strategy: 'Пробой уровня',
 	},
 ];
 
 export function ExampleSignals() {
+	const navigate = useNavigate();
+
 	return (
 		<Box py={80} pos='relative'>
 			<Stack gap={50}>
@@ -57,7 +64,7 @@ export function ExampleSignals() {
 
 				<SignalsList
 					signals={exampleSignals}
-					onSignalSelect={() => {}}
+					onSignalSelect={() => navigate(ROUTES.LOGIN)}
 				/>
 			</Stack>
 		</Box>

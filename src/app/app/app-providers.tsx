@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { SecurityProvider } from '@/entities/security';
+import { CurrentUserQueryProvider } from '@/shared/lib/auth';
 
 import { PwaProvider, QueryProvider, ThemeProvider } from '../config';
 import { AppSecurityRuntime } from '../security';
@@ -14,11 +15,13 @@ export function AppProviders({ children }: AppProvidersProps) {
 		<PwaProvider>
 			<SecurityProvider>
 				<QueryProvider>
-					<AppSecurityRuntime>
-						<ThemeProvider>
-							{children}
-						</ThemeProvider>
-					</AppSecurityRuntime>
+					<CurrentUserQueryProvider>
+						<AppSecurityRuntime>
+							<ThemeProvider>
+								{children}
+							</ThemeProvider>
+						</AppSecurityRuntime>
+					</CurrentUserQueryProvider>
 				</QueryProvider>
 			</SecurityProvider>
 		</PwaProvider>

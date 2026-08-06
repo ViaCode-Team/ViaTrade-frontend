@@ -87,7 +87,7 @@ export function AddRemind() {
 					Отмена
 				</Button>
 				<Button onClick={handleAdd} disabled={!selectedStockId || isPending} loading={isPending}>
-					Создать
+					Создать напоминание
 				</Button>
 			</Group>
 		</Stack>

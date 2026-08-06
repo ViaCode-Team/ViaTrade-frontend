@@ -5,7 +5,7 @@ import { AddRemind } from './add-remind';
 
 export function openAddRemindModal() {
 	modals.open({
-		title: 'Выбор актива',
+		title: 'Новое напоминание',
 		children: <AddRemind />,
 		size: 'md',
 	});

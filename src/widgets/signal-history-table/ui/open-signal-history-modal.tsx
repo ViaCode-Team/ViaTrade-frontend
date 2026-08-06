@@ -6,7 +6,7 @@ import { SignalHistoryTableBoundary } from './history-table';
 
 export function openSignalHistoryModal(signal: Signal) {
 	modals.open({
-		title: `История сигнала: ${signal.asset}`,
+		title: `История сигналов: ${signal.asset}`,
 		children: (
 			<SignalHistoryTableBoundary
 				instrumentId={signal.instrumentId}

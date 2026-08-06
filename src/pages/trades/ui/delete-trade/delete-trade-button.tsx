@@ -10,34 +10,35 @@ type DeleteTradeButtonProps = {
 	trade: TradeResponse;
 };
 
+type OpenDeleteTradeConfirmationOptions = {
+	isPending: boolean;
+	onConfirm: () => void;
+};
+
+function openDeleteTradeConfirmation({ isPending, onConfirm }: OpenDeleteTradeConfirmationOptions) {
+	modals.openConfirmModal({
+		title: 'Удалить сделку?',
+		centered: true,
+		children: 'Сделка будет удалена без возможности восстановления.',
+		labels: { confirm: 'Удалить', cancel: 'Отмена' },
+		confirmProps: { color: 'red', loading: isPending },
+		onConfirm,
+	});
+}
+
 export function DeleteTradeButton({ trade }: DeleteTradeButtonProps) {
 	const { mutate: deleteTrade, isPending } = useDeleteTrade();
 
-	const openDeleteModal = () =>
-		modals.openConfirmModal({
-			title: 'Удаление сделки',
-			centered: true,
-			withCloseButton: false,
-			children: 'Вы уверены, что хотите удалить эту сделку? Это действие необратимо.',
-			labels: { confirm: 'Удалить', cancel: 'Отмена' },
-			confirmProps: { color: 'red', loading: isPending },
-
-			onConfirm: () => {
-				deleteTrade(
-					{ tradeId: trade.id },
-					{
-
-					},
-				);
-			},
-		});
+	const handleDeleteTrade = () => {
+		deleteTrade({ tradeId: trade.id });
+	};
 
 	return (
 		<Tooltip label='Удалить сделку'>
 			<ActionIcon
 				color='red'
 				variant='subtle'
-				onClick={openDeleteModal}
+				onClick={() => openDeleteTradeConfirmation({ isPending, onConfirm: handleDeleteTrade })}
 				loading={isPending}
 				aria-label='Удалить сделку'
 			>

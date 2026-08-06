@@ -55,7 +55,7 @@ export function usePinUnlock() {
 			const currentLockout = await refreshLockoutStatus();
 			if (currentLockout.isLockedOut) {
 				setPin('');
-				setError(`Слишком много неверных попыток. Повторите через ${formatRemainingTime(currentLockout.remainingMs)}.`);
+				setError(`Слишком много попыток. Попробуйте снова через ${formatRemainingTime(currentLockout.remainingMs)}.`);
 				return;
 			}
 
@@ -70,16 +70,16 @@ export function usePinUnlock() {
 
 				if (nextLockout.isLockedOut) {
 					setLockoutRemainingMs(nextLockout.remainingMs);
-					setError(`Слишком много неверных попыток. Повторите через ${formatRemainingTime(nextLockout.remainingMs)}.`);
+					setError(`Слишком много попыток. Попробуйте снова через ${formatRemainingTime(nextLockout.remainingMs)}.`);
 					return;
 				}
 
 				const attemptsBeforeLockout = getAttemptsBeforeNextLockout(nextLockout.state.failedAttempts);
-				setError(`Неверный ПИН-код. До временной блокировки: ${attemptsBeforeLockout}`);
+				setError(`Неверный ПИН-код. Осталось попыток до блокировки: ${attemptsBeforeLockout}.`);
 			}
 		}
 		catch {
-			setError('Произошла ошибка при разблокировке.');
+			setError('Не удалось разблокировать приложение. Попробуйте ещё раз.');
 			setPin('');
 		}
 		finally {
@@ -99,7 +99,7 @@ export function usePinUnlock() {
 	return {
 		pin,
 		error: isLockedOut
-			? `Слишком много неверных попыток. Повторите через ${formatRemainingTime(lockoutRemainingMs)}.`
+			? `Слишком много попыток. Попробуйте снова через ${formatRemainingTime(lockoutRemainingMs)}.`
 			: error,
 		isLoading,
 		isLockedOut,

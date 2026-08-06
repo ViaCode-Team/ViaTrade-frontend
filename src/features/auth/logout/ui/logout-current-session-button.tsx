@@ -18,7 +18,7 @@ export function LogoutCurrentSessionButton({
 	const handleLogout = () => {
 		openLogoutConfirmation({
 			title: 'Выйти из аккаунта?',
-			description: 'Локальные данные будут удалены. При отсутствии сети завершение серверной сессии будет повторено после восстановления подключения.',
+			description: 'Локальные данные будут удалены. Без интернета серверная сессия завершится после восстановления подключения.',
 			confirmLabel: 'Выйти',
 			onConfirm: () => {
 				setIsLoggingOut(true);

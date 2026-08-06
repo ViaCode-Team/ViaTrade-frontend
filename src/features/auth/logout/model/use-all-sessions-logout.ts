@@ -54,7 +54,7 @@ export function useAllSessionsLogout() {
 
 		openLogoutConfirmation({
 			title: 'Выйти из всех сессий?',
-			description: 'После подтверждения все активные сессии будут завершены, и потребуется войти заново.',
+			description: 'Все активные сессии будут завершены. Для продолжения работы потребуется войти снова.',
 			confirmLabel: 'Выйти',
 			onConfirm: () => {
 				if (!canRequestLogout()) {

@@ -4,7 +4,7 @@ import { IconPlus } from '@tabler/icons-react';
 
 import { AddTradeForm } from '../add-trade-form/add-trade-form';
 
-function openModal() {
+function openAddTradeModal() {
 	modals.open({
 		title: 'Добавить сделку',
 		children: <AddTradeForm />,
@@ -15,7 +15,7 @@ export function AddTradeButton() {
 	return (
 		<>
 			<Button
-				onClick={openModal}
+				onClick={openAddTradeModal}
 				variant='light'
 				leftSection={<IconPlus size={20} />}
 				visibleFrom='sm'
@@ -25,7 +25,7 @@ export function AddTradeButton() {
 
 			<Tooltip label='Добавить сделку'>
 				<ActionIcon
-					onClick={openModal}
+					onClick={openAddTradeModal}
 					variant='light'
 					size='lg'
 					aria-label='Добавить сделку'

@@ -22,22 +22,27 @@ type NoteCardHeaderProps = {
 	onDelete: () => void;
 };
 
+type OpenDeleteNoteConfirmationOptions = {
+	isDeleting?: boolean;
+	onConfirm: () => void;
+};
+
+function openDeleteNoteConfirmation({ isDeleting, onConfirm }: OpenDeleteNoteConfirmationOptions) {
+	modals.openConfirmModal({
+		title: 'Удалить заметку?',
+		centered: true,
+		children: 'Заметка будет удалена без возможности восстановления.',
+		labels: { confirm: 'Удалить', cancel: 'Отмена' },
+		confirmProps: { color: 'red', loading: isDeleting },
+		onConfirm,
+	});
+}
+
 export function NoteCardHeader({
 	note,
 	isDeleting,
 	onDelete,
 }: NoteCardHeaderProps) {
-	const openDeleteModal = () => {
-		modals.openConfirmModal({
-			title: 'Удаление заметки',
-			centered: true,
-			children: 'Вы уверены, что хотите удалить заметку? Это действие необратимо.',
-			labels: { confirm: 'Удалить', cancel: 'Отмена' },
-			confirmProps: { color: 'red', loading: isDeleting },
-			onConfirm: onDelete,
-		});
-	};
-
 	return (
 		<Stack gap='xs'>
 			<Group justify='space-between' gap='sm' wrap='nowrap'>
@@ -57,7 +62,7 @@ export function NoteCardHeader({
 							onClick={(event) => {
 								event.preventDefault();
 								event.stopPropagation();
-								openDeleteModal();
+								openDeleteNoteConfirmation({ isDeleting, onConfirm: onDelete });
 							}}
 						>
 							<IconTrash size={20} />

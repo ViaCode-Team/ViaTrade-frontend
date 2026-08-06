@@ -14,6 +14,22 @@ type DeleteRemindButtonProps = {
 	id: string;
 };
 
+type OpenDeleteReminderConfirmationOptions = {
+	isPending: boolean;
+	onConfirm: () => void;
+};
+
+function openDeleteReminderConfirmation({ isPending, onConfirm }: OpenDeleteReminderConfirmationOptions) {
+	modals.openConfirmModal({
+		title: 'Удалить напоминание?',
+		centered: true,
+		children: 'Напоминание будет удалено без возможности восстановления.',
+		labels: { confirm: 'Удалить', cancel: 'Отмена' },
+		confirmProps: { color: 'red', loading: isPending },
+		onConfirm,
+	});
+}
+
 export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 	const queryClient = useQueryClient();
 	const deleteRemindMutation = useDeleteReminder();
@@ -44,17 +60,6 @@ export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 		});
 	};
 
-	const openDeleteModal = () => {
-		modals.openConfirmModal({
-			title: 'Удаление напоминания',
-			centered: true,
-			children: 'Вы уверены, что хотите удалить напоминание? Это действие необратимо.',
-			labels: { confirm: 'Удалить', cancel: 'Отмена' },
-			confirmProps: { color: 'red', loading: deleteRemindMutation.isPending },
-			onConfirm: deleteRemind,
-		});
-	};
-
 	return (
 		<>
 			<Tooltip label='Удалить напоминание'>
@@ -63,7 +68,10 @@ export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 					color='red'
 					size='md'
 					aria-label='Удалить напоминание'
-					onClick={openDeleteModal}
+					onClick={() => openDeleteReminderConfirmation({
+						isPending: deleteRemindMutation.isPending,
+						onConfirm: deleteRemind,
+					})}
 					loading={deleteRemindMutation.isPending}
 				>
 					<IconTrash size={18} />

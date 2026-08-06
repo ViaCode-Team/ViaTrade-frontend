@@ -62,7 +62,7 @@ export function usePinSetup({ onLocalAuthBlockRequired }: UsePinSetupParams) {
 			await checkSecurityState();
 		}
 		catch {
-			setError('Не удалось создать ПИН-код. Попробуйте еще раз.');
+			setError('Не удалось сохранить ПИН-код. Попробуйте ещё раз.');
 			setConfirmPin('');
 		}
 		finally {

@@ -12,29 +12,28 @@ import { StocksMarketSummary } from './ui/stocks-market-summary';
 import { StocksOverviewListBoundary } from './ui/stocks-overview-list';
 import { UserStockLinkedStrategiesModal } from './ui/user-stock-linked-strategies-modal';
 
+function closeStockLinkedStrategiesModal(modalId: string) {
+	modals.close(modalId);
+}
+
+function openStockLinkedStrategiesModal(stock: Stock) {
+	const modalId = `stock-linked-strategies-${stock.id}`;
+
+	modals.open({
+		modalId,
+		title: `Стратегии, связанные с «${stock.ticker}»`,
+		size: 'xl',
+		centered: true,
+		children: (
+			<UserStockLinkedStrategiesModal
+				stock={stock}
+				onNavigate={() => closeStockLinkedStrategiesModal(modalId)}
+			/>
+		),
+	});
+}
+
 export function StocksPage() {
-	function handleLinkedStrategyNavigate(modalId: string) {
-		modals.close(modalId);
-	}
-
-	function openLinkedStrategiesModal(stock: Stock) {
-		const modalId = `stock-linked-strategies-${stock.id}`;
-
-		modals.open({
-			modalId,
-			title: `Привязанные стратегии ${stock.ticker}`,
-			size: 'xl',
-			centered: true,
-			children: (
-				<UserStockLinkedStrategiesModal
-					stock={stock}
-					modalId={modalId}
-					onNavigate={handleLinkedStrategyNavigate}
-				/>
-			),
-		});
-	}
-
 	return (
 		<>
 			<PageHeader
@@ -52,7 +51,7 @@ export function StocksPage() {
 					<StocksControls />
 
 					<StocksOverviewListBoundary
-						onLinkedStrategiesClick={openLinkedStrategiesModal}
+						onLinkedStrategiesClick={openStockLinkedStrategiesModal}
 					/>
 				</Stack>
 			</Section>

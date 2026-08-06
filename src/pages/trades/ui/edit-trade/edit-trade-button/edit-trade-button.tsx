@@ -10,19 +10,19 @@ type EditTradeButtonProps = {
 	trade: TradeResponse;
 };
 
-function openModal(trade: TradeResponse) {
+function openEditTradeModal(trade: TradeResponse) {
 	modals.open({
-		title: 'Изменить сделку',
+		title: 'Редактировать сделку',
 		children: <EditTradeForm trade={trade} />,
 	});
 }
 
 export function EditTradeButton({ trade }: EditTradeButtonProps) {
-	const handleOpenModal = () => openModal(trade);
+	const handleOpenEditTradeModal = () => openEditTradeModal(trade);
 
 	return (
-		<Tooltip label='Изменить сделку'>
-			<ActionIcon onClick={handleOpenModal} variant='subtle' aria-label='Изменить сделку'>
+		<Tooltip label='Редактировать сделку'>
+			<ActionIcon onClick={handleOpenEditTradeModal} variant='subtle' aria-label='Редактировать сделку'>
 				<IconPencil size={16} />
 			</ActionIcon>
 		</Tooltip>

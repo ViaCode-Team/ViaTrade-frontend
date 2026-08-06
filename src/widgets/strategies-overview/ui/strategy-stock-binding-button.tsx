@@ -9,9 +9,9 @@ type StrategyStockBindingButtonProps = {
 	strategy: Strategy;
 };
 
-function openModalFn(strategy: { name: string; id: number }) {
-	return () => modals.open({
-		title: `Привязать акции к ${strategy.name}`,
+function openStrategyStockBindingModal(strategy: Strategy) {
+	modals.open({
+		title: `Акции стратегии «${strategy.name}»`,
 		size: 'xl',
 		children: <StrategyStockBindingModalBoundary strategyId={strategy.id} />,
 	});
@@ -19,8 +19,8 @@ function openModalFn(strategy: { name: string; id: number }) {
 
 export function StrategyStockBindingButton({ strategy }: StrategyStockBindingButtonProps) {
 	return (
-		<Button mt='auto' variant='default' style={{ position: 'relative', zIndex: 2 }} onClick={openModalFn(strategy)}>
-			Связать с акцией
+		<Button mt='auto' variant='default' style={{ position: 'relative', zIndex: 2 }} onClick={() => openStrategyStockBindingModal(strategy)}>
+			Настроить акции
 		</Button>
 	);
 }

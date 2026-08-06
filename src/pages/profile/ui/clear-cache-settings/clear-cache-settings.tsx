@@ -6,13 +6,13 @@ import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 
-function openModalClearCache(queryClient: QueryClient) {
+function openClearCacheConfirmation(queryClient: QueryClient) {
 	modals.openConfirmModal({
-		title: 'Очистка кэша приложения',
+		title: 'Очистить кэш?',
 		centered: true,
 		children: (
 			<Text size='sm'>
-				Все данные в кеше будут удалены. Приложение будет недоступно без интернета, пока вы не загрузите данные заново.
+				Кэш приложения будет очищен. При следующем открытии разделов приложение загрузит данные заново.
 			</Text>
 		),
 		labels: { confirm: 'Очистить кэш', cancel: 'Отмена' },
@@ -21,7 +21,7 @@ function openModalClearCache(queryClient: QueryClient) {
 			queryClient.clear();
 			notifications.show({
 				title: 'Кэш очищен',
-				message: 'Сохраненные данные удалены с устройства',
+				message: 'Кэш приложения очищен.',
 				color: 'green',
 			});
 		},
@@ -41,7 +41,7 @@ export function ClearCacheSettings() {
 				variant='light'
 				color='red'
 				leftSection={<IconTrash size={16} />}
-				onClick={() => openModalClearCache(queryClient)}
+				onClick={() => openClearCacheConfirmation(queryClient)}
 			>
 				Очистить кэш
 			</Button>

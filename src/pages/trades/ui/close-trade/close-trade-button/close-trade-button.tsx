@@ -9,16 +9,16 @@ type CloseTradeButtonProps = {
 	trade: TradeResponse;
 };
 
-function openModal(trade: TradeResponse) {
-	return modals.open({
-		title: 'Закрытие сделки',
+function openCloseTradeModal(trade: TradeResponse) {
+	modals.open({
+		title: 'Закрыть сделку',
 		children: <CloseTradeForm trade={trade} />,
 	});
 }
 
 export function CloseTradeButton({ trade }: CloseTradeButtonProps) {
 	return (
-		<Button onClick={() => openModal(trade)} size='compact-sm' variant='light'>
+		<Button onClick={() => openCloseTradeModal(trade)} size='compact-sm' variant='light'>
 			Закрыть
 		</Button>
 	);

@@ -1,7 +1,7 @@
 import type {
-	IncomeTradeStatistic,
+	IncomeTradeStatisticResponse,
 	ProfitChartBucketResponse,
-	TradeStatistic,
+	TradeStatisticResponse,
 } from '@/shared/api';
 
 export type WinLossChartPoint = {
@@ -20,14 +20,14 @@ export type DirectionPerformanceChartPoint = {
 	Сумма: number;
 };
 
-export function getWinLossChartData(tradeStatistic: TradeStatistic): WinLossChartPoint[] {
+export function getWinLossChartData(tradeStatistic: TradeStatisticResponse): WinLossChartPoint[] {
 	return [
 		{ name: 'Прибыльные', value: tradeStatistic.winTrades, color: 'teal.6' },
 		{ name: 'Убыточные', value: tradeStatistic.loseTrades, color: 'red.6' },
 	];
 }
 
-export function getIncomeChartData(incomeStatistic: IncomeTradeStatistic): IncomeChartPoint[] {
+export function getIncomeChartData(incomeStatistic: IncomeTradeStatisticResponse): IncomeChartPoint[] {
 	return [
 		{ metric: 'Общая прибыль', value: incomeStatistic.totalIncome },
 		{ metric: 'Средняя прибыль', value: incomeStatistic.averageIncome },

@@ -1,4 +1,4 @@
-import type { GlobalStatistic } from '@/shared/api';
+import type { GlobalStatisticResponse } from '@/shared/api';
 
 import { TRADE_STATISTICS_CARDS } from '@/entities/trade';
 
@@ -12,7 +12,7 @@ export type StatisticsSummaryCardData = {
 	color?: string;
 };
 
-export function getStatisticsSummaryCardsData(statistic: GlobalStatistic): StatisticsSummaryCardData[] {
+export function getStatisticsSummaryCardsData(statistic: GlobalStatisticResponse): StatisticsSummaryCardData[] {
 	const {
 		incomeStatistic,
 		tradeStatistic,

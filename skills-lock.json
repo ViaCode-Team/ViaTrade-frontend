@@ -1,0 +1,41 @@
+{
+	"version": 1,
+	"skills": {
+		"feature-sliced-design": {
+			"source": "feature-sliced/skills",
+			"sourceType": "github",
+			"skillPath": "feature-sliced-design/SKILL.md",
+			"computedHash": "f14c4d8f092ef8a6e9e0a2e5937a56884b9cdbd9b1f49c0618fad513d4a59dc8"
+		},
+		"frontend-design": {
+			"source": "anthropics/skills",
+			"sourceType": "github",
+			"skillPath": "skills/frontend-design/SKILL.md",
+			"computedHash": "93f53fd1c0352d3d7ec17b8f73d7351bf76f4821e55d123c9d2abc2c53ba48e4"
+		},
+		"orval": {
+			"source": "orval-labs/orval",
+			"sourceType": "github",
+			"skillPath": "skills/orval/SKILL.md",
+			"computedHash": "5184979818957c9ed7293a6e8345f3a1b76060a8ae31ba4e15f24e3656fd8061"
+		},
+		"tanstack-query-best-practices": {
+			"source": "deckardger/tanstack-agent-skills",
+			"sourceType": "github",
+			"skillPath": "skills/tanstack-query/SKILL.md",
+			"computedHash": "addf4358803d7746f7fe0475a3370d835775217e00dd5fc7bbd8a7d6c53d81e5"
+		},
+		"vercel-react-best-practices": {
+			"source": "vercel-labs/agent-skills",
+			"sourceType": "github",
+			"skillPath": "skills/react-best-practices/SKILL.md",
+			"computedHash": "ca7b0c0c6e5f2750043f7f0cd72d16ac4e2abc48f9b5500d047a4b77a2506212"
+		},
+		"web-design-guidelines": {
+			"source": "vercel-labs/agent-skills",
+			"sourceType": "github",
+			"skillPath": "skills/web-design-guidelines/SKILL.md",
+			"computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+		}
+	}
+}

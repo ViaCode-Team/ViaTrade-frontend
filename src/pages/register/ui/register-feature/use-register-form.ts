@@ -1,7 +1,12 @@
 import { useForm } from '@mantine/form';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useRegister } from '@/entities/user';
+import { useSecurity } from '@/entities/security';
+import { getGetSessionsQueryKey } from '@/entities/session';
+import { getGetMeQueryKey, useRegister } from '@/entities/user';
+import { useCurrentUserQueryControl } from '@/shared/lib/auth';
+import { clearLocalAuthBlocked, setPinSetupMark } from '@/shared/lib/secure-storage';
 
 import type { TRegisterData } from './register-data';
 
@@ -10,9 +15,24 @@ import { getRegisterFormErrors, validateRegisterForm } from './register-validati
 
 export function useRegisterForm() {
 	const [apiError, setApiError] = useState<string | null>(null);
+	const queryClient = useQueryClient();
+	const { checkSecurityState } = useSecurity();
+	const { resumeCurrentUserQuery } = useCurrentUserQueryControl();
 
 	const { mutate, isPending } = useRegister({
+		skipInvalidation: true,
 		mutation: {
+			onSuccess: async () => {
+				await clearLocalAuthBlocked();
+				await setPinSetupMark();
+				await checkSecurityState();
+				resumeCurrentUserQuery();
+
+				await Promise.all([
+					queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() }),
+					queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() }),
+				]);
+			},
 			onError: (error) => {
 				setApiError(mapRegisterApiError(error));
 			},

@@ -1,4 +1,6 @@
-[Russian](./CONTRIBUTING_RU.md)
+[Russian](CONTRIBUTING_RU.md)
+
+[← Security](SECURITY.md) · [Back to Documentation](README.md)
 
 # Contributing
 
@@ -33,6 +35,31 @@ src/
 - Prefer alias imports through `@/`, except for imports within the current slice.
 - Keep changes focused and minimal.
 
+## Project-specific best practices
+
+### UI composition and responsiveness
+
+- Keep page-specific composition in the page's local `ui` directory. Create a `widget` only for an established reusable screen block.
+- Keep wrapper components thin. Extract a reusable or logically distinct UI part into its own component, but use a hook instead of a component that only performs side effects and returns `null`.
+- For button-triggered dialogs, use the `@mantine/modals` manager provided by `ModalsProvider`; do not add local modal state unless the interaction needs local control.
+- Prefer CSS Container Queries for reusable component layouts. Reserve media queries and `useMediaQuery` for app-level viewport behavior, such as the global sidebar or system theme.
+- Import a CSS Module as `cls`. Do not reset `ul` or `li` locally: global styles already do that.
+- Prefer `condition && expression` to `condition ? expression : null` when it preserves strict TypeScript correctness.
+
+### Server state and feedback
+
+- Use the fully generated Orval hooks, including generated suspense hooks, instead of manually pairing `useQuery` or `useSuspenseQuery` with generated query options.
+- Let a use-case container own generated hooks, mutations, URL state, and pagination. Reusable lists and tables receive data, callbacks, and one optional pagination object through props.
+- The pagination object belongs inside the reusable list or table and must provide `page`, `totalPages`, and `onPageChange`.
+- Keep search, filters, and sorting usable while a list is loading or refetching. Show a region skeleton or in-place refresh feedback instead of blocking the page.
+- Disable only actions that are invalid, unavailable, or must not be repeated. Show mutation progress on the affected row, card, or action.
+
+### Errors and maintenance
+
+- Keep expected validation and business errors local to the current UI. Use `withQueryBoundary` for suspense-aware loading failures and unexpected rendering errors.
+- Use `type` by default; use `interface` only for extension or declaration merging.
+- Use `createStorageKey()` for persistent-storage keys and cookie names. Retain hard-coded legacy keys only while an explicit migration needs them.
+
 ## Public API
 
 - For sliced layers (`pages`, `widgets`, `features`, `entities`), use `index.ts` as the public API only at the slice level.
@@ -60,28 +87,51 @@ Use `Component` directly only when an outer component combines several suspense 
 Minimal example:
 
 ```tsx
-export function UserOrders(props: UserOrdersProps) {
-	const { data } = useSuspenseQuery(userOrdersQueryOptions(props.userId));
+import { useGetTradeStatisticsSuspense } from '@/entities/trade';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { SummaryCard } from '@/shared/ui/summary-card';
+import { SummaryList } from '@/shared/ui/summary-list';
 
-	return <OrdersList orders={data} />;
+import { getStatisticsSummaryCardsData } from '../../model/statistics-summary';
+import { StatisticsSummarySkeleton } from './statistics-summary.skeleton';
+
+export function StatisticsSummary() {
+	const { data: response } = useGetTradeStatisticsSuspense();
+	const cards = getStatisticsSummaryCardsData(response.data);
+
+	return (
+		<SummaryList>
+			{cards.map((card) => (
+				<SummaryCard
+					key={card.id}
+					title={card.title}
+					value={card.value}
+					description={card.description}
+					color={card.color}
+				/>
+			))}
+		</SummaryList>
+	);
 }
 
-export const UserOrdersBoundary = withQueryBoundary(UserOrders, {
+export const StatisticsSummaryBoundary = withQueryBoundary(StatisticsSummary, {
 	suspenseProps: {
-		fallback: <UserOrdersSkeleton />,
+		fallback: <StatisticsSummarySkeleton />,
 	},
 });
 ```
 
-If a specific area needs a separate error UI, pass it through `errorBoundaryProps`:
+If a specific area needs a separate error UI, pass it through `errorFallbackProps`:
 
 ```tsx
-export const UserOrdersBoundary = withQueryBoundary(UserOrders, {
+import { ErrorFallback } from '@/shared/ui/errorFallback';
+
+export const StatisticsSummaryBoundary = withQueryBoundary(StatisticsSummary, {
 	suspenseProps: {
-		fallback: <UserOrdersSkeleton />,
+		fallback: <StatisticsSummarySkeleton />,
 	},
-	errorBoundaryProps: {
-		FallbackComponent: UserOrdersErrorFallback,
+	errorFallbackProps: {
+		FallbackComponent: ErrorFallback,
 	},
 });
 ```
@@ -94,9 +144,9 @@ Advanced composition with a shared boundary area:
 		fallback: <ProfileDashboardSkeleton />,
 	}}
 >
-	<UserOrders userId={userId} />
-	<UserPayments userId={userId} />
-	<UserActivity userId={userId} />
+	<StatisticsSummary />
+	<SignalsSummary />
+	<RemindsSummary />
 </QueryBoundary>
 ```
 
@@ -160,23 +210,29 @@ General rule:
 
 ## Naming
 
-| **Entity**                         | **Rule**                   | **Example**                  |
-| ---------------------------------- | -------------------------- | ---------------------------- |
-| Folders/files                      | `kebab-case`               | `strategy-page`              |
-| CSS Modules                        | `kebab-case.module.css`    | `strategy-page.module.css`   |
-| Skeleton files                     | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx` |
-| React components                   | `PascalCase`               | `StrategyPage`               |
-| Boundary component                 | `<Component>Boundary`      | `UserOrdersBoundary`         |
-| Error fallback component           | `<Component>ErrorFallback` | `UserOrdersErrorFallback`    |
-| CSS/SCSS classes                   | `camelCase`                | `pageTitle`                  |
-| Variables                          | `camelCase`                | `strategyName`               |
-| Functions                          | `camelCase`                | `getAccuracyColor`           |
-| Constants                          | `SCREAMING_SNAKE_CASE`     | `ROUTES`                     |
-| HOC                                | `with` + `camelCase`       | `withQueryBoundary`          |
-| Hooks                              | `use` + `camelCase`        | `useLoginForm`               |
-| List pages                         | plural                     | `strategies-page`            |
-| Detail pages                       | singular                   | `strategy-page`              |
-| URL Search Parameters (Search)     | `q`                        | `?q=search`                  |
-| URL Search Parameters (Filters)    | `*Filter`                  | `?typeFilter=long`           |
-| URL Search Parameters (Sorting)    | `*Sort`                    | `?fieldSort=date`            |
-| URL Search Parameters (Pagination) | `page`                     | `?page=1`                    |
+| **Entity**                         | **Rule**                   | **Example**                      |
+| ---------------------------------- | -------------------------- | -------------------------------- |
+| Folders/files                      | `kebab-case`               | `strategy-page`                  |
+| CSS Modules                        | `kebab-case.module.css`    | `strategy-page.module.css`       |
+| Skeleton files                     | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx`     |
+| React components                   | `PascalCase`               | `StrategyPage`                   |
+| Boundary component                 | `<Component>Boundary`      | `TradesHistoryTableBoundary`     |
+| Error fallback component           | `<Component>ErrorFallback` | `StatisticsSummaryErrorFallback` |
+| CSS/SCSS classes                   | `camelCase`                | `pageTitle`                      |
+| Variables                          | `camelCase`                | `strategyName`                   |
+| Functions                          | `camelCase`                | `getAccuracyColor`               |
+| Constants                          | `SCREAMING_SNAKE_CASE`     | `ROUTES`                         |
+| HOC                                | `with` + `camelCase`       | `withQueryBoundary`              |
+| Hooks                              | `use` + `camelCase`        | `useLoginForm`                   |
+| List pages                         | plural                     | `strategies-page`                |
+| Detail pages                       | singular                   | `strategy-page`                  |
+| URL Search Parameters (Search)     | `q`                        | `?q=search`                      |
+| URL Search Parameters (Filters)    | `*Filter`                  | `?typeFilter=long`               |
+| URL Search Parameters (Sorting)    | `*Sort`                    | `?fieldSort=date`                |
+| URL Search Parameters (Pagination) | `page`                     | `?page=1`                        |
+
+## See Also
+
+- [Getting Started](GETTING_STARTED.md) — local development commands.
+- [Architecture](ARCHITECTURE.md) — FSD layer and import boundaries.
+- [API Integration](API.md) — generated-client workflow.

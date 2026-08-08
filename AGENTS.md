@@ -51,11 +51,6 @@ Use this file for repository-specific agent behavior and workflow rules; keep co
 
 - Never name components with a `Content` suffix. Use the base name for the component, and append the `Boundary` suffix when wrapping it with `withQueryBoundary` (e.g., `Component` and `ComponentBoundary`).
 - Always import CSS modules as `cls` (e.g., `import cls from './style.module.css'`), never as `classes` and etc.
-- URL Search Parameters must follow these naming rules:
-  - Search queries: `q`
-  - Filters: must have `Filter` suffix (e.g. `typeFilter`, `statusFilter`)
-  - Sorting: must have `Sort` suffix (e.g. `fieldSort`, `directionSort`)
-  - Pagination: `page`
 
 ### Truth and verification
 
@@ -71,6 +66,19 @@ Use this file for repository-specific agent behavior and workflow rules; keep co
 - If a task changes how the agent should work in this repository, propose updating `AGENTS.md`.
 - If the user repeats the same instruction, preference, or agreement multiple times, propose documenting it.
 - Do not leave documentation outdated after rule changes.
+
+### Documentation
+
+| Document         | Path                      | Description                         |
+| ---------------- | ------------------------- | ----------------------------------- |
+| Index            | `docs/README.md`          | English documentation index         |
+| Getting Started  | `docs/GETTING_STARTED.md` | Setup and daily commands            |
+| Architecture     | `docs/ARCHITECTURE.md`    | FSD boundaries and data flow        |
+| Configuration    | `docs/CONFIGURATION.md`   | Environment and build configuration |
+| API Integration  | `docs/API.md`             | OpenAPI generation and client       |
+| Security         | `docs/SECURITY.md`        | PIN and secure browser storage      |
+| Contributing     | `docs/CONTRIBUTING.md`    | Workflow and project practices      |
+| Russian versions | `docs/*_RU.md`            | Russian equivalents of all guides   |
 
 ## Priority
 

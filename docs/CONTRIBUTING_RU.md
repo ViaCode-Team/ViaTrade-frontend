@@ -1,4 +1,6 @@
-[English](./CONTRIBUTING.md)
+[English](CONTRIBUTING.md)
+
+[← Безопасность](SECURITY_RU.md) · [К документации](README_RU.md)
 
 # Contributing
 
@@ -33,6 +35,31 @@ src/
 - Предпочитать alias-импорты через `@/`, кроме импортов внутри текущего слайса.
 - Держать изменения точечными и минимальными.
 
+## Лучшие практики проекта
+
+### Композиция UI и адаптивность
+
+- Хранить композицию, нужную одной странице, в ее локальной папке `ui`. Создавать `widget` только для уже подтвержденного переиспользуемого экранного блока.
+- Держать wrapper-компоненты тонкими. Переиспользуемую или логически отдельную часть UI выносить в собственный компонент, но логику с одними side effects и `null` в return выносить в hook.
+- Для модальных окон, открываемых кнопкой, использовать менеджер `@mantine/modals` из `ModalsProvider`; локальное состояние допустимо, только когда оно действительно необходимо взаимодействию.
+- Для адаптивности переиспользуемых компонентов предпочитать CSS Container Queries. Media Queries и `useMediaQuery` оставлять для поведения уровня приложения, например глобальной боковой панели или системной темы.
+- Импортировать CSS Module как `cls`. Не сбрасывать `ul` и `li` локально: это уже делает глобальный стиль.
+- Предпочитать `condition && expression` вместо `condition ? expression : null`, если это не нарушает strict TypeScript.
+
+### Серверное состояние и обратная связь
+
+- Использовать полностью сгенерированные hooks Orval, включая suspense-hooks, вместо ручного сочетания `useQuery` или `useSuspenseQuery` со сгенерированными query options.
+- Container конкретного сценария владеет сгенерированными hooks, мутациями, URL-состоянием и пагинацией. Переиспользуемые списки и таблицы получают данные, callbacks и один необязательный объект пагинации через props.
+- Объект пагинации должен находиться внутри переиспользуемого списка или таблицы и содержать `page`, `totalPages` и `onPageChange`.
+- Не блокировать поиск, фильтры и сортировку при загрузке или refetch списка. Показывать skeleton области либо индикатор обновления на месте, а не блокировать страницу.
+- Отключать только действия, которые недоступны, невалидны или не должны повторяться. Прогресс мутации показывать на затронутой строке, карточке или действии.
+
+### Ошибки и сопровождение
+
+- Ожидаемые ошибки валидации и бизнес-ошибки обрабатывать внутри текущего UI. Для suspense-загрузки и неожиданных ошибок рендера использовать `withQueryBoundary`.
+- По умолчанию использовать `type`; `interface` — только для расширения или declaration merging.
+- Для persistent storage и имен cookie использовать `createStorageKey()`. Жестко заданные legacy-ключи оставлять только на время явной миграции.
+
 ## Публичный API
 
 - Для слоёв со слайсами (`pages`, `widgets`, `features`, `entities`) использовать `index.ts` как public API только на уровне слайса.
@@ -60,28 +87,51 @@ src/
 Минимальный пример:
 
 ```tsx
-export function UserOrders(props: UserOrdersProps) {
-	const { data } = useSuspenseQuery(userOrdersQueryOptions(props.userId));
+import { useGetTradeStatisticsSuspense } from '@/entities/trade';
+import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { SummaryCard } from '@/shared/ui/summary-card';
+import { SummaryList } from '@/shared/ui/summary-list';
 
-	return <OrdersList orders={data} />;
+import { getStatisticsSummaryCardsData } from '../../model/statistics-summary';
+import { StatisticsSummarySkeleton } from './statistics-summary.skeleton';
+
+export function StatisticsSummary() {
+	const { data: response } = useGetTradeStatisticsSuspense();
+	const cards = getStatisticsSummaryCardsData(response.data);
+
+	return (
+		<SummaryList>
+			{cards.map((card) => (
+				<SummaryCard
+					key={card.id}
+					title={card.title}
+					value={card.value}
+					description={card.description}
+					color={card.color}
+				/>
+			))}
+		</SummaryList>
+	);
 }
 
-export const UserOrdersBoundary = withQueryBoundary(UserOrders, {
+export const StatisticsSummaryBoundary = withQueryBoundary(StatisticsSummary, {
 	suspenseProps: {
-		fallback: <UserOrdersSkeleton />,
+		fallback: <StatisticsSummarySkeleton />,
 	},
 });
 ```
 
-Если для конкретной области нужен отдельный UI ошибки, передавать его через `errorBoundaryProps`:
+Если для конкретной области нужен отдельный UI ошибки, передавать его через `errorFallbackProps`:
 
 ```tsx
-export const UserOrdersBoundary = withQueryBoundary(UserOrders, {
+import { ErrorFallback } from '@/shared/ui/errorFallback';
+
+export const StatisticsSummaryBoundary = withQueryBoundary(StatisticsSummary, {
 	suspenseProps: {
-		fallback: <UserOrdersSkeleton />,
+		fallback: <StatisticsSummarySkeleton />,
 	},
-	errorBoundaryProps: {
-		FallbackComponent: UserOrdersErrorFallback,
+	errorFallbackProps: {
+		FallbackComponent: ErrorFallback,
 	},
 });
 ```
@@ -94,9 +144,9 @@ export const UserOrdersBoundary = withQueryBoundary(UserOrders, {
 		fallback: <ProfileDashboardSkeleton />,
 	}}
 >
-	<UserOrders userId={userId} />
-	<UserPayments userId={userId} />
-	<UserActivity userId={userId} />
+	<StatisticsSummary />
+	<SignalsSummary />
+	<RemindsSummary />
 </QueryBoundary>
 ```
 
@@ -160,23 +210,29 @@ export function LoginForm() {
 
 ## Именование
 
-| **Сущность**               | **Правило**                | **Пример**                   |
-| -------------------------- | -------------------------- | ---------------------------- |
-| Папки/файлы                | `kebab-case`               | `strategy-page`              |
-| CSS Modules                | `kebab-case.module.css`    | `strategy-page.module.css`   |
-| Skeleton-файлы             | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx` |
-| React-компоненты           | `PascalCase`               | `StrategyPage`               |
-| Boundary-компонент         | `<Component>Boundary`      | `UserOrdersBoundary`         |
-| Error fallback компонент   | `<Component>ErrorFallback` | `UserOrdersErrorFallback`    |
-| CSS/SCSS-классы            | `camelCase`                | `pageTitle`                  |
-| Переменные                 | `camelCase`                | `strategyName`               |
-| Функции                    | `camelCase`                | `getAccuracyColor`           |
-| Константы                  | `SCREAMING_SNAKE_CASE`     | `ROUTES`                     |
-| HOC                        | `with` + `camelCase`       | `withQueryBoundary`          |
-| Хуки                       | `use` + `camelCase`        | `useLoginForm`               |
-| List pages                 | множественное число        | `strategies-page`            |
-| Detail pages               | единственное число         | `strategy-page`              |
-| URL-параметры (Поиск)      | `q`                        | `?q=search`                  |
-| URL-параметры (Фильтры)    | Суффикс `Filter`           | `?typeFilter=long`           |
-| URL-параметры (Сортировка) | Суффикс `Sort`             | `?fieldSort=date`            |
-| URL-параметры (Пагинация)  | `page`                     | `?page=1`                    |
+| **Сущность**               | **Правило**                | **Пример**                       |
+| -------------------------- | -------------------------- | -------------------------------- |
+| Папки/файлы                | `kebab-case`               | `strategy-page`                  |
+| CSS Modules                | `kebab-case.module.css`    | `strategy-page.module.css`       |
+| Skeleton-файлы             | `<component>.skeleton.tsx` | `strategy-hero.skeleton.tsx`     |
+| React-компоненты           | `PascalCase`               | `StrategyPage`                   |
+| Boundary-компонент         | `<Component>Boundary`      | `TradesHistoryTableBoundary`     |
+| Error fallback компонент   | `<Component>ErrorFallback` | `StatisticsSummaryErrorFallback` |
+| CSS/SCSS-классы            | `camelCase`                | `pageTitle`                      |
+| Переменные                 | `camelCase`                | `strategyName`                   |
+| Функции                    | `camelCase`                | `getAccuracyColor`               |
+| Константы                  | `SCREAMING_SNAKE_CASE`     | `ROUTES`                         |
+| HOC                        | `with` + `camelCase`       | `withQueryBoundary`              |
+| Хуки                       | `use` + `camelCase`        | `useLoginForm`                   |
+| List pages                 | множественное число        | `strategies-page`                |
+| Detail pages               | единственное число         | `strategy-page`                  |
+| URL-параметры (Поиск)      | `q`                        | `?q=search`                      |
+| URL-параметры (Фильтры)    | Суффикс `Filter`           | `?typeFilter=long`               |
+| URL-параметры (Сортировка) | Суффикс `Sort`             | `?fieldSort=date`                |
+| URL-параметры (Пагинация)  | `page`                     | `?page=1`                        |
+
+## См. также
+
+- [Начало работы](GETTING_STARTED_RU.md) — команды локальной разработки.
+- [Архитектура](ARCHITECTURE_RU.md) — FSD-слои и границы импортов.
+- [Интеграция с API](API_RU.md) — workflow сгенерированного клиента.

@@ -1,4 +1,6 @@
-[Russian](./security_RU.md)
+[Russian](SECURITY_RU.md)
+
+[← API Integration](API.md) · [Back to Documentation](README.md) · [Contributing →](CONTRIBUTING.md)
 
 # Security: PIN and secure storage
 
@@ -79,6 +81,7 @@ The raw master key is not stored in `localStorage`, `sessionStorage`, or JS-read
 | IndexedDB via `idb-keyval`   | `viatrade_security_unlock_deadline_at`     | Absolute unlock deadline timestamp                | Enforces the 6-hour maximum unlocked lifetime                         | Plain metadata; checked on bootstrap, timers, focus/resume                                                 |
 | IndexedDB via `idb-keyval`   | `viatrade_security_pin_lockout_state`      | Failed attempts, lockout level, cooldown deadline | Implements escalating PIN cooldown                                    | Plain best-effort metadata; reset after successful PIN; not tamper-proof                                   |
 | IndexedDB via `idb-keyval`   | `viatrade_security_pin_setup_mark`         | Local marker that PIN setup is required           | Prevents private UI access after login until local PIN is created     | Plain best-effort marker; cleared after successful setup                                                   |
+| IndexedDB via `idb-keyval`   | `viatrade_security_local_auth_blocked`     | Pending local-auth block marker                   | Prevents private UI access while backend logout is retried            | Plain marker; cleared after a resolved logout or the next successful sign-in                               |
 | IndexedDB via secure storage | `viatrade_notes_personal`                  | Personal local notes                              | Notes are user data and can be sensitive                              | Encrypted after unlock; legacy plaintext `localStorage` value is migrated and removed                      |
 | IndexedDB via secure storage | `viatrade_reminds_drafts_<remindId>`       | Reminder draft text/date/time                     | Drafts are local user data                                            | Encrypted after unlock; legacy plaintext `localStorage` value is migrated and removed                      |
 | localStorage                 | `mantine-color-scheme-value`               | Theme preference                                  | UI preference only                                                    | Plaintext is acceptable; not cleared as sensitive data                                                     |
@@ -139,3 +142,9 @@ This is browser-local best-effort protection. A user with DevTools can edit Inde
 - Modified browser storage, modified bundle, modified clock, or compromised OS.
 - Data already visible in an unlocked UI.
 - Offline server logout when auth is stored in HttpOnly cookies.
+
+## See Also
+
+- [API Integration](API.md) — request handling and generated clients.
+- [Configuration](CONFIGURATION.md) — PWA and API URL configuration.
+- [Contributing](CONTRIBUTING.md) — storage and error-handling conventions.

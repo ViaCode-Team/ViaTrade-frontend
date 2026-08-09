@@ -16,8 +16,8 @@ export type TradesHistoryTableRowProps = {
 };
 
 export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
-	const isWin = (trade.percent ?? 0) > 0;
-	const isLoss = (trade.percent ?? 0) < 0;
+	const isWin = (trade.netIncome ?? 0) > 0;
+	const isLoss = (trade.netIncome ?? 0) < 0;
 
 	return (
 		<Table.Tr>
@@ -41,27 +41,25 @@ export function TradesHistoryTableRow({ trade }: TradesHistoryTableRowProps) {
 			<Table.Td>{dayjs(trade.openedAt).format(DATE_TIME_DISPLAY_FORMAT)}</Table.Td>
 			<Table.Td>{trade.closedAt ? dayjs(trade.closedAt).format(DATE_TIME_DISPLAY_FORMAT) : '—'}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
-				{trade.entryPrice.toFixed(2)}
+				{trade.openPrice.toFixed(2)}
 				{' '}
 				₽
 			</Table.Td>
-			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.exitPrice !== undefined ? `${trade.exitPrice.toFixed(2)} ₽` : '—'}</Table.Td>
+			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.closePrice !== undefined ? `${trade.closePrice.toFixed(2)} ₽` : '—'}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>{trade.quantity}</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
 				<Text fw={500}>
-					{trade.income.toFixed(2)}
+					{trade.totalPrice.toFixed(2)}
 					{' '}
 					₽
 				</Text>
 			</Table.Td>
 			<Table.Td style={{ whiteSpace: 'nowrap' }}>
-				{trade.percent !== undefined
+				{trade.netIncome !== undefined
 					? (
 							<Text c={isWin ? 'teal' : isLoss ? 'red' : 'dimmed'} fw={500}>
-								{trade.percent > 0 && '+'}
-								{trade.percent.toFixed(2)}
-								{' '}
-								%
+								{trade.netIncome > 0 && '+'}
+								{trade.netIncome.toFixed(2)}
 							</Text>
 						)
 					: (

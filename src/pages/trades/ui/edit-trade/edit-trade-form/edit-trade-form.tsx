@@ -30,10 +30,10 @@ export function EditTradeForm({ trade }: EditTradeFormProps) {
 		instrumentId: String(trade.instrument?.id ?? ''),
 		signal: String(trade.signal ?? 0),
 		quantity: trade.quantity,
-		entryPrice: trade.entryPrice,
+		openPrice: trade.openPrice,
 		openedAt: initialDate,
 		isClosed: !!trade.closedAt,
-		exitPrice: trade.exitPrice,
+		closePrice: trade.closePrice,
 		closedAt: trade.closedAt ? dayjs(trade.closedAt).toDate() : undefined,
 	};
 

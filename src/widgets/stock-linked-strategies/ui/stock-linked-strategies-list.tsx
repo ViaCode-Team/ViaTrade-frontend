@@ -72,6 +72,7 @@ function StockLinkedStrategiesList({
 						<StrategyToggleCheckbox
 							strategyId={strategy.id}
 							isActive={isActive}
+							instrumentId={stockId}
 						/>
 					)}
 				/>

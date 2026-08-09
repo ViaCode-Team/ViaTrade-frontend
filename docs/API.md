@@ -36,6 +36,14 @@ Shared schemas are exported from `src/shared/api/types/gen/`.
 - The Ky client retries once, marks the application online after a successful request, and updates offline state for network failures.
 - Requests are blocked while the local security runtime locks sensitive application data.
 
+## Query Cache Invalidation
+
+- Configure mutation invalidation in `orval.invalidation.ts`; it is regenerated with the API client.
+- Pass path parameters through `params`, for example `{ query: 'getTradeById', params: ['tradeId'] }`, so Orval generates an exact query-key invalidation.
+- In handwritten code, use generated `invalidateGet...` helpers instead of URL literals or query-key predicates.
+- When a mutation knows an `instrumentId`, invalidate its specific list with `invalidateGetStrategiesByInstrument(queryClient, instrumentId)`.
+- Broad cache refreshes and intentional cache patches are exceptions; keep them scoped and document why the generated helper cannot express them.
+
 ## Working with an Endpoint
 
 1. Change the relevant path, schema, or operation in `swagger.yaml`.

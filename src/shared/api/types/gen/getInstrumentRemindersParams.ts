@@ -5,19 +5,18 @@
  * API для платформы инвестиционного анализа ViaTrade
  * OpenAPI spec version: v1
  */
-import type { StrategySortField } from './strategySortField';
+import type { ReminderSortField } from './reminderSortField';
 
-export type GetStrategiesByInstrumentParams = {
-	name?: string;
-	sortBy?: StrategySortField[];
-	/**
-	 * @minimum 1
-	 * @maximum 21474837
-	 */
+export type GetInstrumentRemindersParams = {
+/**
+ * @minimum 1
+ * @maximum 21474837
+ */
 	page?: number;
 	/**
 	 * @minimum 1
 	 * @maximum 100
 	 */
 	pageSize?: number;
+	sortBy?: ReminderSortField[];
 };

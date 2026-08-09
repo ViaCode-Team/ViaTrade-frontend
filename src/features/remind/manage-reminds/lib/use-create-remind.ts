@@ -3,12 +3,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { ReminderResponse } from '@/shared/api';
 
 import {
-	getGetRemindersQueryKey as getGetInstrumentRemindersQueryKey,
-	useCreateReminder,
+	getGetInstrumentRemindersQueryKey,
+	useCreateInstrumentReminder,
 } from '@/entities/instrument';
 import {
 	getGetRemindersQueryKey,
-	getGetReminderStatisticsQueryKey,
+	invalidateGetReminderStatistics,
 } from '@/entities/reminder';
 
 import { getCurrentReminderDateTime } from './remind-date-time';
@@ -27,7 +27,7 @@ type CachedRemindersPage = {
 
 export function useCreateRemind() {
 	const queryClient = useQueryClient();
-	const createReminderMutation = useCreateReminder({ skipInvalidation: true });
+	const createReminderMutation = useCreateInstrumentReminder();
 
 	const createRemind = (instrumentId: number, onSuccess?: () => void) => {
 		createReminderMutation.mutate(
@@ -47,7 +47,7 @@ export function useCreateRemind() {
 					addReminderToCachedLists(queryClient, remindersQueryKey, reminder);
 					void queryClient.invalidateQueries({ queryKey: instrumentQueryKey, refetchType: 'none' });
 					void queryClient.invalidateQueries({ queryKey: remindersQueryKey, refetchType: 'none' });
-					void queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
+					void invalidateGetReminderStatistics(queryClient);
 					onSuccess?.();
 				},
 			},

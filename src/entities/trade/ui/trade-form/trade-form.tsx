@@ -30,10 +30,10 @@ export type TradeFormValues = {
 	instrumentId: string;
 	signal: string;
 	quantity: number;
-	entryPrice: number;
+	openPrice: number | '';
 	openedAt: Date | null;
 	isClosed: boolean;
-	exitPrice?: number;
+	closePrice?: number | '';
 	closedAt?: Date | null;
 };
 
@@ -67,9 +67,13 @@ export function TradeForm({
 			tradeTypeId: (value) => (!value && 'Выберите тип сделки'),
 			instrumentId: (value) => (!value && 'Выберите инструмент'),
 			quantity: (value) => (value < 1 && 'Минимум 1'),
-			entryPrice: (value) => (value < 0 && 'Цена должна быть больше 0'),
+			openPrice: (value) => ((value === '' || value <= 0) && 'Цена должна быть больше 0'),
 			openedAt: (value) => (!value && 'Выберите дату открытия'),
-			exitPrice: (value, values) => (values.isClosed && value === undefined && 'Введите цену'),
+			closePrice: (value, values) => (
+				values.isClosed
+				&& (value === undefined || value === '' || value <= 0)
+				&& 'Введите цену больше 0'
+			),
 			closedAt: (value, values) => (values.isClosed && !value && 'Выберите дату закрытия'),
 		},
 	});
@@ -151,11 +155,11 @@ export function TradeForm({
 					<NumberInput
 						label='Цена открытия'
 						placeholder='Цена, ₽'
-						min={0}
+						min={0.01}
 						decimalScale={2}
 						withAsterisk
-						key={form.key('entryPrice')}
-						{...form.getInputProps('entryPrice')}
+						key={form.key('openPrice')}
+						{...form.getInputProps('openPrice')}
 					/>
 				</Group>
 
@@ -183,11 +187,11 @@ export function TradeForm({
 						<NumberInput
 							label='Цена закрытия'
 							placeholder='Цена, ₽'
-							min={0}
+							min={0.01}
 							decimalScale={2}
 							withAsterisk
-							key={form.key('exitPrice')}
-							{...form.getInputProps('exitPrice')}
+							key={form.key('closePrice')}
+							{...form.getInputProps('closePrice')}
 						/>
 						<DateTimePicker
 							label='Дата закрытия'

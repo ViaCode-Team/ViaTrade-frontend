@@ -16,8 +16,8 @@ export function processTrades(
 	let result = trades.map((trade) => {
 		const normalizedTrade = {
 			...trade,
-			entryPrice: toNumber(trade.entryPrice),
-			exitPrice: toOptionalNumber(trade.exitPrice),
+			openPrice: toNumber(trade.openPrice),
+			closePrice: toOptionalNumber(trade.closePrice),
 			totalPrice: toNumber(trade.totalPrice),
 			netIncome: toOptionalNumber(trade.netIncome),
 		};
@@ -25,10 +25,6 @@ export function processTrades(
 			...normalizedTrade,
 			ticker: trade.instrument?.symbol ?? 'Неизвестный инструмент',
 			isLong: trade.signal !== -1,
-			income: normalizedTrade.netIncome ?? 0,
-			percent: normalizedTrade.totalPrice
-				? (normalizedTrade.netIncome ?? 0) / normalizedTrade.totalPrice * 100
-				: undefined,
 		};
 	});
 
@@ -37,10 +33,10 @@ export function processTrades(
 		result = result.filter((t) => {
 			const openedAtStr = dayjs(t.openedAt).format(DATE_TIME_DISPLAY_FORMAT);
 			const closedAtStr = t.closedAt ? dayjs(t.closedAt).format(DATE_TIME_DISPLAY_FORMAT) : '—';
-			const entryPriceStr = `${t.entryPrice.toFixed(2)} ₽`;
-			const exitPriceStr = t.exitPrice !== undefined ? `${t.exitPrice.toFixed(2)} ₽` : '—';
-			const sumStr = t.income > 0 ? `+${t.income.toFixed(2)} ₽` : `${t.income.toFixed(2)} ₽`;
-			const percentStr = t.percent !== undefined ? (t.percent > 0 ? `+${t.percent.toFixed(2)}%` : `${t.percent.toFixed(2)}%`) : '—';
+			const openPriceStr = `${t.openPrice.toFixed(2)} ₽`;
+			const closePriceStr = t.closePrice !== undefined ? `${t.closePrice.toFixed(2)} ₽` : '—';
+			const totalPriceStr = `${t.totalPrice.toFixed(2)} ₽`;
+			const netIncomeStr = t.netIncome !== undefined ? (t.netIncome > 0 ? `+${t.netIncome.toFixed(2)}` : t.netIncome.toFixed(2)) : '—';
 			const typeStr = t.isLong ? 'Long' : 'Short';
 
 			const searchableString = [
@@ -48,11 +44,11 @@ export function processTrades(
 				typeStr,
 				openedAtStr,
 				closedAtStr,
-				entryPriceStr,
-				exitPriceStr,
+				openPriceStr,
+				closePriceStr,
 				String(t.quantity),
-				sumStr,
-				percentStr,
+				totalPriceStr,
+				netIncomeStr,
 			].join(' ').toLowerCase();
 
 			return searchableString.includes(lowerSearch);
@@ -80,25 +76,25 @@ export function processTrades(
 				aVal = a.closedAt ? dayjs(a.closedAt).valueOf() : 0;
 				bVal = b.closedAt ? dayjs(b.closedAt).valueOf() : 0;
 				break;
-			case 'entryPrice':
-				aVal = a.entryPrice;
-				bVal = b.entryPrice;
+			case 'openPrice':
+				aVal = a.openPrice;
+				bVal = b.openPrice;
 				break;
-			case 'exitPrice':
-				aVal = a.exitPrice || 0;
-				bVal = b.exitPrice || 0;
+			case 'closePrice':
+				aVal = a.closePrice || 0;
+				bVal = b.closePrice || 0;
 				break;
 			case 'quantity':
 				aVal = a.quantity;
 				bVal = b.quantity;
 				break;
 			case 'sum':
-				aVal = a.income;
-				bVal = b.income;
+				aVal = a.totalPrice;
+				bVal = b.totalPrice;
 				break;
 			case 'income':
-				aVal = a.percent ?? 0;
-				bVal = b.percent ?? 0;
+				aVal = a.netIncome ?? 0;
+				bVal = b.netIncome ?? 0;
 				break;
 			default:
 				aVal = dayjs(a.openedAt).valueOf();

@@ -1,5 +1,5 @@
 import { Stack } from '@mantine/core';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import {
 	SelectableStockList,
@@ -8,12 +8,12 @@ import {
 import {
 	useAddInstrumentToStrategy,
 	useDeleteInstrumentFromStrategy,
-	useGetInstrumentsByStrategySuspense,
 } from '@/entities/strategy';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 import { getFilteredStocks, getNextStockIdsAfterStockToggle, getStockSelectionState } from '../model';
+import { useStrategyLinkedStockIds } from '../model/use-strategy-linked-stock-ids';
 import { ITEMS_PER_PAGE, useStrategyStockBindingData } from '../model/use-strategy-stock-binding';
 import { StockBindingControls } from './stock-binding-controls';
 import { StockBindingStatusBar } from './stock-binding-status-bar';
@@ -34,16 +34,7 @@ function StrategyStockBindingBase({
 	const visibleStocks = getFilteredStocks(stocks, searchQuery);
 	const paginatedStocks = visibleStocks;
 
-	const { data: linkedStocksResponse } = useGetInstrumentsByStrategySuspense(strategyId, {
-		page,
-		pageSize: ITEMS_PER_PAGE,
-		sortBy: ['symbolAsc'],
-	});
-	const selectedStockIds = useMemo(
-		() =>
-			linkedStocksResponse.data.items.map((stock) => String(stock.id)),
-		[linkedStocksResponse.data.items],
-	);
+	const selectedStockIds = useStrategyLinkedStockIds(strategyId);
 
 	const { mutate: createLink } = useAddInstrumentToStrategy();
 	const { mutate: deleteLink } = useDeleteInstrumentFromStrategy();

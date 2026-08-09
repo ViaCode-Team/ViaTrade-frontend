@@ -3,15 +3,16 @@ import { modals } from '@mantine/modals';
 import { IconTrash } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 
+import { getGetInstrumentRemindersQueryKey } from '@/entities/instrument';
 import {
 	getGetRemindersQueryKey,
-	getGetReminderStatisticsQueryKey,
 	type getRemindersResponseSuccess,
 	useDeleteReminder,
 } from '@/entities/reminder';
 
 type DeleteRemindButtonProps = {
 	id: string;
+	instrumentId?: number;
 };
 
 type OpenDeleteReminderConfirmationOptions = {
@@ -30,15 +31,13 @@ function openDeleteReminderConfirmation({ isPending, onConfirm }: OpenDeleteRemi
 	});
 }
 
-export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
+export function DeleteRemindButton({ id, instrumentId }: DeleteRemindButtonProps) {
 	const queryClient = useQueryClient();
 	const deleteRemindMutation = useDeleteReminder();
 
 	const deleteRemind = () => {
 		deleteRemindMutation.mutate({ reminderId: Number(id) }, {
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
-
 				const updater = (oldData: getRemindersResponseSuccess | undefined) => {
 					if (!oldData)
 						return oldData;
@@ -52,10 +51,9 @@ export function DeleteRemindButton({ id }: DeleteRemindButtonProps) {
 				};
 
 				queryClient.setQueriesData({ queryKey: getGetRemindersQueryKey() }, updater);
-				queryClient.setQueriesData(
-					{ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/api/v1/instruments/') },
-					updater,
-				);
+
+				if (instrumentId !== undefined)
+					queryClient.setQueriesData({ queryKey: getGetInstrumentRemindersQueryKey(instrumentId) }, updater);
 			},
 		});
 	};

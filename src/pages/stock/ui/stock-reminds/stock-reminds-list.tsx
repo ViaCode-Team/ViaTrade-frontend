@@ -45,7 +45,7 @@ function StockRemindsList({ instrumentId }: StockRemindsListProps) {
 					reminds={filteredReminds}
 					hideSourceBadge
 					onRemindChange={handleRemindChange}
-					renderAction={(remind) => <DeleteRemindButton id={remind.id} />}
+					renderAction={(remind) => <DeleteRemindButton id={remind.id} instrumentId={instrumentId} />}
 					pagination={{ page, totalPages, onPageChange: setPage }}
 				/>
 			</Stack>

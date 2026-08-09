@@ -36,6 +36,14 @@ npm run api:gen
 - Ky-клиент делает одну повторную попытку, отмечает приложение онлайн после успешного запроса и обновляет offline state при сетевых ошибках.
 - Пока security runtime локально блокирует чувствительные данные, запросы запрещены.
 
+## Инвалидация query-кэша
+
+- Настраивать инвалидацию мутаций в `orval.invalidation.ts`: она будет пересоздана вместе с API-клиентом.
+- Передавать path-параметры через `params`, например `{ query: 'getTradeById', params: ['tradeId'] }`, чтобы Orval сгенерировал точную инвалидацию query key.
+- В рукописном коде использовать generated helpers `invalidateGet...`, а не URL-литералы и predicates для query key.
+- Когда мутация знает `instrumentId`, инвалидировать только его список: `invalidateGetStrategiesByInstrument(queryClient, instrumentId)`.
+- Широкое обновление кэша и намеренное точечное изменение кэша — исключения; их нужно ограничивать по области и объяснять, почему generated helper не подходит.
+
 ## Работа с endpoint
 
 1. Измените нужный path, schema или operation в `swagger.yaml`.

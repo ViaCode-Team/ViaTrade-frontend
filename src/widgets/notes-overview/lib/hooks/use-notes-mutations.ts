@@ -1,12 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
-	useDeleteNote as useDeleteInstrumentNote,
-	useUpsertNote as useUpsertInstrumentNote,
+	useDeleteInstrumentNote,
+	useUpsertInstrumentNote,
 } from '@/entities/instrument';
 import {
-	useDeleteNote as useDeleteStrategyNote,
-	useUpsertNote as useUpsertStrategyNote,
+	useDeleteStrategyNote,
+	useUpsertStrategyNote,
 } from '@/entities/strategy';
 import {
 	type DraftedPersonalNote,

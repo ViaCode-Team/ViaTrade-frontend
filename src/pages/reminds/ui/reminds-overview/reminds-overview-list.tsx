@@ -42,7 +42,7 @@ function RemindsOverviewList() {
 				<RemindList
 					reminds={filteredReminds}
 					onRemindChange={handleRemindChange}
-					renderAction={(remind) => <DeleteRemindButton id={remind.id} />}
+					renderAction={(remind) => <DeleteRemindButton id={remind.id} instrumentId={remind.source ? Number(remind.source.id) : undefined} />}
 					pagination={{ page, totalPages, onPageChange: setPage }}
 				/>
 			</Stack>

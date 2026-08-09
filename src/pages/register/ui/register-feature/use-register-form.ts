@@ -3,8 +3,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { useSecurity } from '@/entities/security';
-import { getGetSessionsQueryKey } from '@/entities/session';
-import { getGetMeQueryKey, useRegister } from '@/entities/user';
+import { invalidateGetSessions } from '@/entities/session';
+import { invalidateGetMe, useRegister } from '@/entities/user';
 import { useCurrentUserQueryControl } from '@/shared/lib/auth';
 import { clearLocalAuthBlocked, setPinSetupMark } from '@/shared/lib/secure-storage';
 
@@ -29,8 +29,8 @@ export function useRegisterForm() {
 				resumeCurrentUserQuery();
 
 				await Promise.all([
-					queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() }),
-					queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() }),
+					invalidateGetMe(queryClient),
+					invalidateGetSessions(queryClient),
 				]);
 			},
 			onError: (error) => {

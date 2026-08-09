@@ -20,7 +20,7 @@ function openStrategyStockBindingModal(strategy: Strategy) {
 export function StrategyStockBindingButton({ strategy }: StrategyStockBindingButtonProps) {
 	return (
 		<Button mt='auto' variant='default' style={{ position: 'relative', zIndex: 2 }} onClick={() => openStrategyStockBindingModal(strategy)}>
-			Настроить акции
+			Связать акции
 		</Button>
 	);
 }

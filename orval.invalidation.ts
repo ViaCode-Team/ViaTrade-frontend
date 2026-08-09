@@ -23,17 +23,17 @@ export const sessionMutationInvalidates = [
 
 export const instrumentMutationInvalidates = [
 	{
-		onMutations: ['upsertNote', 'deleteNote'],
+		onMutations: ['upsertInstrumentNote', 'deleteInstrumentNote'],
 		invalidates: [
-			'getNote',
+			{ query: 'getInstrumentNote', params: ['instrumentId'] },
 			{ query: 'getNoteStatistics', file: '@/entities/note' },
 			{ query: 'getNotes', file: '@/entities/note' },
 		],
 	},
 	{
-		onMutations: ['createReminder'],
+		onMutations: ['createInstrumentReminder'],
 		invalidates: [
-			'getReminders',
+			{ query: 'getInstrumentReminders', params: ['instrumentId'] },
 			{ query: 'getReminderStatistics', file: '@/entities/reminder' },
 			{ query: 'getReminders', file: '@/entities/reminder' },
 		],
@@ -46,8 +46,8 @@ export const strategyMutationInvalidates = [
 		invalidates: [
 			'getStrategyStatistics',
 			'getStrategies',
-			'getInstrumentsByStrategy',
-			{ query: 'getStrategiesByInstrument', file: '@/entities/instrument' },
+			{ query: 'getInstrumentsByStrategy', params: ['strategyId'] },
+			{ query: 'getStrategiesByInstrument', file: '@/entities/instrument', params: ['instrumentId'] },
 			{ query: 'getSignals', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getLatestSignals', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
@@ -58,15 +58,16 @@ export const strategyMutationInvalidates = [
 		invalidates: [
 			'getStrategyStatistics',
 			'getStrategies',
+			{ query: 'getStrategyById', params: ['strategyId'] },
 			{ query: 'getSignals', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getLatestSignals', file: '@/entities/signal', invalidateMode: 'reset' },
 			{ query: 'getStatistics', file: '@/entities/signal', invalidateMode: 'reset' },
 		],
 	},
 	{
-		onMutations: ['upsertNote', 'deleteNote'],
+		onMutations: ['upsertStrategyNote', 'deleteStrategyNote'],
 		invalidates: [
-			'getNote',
+			{ query: 'getStrategyNote', params: ['strategyId'] },
 			{ query: 'getNoteStatistics', file: '@/entities/note' },
 			{ query: 'getNotes', file: '@/entities/note' },
 		],
@@ -79,8 +80,7 @@ export const reminderMutationInvalidates = [
 		invalidates: [
 			'getReminderStatistics',
 			'getReminders',
-			'getReminderById',
-			{ query: 'getReminders', file: '@/entities/instrument' },
+			{ query: 'getReminderById', params: ['reminderId'] },
 		],
 	},
 ] satisfies MutationInvalidatesConfig;
@@ -95,7 +95,7 @@ export const tradeMutationInvalidates = [
 		invalidates: [
 			'getTrades',
 			'getTradeStatistics',
-			'getTradeById',
+			{ query: 'getTradeById', params: ['tradeId'] },
 		],
 	},
 ] satisfies MutationInvalidatesConfig;

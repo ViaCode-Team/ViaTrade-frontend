@@ -2,8 +2,8 @@ import { useDebouncedCallback } from '@mantine/hooks';
 import { useState } from 'react';
 
 import {
-	useGetNote as useGetInstrumentNote,
-	useUpsertNote as useUpsertInstrumentNote,
+	useGetInstrumentNote,
+	useUpsertInstrumentNote,
 } from '@/entities/instrument';
 import {
 	createPersonalNote,
@@ -13,8 +13,8 @@ import {
 	type PersonalNote,
 } from '@/entities/note';
 import {
-	useGetNote as useGetStrategyNote,
-	useUpsertNote as useUpsertStrategyNote,
+	useGetStrategyNote,
+	useUpsertStrategyNote,
 } from '@/entities/strategy';
 import { isApiErrorWithStatus } from '@/shared/api';
 

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useSecurity } from '@/entities/security';
 import { useLogin } from '@/entities/session';
-import { getGetMeQueryKey } from '@/entities/user';
+import { invalidateGetMe } from '@/entities/user';
 import { useCurrentUserQueryControl } from '@/shared/lib/auth';
 import { clearLocalAuthBlocked, setPinSetupMark } from '@/shared/lib/secure-storage';
 
@@ -27,7 +27,7 @@ export function useLoginForm() {
 				await setPinSetupMark();
 				await checkSecurityState();
 				resumeCurrentUserQuery();
-				queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
+				void invalidateGetMe(queryClient);
 			},
 			onError: (error) => {
 				setApiError(mapLoginApiError(error));

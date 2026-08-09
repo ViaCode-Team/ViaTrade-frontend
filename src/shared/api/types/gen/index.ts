@@ -8,6 +8,7 @@
 
 export * from './createReminderRequest';
 export * from './createTradeRequest';
+export * from './getInstrumentRemindersParams';
 export * from './getInstrumentsByStrategyParams';
 export * from './getInstrumentsParams';
 export * from './getLatestSignalsParams';

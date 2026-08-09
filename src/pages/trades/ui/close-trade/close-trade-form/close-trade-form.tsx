@@ -12,7 +12,7 @@ import type { UpdateTradeRequest } from '@/shared/api';
 import { useUpdateTrade } from '@/entities/trade';
 
 type FormValues = {
-	exitPrice: number | '';
+	closePrice: number | '';
 	closedAt: Date | null;
 };
 
@@ -27,17 +27,17 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 	const form = useForm<FormValues>({
 		mode: 'uncontrolled',
 		initialValues: {
-			exitPrice: '',
+			closePrice: '',
 			closedAt: initialDate,
 		},
 		validate: {
-			exitPrice: (value) => ((value === '' || value < 0) && 'Введите корректную цену закрытия'),
+			closePrice: (value) => ((value === '' || value <= 0) && 'Введите корректную цену закрытия'),
 			closedAt: (value) => (!value && 'Выберите дату закрытия'),
 		},
 	});
 
 	const handleSubmit = (values: FormValues) => {
-		if (values.exitPrice === '' || !values.closedAt || !trade.instrument)
+		if (values.closePrice === '' || values.closePrice <= 0 || !values.closedAt || !trade.instrument)
 			return;
 
 		const request: UpdateTradeRequest = {
@@ -45,9 +45,9 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 			instrumentId: trade.instrument.id,
 			signal: trade.signal ?? 0,
 			quantity: trade.quantity,
-			entryPrice: trade.entryPrice,
+			openPrice: trade.openPrice,
 			openedAt: trade.openedAt,
-			exitPrice: Number(values.exitPrice),
+			closePrice: Number(values.closePrice),
 			closedAt: dayjs(values.closedAt).toISOString(),
 		};
 
@@ -69,11 +69,11 @@ export function CloseTradeForm({ trade }: CloseTradeFormProps) {
 				<NumberInput
 					label='Цена закрытия'
 					placeholder='Цена, ₽'
-					min={0}
+					min={0.01}
 					decimalScale={2}
 					withAsterisk
-					key={form.key('exitPrice')}
-					{...form.getInputProps('exitPrice')}
+					key={form.key('closePrice')}
+					{...form.getInputProps('closePrice')}
 				/>
 
 				<DateTimePicker

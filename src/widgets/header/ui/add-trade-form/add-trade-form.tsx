@@ -24,10 +24,10 @@ export function AddTradeForm() {
 		instrumentId: '',
 		signal: '1',
 		quantity: 1,
-		entryPrice: 0,
+		openPrice: '',
 		openedAt: initialDate,
 		isClosed: false,
-		exitPrice: undefined,
+		closePrice: undefined,
 		closedAt: undefined,
 	};
 

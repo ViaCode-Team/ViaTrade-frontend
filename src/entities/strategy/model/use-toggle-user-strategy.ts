@@ -1,7 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
-
 import {
-	getGetStrategyByIdQueryKey,
 	useActivateStrategy,
 	useDeactivateStrategy,
 } from '../api/gen';
@@ -12,38 +9,22 @@ type ToggleUserStrategyVariables = {
 };
 
 export function useToggleUserStrategy() {
-	const queryClient = useQueryClient();
-	const mutationOptions = {
-		onSuccess: (_data: unknown, variables: { strategyId: number }) => {
-			void queryClient.invalidateQueries({
-				queryKey: getGetStrategyByIdQueryKey(variables.strategyId),
-			});
-		},
-	};
-	const createStrategyMutation = useActivateStrategy({
-		mutation: {
-			...mutationOptions,
-		},
-	});
-	const deleteStrategyMutation = useDeactivateStrategy({
-		mutation: {
-			...mutationOptions,
-		},
-	});
+	const createStrategyMutation = useActivateStrategy();
+	const deleteStrategyMutation = useDeactivateStrategy();
 
 	return {
-		mutate: (variables: ToggleUserStrategyVariables) => {
+		mutate: (variables: ToggleUserStrategyVariables, onSuccess?: () => void) => {
 			if (variables.isActive) {
 				createStrategyMutation.mutate({
 					strategyId: variables.strategyId,
-				});
+				}, { onSuccess });
 
 				return;
 			}
 
 			deleteStrategyMutation.mutate({
 				strategyId: variables.strategyId,
-			});
+			}, { onSuccess });
 		},
 		isPending: createStrategyMutation.isPending || deleteStrategyMutation.isPending,
 		isError: createStrategyMutation.isError || deleteStrategyMutation.isError,

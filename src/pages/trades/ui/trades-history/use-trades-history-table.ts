@@ -10,8 +10,6 @@ import { processTrades } from './process-trades';
 export type ProcessedTrade = TradeResponse & {
 	ticker: string;
 	isLong: boolean;
-	income: number;
-	percent?: number;
 };
 
 export function useTradesHistoryTable() {

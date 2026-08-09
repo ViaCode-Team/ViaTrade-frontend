@@ -3,15 +3,13 @@ import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import type { ReminderSortField } from '@/shared/api';
 
 import {
-	getGetRemindersQueryKey as getGetInstrumentRemindersQueryKey,
-	getGetRemindersSuspenseQueryOptions as getGetInstrumentRemindersSuspenseQueryOptions,
-	getReminders as getInstrumentReminders,
+	getGetInstrumentRemindersSuspenseQueryOptions,
+	getInstrumentReminders,
+	invalidateGetInstrumentReminders,
 } from '@/entities/instrument';
 import { mapTradeRemindToRemindItem } from '@/entities/reminder';
 import {
-	getGetRemindersQueryKey,
 	getGetRemindersSuspenseQueryOptions,
-	getGetReminderStatisticsQueryKey,
 	remindFiltersSchema,
 	useUpdateReminder,
 } from '@/entities/reminder';
@@ -59,8 +57,9 @@ export function useRemindList(instrumentId?: number) {
 
 		updateRemindMutation.mutate({ reminderId: Number(id), data: { text: updates.text, remindAt: getReminderDateTimeFromLocalParts(updates.date, updates.time) } }, {
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: getGetReminderStatisticsQueryKey() });
-				queryClient.invalidateQueries({ queryKey: instrumentId === undefined ? getGetRemindersQueryKey() : getGetInstrumentRemindersQueryKey(instrumentId) });
+				if (instrumentId !== undefined)
+					void invalidateGetInstrumentReminders(queryClient, instrumentId);
+
 				onSuccess?.();
 			},
 		});

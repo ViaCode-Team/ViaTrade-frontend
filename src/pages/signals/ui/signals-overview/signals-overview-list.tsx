@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import type { Signal } from '@/entities/signal';
 import type { SignalFilters } from '@/pages/signals/ui/filter-signals';
-import type { SignalDirection, SignalSortField } from '@/shared/api';
+import type { SignalSortField, TradeSignal } from '@/shared/api';
 
 import {
 	mapSignalResponsePageToSignals,
@@ -11,6 +11,7 @@ import {
 	SignalsListSkeleton,
 	useGetLatestSignalsSuspense,
 } from '@/entities/signal';
+import { CreateTradeFromSignalButton } from '@/features/trade/create-trade-from-signal';
 import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -28,7 +29,7 @@ export type SignalsOverviewListProps = {
 
 function SignalsOverviewList({ filters, onPageChange, onResetFilters, onSignalSelect }: SignalsOverviewListProps) {
 	const { data: signalsData } = useGetLatestSignalsSuspense({
-		direction: getSignalDirection(filters.directionFilter),
+		signals: getTradeSignals(filters.signalsFilter),
 		sortBy: [getSignalSortField(filters.sortOption)],
 		page: filters.page,
 		pageSize: SIGNALS_PAGE_SIZE,
@@ -51,7 +52,7 @@ function SignalsOverviewList({ filters, onPageChange, onResetFilters, onSignalSe
 			hasResults={signals.length > 0}
 			onResetFilters={onResetFilters}
 		>
-			<Stack gap='md'>
+			<Stack>
 				<SignalsOverviewStatusBar
 					totalCount={signalsData.data.totalCount}
 					filteredCount={signals.length}
@@ -61,22 +62,43 @@ function SignalsOverviewList({ filters, onPageChange, onResetFilters, onSignalSe
 						totalPages: signalsData.data.totalPages,
 						onPageChange,
 					}}
-					showDirectionBadges={filters.directionFilter === 'all'}
+					showDirectionBadges={filters.signalsFilter.length === 3 || filters.signalsFilter.length === 0}
 					buyCount={buyCount}
 					sellCount={sellCount}
 				/>
-				<SignalsList signals={signals} onSignalSelect={onSignalSelect} />
+
+				<SignalsList
+					signals={signals}
+					onSignalSelect={onSignalSelect}
+					renderAction={(signal) => (
+						<CreateTradeFromSignalButton
+							draft={{
+								instrumentId: signal.instrumentId,
+								ticker: signal.asset,
+								occurredAt: signal.occurredAt,
+								close: signal.close,
+								direction: signal.direction,
+							}}
+						/>
+					)}
+				/>
 			</Stack>
 		</DataState>
 	);
 }
 
-function getSignalDirection(direction: SignalFilters['directionFilter']): SignalDirection | undefined {
-	if (direction === 'buy')
-		return 'BUY';
-	if (direction === 'sell')
-		return 'SELL';
-	return undefined;
+function getTradeSignals(signalsFilter: SignalFilters['signalsFilter']): TradeSignal[] | undefined {
+	if (!signalsFilter || signalsFilter.length === 0 || signalsFilter.length === 3) {
+		return undefined;
+	}
+
+	const mapping: Record<string, TradeSignal> = {
+		buy: 1,
+		sell: -1,
+		hold: 0,
+	};
+
+	return signalsFilter.map((f) => mapping[f]);
 }
 
 function getSignalSortField(sortOption: SignalFilters['sortOption']): SignalSortField {

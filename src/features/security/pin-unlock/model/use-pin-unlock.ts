@@ -75,11 +75,11 @@ export function usePinUnlock() {
 				}
 
 				const attemptsBeforeLockout = getAttemptsBeforeNextLockout(nextLockout.state.failedAttempts);
-				setError(`Неверный ПИН-код. Осталось попыток до блокировки: ${attemptsBeforeLockout}.`);
+				setError(`Неверный ПИН-код. Осталось попыток до временной паузы: ${attemptsBeforeLockout}.`);
 			}
 		}
 		catch {
-			setError('Не удалось разблокировать приложение. Попробуйте ещё раз.');
+			setError('Не удалось подтвердить ПИН-код. Попробуйте ещё раз.');
 			setPin('');
 		}
 		finally {

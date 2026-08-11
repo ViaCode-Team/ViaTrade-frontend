@@ -6,6 +6,7 @@
  * OpenAPI spec version: v1
  */
 import type { SignalSortField } from './signalSortField';
+import type { TradeSignal } from './tradeSignal';
 
 export type GetSignalsParams = {
 /**
@@ -20,6 +21,7 @@ export type GetSignalsParams = {
 	instrumentId: number;
 	startDate?: string;
 	endDate?: string;
+	signals?: TradeSignal[];
 	sortBy?: SignalSortField[];
 	/**
 	 * @minimum 1

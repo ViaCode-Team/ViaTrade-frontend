@@ -44,7 +44,7 @@ export function PinUnlock({ actionSlot }: PinUnlockProps) {
 					</Title>
 
 					<Text c='dimmed' size='sm' ta='center' mb='xl'>
-						Чтобы защитить ваши данные на данном устройстве, приложение заблокировано. Введите ПИН-код, чтобы продолжить.
+						Ваши данные на этом устройстве защищены. Введите ПИН-код, чтобы продолжить.
 					</Text>
 
 					<Stack gap='md'>

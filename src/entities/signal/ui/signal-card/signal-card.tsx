@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
 	Badge,
 	Box,
@@ -23,6 +25,7 @@ import cls from './signal-card.module.css';
 type SignalCardProps = {
 	signal: Signal;
 	onClick: (signal: Signal) => void;
+	action?: ReactNode;
 };
 
 function getConfidenceColor(confidence?: number) {
@@ -55,7 +58,7 @@ function getSignalDirectionColor(signal: Signal) {
 	}
 }
 
-export function SignalCard({ signal, onClick }: SignalCardProps) {
+export function SignalCard({ signal, onClick, action }: SignalCardProps) {
 	const isBuy = signal.direction === 'buy';
 	const isSell = signal.direction === 'sell';
 	const isHold = signal.direction === 'hold';
@@ -113,6 +116,12 @@ export function SignalCard({ signal, onClick }: SignalCardProps) {
 					{getSignalDirectionLabel(signal)}
 				</Badge>
 			</Flex>
+
+			{action && (
+				<Box className={cls.action}>
+					{action}
+				</Box>
+			)}
 
 			<InfoPair
 				gap='xs'

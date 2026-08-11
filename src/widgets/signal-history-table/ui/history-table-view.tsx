@@ -2,6 +2,7 @@ import {
 	Badge,
 	Flex,
 	Group,
+	MultiSelect,
 	NumberFormatter,
 	Pagination,
 	Select,
@@ -15,6 +16,7 @@ import { generatePath, Link as RouterLink } from 'react-router';
 import type { SignalDirection, TradeHistory } from '@/entities/signal';
 import type { PaginationConfig } from '@/shared/model';
 
+import { CreateTradeFromSignalButton } from '@/features/trade/create-trade-from-signal';
 import { ROUTES } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
 
@@ -32,6 +34,8 @@ type SignalHistoryTableViewProps = {
 	start: number;
 	to: number;
 	handleRowsPerPageChange: (value: string | null) => void;
+	selectedSignals: number[];
+	handleSelectedSignalsChange: (val: string[]) => void;
 };
 
 export function SignalHistoryTableView({
@@ -44,6 +48,8 @@ export function SignalHistoryTableView({
 	start,
 	to,
 	handleRowsPerPageChange,
+	selectedSignals,
+	handleSelectedSignalsChange,
 }: SignalHistoryTableViewProps) {
 	return (
 		<>
@@ -52,6 +58,19 @@ export function SignalHistoryTableView({
 				<Flex flex='0 0 auto'><IconChevronRight size={16} /></Flex>
 			</RouterLink>
 
+			<MultiSelect
+				mt='sm'
+				label='Фильтр по типу сигнала'
+				data={[
+					{ value: '1', label: 'Покупать' },
+					{ value: '-1', label: 'Продавать' },
+					{ value: '0', label: 'Держать' },
+				]}
+				placeholder='Выберите типы'
+				value={selectedSignals.map(String)}
+				onChange={handleSelectedSignalsChange}
+			/>
+
 			<div className={cls.tableWrapper}>
 				<Table highlightOnHover className={cls.table}>
 					<Table.Thead>
@@ -59,19 +78,34 @@ export function SignalHistoryTableView({
 							<Table.Th>Дата</Table.Th>
 							<Table.Th className={cls.alignCenter}>Закрытие</Table.Th>
 							<Table.Th className={cls.alignCenter}>Сигнал</Table.Th>
+							<Table.Th className={cls.alignCenter}>Действие</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>
 						{history.length
 							? history.map((row) => (
-									<Table.Tr key={row.id} className={getRowClass(row.signal)}>
+									<Table.Tr key={row.id} className={getRowClass(row.direction)}>
 										<Table.Td>{row.date}</Table.Td>
 										<Table.Td className={cls.alignCenter}><NumberFormatter value={row.close} suffix=' ₽' decimalScale={3} thousandSeparator='&#8201;' /></Table.Td>
-										<Table.Td className={cls.alignCenter}>{getSignalBadge(row.signal)}</Table.Td>
+										<Table.Td className={cls.alignCenter}>{getSignalBadge(row.direction)}</Table.Td>
+										<Table.Td className={cls.alignCenter}>
+											{row.direction !== 'hold' && (
+												<CreateTradeFromSignalButton
+													placement='table'
+													draft={{
+														instrumentId: row.instrumentId,
+														ticker: row.ticker,
+														occurredAt: row.occurredAt,
+														close: row.close,
+														direction: row.direction,
+													}}
+												/>
+											)}
+										</Table.Td>
 									</Table.Tr>
 								))
 							: (
-									<Table.Tr><Table.Td colSpan={3}><AppEmptyState title='История пуста' description='Для этой акции еще не было сигналов.' /></Table.Td></Table.Tr>
+									<Table.Tr><Table.Td colSpan={4}><AppEmptyState title='История пуста' description='Для этой акции еще не было сигналов.' /></Table.Td></Table.Tr>
 								)}
 					</Table.Tbody>
 				</Table>

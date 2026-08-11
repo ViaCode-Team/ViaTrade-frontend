@@ -17,8 +17,13 @@ export function useUrlFilters<TSchema extends v.BaseSchema<any, any, any>>(schem
 	const setFilter = <K extends keyof v.InferOutput<TSchema>>(key: K, value: v.InferOutput<TSchema>[K] | string | null) => {
 		setSearchParams(
 			(prev) => {
-				if (value !== null && value !== undefined && value !== defaultValues[key]) {
-					prev.set(key as string, String(value));
+				const defaultValue = defaultValues[key];
+				const isDefault
+					= value === defaultValue
+						|| (Array.isArray(value) && Array.isArray(defaultValue) && value.join(',') === (defaultValue as any[]).join(','));
+
+				if (value !== null && value !== undefined && !isDefault) {
+					prev.set(key as string, Array.isArray(value) ? value.join(',') : String(value));
 				}
 				else {
 					prev.delete(key as string);
@@ -33,8 +38,13 @@ export function useUrlFilters<TSchema extends v.BaseSchema<any, any, any>>(schem
 		setSearchParams(
 			(prev) => {
 				Object.entries(newFilters).forEach(([key, value]) => {
-					if (value !== null && value !== undefined && value !== defaultValues[key as keyof v.InferOutput<TSchema>]) {
-						prev.set(key, String(value));
+					const defaultValue = defaultValues[key as keyof v.InferOutput<TSchema>];
+					const isDefault
+						= value === defaultValue
+							|| (Array.isArray(value) && Array.isArray(defaultValue) && value.join(',') === (defaultValue as any[]).join(','));
+
+					if (value !== null && value !== undefined && !isDefault) {
+						prev.set(key, Array.isArray(value) ? value.join(',') : String(value));
 					}
 					else {
 						prev.delete(key);

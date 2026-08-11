@@ -1,12 +1,12 @@
-import { SegmentedControl, Select } from '@mantine/core';
+import { MultiSelect, Select } from '@mantine/core';
 
 import { ControlsGroup } from '@/shared/ui/filters-group';
 
-import { directionOptions, sortOptions } from './signal-filters';
+import { signalOptions, sortOptions } from './signal-filters';
 import { useSignalsControls } from './use-signals-controls';
 
 export function SignalsControls() {
-	const { filters, setDirectionFilter, setSortOption } = useSignalsControls();
+	const { filters, setSignalsFilter, setSortOption } = useSignalsControls();
 
 	return (
 		<ControlsGroup>
@@ -16,10 +16,12 @@ export function SignalsControls() {
 				onChange={(val) => val && setSortOption(val as typeof filters.sortOption)}
 				w={{ base: '100%', sm: 220 }}
 			/>
-			<SegmentedControl
-				data={directionOptions}
-				value={filters.directionFilter}
-				onChange={(val) => setDirectionFilter(val as typeof filters.directionFilter)}
+			<MultiSelect
+				data={signalOptions}
+				value={filters.signalsFilter}
+				onChange={(val) => setSignalsFilter(val as typeof filters.signalsFilter)}
+				placeholder='Выберите типы'
+				w={{ base: '100%', sm: 'auto' }}
 			/>
 		</ControlsGroup>
 	);

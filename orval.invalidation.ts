@@ -9,7 +9,7 @@ export const sessionMutationInvalidates = [
 		],
 	},
 	{
-		onMutations: ['refreshCurrentSession'],
+		onMutations: ['createCurrentSessionTokens'],
 		invalidates: ['getSessions'],
 	},
 	{
@@ -54,7 +54,7 @@ export const strategyMutationInvalidates = [
 		],
 	},
 	{
-		onMutations: ['activateStrategy', 'deactivateStrategy'],
+		onMutations: ['updateStrategy'],
 		invalidates: [
 			'getStrategyStatistics',
 			'getStrategies',

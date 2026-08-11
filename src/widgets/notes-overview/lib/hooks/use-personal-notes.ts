@@ -14,7 +14,10 @@ export const NOTES_PAGE_SIZE = 15;
 export function usePersonalNotes() {
 	const storedNotesQuery = useStoredPersonalNotesQuery();
 	const { filters, setFilters } = useNotesControls();
-	const notesQuery = useGetNotesSuspense({ page: filters.page, pageSize: NOTES_PAGE_SIZE }, { query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
+	const notesQuery = useGetNotesSuspense(
+		{ page: filters.page, pageSize: NOTES_PAGE_SIZE },
+		{ query: { refetchInterval: QUERY_REFETCH_INTERVAL } },
+	);
 
 	const apiNotes = useMemo(
 		() => getApiPersonalNotes({

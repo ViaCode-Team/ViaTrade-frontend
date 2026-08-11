@@ -1,7 +1,4 @@
-import {
-	useActivateStrategy,
-	useDeactivateStrategy,
-} from '../api/gen';
+import { useUpdateStrategy } from '../api/gen';
 
 type ToggleUserStrategyVariables = {
 	strategyId: number;
@@ -9,43 +6,22 @@ type ToggleUserStrategyVariables = {
 };
 
 export function useToggleUserStrategy() {
-	const createStrategyMutation = useActivateStrategy();
-	const deleteStrategyMutation = useDeactivateStrategy();
+	const updateStrategyMutation = useUpdateStrategy();
 
 	return {
 		mutate: (variables: ToggleUserStrategyVariables, onSuccess?: () => void) => {
-			if (variables.isActive) {
-				createStrategyMutation.mutate({
-					strategyId: variables.strategyId,
-				}, { onSuccess });
-
-				return;
-			}
-
-			deleteStrategyMutation.mutate({
+			updateStrategyMutation.mutate({
 				strategyId: variables.strategyId,
+				data: { isActive: variables.isActive },
 			}, { onSuccess });
 		},
-		isPending: createStrategyMutation.isPending || deleteStrategyMutation.isPending,
-		isError: createStrategyMutation.isError || deleteStrategyMutation.isError,
-		variables: createStrategyMutation.isPending
-			? createStrategyVariablesToToggleVariables(createStrategyMutation.variables)
-			: deleteStrategyVariablesToToggleVariables(deleteStrategyMutation.variables),
+		isPending: updateStrategyMutation.isPending,
+		isError: updateStrategyMutation.isError,
+		variables: updateStrategyMutation.variables
+			? {
+					strategyId: updateStrategyMutation.variables.strategyId,
+					isActive: updateStrategyMutation.variables.data.isActive,
+				}
+			: undefined,
 	};
-}
-
-function createStrategyVariablesToToggleVariables(
-	variables: { strategyId: number } | undefined,
-) {
-	return variables
-		? { strategyId: variables.strategyId, isActive: true }
-		: undefined;
-}
-
-function deleteStrategyVariablesToToggleVariables(
-	variables: { strategyId: number } | undefined,
-) {
-	return variables
-		? { strategyId: variables.strategyId, isActive: false }
-		: undefined;
 }

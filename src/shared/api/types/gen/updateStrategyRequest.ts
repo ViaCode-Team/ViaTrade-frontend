@@ -6,7 +6,6 @@
  * OpenAPI spec version: v1
  */
 
-export type WinrateTradeStatisticResponse = {
-	totalWinrate: number;
-	profitFactor?: number;
+export type UpdateStrategyRequest = {
+	isActive: boolean;
 };

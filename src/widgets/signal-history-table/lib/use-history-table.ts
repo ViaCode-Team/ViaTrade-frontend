@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import type { TradeSignal } from '@/shared/api';
+
 import {
 	mapSignalResponsePageToTradeHistory,
 	useGetSignalsSuspense,
@@ -14,9 +16,16 @@ type UseHistoryTableOptions = {
 export function useSignalHistoryTable({ strategyId, instrumentId }: UseHistoryTableOptions) {
 	const [page, setPage] = useState(1);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
+	const [selectedSignals, setSelectedSignals] = useState<TradeSignal[]>([1, -1]);
 
 	const { data: historyData } = useGetSignalsSuspense(
-		{ strategyId, instrumentId, page, pageSize: rowsPerPage },
+		{
+			strategyId,
+			instrumentId,
+			signals: selectedSignals,
+			page,
+			pageSize: rowsPerPage,
+		},
 		{
 			query: {
 				staleTime: STATIC_QUERY_STALE_TIME,
@@ -25,8 +34,7 @@ export function useSignalHistoryTable({ strategyId, instrumentId }: UseHistoryTa
 	);
 
 	const history = useMemo(
-		() =>
-			mapSignalResponsePageToTradeHistory(historyData.data),
+		() => mapSignalResponsePageToTradeHistory(historyData.data),
 		[historyData.data],
 	);
 
@@ -42,12 +50,15 @@ export function useSignalHistoryTable({ strategyId, instrumentId }: UseHistoryTa
 			setPage(1);
 		}
 	};
+	const handleSelectedSignalsChange = (val: string[]) => setSelectedSignals(val.map(Number) as TradeSignal[]);
 
 	return {
 		page,
 		setPage,
 		rowsPerPage,
 		handleRowsPerPageChange,
+		selectedSignals,
+		handleSelectedSignalsChange,
 		history,
 		totalCount,
 		totalPages,

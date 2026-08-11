@@ -1,9 +1,9 @@
 export type SortOption = 'date-desc' | 'date-asc' | 'asset-asc' | 'asset-desc' | 'confidence-desc' | 'confidence-asc';
-export type DirectionFilter = 'all' | 'buy' | 'sell';
+export type SignalTypeFilter = 'buy' | 'sell' | 'hold';
 
 export type SignalFilters = {
 	sortOption: SortOption;
-	directionFilter: DirectionFilter;
+	signalsFilter: SignalTypeFilter[];
 	page: number;
 };
 
@@ -16,8 +16,8 @@ export const sortOptions: Array<{ value: SortOption; label: string }> = [
 	{ value: 'confidence-asc', label: 'По надёжности (возрастание)' },
 ];
 
-export const directionOptions: Array<{ value: DirectionFilter; label: string }> = [
-	{ value: 'all', label: 'Все' },
+export const signalOptions: Array<{ value: SignalTypeFilter; label: string }> = [
 	{ value: 'buy', label: 'Покупать' },
 	{ value: 'sell', label: 'Продавать' },
+	{ value: 'hold', label: 'Держать' },
 ];

@@ -18,10 +18,12 @@ export type Signal = {
 
 export type TradeHistory = {
 	id: string;
+	instrumentId: number;
+	ticker: string;
 	date: string;
 	occurredAt: string;
 	close: number;
-	signal: SignalDirection;
+	direction: SignalDirection;
 };
 
 const BUY_SIGNAL_VALUES = new Set(['buy', 'long', 'покупать', 'купить']);
@@ -56,16 +58,20 @@ export function mapSignalResponsePageToTradeHistory(response: SignalResponsePage
 	return mapSignalResponsePageToSignals(response)
 		.map(({
 			id,
+			instrumentId,
+			asset,
 			date,
 			occurredAt,
 			close,
 			direction,
 		}) => ({
 			id,
+			instrumentId,
+			ticker: asset,
 			date,
 			occurredAt,
 			close,
-			signal: direction,
+			direction,
 		}))
 		.sort((a, b) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime());
 }

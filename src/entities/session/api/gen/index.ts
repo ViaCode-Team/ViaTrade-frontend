@@ -496,69 +496,69 @@ export function useGetSessionsSuspense<TData = Awaited<ReturnType<typeof getSess
 }
 
 
-export type refreshCurrentSessionResponse204 = {
+export type createCurrentSessionTokensResponse204 = {
 	data: void;
 	status: 204;
 };
 
-export type refreshCurrentSessionResponse400 = {
+export type createCurrentSessionTokensResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type refreshCurrentSessionResponse401 = {
+export type createCurrentSessionTokensResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type refreshCurrentSessionResponse403 = {
+export type createCurrentSessionTokensResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type refreshCurrentSessionResponse404 = {
+export type createCurrentSessionTokensResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type refreshCurrentSessionResponse408 = {
+export type createCurrentSessionTokensResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type refreshCurrentSessionResponse409 = {
+export type createCurrentSessionTokensResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type refreshCurrentSessionResponse422 = {
+export type createCurrentSessionTokensResponse422 = {
 	data: ProblemDetails;
 	status: 422;
 };
 
-export type refreshCurrentSessionResponse500 = {
+export type createCurrentSessionTokensResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type refreshCurrentSessionResponse503 = {
+export type createCurrentSessionTokensResponse503 = {
 	data: ProblemDetails;
 	status: 503;
 };
 
-export type refreshCurrentSessionResponseSuccess = (refreshCurrentSessionResponse204) & {
+export type createCurrentSessionTokensResponseSuccess = (createCurrentSessionTokensResponse204) & {
 	headers: Headers;
 };
-export type refreshCurrentSessionResponseError = (refreshCurrentSessionResponse400 | refreshCurrentSessionResponse401 | refreshCurrentSessionResponse403 | refreshCurrentSessionResponse404 | refreshCurrentSessionResponse408 | refreshCurrentSessionResponse409 | refreshCurrentSessionResponse422 | refreshCurrentSessionResponse500 | refreshCurrentSessionResponse503) & {
+export type createCurrentSessionTokensResponseError = (createCurrentSessionTokensResponse400 | createCurrentSessionTokensResponse401 | createCurrentSessionTokensResponse403 | createCurrentSessionTokensResponse404 | createCurrentSessionTokensResponse408 | createCurrentSessionTokensResponse409 | createCurrentSessionTokensResponse422 | createCurrentSessionTokensResponse500 | createCurrentSessionTokensResponse503) & {
 	headers: Headers;
 };
 
-export function getRefreshCurrentSessionUrl() {
-	return `/api/v1/sessions/current/refresh`;
+export function getCreateCurrentSessionTokensUrl() {
+	return `/api/v1/sessions/current/tokens`;
 }
 
-export async function refreshCurrentSession(options?: Parameters<typeof customInstance>[1]): Promise<refreshCurrentSessionResponseSuccess> {
-	return customInstance<refreshCurrentSessionResponseSuccess>(getRefreshCurrentSessionUrl(), {
+export async function createCurrentSessionTokens(options?: Parameters<typeof customInstance>[1]): Promise<createCurrentSessionTokensResponseSuccess> {
+	return customInstance<createCurrentSessionTokensResponseSuccess>(getCreateCurrentSessionTokensUrl(), {
 		...options,
 		method: 'POST',
 
@@ -567,8 +567,8 @@ export async function refreshCurrentSession(options?: Parameters<typeof customIn
 }
 
 
-export function getRefreshCurrentSessionMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof refreshCurrentSession>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof refreshCurrentSession>>, TError, void, TContext> {
-	const mutationKey = ['refreshCurrentSession'];
+export function getCreateCurrentSessionTokensMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createCurrentSessionTokens>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof createCurrentSessionTokens>>, TError, void, TContext> {
+	const mutationKey = ['createCurrentSessionTokens'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -576,11 +576,11 @@ export function getRefreshCurrentSessionMutationOptions<TError = ErrorType<Probl
 		: { mutation: { mutationKey }, request: undefined };
 
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<typeof refreshCurrentSession>>, void> = () => {
-		return refreshCurrentSession(requestOptions);
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCurrentSessionTokens>>, void> = () => {
+		return createCurrentSessionTokens(requestOptions);
 	};
 
-	const onSuccess = (data: Awaited<ReturnType<typeof refreshCurrentSession>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
+	const onSuccess = (data: Awaited<ReturnType<typeof createCurrentSessionTokens>>, variables: void, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetSessionsQueryKey() });
 		}
@@ -591,18 +591,18 @@ export function getRefreshCurrentSessionMutationOptions<TError = ErrorType<Probl
 	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
-export type RefreshCurrentSessionMutationResult = NonNullable<Awaited<ReturnType<typeof refreshCurrentSession>>>;
+export type CreateCurrentSessionTokensMutationResult = NonNullable<Awaited<ReturnType<typeof createCurrentSessionTokens>>>;
 
-export type RefreshCurrentSessionMutationError = ErrorType<ProblemDetails>;
+export type CreateCurrentSessionTokensMutationError = ErrorType<ProblemDetails>;
 
-export function useRefreshCurrentSession<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof refreshCurrentSession>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
-	Awaited<ReturnType<typeof refreshCurrentSession>>,
+export function useCreateCurrentSessionTokens<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createCurrentSessionTokens>>, TError, void, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+	Awaited<ReturnType<typeof createCurrentSessionTokens>>,
 	TError,
 	void,
 	TContext
 > {
 	const backupQueryClient = useQueryClient();
-	return useMutation(getRefreshCurrentSessionMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
+	return useMutation(getCreateCurrentSessionTokensMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
 export type deleteCurrentSessionResponse204 = {

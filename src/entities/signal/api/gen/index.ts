@@ -316,7 +316,7 @@ export function getGetLatestSignalsUrl(params?: GetLatestSignalsParams) {
 	const normalizedParams = new URLSearchParams();
 
 	Object.entries(params || {}).forEach(([key, value]) => {
-		const explodeParameters = ['sortBy'];
+		const explodeParameters = ['signals', 'sortBy'];
 
 		if (Array.isArray(value) && explodeParameters.includes(key)) {
 			value.forEach((v) => {
@@ -526,7 +526,7 @@ export function getGetSignalsUrl(params: GetSignalsParams) {
 	const normalizedParams = new URLSearchParams();
 
 	Object.entries(params || {}).forEach(([key, value]) => {
-		const explodeParameters = ['sortBy'];
+		const explodeParameters = ['signals', 'sortBy'];
 
 		if (Array.isArray(value) && explodeParameters.includes(key)) {
 			value.forEach((v) => {

@@ -66,6 +66,10 @@ import type {
 	UpdateNoteRequest,
 } from '../../../../shared/api/types/gen/updateNoteRequest';
 
+import type {
+	UpdateStrategyRequest,
+} from '../../../../shared/api/types/gen/updateStrategyRequest';
+
 import {
 	getGetStrategiesByInstrumentQueryKey,
 } from '@/entities/instrument';
@@ -692,79 +696,79 @@ export function useGetStrategyByIdSuspense<TData = Awaited<ReturnType<typeof get
 }
 
 
-export type activateStrategyResponse204 = {
+export type updateStrategyResponse204 = {
 	data: void;
 	status: 204;
 };
 
-export type activateStrategyResponse400 = {
+export type updateStrategyResponse400 = {
 	data: ProblemDetails;
 	status: 400;
 };
 
-export type activateStrategyResponse401 = {
+export type updateStrategyResponse401 = {
 	data: ProblemDetails;
 	status: 401;
 };
 
-export type activateStrategyResponse403 = {
+export type updateStrategyResponse403 = {
 	data: ProblemDetails;
 	status: 403;
 };
 
-export type activateStrategyResponse404 = {
+export type updateStrategyResponse404 = {
 	data: ProblemDetails;
 	status: 404;
 };
 
-export type activateStrategyResponse408 = {
+export type updateStrategyResponse408 = {
 	data: ProblemDetails;
 	status: 408;
 };
 
-export type activateStrategyResponse409 = {
+export type updateStrategyResponse409 = {
 	data: ProblemDetails;
 	status: 409;
 };
 
-export type activateStrategyResponse422 = {
+export type updateStrategyResponse422 = {
 	data: ProblemDetails;
 	status: 422;
 };
 
-export type activateStrategyResponse500 = {
+export type updateStrategyResponse500 = {
 	data: ProblemDetails;
 	status: 500;
 };
 
-export type activateStrategyResponse503 = {
+export type updateStrategyResponse503 = {
 	data: ProblemDetails;
 	status: 503;
 };
 
-export type activateStrategyResponseSuccess = (activateStrategyResponse204) & {
+export type updateStrategyResponseSuccess = (updateStrategyResponse204) & {
 	headers: Headers;
 };
-export type activateStrategyResponseError = (activateStrategyResponse400 | activateStrategyResponse401 | activateStrategyResponse403 | activateStrategyResponse404 | activateStrategyResponse408 | activateStrategyResponse409 | activateStrategyResponse422 | activateStrategyResponse500 | activateStrategyResponse503) & {
+export type updateStrategyResponseError = (updateStrategyResponse400 | updateStrategyResponse401 | updateStrategyResponse403 | updateStrategyResponse404 | updateStrategyResponse408 | updateStrategyResponse409 | updateStrategyResponse422 | updateStrategyResponse500 | updateStrategyResponse503) & {
 	headers: Headers;
 };
 
-export function getActivateStrategyUrl(strategyId: number) {
+export function getUpdateStrategyUrl(strategyId: number) {
 	return `/api/v1/strategies/${strategyId}`;
 }
 
-export async function activateStrategy(strategyId: number, options?: Parameters<typeof customInstance>[1]): Promise<activateStrategyResponseSuccess> {
-	return customInstance<activateStrategyResponseSuccess>(getActivateStrategyUrl(strategyId), {
+export async function updateStrategy(strategyId: number, updateStrategyRequest: UpdateStrategyRequest, options?: Parameters<typeof customInstance>[1]): Promise<updateStrategyResponseSuccess> {
+	return customInstance<updateStrategyResponseSuccess>(getUpdateStrategyUrl(strategyId), {
 		...options,
-		method: 'PUT',
-
-
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json', ...options?.headers },
+		body: JSON.stringify(updateStrategyRequest),
 	});
 }
 
 
-export function getActivateStrategyMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof activateStrategy>>, TError, { strategyId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof activateStrategy>>, TError, { strategyId: number }, TContext> {
-	const mutationKey = ['activateStrategy'];
+export function getUpdateStrategyMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateStrategy>>, TError, { strategyId: number; data: UpdateStrategyRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof updateStrategy>>, TError, { strategyId: number; data: UpdateStrategyRequest }, TContext> {
+	const mutationKey = ['updateStrategy'];
 	const { mutation: mutationOptions, request: requestOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -772,13 +776,13 @@ export function getActivateStrategyMutationOptions<TError = ErrorType<ProblemDet
 		: { mutation: { mutationKey }, request: undefined };
 
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<typeof activateStrategy>>, { strategyId: number }> = (props) => {
-		const { strategyId } = props ?? {};
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateStrategy>>, { strategyId: number; data: UpdateStrategyRequest }> = (props) => {
+		const { strategyId, data } = props ?? {};
 
-		return activateStrategy(strategyId, requestOptions);
+		return updateStrategy(strategyId, data, requestOptions);
 	};
 
-	const onSuccess = (data: Awaited<ReturnType<typeof activateStrategy>>, variables: { strategyId: number }, onMutateResult: TContext, context: MutationFunctionContext) => {
+	const onSuccess = (data: Awaited<ReturnType<typeof updateStrategy>>, variables: { strategyId: number; data: UpdateStrategyRequest }, onMutateResult: TContext, context: MutationFunctionContext) => {
 		if (!options?.skipInvalidation) {
 			queryClient.invalidateQueries({ queryKey: getGetStrategyStatisticsQueryKey() });
 			queryClient.invalidateQueries({ queryKey: getGetStrategiesQueryKey() });
@@ -794,134 +798,18 @@ export function getActivateStrategyMutationOptions<TError = ErrorType<ProblemDet
 	return { ...mutationOptions, mutationFn, onSuccess };
 }
 
-export type ActivateStrategyMutationResult = NonNullable<Awaited<ReturnType<typeof activateStrategy>>>;
+export type UpdateStrategyMutationResult = NonNullable<Awaited<ReturnType<typeof updateStrategy>>>;
+export type UpdateStrategyMutationBody = UpdateStrategyRequest;
+export type UpdateStrategyMutationError = ErrorType<ProblemDetails>;
 
-export type ActivateStrategyMutationError = ErrorType<ProblemDetails>;
-
-export function useActivateStrategy<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof activateStrategy>>, TError, { strategyId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
-	Awaited<ReturnType<typeof activateStrategy>>,
+export function useUpdateStrategy<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateStrategy>>, TError, { strategyId: number; data: UpdateStrategyRequest }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
+	Awaited<ReturnType<typeof updateStrategy>>,
 	TError,
-	{ strategyId: number },
+	{ strategyId: number; data: UpdateStrategyRequest },
 	TContext
 > {
 	const backupQueryClient = useQueryClient();
-	return useMutation(getActivateStrategyMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
-}
-
-export type deactivateStrategyResponse204 = {
-	data: void;
-	status: 204;
-};
-
-export type deactivateStrategyResponse400 = {
-	data: ProblemDetails;
-	status: 400;
-};
-
-export type deactivateStrategyResponse401 = {
-	data: ProblemDetails;
-	status: 401;
-};
-
-export type deactivateStrategyResponse403 = {
-	data: ProblemDetails;
-	status: 403;
-};
-
-export type deactivateStrategyResponse404 = {
-	data: ProblemDetails;
-	status: 404;
-};
-
-export type deactivateStrategyResponse408 = {
-	data: ProblemDetails;
-	status: 408;
-};
-
-export type deactivateStrategyResponse409 = {
-	data: ProblemDetails;
-	status: 409;
-};
-
-export type deactivateStrategyResponse422 = {
-	data: ProblemDetails;
-	status: 422;
-};
-
-export type deactivateStrategyResponse500 = {
-	data: ProblemDetails;
-	status: 500;
-};
-
-export type deactivateStrategyResponse503 = {
-	data: ProblemDetails;
-	status: 503;
-};
-
-export type deactivateStrategyResponseSuccess = (deactivateStrategyResponse204) & {
-	headers: Headers;
-};
-export type deactivateStrategyResponseError = (deactivateStrategyResponse400 | deactivateStrategyResponse401 | deactivateStrategyResponse403 | deactivateStrategyResponse404 | deactivateStrategyResponse408 | deactivateStrategyResponse409 | deactivateStrategyResponse422 | deactivateStrategyResponse500 | deactivateStrategyResponse503) & {
-	headers: Headers;
-};
-
-export function getDeactivateStrategyUrl(strategyId: number) {
-	return `/api/v1/strategies/${strategyId}`;
-}
-
-export async function deactivateStrategy(strategyId: number, options?: Parameters<typeof customInstance>[1]): Promise<deactivateStrategyResponseSuccess> {
-	return customInstance<deactivateStrategyResponseSuccess>(getDeactivateStrategyUrl(strategyId), {
-		...options,
-		method: 'DELETE',
-
-
-	});
-}
-
-
-export function getDeactivateStrategyMutationOptions<TError = ErrorType<ProblemDetails>, TContext = unknown>(queryClient: QueryClient, options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deactivateStrategy>>, TError, { strategyId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }): UseMutationOptions<Awaited<ReturnType<typeof deactivateStrategy>>, TError, { strategyId: number }, TContext> {
-	const mutationKey = ['deactivateStrategy'];
-	const { mutation: mutationOptions, request: requestOptions } = options
-		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-			? options
-			: { ...options, mutation: { ...options.mutation, mutationKey } }
-		: { mutation: { mutationKey }, request: undefined };
-
-
-	const mutationFn: MutationFunction<Awaited<ReturnType<typeof deactivateStrategy>>, { strategyId: number }> = (props) => {
-		const { strategyId } = props ?? {};
-
-		return deactivateStrategy(strategyId, requestOptions);
-	};
-
-	const onSuccess = (data: Awaited<ReturnType<typeof deactivateStrategy>>, variables: { strategyId: number }, onMutateResult: TContext, context: MutationFunctionContext) => {
-		if (!options?.skipInvalidation) {
-			queryClient.invalidateQueries({ queryKey: getGetStrategyStatisticsQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetStrategiesQueryKey() });
-			queryClient.invalidateQueries({ queryKey: getGetStrategyByIdQueryKey(variables.strategyId) });
-			queryClient.resetQueries({ queryKey: getGetSignalsQueryKey() });
-			queryClient.resetQueries({ queryKey: getGetLatestSignalsQueryKey() });
-			queryClient.resetQueries({ queryKey: getGetStatisticsQueryKey() });
-		}
-		mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
-	};
-
-
-	return { ...mutationOptions, mutationFn, onSuccess };
-}
-
-export type DeactivateStrategyMutationResult = NonNullable<Awaited<ReturnType<typeof deactivateStrategy>>>;
-
-export type DeactivateStrategyMutationError = ErrorType<ProblemDetails>;
-
-export function useDeactivateStrategy<TError = ErrorType<ProblemDetails>, TContext = unknown>(options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deactivateStrategy>>, TError, { strategyId: number }, TContext>; skipInvalidation?: boolean; request?: SecondParameter<typeof customInstance> }, queryClient?: QueryClient): UseMutationResult<
-	Awaited<ReturnType<typeof deactivateStrategy>>,
-	TError,
-	{ strategyId: number },
-	TContext
-> {
-	const backupQueryClient = useQueryClient();
-	return useMutation(getDeactivateStrategyMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
+	return useMutation(getUpdateStrategyMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
 }
 
 export type getInstrumentsByStrategyResponse200 = {

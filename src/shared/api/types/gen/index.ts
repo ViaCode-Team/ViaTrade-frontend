@@ -60,6 +60,7 @@ export * from './tradeStatisticResponse';
 export * from './tradeStatus';
 export * from './updateNoteRequest';
 export * from './updateReminderRequest';
+export * from './updateStrategyRequest';
 export * from './updateTradeRequest';
 export * from './userMeResponse';
 export * from './userSessionResponse';

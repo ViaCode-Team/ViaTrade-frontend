@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import { SimpleGrid } from '@mantine/core';
 
 import { CONTENT_GRID_SPACING } from '@/shared/model';
@@ -9,11 +11,13 @@ import { SignalCard } from '../signal-card';
 export type SignalsListProps = {
 	signals: Signal[];
 	onSignalSelect: (signal: Signal) => void;
+	renderAction?: (signal: Signal) => ReactNode;
 };
 
 export function SignalsList({
 	signals,
 	onSignalSelect,
+	renderAction,
 }: SignalsListProps) {
 	return (
 		<SimpleGrid
@@ -26,6 +30,7 @@ export function SignalsList({
 					<SignalCard
 						signal={signal}
 						onClick={onSignalSelect}
+						action={renderAction?.(signal)}
 					/>
 				</li>
 			))}

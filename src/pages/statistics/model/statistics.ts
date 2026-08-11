@@ -59,6 +59,9 @@ export function formatProfitChartPercentage(value: number) {
 	return `${value.toFixed(2)} %`;
 }
 
-export function formatProfitFactor(value: number) {
-	return Number.isFinite(value) ? value.toFixed(2) : '∞';
+export function formatProfitFactor(value: number | undefined) {
+	if (value === undefined || !Number.isFinite(value))
+		return '∞';
+
+	return value.toFixed(2);
 }

@@ -34,7 +34,7 @@ function StockLinkedStrategiesList({
 	const [page, setPage] = useState(1);
 	const {
 		allLinkedStrategies,
-		activeStrategyIds,
+		subscribedStrategyIds,
 		totalCount,
 		totalPages,
 	} = useStockLinkedStrategies(stockId, page, STOCK_LINKED_STRATEGIES_PAGE_SIZE, filters);
@@ -65,13 +65,13 @@ function StockLinkedStrategiesList({
 
 				<LinkedStrategiesList
 					strategies={filteredStrategies}
-					activeStrategyIds={activeStrategyIds}
+					subscribedStrategyIds={subscribedStrategyIds}
 					pagination={{ page, totalPages, onPageChange: setPage }}
 					onNavigate={onNavigate}
-					renderAction={(strategy, isActive) => (
+					renderAction={(strategy, isSubscribed) => (
 						<StrategyToggleCheckbox
 							strategyId={strategy.id}
-							isActive={isActive}
+							isSubscribed={isSubscribed}
 							instrumentId={stockId}
 						/>
 					)}

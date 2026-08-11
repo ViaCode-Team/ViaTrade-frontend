@@ -15,8 +15,8 @@ function StrategiesOverviewList() {
 		filters,
 		page,
 		filteredStrategies,
-		activeCount,
-		inactiveCount,
+		subscribedCount,
+		unsubscribedCount,
 		totalPages,
 		totalCount,
 		setPage,
@@ -40,9 +40,9 @@ function StrategiesOverviewList() {
 						onPageChange: setPage,
 						showRange: !filters.q.trim(),
 					}}
-					showActivityBadges={filters.statusFilter === 'all'}
-					activeCount={activeCount}
-					inactiveCount={inactiveCount}
+					showSubscriptionBadges={filters.statusFilter === 'all'}
+					subscribedCount={subscribedCount}
+					unsubscribedCount={unsubscribedCount}
 				/>
 
 				<StrategiesList
@@ -50,7 +50,7 @@ function StrategiesOverviewList() {
 					actionSlot={(strategy) => (
 						<StrategyToggleCheckbox
 							strategyId={strategy.id}
-							isActive={strategy.isActive}
+							isSubscribed={strategy.isSubscribed}
 						/>
 					)}
 					bottomActionSlot={(strategy) => <StrategyStockBindingButton strategy={strategy} />}

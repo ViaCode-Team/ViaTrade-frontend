@@ -1,17 +1,16 @@
 import { useParams } from 'react-router';
 
 export function useCurrentStrategy() {
-	const { strategyId: rawStrategyId } = useParams();
-	const strategyId = Number(rawStrategyId);
+	const { strategyName } = useParams();
 
-	if (!Number.isInteger(strategyId) || strategyId <= 0) {
+	if (!strategyName?.trim()) {
 		return {
-			hasStrategyId: false as const,
+			hasStrategyName: false as const,
 		};
 	}
 
 	return {
-		strategyId,
-		hasStrategyId: true as const,
+		strategyName,
+		hasStrategyName: true as const,
 	};
 }

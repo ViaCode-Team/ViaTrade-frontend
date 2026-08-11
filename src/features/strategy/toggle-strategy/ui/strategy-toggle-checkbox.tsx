@@ -6,11 +6,11 @@ import { useToggleUserStrategy } from '@/entities/strategy';
 
 type StrategyToggleCheckboxProps = {
 	strategyId: number;
-	isActive: boolean;
+	isSubscribed: boolean;
 	instrumentId?: number;
 };
 
-export function StrategyToggleCheckbox({ strategyId, isActive, instrumentId }: StrategyToggleCheckboxProps) {
+export function StrategyToggleCheckbox({ strategyId, isSubscribed, instrumentId }: StrategyToggleCheckboxProps) {
 	const queryClient = useQueryClient();
 	const strategyToggle = useToggleUserStrategy();
 	const onStrategyToggleSuccess = () => {
@@ -19,22 +19,22 @@ export function StrategyToggleCheckbox({ strategyId, isActive, instrumentId }: S
 	};
 	const isPending = strategyToggle.isPending && strategyToggle.variables?.strategyId === strategyId;
 
-	const activeActionLabel = isActive ? 'Выключить сигналы' : 'Включить сигналы';
+	const subscriptionActionLabel = isSubscribed ? 'Отключить подписку на сигналы' : 'Подписаться на сигналы';
 
 	return (
 		<Box style={{ position: 'relative', zIndex: 2 }}>
-			<Tooltip label={activeActionLabel}>
+			<Tooltip label={subscriptionActionLabel}>
 				<Checkbox
-					checked={isActive}
+					checked={isSubscribed}
 					onChange={(event) => {
 						strategyToggle.mutate({
 							strategyId,
-							isActive: event.currentTarget.checked,
+							isSubscribed: event.currentTarget.checked,
 						}, onStrategyToggleSuccess);
 					}}
 					size='md'
 					disabled={isPending}
-					aria-label={activeActionLabel}
+					aria-label={subscriptionActionLabel}
 				/>
 			</Tooltip>
 		</Box>

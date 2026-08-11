@@ -11,7 +11,7 @@ type StrategyStockBindingButtonProps = {
 
 function openStrategyStockBindingModal(strategy: Strategy) {
 	modals.open({
-		title: `Акции стратегии «${strategy.name}»`,
+		title: `Акции стратегии «${strategy.displayName}»`,
 		size: 'xl',
 		children: <StrategyStockBindingModalBoundary strategyId={strategy.id} />,
 	});

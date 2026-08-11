@@ -15,7 +15,8 @@ const exampleSignals: Signal[] = [
 		close: 295.4,
 		direction: 'buy',
 		confidence: 87,
-		strategy: 'Импульс',
+		strategyName: 'momentum',
+		strategyDisplayName: 'Импульс',
 	},
 	{
 		id: '2',
@@ -27,7 +28,8 @@ const exampleSignals: Signal[] = [
 		close: 162.8,
 		direction: 'sell',
 		confidence: 76,
-		strategy: 'Возврат к среднему',
+		strategyName: 'mean-reversion',
+		strategyDisplayName: 'Возврат к среднему',
 	},
 	{
 		id: '3',
@@ -39,7 +41,8 @@ const exampleSignals: Signal[] = [
 		close: 7350.0,
 		direction: 'hold',
 		confidence: 68,
-		strategy: 'Пробой уровня',
+		strategyName: 'level-breakout',
+		strategyDisplayName: 'Пробой уровня',
 	},
 ];
 

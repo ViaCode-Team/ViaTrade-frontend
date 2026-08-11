@@ -3,11 +3,12 @@ import type { StrategyResponse } from '@/shared/api';
 export type StrategyCardStrategy = {
 	id: number;
 	name: string;
+	displayName: string;
 	description?: string;
 	accuracy?: number;
 	signalFrequency?: string;
 	investmentHorizon?: string;
-	isActive: boolean;
+	isSubscribed: boolean;
 };
 
 export type Strategy = StrategyCardStrategy & {
@@ -16,10 +17,11 @@ export type Strategy = StrategyCardStrategy & {
 	limitDescription?: string;
 };
 
-export function mapStrategyResponseToStrategy(strategy: StrategyResponse, activeStrategyIds?: Set<number>): Strategy {
+export function mapStrategyResponseToStrategy(strategy: StrategyResponse): Strategy {
 	return {
 		id: strategy.id,
 		name: strategy.name,
+		displayName: strategy.displayName,
 		description: normalizeOptionalText(strategy.description),
 		accuracy: normalizeAccuracy(strategy.accuracy),
 		signalFrequency: normalizeOptionalText(strategy.signalFrequency),
@@ -27,22 +29,23 @@ export function mapStrategyResponseToStrategy(strategy: StrategyResponse, active
 		logicDescription: normalizeOptionalText(strategy.logicDescription),
 		useDescription: normalizeOptionalText(strategy.usageDescription),
 		limitDescription: normalizeOptionalText(strategy.limitationsDescription),
-		isActive: activeStrategyIds?.has(strategy.id) ?? strategy.isActive,
+		isSubscribed: strategy.isSubscribed,
 	};
 }
 
 export function mapStrategyToStrategyCard(
-	strategy: Omit<StrategyCardStrategy, 'isActive'>,
-	isActive: boolean,
+	strategy: Omit<StrategyCardStrategy, 'isSubscribed'>,
+	isSubscribed: boolean,
 ): StrategyCardStrategy {
 	return {
 		id: strategy.id,
 		name: strategy.name,
+		displayName: strategy.displayName,
 		description: strategy.description,
 		accuracy: strategy.accuracy,
 		signalFrequency: strategy.signalFrequency,
 		investmentHorizon: strategy.investmentHorizon,
-		isActive,
+		isSubscribed,
 	};
 }
 

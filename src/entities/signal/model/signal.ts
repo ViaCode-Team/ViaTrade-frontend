@@ -13,7 +13,8 @@ export type Signal = {
 	close: number;
 	direction: SignalDirection;
 	confidence?: number;
-	strategy: string;
+	strategyName: string;
+	strategyDisplayName: string;
 };
 
 export type TradeHistory = {
@@ -49,7 +50,8 @@ export function mapSignalResponsePageToSignals(response: SignalResponsePageResul
 			close: signal.closePrice,
 			direction,
 			confidence: normalizeConfidence(signal.accuracy),
-			strategy: signal.strategyName,
+			strategyName: signal.strategyName,
+			strategyDisplayName: signal.displayName,
 		}];
 	});
 }

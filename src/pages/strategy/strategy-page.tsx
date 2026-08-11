@@ -1,6 +1,6 @@
 import { Flex, Stack } from '@mantine/core';
 
-import { mapStrategyResponseToStrategy, useGetStrategyByIdSuspense } from '@/entities/strategy';
+import { mapStrategyResponseToStrategy, useGetStrategiesSuspense } from '@/entities/strategy';
 import { StrategyStockBinding } from '@/features/strategy/bind-stock';
 import { DataFreshness } from '@/shared/ui/data-freshness';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
@@ -34,16 +34,22 @@ export function StrategyPage() {
 function StrategyPageBase() {
 	const currentStrategy = useCurrentStrategy();
 
-	if (!currentStrategy.hasStrategyId) {
+	if (!currentStrategy.hasStrategyName) {
 		return <StrategyNotFound />;
 	}
 
-	return <StrategyPageContentBoundary strategyId={currentStrategy.strategyId} />;
+	return <StrategyPageContentBoundary strategyName={currentStrategy.strategyName} />;
 }
 
-function StrategyPageContent({ strategyId }: { strategyId: number }) {
-	const strategyQuery = useGetStrategyByIdSuspense(strategyId);
-	const strategySummary = mapStrategyResponseToStrategy(strategyQuery.data.data);
+function StrategyPageContent({ strategyName }: { strategyName: string }) {
+	const strategiesQuery = useGetStrategiesSuspense({ name: strategyName, page: 1, pageSize: 1 });
+	const strategyResponse = strategiesQuery.data.data.items.find((strategy) => strategy.name === strategyName);
+
+	if (!strategyResponse) {
+		return <StrategyNotFound />;
+	}
+
+	const strategySummary = mapStrategyResponseToStrategy(strategyResponse);
 
 	return (
 		<>
@@ -53,14 +59,19 @@ function StrategyPageContent({ strategyId }: { strategyId: number }) {
 
 			<StrategyInfoSection strategy={strategySummary} />
 
-			<Section header={{ title: 'Связанные акции' }}>
+			<Section
+				header={{
+					title: 'Связанные акции',
+					description: 'Акции, связанные с этой стратегией.',
+				}}
+			>
 				<StrategyStockBinding
-					strategyId={strategyId}
+					strategyId={strategySummary.id}
 				/>
 			</Section>
 
 			<StrategyNoteSection
-				strategyId={strategyId}
+				strategyId={strategySummary.id}
 				strategySummary={strategySummary}
 			/>
 		</>

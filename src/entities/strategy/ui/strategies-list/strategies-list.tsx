@@ -36,7 +36,7 @@ export function StrategiesList({
 				{strategies.map((strategy) => (
 					<li key={strategy.id}>
 						<StrategyCard
-							strategy={mapStrategyToStrategyCard(strategy, strategy.isActive)}
+							strategy={mapStrategyToStrategyCard(strategy, strategy.isSubscribed)}
 							action={actionSlot?.(strategy)}
 							bottomAction={bottomActionSlot?.(strategy)}
 						/>

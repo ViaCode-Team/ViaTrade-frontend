@@ -8,16 +8,17 @@ type HistoryTableProps = {
 	instrumentId: number;
 	strategyId: number;
 	strategyName: string;
+	strategyDisplayName: string;
 };
 
-export function SignalHistoryTable({ instrumentId, strategyId, strategyName }: HistoryTableProps) {
+export function SignalHistoryTable({ instrumentId, strategyId, strategyName, strategyDisplayName }: HistoryTableProps) {
 	const table = useSignalHistoryTable({ strategyId, instrumentId });
 	const { activePage, totalPages, setPage, ...viewProps } = table;
 
 	return (
 		<SignalHistoryTableView
 			strategyName={strategyName}
-			strategyId={strategyId}
+			strategyDisplayName={strategyDisplayName}
 			pagination={{ page: activePage, totalPages, onPageChange: setPage }}
 			{...viewProps}
 		/>

@@ -7,30 +7,30 @@ type StrategiesOverviewStatusBarProps = {
 	totalCount: number;
 	filteredCount: number;
 	pagination: StatusBarPaginationConfig;
-	showActivityBadges: boolean;
-	activeCount: number;
-	inactiveCount: number;
+	showSubscriptionBadges: boolean;
+	subscribedCount: number;
+	unsubscribedCount: number;
 };
 
 export function StrategiesOverviewStatusBar({
 	totalCount,
 	filteredCount,
 	pagination,
-	showActivityBadges,
-	activeCount,
-	inactiveCount,
+	showSubscriptionBadges,
+	subscribedCount,
+	unsubscribedCount,
 }: StrategiesOverviewStatusBarProps) {
 	return (
 		<ListStatusBar
 			totalCount={totalCount}
 			filteredCount={filteredCount}
 			pagination={pagination}
-			badges={showActivityBadges
+			badges={showSubscriptionBadges
 				&& (
 					<>
-						{!!activeCount && <ValueBadge variant='dot' color='green' size='sm' label='Активные' value={activeCount} />}
+						{!!subscribedCount && <ValueBadge variant='dot' color='green' size='sm' label='Подписаны' value={subscribedCount} />}
 
-						{!!inactiveCount && <ValueBadge variant='dot' color='gray' size='sm' label='Неактивные' value={inactiveCount} />}
+						{!!unsubscribedCount && <ValueBadge variant='dot' color='gray' size='sm' label='Не подписаны' value={unsubscribedCount} />}
 					</>
 				)}
 		/>

@@ -13,7 +13,7 @@ export const STRATEGIES_PAGE_SIZE = 15;
 export function getStrategiesRequestParams(filters: {
 	page: number;
 	sortOption: 'name-asc' | 'name-desc' | 'accuracy-desc' | 'accuracy-asc';
-	statusFilter: 'all' | 'active' | 'inactive';
+	statusFilter: 'all' | 'subscribed' | 'unsubscribed';
 }): GetStrategiesParams {
 	const sortBy = {
 		'name-asc': 'nameAsc',
@@ -34,15 +34,7 @@ export function useStrategiesData(params: GetStrategiesParams = getStrategiesReq
 
 	const strategies = useMemo(
 		() => {
-			const activeStrategyIds = new Set(
-				strategiesQuery.data.data.items
-					.filter((strategy) => strategy.isActive)
-					.map((strategy) => strategy.id),
-			);
-
-			return strategiesQuery.data.data.items.map((strategy) =>
-				mapStrategyResponseToStrategy(strategy, activeStrategyIds),
-			);
+			return strategiesQuery.data.data.items.map(mapStrategyResponseToStrategy);
 		},
 		[strategiesQuery.data.data.items],
 	);

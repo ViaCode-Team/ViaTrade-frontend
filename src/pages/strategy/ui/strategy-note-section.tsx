@@ -14,16 +14,16 @@ type StrategyNoteSectionProps = {
 
 export function StrategyNoteSection({ strategyId, strategySummary }: StrategyNoteSectionProps) {
 	const strategyNoteSource = useMemo(() => {
-		if (strategyId === null) {
+		if (strategyId === null || !strategySummary) {
 			return undefined;
 		}
 
 		return {
 			type: 'strategy' as const,
 			id: String(strategyId),
-			label: strategySummary?.name ?? `Стратегия #${strategyId}`,
-			description: strategySummary?.description ?? 'Торговая стратегия',
-			path: generatePath(ROUTES.STRATEGY, { strategyId: String(strategyId) }),
+			label: strategySummary.displayName,
+			description: strategySummary.description ?? 'Торговая стратегия',
+			path: generatePath(ROUTES.STRATEGY, { strategyName: strategySummary.name }),
 		};
 	}, [strategyId, strategySummary]);
 

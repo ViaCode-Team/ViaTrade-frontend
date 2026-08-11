@@ -32,8 +32,8 @@ export function StrategiesControls() {
 				size='sm'
 				data={[
 					{ label: 'Все', value: 'all' },
-					{ label: 'Активные', value: 'active' },
-					{ label: 'Неактивные', value: 'inactive' },
+					{ label: 'Подписаны', value: 'subscribed' },
+					{ label: 'Не подписаны', value: 'unsubscribed' },
 				]}
 			/>
 		</ControlsGroup>

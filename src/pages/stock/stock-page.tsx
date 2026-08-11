@@ -82,8 +82,8 @@ function StockPageContent({ instrumentId }: StockPageContentProps) {
 
 			<Section
 				header={{
-					title: 'Привязанные стратегии',
-					description: stock.ticker && `Стратегии, которые привязаны к ${stock.ticker}.`,
+					title: 'Связанные стратегии',
+					description: `Стратегии, связанные с этой акцией.`,
 				}}
 			>
 				<StockLinkedStrategies stockId={stock.instrumentId} />

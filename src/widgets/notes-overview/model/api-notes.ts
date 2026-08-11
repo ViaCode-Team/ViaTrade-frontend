@@ -74,10 +74,10 @@ function getStrategyNoteSource(strategy: NoteResponse['strategy']): NoteSource |
 	return {
 		type: 'strategy',
 		id: String(strategy.id),
-		label: strategy.name,
+		label: strategy.displayName,
 		description: strategy.description ?? 'Торговая стратегия',
 		path: generatePath(ROUTES.STRATEGY, {
-			strategyId: String(strategy.id),
+			strategyName: strategy.name,
 		}),
 	};
 }

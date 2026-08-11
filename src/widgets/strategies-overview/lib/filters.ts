@@ -1,7 +1,7 @@
 import { v } from '@/shared/lib/validation';
 
 export type StrategySortOption = 'name-asc' | 'name-desc' | 'accuracy-desc' | 'accuracy-asc';
-export type StrategyStatusFilter = 'all' | 'active' | 'inactive';
+export type StrategyStatusFilter = 'all' | 'subscribed' | 'unsubscribed';
 
 export const strategySortOptions = [
 	{ value: 'name-asc', label: 'По названию (от А до Я)' },
@@ -18,7 +18,7 @@ export const strategyFiltersSchema = v.object({
 		'name-asc',
 	),
 	statusFilter: v.fallback(
-		v.picklist(['all', 'active', 'inactive']),
+		v.picklist(['all', 'subscribed', 'unsubscribed']),
 		'all',
 	),
 });

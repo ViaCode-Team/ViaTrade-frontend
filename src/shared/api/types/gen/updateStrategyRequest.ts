@@ -7,5 +7,5 @@
  */
 
 export type UpdateStrategyRequest = {
-	isActive: boolean;
+	isSubscribed: boolean;
 };

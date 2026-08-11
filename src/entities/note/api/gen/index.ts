@@ -29,6 +29,10 @@ import type {
 } from '../../../../shared/api/types/gen/getNotesParams';
 
 import type {
+	GetSearchNotesParams,
+} from '../../../../shared/api/types/gen/getSearchNotesParams';
+
+import type {
 	NoteResponse,
 } from '../../../../shared/api/types/gen/noteResponse';
 
@@ -449,6 +453,207 @@ export function useGetNotesSuspense<TData = Awaited<ReturnType<typeof getNotes>>
 	queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 	const queryOptions = getGetNotesSuspenseQueryOptions(params, options);
+
+	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+export type getSearchNotesResponse200 = {
+	data: NoteResponsePageResult;
+	status: 200;
+};
+
+export type getSearchNotesResponse400 = {
+	data: ProblemDetails;
+	status: 400;
+};
+
+export type getSearchNotesResponse401 = {
+	data: ProblemDetails;
+	status: 401;
+};
+
+export type getSearchNotesResponse403 = {
+	data: ProblemDetails;
+	status: 403;
+};
+
+export type getSearchNotesResponse404 = {
+	data: ProblemDetails;
+	status: 404;
+};
+
+export type getSearchNotesResponse408 = {
+	data: ProblemDetails;
+	status: 408;
+};
+
+export type getSearchNotesResponse409 = {
+	data: ProblemDetails;
+	status: 409;
+};
+
+export type getSearchNotesResponse422 = {
+	data: ProblemDetails;
+	status: 422;
+};
+
+export type getSearchNotesResponse500 = {
+	data: ProblemDetails;
+	status: 500;
+};
+
+export type getSearchNotesResponse503 = {
+	data: ProblemDetails;
+	status: 503;
+};
+
+export type getSearchNotesResponseSuccess = (getSearchNotesResponse200) & {
+	headers: Headers;
+};
+export type getSearchNotesResponseError = (getSearchNotesResponse400 | getSearchNotesResponse401 | getSearchNotesResponse403 | getSearchNotesResponse404 | getSearchNotesResponse408 | getSearchNotesResponse409 | getSearchNotesResponse422 | getSearchNotesResponse500 | getSearchNotesResponse503) & {
+	headers: Headers;
+};
+
+export function getGetSearchNotesUrl(params?: GetSearchNotesParams) {
+	const normalizedParams = new URLSearchParams();
+
+	Object.entries(params || {}).forEach(([key, value]) => {
+		if (value !== undefined) {
+			normalizedParams.append(key, value === null ? 'null' : String(value));
+		}
+	});
+
+	const stringifiedParams = normalizedParams.toString();
+
+	return stringifiedParams.length > 0 ? `/api/v1/notes/search?${stringifiedParams}` : `/api/v1/notes/search`;
+}
+
+export async function getSearchNotes(params?: GetSearchNotesParams, options?: Parameters<typeof customInstance>[1]): Promise<getSearchNotesResponseSuccess> {
+	return customInstance<getSearchNotesResponseSuccess>(getGetSearchNotesUrl(params), {
+		...options,
+		method: 'GET',
+
+
+	});
+}
+
+
+export function getGetSearchNotesQueryKey(params?: GetSearchNotesParams) {
+	return [
+		`/api/v1/notes/search`,
+		...(params ? [params] : []),
+	] as const;
+}
+
+
+export function getGetSearchNotesQueryOptions<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(params?: GetSearchNotesParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetSearchNotesQueryKey(params);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSearchNotes>>> = ({ signal }) => getSearchNotes(params, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetSearchNotesQueryResult = NonNullable<Awaited<ReturnType<typeof getSearchNotes>>>;
+export type GetSearchNotesQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetSearchNotes<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params: undefined | GetSearchNotesParams, options: { query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>> & Pick<
+		DefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getSearchNotes>>,
+			TError,
+			Awaited<ReturnType<typeof getSearchNotes>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetSearchNotes<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params?: GetSearchNotesParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>> & Pick<
+		UndefinedInitialDataOptions<
+			Awaited<ReturnType<typeof getSearchNotes>>,
+			TError,
+			Awaited<ReturnType<typeof getSearchNotes>>
+		>,
+		'initialData'
+	>; request?: SecondParameter<typeof customInstance>; },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetSearchNotes<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params?: GetSearchNotesParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetSearchNotes<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params?: GetSearchNotesParams,
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetSearchNotesQueryOptions(params, options);
+
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	return withQueryKey(query, queryOptions.queryKey);
+}
+
+export async function prefetchGetSearchNotesQuery<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(queryClient: QueryClient, params?: GetSearchNotesParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }): Promise<QueryClient> {
+	const queryOptions = getGetSearchNotesQueryOptions(params, options);
+
+	await queryClient.prefetchQuery(queryOptions);
+
+	return queryClient;
+}
+
+export async function invalidateGetSearchNotes(queryClient: QueryClient, params?: GetSearchNotesParams, options?: InvalidateOptions): Promise<QueryClient> {
+	await queryClient.invalidateQueries({ queryKey: getGetSearchNotesQueryKey(params) }, options);
+
+	return queryClient;
+}
+
+
+export function getGetSearchNotesSuspenseQueryOptions<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(params?: GetSearchNotesParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> }) {
+	const { query: queryOptions, request: requestOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getGetSearchNotesQueryKey(params);
+
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getSearchNotes>>> = ({ signal }) => getSearchNotes(params, { signal, ...requestOptions });
+
+
+	return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> };
+}
+
+export type GetSearchNotesSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getSearchNotes>>>;
+export type GetSearchNotesSuspenseQueryError = ErrorType<ProblemDetails>;
+
+
+export function useGetSearchNotesSuspense<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params: undefined | GetSearchNotesParams, options: { query: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetSearchNotesSuspense<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params?: GetSearchNotesParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetSearchNotesSuspense<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params?: GetSearchNotesParams, options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+export function useGetSearchNotesSuspense<TData = Awaited<ReturnType<typeof getSearchNotes>>, TError = ErrorType<ProblemDetails>>(
+	params?: GetSearchNotesParams,
+	options?: { query?: Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSearchNotes>>, TError, TData>>; request?: SecondParameter<typeof customInstance> },
+	queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetSearchNotesSuspenseQueryOptions(params, options);
 
 	const query = useSuspenseQuery(queryOptions, queryClient) as UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

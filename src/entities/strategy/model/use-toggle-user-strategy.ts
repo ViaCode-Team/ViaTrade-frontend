@@ -2,7 +2,7 @@ import { useUpdateStrategy } from '../api/gen';
 
 type ToggleUserStrategyVariables = {
 	strategyId: number;
-	isActive: boolean;
+	isSubscribed: boolean;
 };
 
 export function useToggleUserStrategy() {
@@ -12,7 +12,7 @@ export function useToggleUserStrategy() {
 		mutate: (variables: ToggleUserStrategyVariables, onSuccess?: () => void) => {
 			updateStrategyMutation.mutate({
 				strategyId: variables.strategyId,
-				data: { isActive: variables.isActive },
+				data: { isSubscribed: variables.isSubscribed },
 			}, { onSuccess });
 		},
 		isPending: updateStrategyMutation.isPending,
@@ -20,7 +20,7 @@ export function useToggleUserStrategy() {
 		variables: updateStrategyMutation.variables
 			? {
 					strategyId: updateStrategyMutation.variables.strategyId,
-					isActive: updateStrategyMutation.variables.data.isActive,
+					isSubscribed: updateStrategyMutation.variables.data.isSubscribed,
 				}
 			: undefined,
 	};

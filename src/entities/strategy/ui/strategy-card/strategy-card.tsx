@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 
 import {
-	Badge,
 	Box,
 	Card,
 	Flex,
@@ -34,13 +33,13 @@ export function StrategyCard({
 	bottomAction,
 }: StrategyCardProps) {
 	const strategyPath = generatePath(ROUTES.STRATEGY, {
-		strategyId: String(strategy.id),
+		strategyName: strategy.name,
 	});
 	const leftBorderStyle = getLeftBorderCardStyle({
-		color: strategy.isActive
+		color: strategy.isSubscribed
 			? 'var(--mantine-color-green-light)'
 			: 'var(--mantine-color-red-light)',
-		hoverColor: strategy.isActive
+		hoverColor: strategy.isSubscribed
 			? 'var(--mantine-color-green-filled)'
 			: 'var(--mantine-color-red-filled)',
 	});
@@ -57,21 +56,17 @@ export function StrategyCard({
 			<RouterLink
 				to={strategyPath}
 				className={cls.cardLink}
-				aria-label={`Открыть стратегию ${strategy.name}`}
+				aria-label={`Открыть стратегию ${strategy.displayName}`}
 				onClick={onLinkClick}
 			/>
 
 			<Flex direction='column' gap='xs'>
 				<Flex justify='space-between' align='flex-start' gap='xs'>
 					<Title order={4} className={cls.title} lineClamp={1}>
-						{strategy.name}
+						{strategy.displayName}
 					</Title>
 
-					{action || (
-						<Badge color={strategy.isActive ? 'green' : 'red'} variant='light' size='sm'>
-							{strategy.isActive ? 'Активна' : 'Выключена'}
-						</Badge>
-					)}
+					{action}
 				</Flex>
 
 				<Text size='sm' c='dimmed' lineClamp={2}>

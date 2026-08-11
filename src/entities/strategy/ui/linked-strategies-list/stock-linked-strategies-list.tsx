@@ -12,15 +12,15 @@ export { StockLinkedStrategiesListSkeleton } from './stock-linked-strategies-lis
 
 export type StockLinkedStrategiesListProps = {
 	strategies: StrategyCardStrategy[];
-	activeStrategyIds: Set<number>;
+	subscribedStrategyIds: Set<number>;
 	pagination?: PaginationConfig;
 	onNavigate?: () => void;
-	renderAction?: (strategy: StrategyCardStrategy, isActive: boolean) => ReactNode;
+	renderAction?: (strategy: StrategyCardStrategy, isSubscribed: boolean) => ReactNode;
 };
 
 export function StockLinkedStrategiesList({
 	strategies,
-	activeStrategyIds,
+	subscribedStrategyIds,
 	pagination,
 	onNavigate,
 	renderAction,
@@ -33,7 +33,7 @@ export function StockLinkedStrategiesList({
 						<StrategyCard
 							strategy={strategy}
 							onLinkClick={onNavigate}
-							action={renderAction?.(strategy, activeStrategyIds.has(strategy.id))}
+							action={renderAction?.(strategy, subscribedStrategyIds.has(strategy.id))}
 						/>
 					</li>
 				))}

@@ -25,7 +25,7 @@ export function DashboardPage() {
 				<DashboardSignalsBoundary onSignalSelect={openSignalHistoryModal} />
 			</Section>
 
-			<Section header={{ title: 'Активные стратегии' }}>
+			<Section header={{ title: 'Подписанные стратегии' }}>
 				<DashboardStrategiesBoundary />
 			</Section>
 

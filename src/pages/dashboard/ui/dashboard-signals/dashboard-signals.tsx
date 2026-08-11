@@ -8,7 +8,6 @@ import {
 	SignalsListSkeleton,
 	useGetLatestSignalsSuspense,
 } from '@/entities/signal';
-import { CreateTradeFromSignalButton } from '@/features/trade/create-trade-from-signal';
 import {
 	QUERY_REFETCH_INTERVAL,
 	STATIC_QUERY_STALE_TIME,
@@ -35,17 +34,6 @@ export function DashboardSignals({ onSignalSelect }: { onSignalSelect: (signal: 
 			<SignalsList
 				signals={resultsSignals}
 				onSignalSelect={onSignalSelect}
-				renderAction={(signal) => (
-					<CreateTradeFromSignalButton
-						draft={{
-							instrumentId: signal.instrumentId,
-							ticker: signal.asset,
-							occurredAt: signal.occurredAt,
-							close: signal.close,
-							direction: signal.direction,
-						}}
-					/>
-				)}
 			/>
 		</DataState>
 	);

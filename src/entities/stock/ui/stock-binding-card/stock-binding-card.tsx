@@ -47,7 +47,9 @@ export function StockBindingCard({
 							onSelectedChange(stock.id, event.currentTarget.checked);
 						}}
 						size='md'
-						aria-label={ariaLabel ?? `Связать ${stock.ticker}`}
+						aria-label={ariaLabel ?? (isSelected
+							? `Убрать связь акции ${stock.ticker} со стратегией`
+							: `Связать акцию ${stock.ticker} со стратегией`)}
 					/>
 				</div>
 

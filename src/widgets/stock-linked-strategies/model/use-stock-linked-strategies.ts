@@ -27,18 +27,18 @@ export function useStockLinkedStrategies(
 		pageSize,
 		sortBy: [sortBy[filters.sortOption]],
 	});
-	const activeStrategyIds = useMemo(
-		() => new Set(strategiesResponse.data.items.filter((strategy) => strategy.isActive).map((strategy) => strategy.id)),
+	const subscribedStrategyIds = useMemo(
+		() => new Set(strategiesResponse.data.items.filter((strategy) => strategy.isSubscribed).map((strategy) => strategy.id)),
 		[strategiesResponse.data.items],
 	);
 	const allLinkedStrategies = useMemo(
-		() => strategiesResponse.data.items.map((strategy) => mapStrategyResponseToStrategy(strategy, activeStrategyIds)),
-		[activeStrategyIds, strategiesResponse.data.items],
+		() => strategiesResponse.data.items.map(mapStrategyResponseToStrategy),
+		[strategiesResponse.data.items],
 	);
 
 	return {
 		allLinkedStrategies,
-		activeStrategyIds,
+		subscribedStrategyIds,
 		totalCount: strategiesResponse.data.totalCount,
 		totalPages: strategiesResponse.data.totalPages,
 	};

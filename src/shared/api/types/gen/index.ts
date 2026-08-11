@@ -15,6 +15,7 @@ export * from './getLatestSignalsParams';
 export * from './getNotesParams';
 export * from './getProfitChartParams';
 export * from './getRemindersParams';
+export * from './getSearchNotesParams';
 export * from './getSessionsParams';
 export * from './getSignalsParams';
 export * from './getStrategiesByInstrumentParams';

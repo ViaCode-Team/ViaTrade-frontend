@@ -1,5 +1,5 @@
 export type LinkedStrategySortOption = 'name-asc' | 'name-desc' | 'accuracy-desc' | 'accuracy-asc';
-export type LinkedStrategyStatusFilter = 'all' | 'active' | 'inactive';
+export type LinkedStrategyStatusFilter = 'all' | 'subscribed' | 'unsubscribed';
 
 export type LinkedStrategyFilters = {
 	searchQuery: string;

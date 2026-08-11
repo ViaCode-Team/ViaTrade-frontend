@@ -10,12 +10,10 @@ import { openCreateTradeFromSignalModal } from './open-create-trade-from-signal-
 
 type CreateTradeFromSignalButtonProps = {
 	draft: TradeFromSignalDraft;
-	placement?: 'card' | 'table';
 };
 
 export function CreateTradeFromSignalButton({
 	draft,
-	placement = 'card',
 }: CreateTradeFromSignalButtonProps) {
 	if (!isTradeFromSignalAvailable(draft)) {
 		return null;
@@ -28,7 +26,7 @@ export function CreateTradeFromSignalButton({
 
 	return (
 		<Button
-			size={placement === 'card' ? 'compact-sm' : 'compact-xs'}
+			size='compact-xs'
 			variant='light'
 			onClick={handleClick}
 		>

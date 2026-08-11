@@ -18,18 +18,11 @@
 	content: '';
 }
 
-.titleBlock[data-active='true']::before {
+.titleBlock[data-subscribed='true']::before {
 	background: var(--mantine-color-green-5);
-}
-
-.pageTitle {
 }
 
 .infoSection {
 	min-width: 0;
 	height: 100%;
-}
-
-.notFoundTitle {
-	letter-spacing: 0;
 }

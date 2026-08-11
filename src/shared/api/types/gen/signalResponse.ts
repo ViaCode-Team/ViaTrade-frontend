@@ -9,6 +9,7 @@
 export type SignalResponse = {
 	strategyId: number;
 	strategyName: string;
+	displayName: string;
 	instrumentId: number;
 	symbol: string;
 	accuracy?: number;

@@ -9,14 +9,14 @@ function DashboardStrategies() {
 	const allFilteredStrategies = useFilteredStrategies(strategies);
 
 	const filteredStrategies = allFilteredStrategies
-		.filter((s) => s.isActive)
+		.filter((strategy) => strategy.isSubscribed)
 		.slice(0, 4);
 
 	return (
 		<DataState
 			hasData={!!strategies.length}
 			hasResults={!!filteredStrategies.length}
-			noResultsFallback={<NoDataState description='Активных стратегий пока нет. Данные появятся после добавления активных стратегий.' />}
+			noResultsFallback={<NoDataState description='Подписок на стратегии пока нет. Подпишитесь на стратегию, чтобы получать её сигналы.' />}
 		>
 			<StrategiesList strategies={filteredStrategies} />
 		</DataState>

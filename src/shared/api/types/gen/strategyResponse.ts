@@ -10,11 +10,12 @@ export type StrategyResponse = {
 	id: number;
 	name: string;
 	description?: string;
+	displayName: string;
 	accuracy?: number;
 	signalFrequency?: string;
 	investmentHorizon?: string;
 	logicDescription?: string;
 	usageDescription?: string;
 	limitationsDescription?: string;
-	isActive: boolean;
+	isSubscribed: boolean;
 };

@@ -8,6 +8,6 @@
 
 export type StrategyStatisticResponse = {
 	totalStrategiesCount: bigint;
-	activeStrategiesCount: bigint;
-	notLinkedStrategiesCount: bigint;
+	subscribedStrategiesCount: bigint;
+	unsubscribedStrategiesCount: bigint;
 };

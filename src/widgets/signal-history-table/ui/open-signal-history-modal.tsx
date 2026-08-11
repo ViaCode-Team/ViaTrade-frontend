@@ -11,7 +11,8 @@ export function openSignalHistoryModal(signal: Signal) {
 			<SignalHistoryTableBoundary
 				instrumentId={signal.instrumentId}
 				strategyId={signal.strategyId}
-				strategyName={signal.strategy}
+				strategyName={signal.strategyName}
+				strategyDisplayName={signal.strategyDisplayName}
 			/>
 		),
 	});

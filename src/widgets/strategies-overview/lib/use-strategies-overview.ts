@@ -21,15 +21,15 @@ export function useStrategiesOverview() {
 		[filters.q, filters.statusFilter, strategies],
 	);
 
-	const activeCount = filteredStrategies.filter((strategy) => strategy.isActive).length;
+	const subscribedCount = filteredStrategies.filter((strategy) => strategy.isSubscribed).length;
 
 	return {
 		filters,
 		page,
 		strategies,
 		filteredStrategies,
-		activeCount,
-		inactiveCount: filteredStrategies.length - activeCount,
+		subscribedCount,
+		unsubscribedCount: filteredStrategies.length - subscribedCount,
 		totalPages,
 		totalCount,
 		setPage: (nextPage: number) => setFilter('page', String(nextPage)),

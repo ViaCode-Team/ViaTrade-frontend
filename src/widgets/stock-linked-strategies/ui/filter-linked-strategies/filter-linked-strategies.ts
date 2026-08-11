@@ -9,8 +9,8 @@ export function filterLinkedStrategies(strategies: Strategy[], filters: LinkedSt
 				|| (strategy.description?.toLowerCase().includes(filters.searchQuery.toLowerCase()) ?? false);
 
 			const matchesStatus = filters.statusFilter === 'all'
-				|| (filters.statusFilter === 'active' && strategy.isActive)
-				|| (filters.statusFilter === 'inactive' && !strategy.isActive);
+				|| (filters.statusFilter === 'subscribed' && strategy.isSubscribed)
+				|| (filters.statusFilter === 'unsubscribed' && !strategy.isSubscribed);
 
 			return matchesQuery && matchesStatus;
 		})

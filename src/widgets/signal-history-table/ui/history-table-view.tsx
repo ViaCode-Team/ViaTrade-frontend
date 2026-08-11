@@ -26,7 +26,7 @@ const ROWS_PER_PAGE_OPTIONS = ['5', '10', '25'];
 
 type SignalHistoryTableViewProps = {
 	strategyName: string;
-	strategyId: number;
+	strategyDisplayName: string;
 	rowsPerPage: number;
 	history: TradeHistory[];
 	totalCount: number;
@@ -40,7 +40,7 @@ type SignalHistoryTableViewProps = {
 
 export function SignalHistoryTableView({
 	strategyName,
-	strategyId,
+	strategyDisplayName,
 	rowsPerPage,
 	history,
 	totalCount,
@@ -53,8 +53,8 @@ export function SignalHistoryTableView({
 }: SignalHistoryTableViewProps) {
 	return (
 		<>
-			<RouterLink to={generatePath(ROUTES.STRATEGY, { strategyId: String(strategyId) })} className={cls.strategyLink} onClick={() => modals.closeAll()}>
-				<Text span size='sm' lineClamp={1}>{strategyName}</Text>
+			<RouterLink to={generatePath(ROUTES.STRATEGY, { strategyName })} className={cls.strategyLink} onClick={() => modals.closeAll()}>
+				<Text span size='sm' lineClamp={1}>{strategyDisplayName}</Text>
 				<Flex flex='0 0 auto'><IconChevronRight size={16} /></Flex>
 			</RouterLink>
 
@@ -91,7 +91,6 @@ export function SignalHistoryTableView({
 										<Table.Td className={cls.alignCenter}>
 											{row.direction !== 'hold' && (
 												<CreateTradeFromSignalButton
-													placement='table'
 													draft={{
 														instrumentId: row.instrumentId,
 														ticker: row.ticker,

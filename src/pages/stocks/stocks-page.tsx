@@ -38,7 +38,7 @@ export function StocksPage() {
 		<>
 			<PageHeader
 				title='Акции'
-				description='Динамика инструментов и связанные стратегии'
+				description='Динамика акций и связанные с ними стратегии'
 				rightSection={<DataFreshness />}
 			/>
 

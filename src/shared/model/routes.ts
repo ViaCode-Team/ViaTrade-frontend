@@ -5,7 +5,7 @@ export const ROUTES = {
 	STOCKS: '/stocks',
 	STOCK: '/stocks/:stockId',
 	STRATEGIES: '/strategies',
-	STRATEGY: '/strategies/:strategyId',
+	STRATEGY: '/strategies/:strategyName',
 	NOTES: '/notes',
 	REMINDERS: '/reminders',
 	PROFILE: '/profile',
@@ -20,16 +20,16 @@ export type PathParams = {
 		stockId: string;
 	};
 	[ROUTES.STRATEGY]: {
-		strategyId: string;
+		strategyName: string;
 	};
 };
 
 // Типизированный переход по пути с динамическим параметром
-// navigate(generatePath(ROUTES.STRATEGY, { strategyId: '42' }));
+// navigate(generatePath(ROUTES.STRATEGY, { strategyName: 'momentum' }));
 
 // Использование типизированного useParams
 // const params = useParams<PathParams[typeof ROUTES.STRATEGY]>();
-// params.strategyId - динамический параметр
+// params.strategyName - динамический параметр
 
 declare module 'react-router' {
 	// eslint-disable-next-line ts/consistent-type-definitions

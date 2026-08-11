@@ -16,10 +16,10 @@ type StrategyHeroProps = {
 export function StrategyHero({ strategy }: StrategyHeroProps) {
 	const strategyToggle = useToggleUserStrategy();
 
-	const handleActiveChange = (nextIsActive: boolean) => {
+	const handleSubscriptionChange = (nextIsSubscribed: boolean) => {
 		strategyToggle.mutate({
 			strategyId: strategy.id,
-			isActive: nextIsActive,
+			isSubscribed: nextIsSubscribed,
 		});
 	};
 
@@ -38,11 +38,11 @@ export function StrategyHero({ strategy }: StrategyHeroProps) {
 			<Grid.Col span={{ base: 12, md: 6 }}>
 				<StrategyTitleBlock
 					strategy={strategy}
-					isActiveChangePending={
+					isSubscriptionChangePending={
 						strategyToggle.isPending
 						&& strategyToggle.variables?.strategyId === strategy.id
 					}
-					onActiveChange={handleActiveChange}
+					onSubscriptionChange={handleSubscriptionChange}
 				/>
 			</Grid.Col>
 

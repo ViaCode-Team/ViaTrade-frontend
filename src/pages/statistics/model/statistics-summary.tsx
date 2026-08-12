@@ -1,14 +1,17 @@
+import type { ReactNode } from 'react';
+
 import type { GlobalStatisticResponse } from '@/shared/api';
 
 import { TRADE_STATISTICS_CARDS } from '@/entities/trade';
+import { TextTooltip } from '@/shared/ui/text-tooltip';
 
 import { formatChartCurrency, formatProfitFactor } from './statistics';
 
 export type StatisticsSummaryCardData = {
 	id: string;
-	title: string;
+	title: ReactNode;
 	value: string | number;
-	description: string;
+	description: ReactNode;
 	color?: string;
 };
 
@@ -37,7 +40,16 @@ export function getStatisticsSummaryCardsData(statistic: GlobalStatisticResponse
 			id: 'winRate',
 			title: TRADE_STATISTICS_CARDS.winRate.title,
 			value: `${winrateStatistic.totalWinrate.toFixed(1)}%`,
-			description: `Profit Factor: ${formatProfitFactor(winrateStatistic.profitFactor)}`,
+			description: (
+				<>
+					<TextTooltip label='Отношение суммы всей прибыли к сумме всех убытков. Если значение > 1, торговля прибыльна.'>
+						Profit Factor
+					</TextTooltip>
+					:
+					{' '}
+					{formatProfitFactor(winrateStatistic.profitFactor)}
+				</>
+			),
 			color: TRADE_STATISTICS_CARDS.winRate.getColor(winrateStatistic.totalWinrate),
 		},
 	];

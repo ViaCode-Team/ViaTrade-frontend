@@ -1,5 +1,4 @@
 import {
-	ActionIcon,
 	Button,
 	Group,
 	Input,
@@ -8,16 +7,14 @@ import {
 	Select,
 	Stack,
 	Switch,
-	Tooltip,
 } from '@mantine/core';
 import '@mantine/dates/styles.css';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import { IconHelpCircle } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { HELP_TOOLTIP_OPEN_DELAY } from '@/shared/model';
+import { InfoLabel } from '@/shared/ui/info-label';
 
 import {
 	TRADE_DIRECTION_HELP_TEXT,
@@ -94,26 +91,13 @@ export function TradeForm({
 
 				<Input.Wrapper
 					label={(
-						<Group gap={4}>
-							Направление сделки
-							<Tooltip
-								label={TRADE_DIRECTION_HELP_TEXT}
-								multiline
-								w={280}
-								withArrow
-								openDelay={HELP_TOOLTIP_OPEN_DELAY}
-								events={{ hover: true, focus: true, touch: true }}
-							>
-								<ActionIcon
-									size={18}
-									aria-label='Что означает направление сделки'
-									variant='transparent'
-									c='dimmed'
-								>
-									<IconHelpCircle size={16} />
-								</ActionIcon>
-							</Tooltip>
-						</Group>
+						<InfoLabel
+							label='Направление сделки'
+							tooltipProps={{
+								text: TRADE_DIRECTION_HELP_TEXT,
+								ariaLabel: 'Что означает направление сделки',
+							}}
+						/>
 					)}
 				>
 					<SegmentedControl

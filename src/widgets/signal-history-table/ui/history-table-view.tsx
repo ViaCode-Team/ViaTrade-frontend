@@ -1,5 +1,6 @@
 import {
 	Badge,
+	Center,
 	Flex,
 	Group,
 	MultiSelect,
@@ -19,6 +20,7 @@ import type { PaginationConfig } from '@/shared/model';
 import { CreateTradeFromSignalButton } from '@/features/trade/create-trade-from-signal';
 import { ROUTES } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
+import { InfoLabel } from '@/shared/ui/info-label';
 
 import cls from './history-table.module.css';
 
@@ -76,7 +78,14 @@ export function SignalHistoryTableView({
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>Дата</Table.Th>
-							<Table.Th className={cls.alignCenter}>Закрытие</Table.Th>
+							<Table.Th className={cls.alignCenter}>
+								<Center>
+									<InfoLabel
+										label='Закрытие'
+										tooltipProps={{ text: 'Цена закрытия инструмента на дату формирования сигнала.' }}
+									/>
+								</Center>
+							</Table.Th>
 							<Table.Th className={cls.alignCenter}>Сигнал</Table.Th>
 							<Table.Th className={cls.alignCenter}>Действие</Table.Th>
 						</Table.Tr>

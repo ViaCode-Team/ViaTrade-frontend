@@ -14,8 +14,8 @@ import { IconRoute } from '@tabler/icons-react';
 import type { Strategy } from '@/entities/strategy';
 
 import { getAccuracyColor } from '@/entities/strategy';
-
-import { AccuracyHelp } from './accuracy-help';
+import { HelpTooltip } from '@/shared/ui/help-tooltip';
+import { InfoLabel } from '@/shared/ui/info-label';
 
 type StrategyMetaPanelProps = {
 	strategy: Strategy;
@@ -24,12 +24,24 @@ type StrategyMetaPanelProps = {
 export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 	const metaItems = [
 		{
-			title: 'Частота сигнала',
+			id: 'frequency',
+			title: (
+				<InfoLabel
+					label='Частота сигнала'
+					tooltipProps={{ text: 'Ожидаемое количество торговых сигналов за определенный период.' }}
+				/>
+			),
 			value: strategy.signalFrequency ?? 'Не указана',
 			icon: <IconClock size={22} />,
 		},
 		{
-			title: 'Инвест горизонт',
+			id: 'horizon',
+			title: (
+				<InfoLabel
+					label='Инвест горизонт'
+					tooltipProps={{ text: 'Рекомендуемый срок удержания позиции для достижения оптимального результата.' }}
+				/>
+			),
 			value: strategy.investmentHorizon ?? 'Не указана',
 			icon: <IconRoute size={22} />,
 		},
@@ -43,7 +55,7 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 				spacing='sm'
 			>
 				{metaItems.map((item) => (
-					<Stack key={item.title} gap={6}>
+					<Stack key={item.id} gap={6}>
 						<Group gap={8} wrap='nowrap'>
 							{item.icon}
 
@@ -71,7 +83,12 @@ export function StrategyMetaPanel({ strategy }: StrategyMetaPanelProps) {
 								</Title>
 							</Group>
 
-							<AccuracyHelp />
+							<HelpTooltip
+								text='Историческая доля сигналов, которые отработали по правилам стратегии. Показатель не гарантирует будущий результат'
+								ariaLabel='Что означает точность стратегии'
+								size={20}
+								iconSize={18}
+							/>
 						</Group>
 
 						<Title order={4} c={getAccuracyColor(strategy.accuracy)}>

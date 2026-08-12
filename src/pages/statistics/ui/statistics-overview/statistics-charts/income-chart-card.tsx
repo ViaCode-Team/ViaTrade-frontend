@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 
 import { useGetTradeStatisticsSuspense } from '@/entities/trade';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
+import { TextTooltip } from '@/shared/ui/text-tooltip';
 
 import {
 	formatChartCurrency,
@@ -29,7 +30,10 @@ export function IncomeChartCard() {
 			<Flex direction='column'>
 				<Title order={4}>Доходность</Title>
 				<Text size='sm' c='dimmed'>
-					Profit Factor:
+					<TextTooltip label='Отношение суммы всей прибыли к сумме всех убытков. Если значение > 1, торговля прибыльна.'>
+						Profit Factor
+					</TextTooltip>
+					:
 					{' '}
 					{formatProfitFactor(winrateStatistic.profitFactor)}
 				</Text>

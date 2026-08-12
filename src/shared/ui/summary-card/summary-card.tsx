@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 
 export type SummaryCardProps = {
-	title: string;
+	title: ReactNode;
 	value?: ReactNode;
 	description?: ReactNode;
 	color?: string;

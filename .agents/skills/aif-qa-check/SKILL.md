@@ -1,7 +1,7 @@
 ---
 name: aif-qa-check
 description: Executes QA test cases created by $aif-qa in human-guided or automated-agent mode. Use when you need to walk through QA one case at a time, record pass/fail results, or have an agent verify cases through browser, CLI, API, automated tests, or file/document checks.
-argument-hint: '[human | agent] [<branch>]'
+argument-hint: "[human | agent] [<branch>]"
 allowed-tools: Read Write Grep Glob Bash AskUserQuestion Browser mcp__playwright__*
 disable-model-invocation: true
 ---
@@ -10,7 +10,6 @@ disable-model-invocation: true
 
 Runs the `test-cases.md` artifact produced by `$aif-qa` and records execution status in `qa-check.md`.
 In agent mode, it also maintains reusable cross-QA execution memory under the QA root:
-
 - `agent-context.md` — curated, current, reusable non-sensitive setup facts for future automated QA runs
 - `agent-history.md` — append-only reusable learnings extracted from prior runs, not a per-run audit log
 
@@ -18,10 +17,10 @@ The skill is stack-free and agent-free: it does not assume a framework, package 
 
 ## Modes
 
-| Argument | Mode               | What you do                                                                                      |
-| -------- | ------------------ | ------------------------------------------------------------------------------------------------ |
-| `human`  | Human-guided QA    | Show exactly one test case, ask the user whether it works, and record their answer               |
-| `agent`  | Automated-agent QA | Execute test cases through the most appropriate available capability and record observed results |
+| Argument | Mode | What you do |
+|----------|------|-------------|
+| `human` | Human-guided QA | Show exactly one test case, ask the user whether it works, and record their answer |
+| `agent` | Automated-agent QA | Execute test cases through the most appropriate available capability and record observed results |
 
 If no mode is provided, ask the user which mode to run.
 
@@ -32,7 +31,6 @@ If no mode is provided, ask the user which mode to run.
 ### Step 0: Load Config
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.description`, `paths.architecture`, `paths.qa` (default: `.ai-factory/qa`)
 - **Language:**
   - `language.ui` for AskUserQuestion prompts, progress messages, summaries, and next-step guidance
@@ -43,7 +41,6 @@ If no mode is provided, ask the user which mode to run.
 - **Git:** `git.enabled` for branch resolution
 
 If config.yaml does not exist, use defaults:
-
 - DESCRIPTION.md: `.ai-factory/DESCRIPTION.md`
 - ARCHITECTURE.md: `.ai-factory/ARCHITECTURE.md`
 - QA artifacts: `.ai-factory/qa/`
@@ -53,7 +50,6 @@ If config.yaml does not exist, use defaults:
 - Git enabled: `true`
 
 Store:
-
 - `ui_language = language.ui || "en"`
 - `artifact_language = language.artifacts || language.ui || "en"`
 - `technical_terms_policy = language.technical_terms || "keep"`
@@ -71,7 +67,6 @@ Templates define structure, not language. Use the canonical English template in 
 For `artifact_language = ru`, write human-readable prose, headings, statuses, summaries, and agent-authored comments in Russian. Preserve user wording except mandatory redaction of sensitive values before writing.
 
 Apply `technical_terms_policy` while writing artifacts:
-
 - `keep` — keep common technical terms such as `browser`, `selector`, `viewport`, `endpoint`, `payload`, `regression`, and `fixture` when clearer
 - `translate` — translate human-readable technical terms where a natural target-language term exists
 - `mixed` — translate ordinary prose terms while keeping code, infrastructure, and ecosystem terms unchanged
@@ -118,14 +113,12 @@ If git_enabled = true and the repository is a git work tree:
 ```
 
 Store:
-
 - `resolved_branch`
 - `artifact_dir = <resolved paths.qa>/<branch-slug>`
 - `test_cases_path = <artifact_dir>/test-cases.md`
 - `qa_check_path = <artifact_dir>/qa-check.md`
 
 Compute `branch-slug` with the exact same algorithm as `$aif-qa`:
-
 1. Replace every character not in `[A-Za-z0-9._-]` with `-`, collapse consecutive `-`, trim leading/trailing `-`, and use `branch` if empty. Then MUST truncate `safe_slug` to the first 40 ASCII characters. Because the normalized `safe_slug` alphabet is `[A-Za-z0-9._-]`, byte length and character length are identical.
 2. Run `git hash-object --stdin <<< "<resolved_branch>"` and take the first 8 hex characters as `hash8`.
 3. Combine: `branch-slug = "<safe_slug>-<hash8>"`.
@@ -135,14 +128,12 @@ Compute `branch-slug` with the exact same algorithm as `$aif-qa`:
 Check for `<artifact_dir>/test-cases.md`.
 
 If it is missing, STOP and ask in `ui_language` whether to:
-
 1. Run `$aif-qa test-cases <resolved_branch>` first
 2. Cancel
 
 Read `test-cases.md`. Extract test cases by IDs (`TC-001`, `TC-002`, etc.), titles, priority, type, execution surface when present, preconditions, steps, expected results, and test data. Preserve their order.
 
 Compute source binding metadata before creating or modifying `qa-check.md`:
-
 - `source_digest` — deterministic digest of the full `test-cases.md` content using `git hash-object --no-filters <test_cases_path>` when available, or `git hash-object --stdin` over the exact file content.
 - `case_digests` — deterministic per-case digest for each extracted `TC-NNN`, computed from that case's canonical block including title, priority, type, preconditions, steps, expected result, and test data.
 - `tested_revision` — when `git_enabled = true` and the repository is a git work tree, run `git rev-parse HEAD` and record the resolved commit SHA.
@@ -150,7 +141,6 @@ Compute source binding metadata before creating or modifying `qa-check.md`:
 - `manual_build_id` — when `git_enabled = false` or the repository is not a git work tree, ask the user for an explicit build/version identifier before creating or resuming results. Do not accept an empty identifier.
 
 Canonicalize each per-case digest input exactly:
-
 1. Extract the raw Markdown block from the line containing the case's `TC-NNN` identifier through the line before the next `TC-NNN` block or end of file.
 2. Normalize line endings from CRLF or CR to LF.
 3. Remove trailing spaces and tabs from each line.
@@ -160,7 +150,6 @@ Canonicalize each per-case digest input exactly:
 7. Hash the wrapped block with `git hash-object --stdin` when available, or another stable SHA-1/SHA-256 digest if git is unavailable.
 
 Compute `worktree_digest` exactly when git is enabled and a git work tree exists:
-
 1. Capture `git status --porcelain=v1 --untracked-files=all`.
 2. Capture `git diff --binary HEAD --`.
 3. Exclude `qa_check_path` from the status, diff, and untracked-file digest inputs so saving `qa-check.md` does not stale its own results. Do not exclude `test_cases_path`; source changes are also tracked by `source_digest`.
@@ -171,7 +160,6 @@ Compute `worktree_digest` exactly when git is enabled and a git work tree exists
 If `mode = agent`, perform Step 1.1 before creating or modifying `qa-check.md`. Existing `qa-check.md` may be inspected read-only during this gate.
 
 If `qa-check.md` exists, read it and resume from existing statuses only after comparing stored binding metadata to the current binding metadata:
-
 - If `tested_revision` changed, mark every prior result as `Stale` and unchecked, preserve prior comments/evidence as historical context, and require retest. Do not count stale pass/fail/block statuses as current.
 - If `worktree_digest` changed, mark every prior result as `Stale` and unchecked, preserve prior comments/evidence as historical context, and require retest. Do not count stale pass/fail/block statuses as current.
 - If `manual_build_id` changed, treat it the same as a tested revision change.
@@ -188,7 +176,6 @@ If `qa-check.md` does not exist, create it from `templates/QA-CHECK.md` using th
 Agent mode is user-only (`disable-model-invocation: true`) because it can perform live browser actions, shell commands, local service calls, and other checks with meaningful side effects.
 
 Before executing any case or writing `qa-check.md` in agent mode:
-
 1. Detect available execution capabilities from the current runtime tools:
    - shell/CLI command execution
    - project test runners and build tools available through shell
@@ -223,7 +210,6 @@ Before executing any case or writing `qa-check.md` in agent mode:
 14. If authorization is denied or unclear, leave the case unchecked, set status to `Blocked`, and write the blocker to `qa-check.md` without executing the risky action. Append the decision to `agent-history.md` only when it is a reusable cross-QA lesson, not merely a case-specific denial.
 
 Redaction is mandatory for agent comments/evidence and all human-entered comments/evidence:
-
 - Redact credentials, cookies, authorization values, session tokens, API keys, bearer tokens, basic auth values, one-time codes, and personal secrets.
 - Redact sensitive URL parameters such as `token`, `access_token`, `refresh_token`, `id_token`, `code`, `secret`, `password`, `passwd`, `pwd`, `auth`, `key`, `api_key`, `session`, `sid`, and `jwt`.
 - Replace redacted values with `[REDACTED]` before writing comments or evidence to `qa-check.md`.
@@ -234,7 +220,6 @@ Redaction is mandatory for agent comments/evidence and all human-entered comment
 Run exactly one pending or selected test case at a time.
 
 For each case:
-
 1. Show only that test case's title, priority, preconditions, steps, test data, and expected result.
 2. Include a short per-case summary in `ui_language`.
 3. The summary question MUST mean: "Test this and answer whether it works." For `ui_language = ru`, use exactly: `Протестируйте и ответьте работает или нет`.
@@ -255,7 +240,6 @@ Agent mode MUST produce concrete, case-appropriate evidence. Browser execution, 
 Internal deterministic invariants MUST be treated as automated checks, not manual QA. Cases involving service-method calls, cache state, materialized rows, exact arrays, raw database values, formula outputs, CLI internals, or similar non-human-observable behavior should be classified as `backend-test`, `cli`, `api`, or `database-read` as appropriate. First look for existing tests or commands that already cover the invariant. If existing tests are found and pass, mark the corresponding `TC-*` case `Passed` with the test class/name, command/filter, exit status, and assertion/result summary as evidence. If one test run covers multiple `TC-*` cases, reuse that evidence on every covered case and optionally summarize the shared run under "Supporting Automated Checks". If no suitable automated coverage exists, keep the case `Blocked` with a blocker such as `Missing automated test coverage for backend invariant`; do not ask the user to manually verify internal arrays or raw database values.
 
 Determine the test target:
-
 - If `agent-context.md`, `agent-history.md`, `test-cases.md`, `change-summary.md`, project docs, or current browser state clearly identify a URL, use it.
 - If repository scripts, test files, package manifests, Makefiles, framework commands, or docs clearly identify a safe command or test filter for a CLI/backend/API/docs case, use it.
 - If no URL, command, startup state, credentials location, test filter, or required fixture is clear, ask the user for the missing detail, then persist only the non-sensitive reusable facts to `agent-context.md`.
@@ -263,7 +247,6 @@ Determine the test target:
 - Use the target environment and authorizations collected in Step 1.1. Reconfirm if navigation redirects to a different host or a more sensitive environment.
 
 For each pending or selected case:
-
 1. Select the execution surface from the case classification:
    - `browser-ui`: navigate with Browser or Playwright MCP and execute UI steps.
    - `cli`: run the relevant project command and inspect exit code/output.
@@ -284,7 +267,6 @@ For each pending or selected case:
 Before the final summary, write detailed per-run evidence to `qa-check.md`, not to root-level memory. This includes the current branch/QA target, commands executed, exit codes, assertion counts, supporting file checks, case mappings, summary counts, and one-off blockers.
 
 After writing `qa-check.md`, extract only reusable cross-QA learnings:
-
 - Update `<paths.qa>/agent-context.md` when a discovered fact is durable and likely useful for future QA sets.
 - Append to `<paths.qa>/agent-history.md` only when a blocker, selector, command pattern, test-filter convention, API endpoint pattern, route, setup note, or authorization decision is likely to recur beyond the current QA set.
 - It is valid to append nothing to `agent-history.md` for a successful run that produced no new reusable learning.
@@ -297,7 +279,6 @@ Use screenshots or browser state observations when the active runtime makes them
 ### Step 4: Final Summary
 
 After stopping or finishing, report in `ui_language`:
-
 - total test cases
 - passed
 - failed
@@ -308,7 +289,6 @@ After stopping or finishing, report in `ui_language`:
 - next recommended action
 
 If `mode = agent` and one or more current cases are `Blocked`, split them into human-verifiable blocked cases and automation-only blocked cases before ending.
-
 - Offer human-guided continuation only for blocked cases whose execution surface is `human`, `browser-ui`, `hybrid` with human-observable steps, or `unknown`.
 - Do NOT offer human-guided continuation for blocked `backend-test`, `cli`, `api`, `file-docs`, or `database-read` cases when the blocker is missing automated coverage, missing command/test filter, unavailable service, or another technical automation prerequisite. For those cases, recommend adding/running the appropriate automated check or providing the missing command/fixture/context.
 - If at least one human-verifiable blocked case exists, ask the user in `ui_language` whether to run those eligible blocked cases now in human-guided mode.

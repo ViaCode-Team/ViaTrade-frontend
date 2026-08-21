@@ -176,14 +176,14 @@ For AI Factory-style skills, also include:
 
 ## Reference File Roles
 
-| File                 | Purpose                                                                                 |
-| -------------------- | --------------------------------------------------------------------------------------- |
-| `SOURCE-MAP.md`      | Sources, coverage, and attribution; omit entirely when `--redact-source-map` is present |
-| `CORE-PRINCIPLES.md` | Dense distilled concepts and rules                                                      |
-| `WORKFLOW.md`        | Step-by-step operating procedure                                                        |
-| `CHECKLISTS.md`      | Review gates and quality criteria                                                       |
-| `PITFALLS.md`        | Common mistakes and detection signals                                                   |
-| `GLOSSARY.md`        | Terms that affect interpretation                                                        |
+| File | Purpose |
+|------|---------|
+| `SOURCE-MAP.md` | Sources, coverage, and attribution; omit entirely when `--redact-source-map` is present |
+| `CORE-PRINCIPLES.md` | Dense distilled concepts and rules |
+| `WORKFLOW.md` | Step-by-step operating procedure |
+| `CHECKLISTS.md` | Review gates and quality criteria |
+| `PITFALLS.md` | Common mistakes and detection signals |
+| `GLOSSARY.md` | Terms that affect interpretation |
 
 Prefer stable, obvious filenames over clever names.
 

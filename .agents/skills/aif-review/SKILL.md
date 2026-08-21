@@ -1,7 +1,7 @@
 ---
 name: aif-review
 description: Perform code review on staged changes or a pull request. Checks for bugs, security issues, performance problems, and best practices. Use when user says "review code", "check my code", "review PR", or "is this code okay". Optional +check flag validates findings via a fresh-context subagent.
-argument-hint: '[PR number | branch/commit/tag | empty] [+check]'
+argument-hint: "[PR number | branch/commit/tag | empty] [+check]"
 allowed-tools: Bash(git *) Bash(gh *) Read Glob Grep Task Agent AskUserQuestion
 disable-model-invocation: false
 ---
@@ -13,13 +13,11 @@ Perform thorough code reviews focusing on correctness, security, performance, an
 ## Step 0: Load Config
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.description`, `paths.architecture`, `paths.rules_file`, `paths.roadmap`, and `paths.rules`
 - **Language:** `language.ui` for review summary language
 - **Git:** `git.base_branch` for branch comparison guidance
 
 If config.yaml doesn't exist, use defaults:
-
 - Paths: `.ai-factory/` for all artifacts
 - Language: `en` (English)
 - Git: `base_branch: main`
@@ -51,13 +49,11 @@ If the leftover argument string is empty, fall back to the empty-argument mode (
 ### With Git Ref (Commits Mode)
 
 Argument routing chain:
-
 1. **Empty** → staged review (see above)
 2. **Digits or `#N`** → PR mode (see above)
 3. **Everything else** → validate via `git rev-parse --verify` → commits mode or ask user
 
 Validation:
-
 ```bash
 git rev-parse --verify <argument> 2>/dev/null
 ```
@@ -83,11 +79,9 @@ git rev-parse --verify <argument> 2>/dev/null
 **Steps:**
 
 1. **Get commit list** between the ref and HEAD:
-
    ```bash
    git log --oneline --reverse <ref>..HEAD
    ```
-
    If no commits found (HEAD is at or behind `<ref>`), inform the user and **stop**.
 
 2. **Check commit count:**
@@ -108,12 +102,10 @@ git rev-parse --verify <argument> 2>/dev/null
    - "Cancel" → inform the user that review was cancelled → **STOP**
 
 3. **Review each commit:**
-
    ```bash
    git show <commit-hash> --stat
    git show <commit-hash>
    ```
-
    For each commit check:
    - Does the commit message match the actual changes?
    - Are changes atomic (single logical unit per commit)?
@@ -130,7 +122,6 @@ Before finalizing review findings, run read-only context gates:
 - Check the resolved roadmap artifact (if present) for milestone alignment and mention missing linkage for likely `feat`/`fix`/`perf` work.
 
 Human gate result severity:
-
 - `WARN` for non-blocking inconsistencies or missing optional files.
 - `ERROR` only for explicit blocking criteria requested by the user/review policy.
 
@@ -139,7 +130,6 @@ If the user wants a standalone rules-only pass, suggest `$aif-rules-check`. Keep
 ### Machine-readable gate result
 
 This section is the single owner of `aif-gate-result` computation:
-
 - Append one final fenced `aif-gate-result` JSON block after the human-readable review.
 - Use `"gate": "review"`.
 - `"status": "pass|warn|fail"` — the more severe (`fail` > `warn` > `pass`) of two independent inputs:
@@ -161,7 +151,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -179,7 +168,6 @@ If any rule is violated — fix the output before presenting it to the user.
 ## Review Checklist
 
 ### Correctness
-
 - [ ] Logic errors or bugs
 - [ ] Edge cases handling
 - [ ] Null/undefined checks
@@ -187,7 +175,6 @@ If any rule is violated — fix the output before presenting it to the user.
 - [ ] Type safety (if applicable)
 
 ### Security
-
 - [ ] SQL injection vulnerabilities
 - [ ] XSS vulnerabilities
 - [ ] Command injection
@@ -197,7 +184,6 @@ If any rule is violated — fix the output before presenting it to the user.
 - [ ] Input validation
 
 ### Performance
-
 - [ ] N+1 query problems
 - [ ] Unnecessary re-renders (React)
 - [ ] Memory leaks
@@ -206,7 +192,6 @@ If any rule is violated — fix the output before presenting it to the user.
 - [ ] Large payload sizes
 
 ### Best Practices
-
 - [ ] Code duplication
 - [ ] Dead code
 - [ ] Magic numbers/strings
@@ -215,7 +200,6 @@ If any rule is violated — fix the output before presenting it to the user.
 - [ ] DRY principle
 
 ### Testing
-
 - [ ] Test coverage for new code
 - [ ] Edge cases tested
 - [ ] Mocking appropriateness
@@ -229,32 +213,25 @@ If any rule is violated — fix the output before presenting it to the user.
 **Risk Level:** 🟢 Low / 🟡 Medium / 🔴 High
 
 ### Context Gates
-
 [Architecture / Rules / Roadmap gate results with WARN/ERROR labels]
 
 ### Critical Issues
-
 [Each item is a short paragraph in prose, not a labeled record. Order inside the paragraph:
-
 1. Behavioral impact — what breaks for the user or downstream code.
 2. Optional note — a code citation, a consequence, or extra context. Include only if it adds signal; skip otherwise.
 3. Path — file:line of the affected location (or the closest anchor).
 4. Suggested fix — concrete edit that addresses the behavior above.
 
 Example:
-
 > Two clients buying the last item both get a confirmation and stock goes negative — the order creation and stock reservation run in separate transactions. `src/services/order.ts:42`. Wrap `OrderService.create` and `InventoryService.reserve` in a shared transaction so the second buyer fails fast with "out of stock".]
 
 ### Suggestions
-
 [Same item shape as Critical Issues. The behavioral impact describes a non-blocking improvement (clarity, performance budget, missing log), not a bug.]
 
 ### Questions
-
 [Free-form clarifications. Path optional, fix optional — these are open questions for the author, not findings.]
 
 ### Positive Notes
-
 [Free-form acknowledgements of good patterns. No path/fix required.]
 ```
 
@@ -317,7 +294,6 @@ Review PR #123 with `+check` validation enabled.
 ## Integration
 
 If GitHub MCP is configured, can:
-
 - Post review comments directly to PR
 - Request changes or approve
 - Add labels based on review outcome

@@ -38,7 +38,9 @@ export function CreateRemindForm({ instrument }: CreateRemindFormProps) {
 		minimumDate,
 		isValid: isReminderDateTimeValid,
 	} = useReminderDateTime();
+
 	const { createRemind, error, isPending } = useCreateRemind();
+
 	const canSubmit = Boolean(selectedInstrumentId && text.trim() && isReminderDateTimeValid);
 
 	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -110,6 +112,7 @@ export function CreateRemindForm({ instrument }: CreateRemindFormProps) {
 					<Button variant='default' onClick={() => modals.closeAll()}>
 						Отмена
 					</Button>
+
 					<Button type='submit' disabled={!canSubmit} loading={isPending}>
 						Создать
 					</Button>

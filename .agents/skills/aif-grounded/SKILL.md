@@ -1,7 +1,7 @@
 ---
 name: aif-grounded
 description: Reliability gate for answers. Forces evidence-based reasoning, explicit uncertainty, and “insufficient information” instead of guesses. Use when user says “be 100% sure”, “no hallucinations”, “only if verified”, “grounded answer”, or when stakes are high.
-argument-hint: '[question or task]'
+argument-hint: "[question or task]"
 allowed-tools: Read Write Edit Glob Grep Bash AskUserQuestion Questions
 disable-model-invocation: true
 ---
@@ -17,7 +17,6 @@ If confidence is not 100, **do not guess** and **do not implement**. Output a sh
 ## When to use
 
 Use when:
-
 - The user requests maximum reliability (“only if you’re sure”, “no assumptions”).
 - The request includes changeable facts (versions, “latest”, policies, prices, schedules).
 - The request is security/finance/legal/medical adjacent (high stakes).
@@ -33,7 +32,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -51,7 +49,6 @@ If any rule is violated — fix the output before presenting it to the user.
 ### Step 1: Classify the request
 
 Classify into one of:
-
 1. **Repo-grounded** — can be answered purely from the local codebase and command outputs.
 2. **Doc-grounded** — requires authoritative docs/specs/logs provided by the user or accessible tooling.
 3. **External-facts** — depends on changeable facts outside the repo (must be verified, otherwise refuse).
@@ -59,32 +56,27 @@ Classify into one of:
 ### Step 2: Define evidence and unknowns
 
 Before answering, list:
-
 - **Evidence sources** you will use (files, command outputs, provided docs).
 - **Unknowns** (anything not present in evidence).
 
 Hard rule:
-
 - If a claim is not supported by evidence, it becomes an **unknown** (not an assumption).
 
 ### Step 3: Mandatory verification for changeable facts
 
 If the request contains any changeable fact (“latest”, “current”, “today”, “default in vX”, “does library Y support Z now”):
-
 - Verify via authoritative docs/specs, release notes, or logs.
 - If verification is not possible with available tools/context, return **INSUFFICIENT INFORMATION** and ask for the needed source (link excerpt, version, log output).
 
 ### Step 4: Confidence gate
 
 Compute a confidence score 0–100:
-
 - **100** only if every factual claim is supported by evidence you can point to (repo files, command outputs, provided docs), and there are **no open unknowns**.
 - If any unknown remains → confidence < 100 → do not answer/implement.
 
 ### Step 5: Output format (strict)
 
 If confidence is **100**:
-
 ```
 Answer:
 <final answer or patch summary>
@@ -98,7 +90,6 @@ Checks:
 ```
 
 If confidence is **< 100**:
-
 ```
 Result: INSUFFICIENT INFORMATION (no guessing)
 Current confidence: <N>/100
@@ -121,7 +112,6 @@ To reach 100:
 ## Implementation guardrail
 
 If the user asks for code changes:
-
 - You may explore the repo and propose what evidence is needed.
 - Only apply patches once confidence can be 100 (e.g., requirements are precise + you can verify build/tests or equivalent checks).
 - If the repo lacks a verification path (no build/tests and behavior can’t be validated), do not claim 100; return INSUFFICIENT INFORMATION and propose the minimal validation needed.

@@ -4,12 +4,12 @@ description: >-
   Create knowledge references from URLs, documents, or files for use by AI agents.
   Fetch, process, and store structured references in the configured references directory
   (default: .ai-factory/references/).
-argument-hint: '<url|path> [url2|path2] [--name <ref-name>] [--update]'
+argument-hint: "<url|path> [url2|path2] [--name <ref-name>] [--update]"
 allowed-tools: Read Write Edit Glob Grep Bash(mkdir *) Bash(ls *) Bash(wc *) WebFetch WebSearch AskUserQuestion
 disable-model-invocation: false
 metadata:
   author: ai-factory
-  version: '1.0'
+  version: "1.0"
   category: knowledge-management
 ---
 
@@ -20,12 +20,10 @@ Create structured knowledge references from external sources and store them in t
 ## Step 0: Load Config
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.references` and `paths.rules_file`
 - **Language:** `language.ui` for prompts and summaries, `language.artifacts` for generated reference artifacts, and `language.technical_terms` for human-readable technical terminology in references
 
 If config.yaml doesn't exist, use defaults:
-
 - references/: `.ai-factory/references/`
 - RULES.md: `.ai-factory/RULES.md`
 - `ui_language`: `en`
@@ -33,7 +31,6 @@ If config.yaml doesn't exist, use defaults:
 - `technical_terms_policy`: `keep`
 
 Resolved language values:
-
 - `ui_language = language.ui || "en"`
 - `artifact_language = language.artifacts || language.ui || "en"`
 - `technical_terms_policy = language.technical_terms || "keep"`
@@ -54,7 +51,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins**
@@ -132,7 +128,6 @@ For each URL:
 **For interactive mode:**
 
 Ask the user:
-
 1. What topic or technology should this reference cover?
 2. Do they have URLs or local files, or should you search?
 3. What aspects matter most for their use case?
@@ -187,7 +182,6 @@ Render this structure in `artifact_language` before saving. The headings below a
 ```
 
 **Quality rules:**
-
 - **No hallucination** - include only what was actually found
 - **Preserve code verbatim** - docs examples must stay exact
 - **Actionable over academic** - optimize for useful lookup
@@ -198,7 +192,6 @@ Render this structure in `artifact_language` before saving. The headings below a
 ### Step 3: Name and Save
 
 **Naming convention:**
-
 - Derive from topic: `react-hooks.md`, `fastapi-endpoints.md`, `docker-compose.md`
 - Use lowercase, hyphens, `.md`
 - If `--name` was provided, use that (add `.md` if missing)
@@ -217,16 +210,15 @@ Write human-readable index headings, topic descriptions, and source summaries in
 
 Available knowledge references for AI agents.
 
-| Reference                           | Topic                        | Sources         | Updated    |
-| ----------------------------------- | ---------------------------- | --------------- | ---------- |
-| [react-hooks](react-hooks.md)       | React Hooks API and patterns | react.dev       | 2026-03-20 |
+| Reference | Topic | Sources | Updated |
+|-----------|-------|---------|---------|
+| [react-hooks](react-hooks.md) | React Hooks API and patterns | react.dev | 2026-03-20 |
 | [docker-compose](docker-compose.md) | Docker Compose configuration | docs.docker.com | 2026-03-20 |
 ```
 
 ### Step 5: Report
 
 Show the user:
-
 - reference name and path
 - size (line count)
 - sections included
@@ -252,7 +244,6 @@ When `--update` is present:
 ## Integration With Other Skills
 
 References in the resolved references directory are available to all AI Factory skills:
-
 - `$aif-plan` and `$aif-implement` can read them for domain context
 - `$aif-grounded` can use them as evidence sources
 - `$aif-explore` can reference them during research
@@ -261,7 +252,6 @@ To make a skill aware of a specific reference, mention it in the resolved RULES.
 
 ```markdown
 ## References
-
 - For <topic> details, see `<resolved references dir>/<name>.md`
 ```
 

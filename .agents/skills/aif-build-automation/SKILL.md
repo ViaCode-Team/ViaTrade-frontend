@@ -4,12 +4,12 @@ description: >-
   Analyze project and generate or enhance build automation file (Makefile, Taskfile.yml, Justfile, Magefile.go).
   If a build file already exists, improves it by adding missing targets and best practices.
   Use when user says "generate makefile", "create taskfile", "add justfile", "setup mage", or "build automation".
-argument-hint: '[makefile|taskfile|justfile|mage]'
+argument-hint: "[makefile|taskfile|justfile|mage]"
 allowed-tools: Read Edit Glob Grep Write Bash(git *) AskUserQuestion Questions
 disable-model-invocation: false
 metadata:
   author: AI Factory
-  version: '1.0'
+  version: "1.0"
   category: build-automation
 ---
 
@@ -18,7 +18,6 @@ metadata:
 Generate or enhance a build automation file for any project. Supports Makefile, Taskfile.yml, Justfile, and Magefile.go.
 
 **Two modes:**
-
 - **Generate** — No build file exists → create one from scratch using best-practice templates
 - **Enhance** — Build file already exists → analyze gaps, add missing targets, fix anti-patterns, preserve existing work
 
@@ -40,7 +39,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -95,12 +93,12 @@ Options (dynamic, based on what exists):
 - Set `MODE = "generate"`
 - Parse `$ARGUMENTS` to determine tool:
 
-| Argument             | Tool     | Output File    |
-| -------------------- | -------- | -------------- |
-| `makefile` or `make` | GNU Make | `Makefile`     |
+| Argument | Tool | Output File |
+|----------|------|-------------|
+| `makefile` or `make` | GNU Make | `Makefile` |
 | `taskfile` or `task` | Taskfile | `Taskfile.yml` |
-| `justfile` or `just` | Just     | `justfile`     |
-| `mage` or `magefile` | Mage     | `magefile.go`  |
+| `justfile` or `just` | Just | `justfile` |
+| `mage` or `magefile` | Mage | `magefile.go` |
 
 - If `$ARGUMENTS` is empty or doesn't match, ask the user interactively:
 
@@ -126,33 +124,33 @@ Detect the project profile by scanning the repository with `Glob` and `Grep`. **
 
 Check for these files (first match wins in the table order below). For **Java / Kotlin (JVM)**, infer language from build files: default **Java** unless Kotlin plugins / `kotlin("jvm")` / dominant `.kt` layout suggests **Kotlin**.
 
-| File / signal                                 | Language                          |
-| --------------------------------------------- | --------------------------------- |
-| `go.mod`                                      | Go                                |
-| `package.json`                                | Node.js / JavaScript / TypeScript |
-| `pyproject.toml` or `setup.py` or `setup.cfg` | Python                            |
-| `Cargo.toml`                                  | Rust                              |
-| `composer.json`                               | PHP                               |
-| `Gemfile`                                     | Ruby                              |
-| JVM: Gradle root or wrapper (see §2.2)        | Java / Kotlin (JVM)               |
-| JVM: `pom.xml`                                | Java / Kotlin (JVM)               |
-| `*.csproj` or `*.sln`                         | C# / .NET                         |
+| File / signal | Language |
+|----------------|----------|
+| `go.mod` | Go |
+| `package.json` | Node.js / JavaScript / TypeScript |
+| `pyproject.toml` or `setup.py` or `setup.cfg` | Python |
+| `Cargo.toml` | Rust |
+| `composer.json` | PHP |
+| `Gemfile` | Ruby |
+| JVM: Gradle root or wrapper (see §2.2) | Java / Kotlin (JVM) |
+| JVM: `pom.xml` | Java / Kotlin (JVM) |
+| `*.csproj` or `*.sln` | C# / .NET |
 
 ### 2.2 Package manager & build entrypoints
 
 **Lock files and wrappers (same idea as `package-lock.json` → npm):**
 
-| File                                       | Package manager / tool |
-| ------------------------------------------ | ---------------------- |
-| `bun.lockb`                                | bun                    |
-| `pnpm-lock.yaml`                           | pnpm                   |
-| `yarn.lock`                                | yarn                   |
-| `package-lock.json`                        | npm                    |
-| `poetry.lock`                              | poetry                 |
-| `uv.lock`                                  | uv                     |
-| `Pipfile.lock`                             | pipenv                 |
-| `gradle/wrapper/gradle-wrapper.properties` | `./gradlew`            |
-| `.mvn/wrapper/maven-wrapper.properties`    | `./mvnw`               |
+| File | Package manager / tool |
+|------|-------------------------|
+| `bun.lockb` | bun |
+| `pnpm-lock.yaml` | pnpm |
+| `yarn.lock` | yarn |
+| `package-lock.json` | npm |
+| `poetry.lock` | poetry |
+| `uv.lock` | uv |
+| `Pipfile.lock` | pipenv |
+| `gradle/wrapper/gradle-wrapper.properties` | `./gradlew` |
+| `.mvn/wrapper/maven-wrapper.properties` | `./mvnw` |
 
 **Java / Kotlin (JVM) — Gradle vs Maven:** Detect Gradle with **one batch** of checks (single `Glob` over the paths below, or parallel existence checks — avoid redundant sequential walks):
 
@@ -160,14 +158,13 @@ Check for these files (first match wins in the table order below). For **Java / 
 
 If any Gradle signal matches → Gradle is in play. **`pom.xml`** indicates Maven. Set `PROJECT_PROFILE.java_build.build_tool` from this table:
 
-| Condition                    | `build_tool` | Notes                                                                                                                                                                              |
-| ---------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Gradle signals present       | `gradle`     | Wire targets to Gradle commands below.                                                                                                                                             |
-| No Gradle, `pom.xml` present | `maven`      | Wire targets to Maven commands below.                                                                                                                                              |
-| Gradle **and** `pom.xml`     | `gradle`     | Set `java_build.mixed_maven_gradle: true` and append a **warning** to `PROJECT_PROFILE.warnings` (both builds present; recipes follow Gradle — user confirms authoritative build). |
+| Condition | `build_tool` | Notes |
+|-----------|--------------|--------|
+| Gradle signals present | `gradle` | Wire targets to Gradle commands below. |
+| No Gradle, `pom.xml` present | `maven` | Wire targets to Maven commands below. |
+| Gradle **and** `pom.xml` | `gradle` | Set `java_build.mixed_maven_gradle: true` and append a **warning** to `PROJECT_PROFILE.warnings` (both builds present; recipes follow Gradle — user confirms authoritative build). |
 
 **Concrete JVM Entrypoint:** Persist the detected entrypoint in `PROJECT_PROFILE.build_entrypoint` based on wrapper presence:
-
 - If `build_tool` is `gradle`: use `./gradlew` if `gradlew` or `gradle/wrapper/gradle-wrapper.properties` exists, else fallback to `gradle`.
 - If `build_tool` is `maven`: use `./mvnw` if `mvnw` or `.mvn/wrapper/maven-wrapper.properties` exists, else fallback to `mvn`.
 
@@ -177,19 +174,19 @@ If any Gradle signal matches → Gradle is in play. **`pom.xml`** indicates Mave
 
 **Commands to wire** into Makefile / Taskfile / Just for JVM (same role as `npm run build` / `pytest` for other stacks; use `gradlew.bat` on Windows):
 
-| Goal                                                    | Gradle                                               | Maven                                                |
-| ------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| Full compile + checks                                   | `<build_entrypoint> build`                           | `<build_entrypoint> verify`                          |
-| Unit / integration tests                                | `<build_entrypoint> test`                            | `<build_entrypoint> test`                            |
-| Verification (tests + static analysis where configured) | `<build_entrypoint> check`                           | `<build_entrypoint> verify`                          |
-| Package only                                            | `<build_entrypoint> assemble` (or `jar` / `bootJar`) | `<build_entrypoint> package`                         |
-| Dev server — Spring Boot (see §2.3)                     | `<build_entrypoint> bootRun`                         | `<build_entrypoint> spring-boot:run`                 |
-| Dev server — Quarkus                                    | `<build_entrypoint> quarkusDev`                      | `<build_entrypoint> quarkus:dev`                     |
-| Dev server — Micronaut                                  | `<build_entrypoint> run`                             | `<build_entrypoint> mn:run`                          |
-| Dev server — Vert.x                                     | `<build_entrypoint> vertxRun`                        | `<build_entrypoint> vertx:run`                       |
-| Spring Boot — runnable JAR                              | `<build_entrypoint> bootJar`                         | `<build_entrypoint> package` (spring-boot repackage) |
-| Clean                                                   | `<build_entrypoint> clean`                           | `<build_entrypoint> clean`                           |
-| Multi-module                                            | `<build_entrypoint> :subproject:build`               | `<build_entrypoint> -pl module -am package`          |
+| Goal | Gradle | Maven |
+|------|--------|--------|
+| Full compile + checks | `<build_entrypoint> build` | `<build_entrypoint> verify` |
+| Unit / integration tests | `<build_entrypoint> test` | `<build_entrypoint> test` |
+| Verification (tests + static analysis where configured) | `<build_entrypoint> check` | `<build_entrypoint> verify` |
+| Package only | `<build_entrypoint> assemble` (or `jar` / `bootJar`) | `<build_entrypoint> package` |
+| Dev server — Spring Boot (see §2.3) | `<build_entrypoint> bootRun` | `<build_entrypoint> spring-boot:run` |
+| Dev server — Quarkus | `<build_entrypoint> quarkusDev` | `<build_entrypoint> quarkus:dev` |
+| Dev server — Micronaut | `<build_entrypoint> run` | `<build_entrypoint> mn:run` |
+| Dev server — Vert.x | `<build_entrypoint> vertxRun` | `<build_entrypoint> vertx:run` |
+| Spring Boot — runnable JAR | `<build_entrypoint> bootJar` | `<build_entrypoint> package` (spring-boot repackage) |
+| Clean | `<build_entrypoint> clean` | `<build_entrypoint> clean` |
+| Multi-module | `<build_entrypoint> :subproject:build` | `<build_entrypoint> -pl module -am package` |
 
 **`dev` target (templates + generated files):** Resolve the **framework dev task/goal** from the same signals as §2.3, **fixed priority** (first match wins): **Quarkus → Micronaut → Vert.x → Spring Boot**. Scan **Gradle:** `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts`, `gradle/libs.versions.toml` with the same `grep -E` patterns you use for §2.3 (`quarkus` / `io.quarkus`; `micronaut` / `io.micronaut`; Vert.x Gradle plugin — `vertx-plugin` or `io.vertx.vertx`; Spring Boot — fallback). Scan **Maven:** `pom.xml` only; Vert.x Maven — `vertx-maven-plugin` or `io.reactiverse`. If the repo root is an aggregator and detection misses, override the template’s dev task variable (same idea as **`JVM_MODULE`**).
 
@@ -198,7 +195,6 @@ If any Gradle signal matches → Gradle is in play. **`pom.xml`** indicates Mave
 ### 2.3 Framework Detection
 
 For Node.js projects, check `package.json` dependencies for:
-
 - `next` → Next.js
 - `nuxt` → Nuxt
 - `@remix-run/node` → Remix
@@ -208,34 +204,29 @@ For Node.js projects, check `package.json` dependencies for:
 - `@nestjs/core` → NestJS
 
 For Python projects, check `pyproject.toml` or imports for:
-
 - `fastapi` → FastAPI
 - `django` → Django
 - `flask` → Flask
 
 For PHP projects, check `composer.json` require for:
-
 - `laravel/framework` → Laravel
 - `symfony/framework-bundle` → Symfony
 - `slim/slim` → Slim
 - `cakephp/cakephp` → CakePHP
 
 For Go projects, check `go.mod` for:
-
 - `gin-gonic/gin` → Gin
 - `labstack/echo` → Echo
 - `gofiber/fiber` → Fiber
 - `go-chi/chi` → Chi
 
 For Rust projects, read `Cargo.toml` (workspace members and `[dependencies]` / `[workspace.dependencies]`) for:
-
 - `axum` → Axum
 - `actix-web` → Actix Web
 - `rocket` → Rocket
 - `warp` → Warp
 
 For Ruby projects, read `Gemfile` for:
-
 - `rails` → Ruby on Rails
 - `sinatra` → Sinatra
 - `hanami` → Hanami
@@ -263,21 +254,18 @@ Glob: Dockerfile, Dockerfile.*, docker-compose.yml, docker-compose.yaml, compose
 If any exist, set `HAS_DOCKER=true` and perform a deeper analysis:
 
 **Read the Dockerfile(s)** to detect:
-
 - Multi-stage builds (separate `dev` / `prod` stages) → `DOCKER_MULTISTAGE=true`
 - Exposed ports → `DOCKER_PORTS` (e.g., `3000`, `8080`)
 - Base image → `DOCKER_BASE` (e.g., `node:20-alpine`, `golang:1.22`)
 - Entrypoint/CMD → understand how the app is started inside the container
 
 **Read docker-compose / compose file** to detect:
-
 - Service names → `DOCKER_SERVICES` (e.g., `app`, `db`, `redis`, `worker`)
 - Volume mounts → understand dev vs prod setup
 - Profiles (if any) → `dev`, `production`, `test`
 - Dependency services (postgres, redis, rabbitmq, etc.) → `DOCKER_DEPS`
 
 Store as `DOCKER_PROFILE`:
-
 - `has_compose`: boolean
 - `has_multistage`: boolean
 - `services`: list of service names
@@ -302,7 +290,6 @@ Grep: prisma|drizzle|knex|typeorm|sequelize|alembic|django.*migrate|goose|migrat
 ```
 
 Check for:
-
 - `prisma/schema.prisma` → Prisma
 - `drizzle.config.ts` → Drizzle
 - `alembic/` directory → Alembic
@@ -312,13 +299,13 @@ Check for:
 
 ### 2.7 Test Framework
 
-| Language            | Check For                                                                                                                                                       |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node.js             | `jest`, `vitest`, `mocha`, `ava` in package.json                                                                                                                |
-| Python              | `pytest` in pyproject.toml/requirements, `unittest` imports                                                                                                     |
-| Go                  | Go has built-in testing; check for `testify` in go.mod                                                                                                          |
-| Rust                | Built-in; check for integration test directory `tests/`                                                                                                         |
-| Ruby                | `rspec` in Gemfile → RSpec; `minitest` / `minitest-` gems → Minitest; else default `rake test` when `Rakefile` exists                                           |
+| Language | Check For |
+|----------|-----------|
+| Node.js | `jest`, `vitest`, `mocha`, `ava` in package.json |
+| Python | `pytest` in pyproject.toml/requirements, `unittest` imports |
+| Go | Go has built-in testing; check for `testify` in go.mod |
+| Rust | Built-in; check for integration test directory `tests/` |
+| Ruby | `rspec` in Gemfile → RSpec; `minitest` / `minitest-` gems → Minitest; else default `rake test` when `Rakefile` exists |
 | Java / Kotlin (JVM) | `junit-jupiter`, `junit-jupiter-api`, `JUnitPlatform`, `JUnit5`, `testcontainers`, `mockito`, `rest-assured`, `cucumber` in Gradle/Maven / `libs.versions.toml` |
 
 ### 2.8 Linters & Formatters
@@ -345,7 +332,6 @@ Glob: turbo.json, nx.json, lerna.json, pnpm-workspace.yaml
 ### Summary
 
 Build a `PROJECT_PROFILE` object with:
-
 - `language`: primary language
 - `package_manager`: detected PM (npm, pnpm, Gradle, Maven, …)
 - `build_entrypoint`: the exact entrypoint command detected (e.g. `./gradlew`, `mvn`, `npm`, `cargo`)
@@ -372,7 +358,6 @@ Read skills/aif-build-automation/references/BEST-PRACTICES.md
 ```
 
 Focus on the section matching `TARGET_TOOL`:
-
 - Makefile → Section 1
 - Taskfile → Section 2
 - Justfile → Section 3
@@ -386,12 +371,12 @@ Also read the "Cross-Cutting Concerns" section for standard targets.
 
 Pick the closest matching template based on `language` + `TARGET_TOOL`:
 
-| Tool     | Go                  | Node.js             | Python                | PHP                | Rust                | Ruby                | Java / JVM                                    | Other              |
-| -------- | ------------------- | ------------------- | --------------------- | ------------------ | ------------------- | ------------------- | --------------------------------------------- | ------------------ |
-| Makefile | `makefile-go.mk`    | `makefile-node.mk`  | `makefile-python.mk`  | `makefile-php.mk`  | `makefile-rust.mk`  | `makefile-ruby.mk`  | `makefile-gradle.mk` or `makefile-maven.mk`   | Use closest match  |
-| Taskfile | `taskfile-go.yml`   | `taskfile-node.yml` | `taskfile-python.yml` | `taskfile-php.yml` | `taskfile-rust.yml` | `taskfile-ruby.yml` | `taskfile-gradle.yml` or `taskfile-maven.yml` | Use closest match  |
-| Justfile | `justfile-go`       | `justfile-node`     | `justfile-python`     | `justfile-php`     | `justfile-rust`     | `justfile-ruby`     | `justfile-gradle` or `justfile-maven`         | Use closest match  |
-| Magefile | `magefile-basic.go` | `magefile-full.go`  | `magefile-full.go`    | N/A (use Makefile) | N/A (use Makefile)  | N/A (use Makefile)  | N/A (use Makefile)                            | N/A (use Makefile) |
+| Tool | Go | Node.js | Python | PHP | Rust | Ruby | Java / JVM | Other |
+|------|----|---------|--------|-----|------|------|------------|------------------------|
+| Makefile | `makefile-go.mk` | `makefile-node.mk` | `makefile-python.mk` | `makefile-php.mk` | `makefile-rust.mk` | `makefile-ruby.mk` | `makefile-gradle.mk` or `makefile-maven.mk` | Use closest match |
+| Taskfile | `taskfile-go.yml` | `taskfile-node.yml` | `taskfile-python.yml` | `taskfile-php.yml` | `taskfile-rust.yml` | `taskfile-ruby.yml` | `taskfile-gradle.yml` or `taskfile-maven.yml` | Use closest match |
+| Justfile | `justfile-go` | `justfile-node` | `justfile-python` | `justfile-php` | `justfile-rust` | `justfile-ruby` | `justfile-gradle` or `justfile-maven` | Use closest match |
+| Magefile | `magefile-basic.go` | `magefile-full.go` | `magefile-full.go` | N/A (use Makefile) | N/A (use Makefile) | N/A (use Makefile) | N/A (use Makefile) | N/A (use Makefile) |
 
 For Java / JVM, select the Gradle or Maven template based on `PROJECT_PROFILE.java_build.build_tool`.
 
@@ -434,17 +419,17 @@ Using the `PROJECT_PROFILE`, best practices, and template as reference, generate
 
 **JVM template catalog (fixed names; prune unused tools in Mode B)** — Source of truth is **`skills/aif-build-automation/templates/*gradle*`** and **`*maven*`**. Always use these **exact** Gradle/Maven task names in generated files unless the build files use a different official task name for the same plugin (document in a comment next to the recipe).
 
-| Target (Make/Just)     | Taskfile task          | Gradle command                                                           | Maven command                                                           |
-| ---------------------- | ---------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| `lint`                 | `lint`                 | `check`                                                                  | `verify`                                                                |
-| `fmt`                  | `fmt`                  | `spotlessApply`                                                          | `spotless:apply`                                                        |
-| `lint-checkstyle`      | `lint:checkstyle`      | `checkstyleMain`                                                         | `checkstyle:check`                                                      |
-| `lint-spotbugs`        | `lint:spotbugs`        | `spotbugsMain`                                                           | `spotbugs:check`                                                        |
-| `lint-pmd`             | `lint:pmd`             | `pmdMain`                                                                | `pmd:check`                                                             |
-| `lint-spotless`        | `lint:spotless`        | `spotlessCheck`                                                          | `spotless:check`                                                        |
-| `db-migrate-liquibase` | `db:migrate:liquibase` | `liquibaseUpdate`                                                        | `liquibase:update`                                                      |
-| `db-migrate-flyway`    | `db:migrate:flyway`    | `flywayMigrate`                                                          | `flyway:migrate`                                                        |
-| `dev`                  | `dev`                  | see §2.2 dev tasks + template `DEV_GRADLE_TASK` resolver (§2.3 priority) | see §2.2 dev goals + template `DEV_MAVEN_GOAL` resolver (§2.3 priority) |
+| Target (Make/Just) | Taskfile task | Gradle command | Maven command |
+|--------------------|---------------|----------------|---------------|
+| `lint` | `lint` | `check` | `verify` |
+| `fmt` | `fmt` | `spotlessApply` | `spotless:apply` |
+| `lint-checkstyle` | `lint:checkstyle` | `checkstyleMain` | `checkstyle:check` |
+| `lint-spotbugs` | `lint:spotbugs` | `spotbugsMain` | `spotbugs:check` |
+| `lint-pmd` | `lint:pmd` | `pmdMain` | `pmd:check` |
+| `lint-spotless` | `lint:spotless` | `spotlessCheck` | `spotless:check` |
+| `db-migrate-liquibase` | `db:migrate:liquibase` | `liquibaseUpdate` | `liquibase:update` |
+| `db-migrate-flyway` | `db:migrate:flyway` | `flywayMigrate` | `flyway:migrate` |
+| `dev` | `dev` | see §2.2 dev tasks + template `DEV_GRADLE_TASK` resolver (§2.3 priority) | see §2.2 dev goals + template `DEV_MAVEN_GOAL` resolver (§2.3 priority) |
 
 - **Mode B (generate):** Copy the catalog from the template, then **delete** targets whose tools are **absent**: e.g. remove **`lint-checkstyle`** if `checkstyle` ∉ **`linters`**; remove **`lint-spotbugs`** / **`lint-pmd`** if those ids are missing; remove **`fmt`** and **`lint-spotless`** if **`spotless`** ∉ **`linters`**; remove **`db-migrate-liquibase`** if not **`java_build.liquibase`**; remove **`db-migrate-flyway`** if not **`java_build.flyway`**. **Always keep** **`lint`** (= `check` / `verify`) unless the project truly has no Java plugin lifecycle (rare). Never substitute **`verify -DskipTests`** or **`check -x test`** as `lint`. For **`dev`**, templates already resolve the task/goal from build files; when enhancing, replace a wrong constant **`bootRun`** / **`spring-boot:run`** with the correct framework command from **`PROJECT_PROFILE`** (same strings as the template resolver).
 - **Mode A (enhance):** Prefer missing catalog targets over ad-hoc names; remove recipes that contradict **`java_build`** / **`linters`**.
@@ -455,13 +440,13 @@ When `has_docker` is true, generate **two layers** of commands:
 
 **Layer 1 — Container lifecycle** (always when Docker detected):
 
-| Target                           | Purpose                              |
-| -------------------------------- | ------------------------------------ |
-| `docker-build` or `docker:build` | Build the Docker image               |
-| `docker-run` or `docker:run`     | Run the container                    |
-| `docker-stop` or `docker:stop`   | Stop running containers              |
-| `docker-logs` or `docker:logs`   | Tail container logs                  |
-| `docker-push` or `docker:push`   | Push image to registry               |
+| Target | Purpose |
+|--------|---------|
+| `docker-build` or `docker:build` | Build the Docker image |
+| `docker-run` or `docker:run` | Run the container |
+| `docker-stop` or `docker:stop` | Stop running containers |
+| `docker-logs` or `docker:logs` | Tail container logs |
+| `docker-push` or `docker:push` | Push image to registry |
 | `docker-clean` or `docker:clean` | Remove images and stopped containers |
 
 **Layer 2 — Dev vs Production separation** (when compose or multistage detected):
@@ -527,20 +512,17 @@ When `MODE = "enhance"`, do NOT replace the file from scratch. Instead, analyze 
 Compare `EXISTING_CONTENT` against the `PROJECT_PROFILE` and best practices. Build a gap analysis:
 
 **Missing preamble/config** — Check if the file has the recommended preamble:
-
 - Makefile: `SHELL := bash`, `.ONESHELL`, `.SHELLFLAGS`, `.DELETE_ON_ERROR`, `MAKEFLAGS`
 - Taskfile: `version: '3'`, `output:`, `dotenv:`
 - Justfile: `set shell`, `set dotenv-load`, `set export`
 - Magefile: `//go:build mage`, proper imports
 
 **Missing standard targets** — Check which of these are absent:
-
 - `help` / `default` (self-documenting)
 - `build`, `test`, `lint`, `clean`, `dev`, `fmt`, and JVM catalog targets (`lint-checkstyle`, `db-migrate-flyway`, …) **after** template pruning
 - `ci` (aggregate target)
 
 **Missing project-specific targets** — Based on `PROJECT_PROFILE`, check for:
-
 - Docker targets (if `has_docker` but no docker targets in file)
 - Database: canonical **`db-migrate-*`** / **`db:migrate:*`** matching **`java_build`**
 - Typecheck target (if TypeScript/mypy detected but no typecheck target)
@@ -550,7 +532,6 @@ Compare `EXISTING_CONTENT` against the `PROJECT_PROFILE` and best practices. Bui
 - JVM multi-module: `module-build` / `module-test` / `module-check` (or Taskfile `module:*`) when the repo is a Gradle multi-project or Maven reactor and per-module commands are useful
 
 **Quality issues** — Check for anti-patterns from best practices:
-
 - **JVM:** recipes that are **not** in the Step 5 catalog table (or wrong tool on a recipe, e.g. Liquibase task on a Flyway-only repo) — replace with catalog names or delete
 - Targets without descriptions/documentation
 - Missing `.PHONY` declarations (Makefile)
@@ -585,7 +566,6 @@ CHANGES = [
 ### Quality Checks (Both Modes)
 
 Before writing the file, verify:
-
 - [ ] All targets have descriptions/documentation (## comments, desc:, [doc()], doc comments)
 - [ ] No hardcoded paths that should be variables
 - [ ] Package manager / build entrypoint detection matches the repo (Gradle/Maven wrappers, npm/pnpm, etc.)
@@ -603,12 +583,12 @@ Before writing the file, verify:
 
 Write the generated content using the `Write` tool:
 
-| Tool     | Output Path    |
-| -------- | -------------- |
-| Makefile | `Makefile`     |
+| Tool | Output Path |
+|------|-------------|
+| Makefile | `Makefile` |
 | Taskfile | `Taskfile.yml` |
-| Justfile | `justfile`     |
-| Magefile | `magefile.go`  |
+| Justfile | `justfile` |
+| Magefile | `magefile.go` |
 
 **Mode A (Enhance Existing):**
 

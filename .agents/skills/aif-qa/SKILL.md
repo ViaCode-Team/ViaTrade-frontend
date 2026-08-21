@@ -1,7 +1,7 @@
 ---
 name: aif-qa
 description: QA workflow for testing a feature or task implementation. Analyzes changes, produces test plans, and describes concrete test scenarios. Use when user says "test this", "write test plan", "what should I test", or "QA this branch".
-argument-hint: '[--all] [change-summary | test-plan | test-cases] [<branch>]'
+argument-hint: "[--all] [change-summary | test-plan | test-cases] [<branch>]"
 allowed-tools: Read Write Grep Glob Bash(git *) Bash(mkdir *) AskUserQuestion Task
 disable-model-invocation: false
 ---
@@ -15,7 +15,7 @@ Generates change summaries, produces test plans, and describes test scenarios fo
 The skill operates in three sequential modes.
 
 | Argument         | Mode           | What you do                                                      |
-| ---------------- | -------------- | ---------------------------------------------------------------- |
+|------------------|----------------|------------------------------------------------------------------|
 | `change-summary` | Change summary | Analyze what changed, assess risks, produce a summary            |
 | `test-plan`      | Test plan      | Create a structured test plan based on the change summary        |
 | `test-cases`     | Test cases     | Describe concrete test scenarios based on the plan               |
@@ -28,7 +28,6 @@ The skill operates in three sequential modes.
 ### Step 0: Load Config
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.description`, `paths.architecture`, `paths.qa` (default: `.ai-factory/qa`)
 - **Language:**
   - `language.ui` for AskUserQuestion prompts, progress messages, final summaries, and next-step guidance
@@ -39,7 +38,6 @@ The skill operates in three sequential modes.
 - **Git:** `git.enabled` and `git.base_branch` for branch comparison
 
 If config.yaml doesn't exist, use defaults:
-
 - DESCRIPTION.md: `.ai-factory/DESCRIPTION.md`
 - ARCHITECTURE.md: `.ai-factory/ARCHITECTURE.md`
 - QA artifacts: `.ai-factory/qa/`
@@ -50,7 +48,6 @@ If config.yaml doesn't exist, use defaults:
 - Git base branch: `main`
 
 Store:
-
 - `ui_language = language.ui || "en"`
 - `artifact_language = language.artifacts || language.ui || "en"`
 - `technical_terms_policy = language.technical_terms || "keep"`
@@ -68,7 +65,6 @@ Do not use English templates verbatim when `artifact_language` is not `en`. Pres
 For `artifact_language = ru`, write human-readable prose, headings, risks, priorities, recommendations, test steps, and expected results in Russian. Keep code identifiers, filenames, branch names, commands, config keys, API names, and raw error text unchanged.
 
 Apply `technical_terms_policy` while writing artifacts:
-
 - `keep` — keep common technical terms such as `commit`, `branch`, `diff`, `endpoint`, `payload`, `rollback`, `regression`, and `fixture` when that is clearer for the project audience
 - `translate` — translate human-readable technical terms where a natural target-language term exists
 - `mixed` — translate ordinary prose terms while keeping code, infrastructure, and ecosystem terms unchanged
@@ -78,13 +74,11 @@ If `git_enabled = false` or the current directory is not a git work tree, do not
 ### Step 0.1: Load Project Context
 
 **Read** the resolved description path if the file exists, to understand:
-
 - Tech stack (language, framework, database, ORM)
 - Project architecture and coding conventions
 - Non-functional requirements
 
 **Read** the resolved architecture path if the file exists, to understand:
-
 - Chosen architecture pattern
 - Folder structure conventions
 - Layer/module boundaries and dependency rules
@@ -97,7 +91,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins**
@@ -124,7 +117,6 @@ If git_enabled = true and the repository is a git work tree:
 ```
 
 Store both values for use in all reference files:
-
 - `resolved_branch` — the branch being analyzed (used to locate/save artifacts)
 - `artifact_dir` — `<resolved paths.qa>/<branch-slug>`, where `branch-slug` is a deterministic, filesystem-safe, collision-resistant slug derived from `resolved_branch`. Compute it in three steps:
   1. **Safe slug.** Take `resolved_branch` and replace every character that is not in `[A-Za-z0-9._-]` with `-`, collapse runs of consecutive `-` into a single `-`, and trim leading/trailing `-`. If the result is empty, use `branch`. Then MUST truncate to the first 40 ASCII characters. Because the normalized `safe_slug` alphabet is `[A-Za-z0-9._-]`, byte length and character length are identical. Call this `safe_slug`.
@@ -137,7 +129,6 @@ Store both values for use in all reference files:
   - `feature/foo` → `safe_slug=feature-foo`, `hash8=a72ccce7` → `feature-foo-a72ccce7`
   - `feature-foo` → `safe_slug=feature-foo`, `hash8=6f80dfc6` → `feature-foo-6f80dfc6`
   - `main` → `safe_slug=main`, `hash8=<computed>` → `main-<hash8>`
-
 - `all_mode` — whether to skip inter-stage prompts
 
 **If no mode was provided and `all_mode = false` — ask the user in `ui_language`:**
@@ -218,11 +209,11 @@ You may mention existing automated checks only as supporting verification; the p
 
 ## Priority Reference
 
-| Priority | When to use                                                       |
-| -------- | ----------------------------------------------------------------- |
-| High     | Core business logic, user data, payments, security, authorization |
-| Medium   | Supporting functionality, UI/UX, reports, integrations            |
-| Low      | Cosmetic changes, rare scenarios, nice-to-have                    |
+| Priority | When to use                                                                     |
+|----------|---------------------------------------------------------------------------------|
+| High     | Core business logic, user data, payments, security, authorization               |
+| Medium   | Supporting functionality, UI/UX, reports, integrations                          |
+| Low      | Cosmetic changes, rare scenarios, nice-to-have                                  |
 
 ## Artifact Ownership and Config Policy
 

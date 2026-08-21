@@ -6,13 +6,13 @@ Use this protocol to convert source material into a reusable Agent Skill.
 
 Create a source inventory:
 
-| Field  | Meaning                                          |
-| ------ | ------------------------------------------------ |
-| Source | URL or local path                                |
-| Type   | book, docs, code, policy, tutorial, paper, notes |
-| Scope  | what the material covers                         |
-| Signal | why it matters for the target skill              |
-| Gaps   | missing context that may require another source  |
+| Field | Meaning |
+|-------|---------|
+| Source | URL or local path |
+| Type | book, docs, code, policy, tutorial, paper, notes |
+| Scope | what the material covers |
+| Signal | why it matters for the target skill |
+| Gaps | missing context that may require another source |
 
 For folders, group files by topic before reading deeply. For books, read the table of contents first, then sample each major part before deep extraction.
 
@@ -36,9 +36,9 @@ Extract only material that can drive agent behavior:
 
 For code-heavy sources, also build an example inventory:
 
-| Source topic | Example type                                             | Distilled example target          |
-| ------------ | -------------------------------------------------------- | --------------------------------- |
-| <topic>      | snippet, before/after, test, debug trace, decision table | <examples file or "skip: reason"> |
+| Source topic | Example type | Distilled example target |
+|--------------|--------------|--------------------------|
+| <topic> | snippet, before/after, test, debug trace, decision table | <examples file or "skip: reason"> |
 
 This inventory is a planning tool. It does not need to be shipped verbatim, but
 the final examples must visibly cover the major code-facing topics from it.
@@ -101,19 +101,19 @@ instead of the current agent `.agents/skills`.
 
 Supported strategies:
 
-| Strategy   | Use when                                                       | Boundary signal                                                           |
-| ---------- | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `auto`     | the user wants several skills but did not prescribe boundaries | strongest distinct goals, triggers, workflows, examples, and target users |
-| `goal`     | the material supports several different jobs-to-be-done        | each child helps the user accomplish a different outcome                  |
-| `topic`    | the source has clean domain or chapter boundaries              | each topic produces different decisions or checks                         |
-| `workflow` | the source teaches multiple actions                            | each action has a different input, output, or quality gate                |
-| `audience` | the source serves different roles or project contexts          | each role/context needs different operating instructions                  |
+| Strategy | Use when | Boundary signal |
+|----------|----------|-----------------|
+| `auto` | the user wants several skills but did not prescribe boundaries | strongest distinct goals, triggers, workflows, examples, and target users |
+| `goal` | the material supports several different jobs-to-be-done | each child helps the user accomplish a different outcome |
+| `topic` | the source has clean domain or chapter boundaries | each topic produces different decisions or checks |
+| `workflow` | the source teaches multiple actions | each action has a different input, output, or quality gate |
+| `audience` | the source serves different roles or project contexts | each role/context needs different operating instructions |
 
 Before writing split skills, create a boundary map:
 
-| Child skill | User goal                  | Trigger                   | Source topics | References/examples | Merge risk      |
-| ----------- | -------------------------- | ------------------------- | ------------- | ------------------- | --------------- |
-| <name>      | <outcome it helps achieve> | <when it should activate> | <topics>      | <files>             | low/medium/high |
+| Child skill | User goal | Trigger | Source topics | References/examples | Merge risk |
+|-------------|-----------|---------|---------------|---------------------|------------|
+| <name> | <outcome it helps achieve> | <when it should activate> | <topics> | <files> | low/medium/high |
 
 First resolve a shared split namespace prefix:
 
@@ -189,8 +189,8 @@ Every distilled skill should include a source map in a reference unless
 ```markdown
 ## Source Map
 
-| Source        | Used for                                 |
-| ------------- | ---------------------------------------- |
+| Source | Used for |
+|--------|----------|
 | <path-or-url> | <principles, workflow, examples, checks> |
 ```
 

@@ -1,12 +1,12 @@
 ---
 name: aif-docs
 description: Generate and maintain project documentation. Creates a lean README as a landing page with detailed docs pages split by topic in the configured docs directory. Use when user says "create docs", "write documentation", "update docs", "generate readme", or "document project".
-argument-hint: '[--web]'
+argument-hint: "[--web]"
 allowed-tools: Read Write Edit Glob Grep Bash(mkdir, npx, python) AskUserQuestion Questions WebFetch WebSearch
 disable-model-invocation: false
 metadata:
   author: AI Factory
-  version: '1.0'
+  version: "1.0"
   category: documentation
 ---
 
@@ -28,12 +28,10 @@ Generate, maintain, and improve project documentation following a landing-page R
 ### Step 0: Load Config & Project Context
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.description`, `paths.architecture`, and `paths.docs`
 - **Language:** `language.ui` for prompts and `language.artifacts` for generated docs
 
 If config.yaml doesn't exist, use defaults:
-
 - DESCRIPTION.md: `.ai-factory/DESCRIPTION.md`
 - ARCHITECTURE.md: `.ai-factory/ARCHITECTURE.md`
 - Docs directory: `docs/`
@@ -42,7 +40,6 @@ If config.yaml doesn't exist, use defaults:
 **Note:** `README.md` remains the landing page in the project root. Detailed docs are written to the resolved `paths.docs` directory (default: `docs/`).
 
 **THEN:** Read `.ai-factory/DESCRIPTION.md` (use path from config) if it exists to understand:
-
 - Tech stack (language, framework, database)
 - Project purpose and architecture
 - Key features and conventions
@@ -50,7 +47,6 @@ If config.yaml doesn't exist, use defaults:
 **Also read `.ai-factory/ARCHITECTURE.md`** (use path from config) if it exists to align documentation with the project's structure and boundaries.
 
 **Explore the codebase:**
-
 - Read `package.json`, `composer.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, etc.
 - Scan `src/` structure to understand architecture
 - Look for existing docs, comments, API endpoints, CLI commands
@@ -62,7 +58,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -119,7 +114,6 @@ Options:
 ```
 
 **Based on choice:**
-
 - Generate HTML only → skip Step 1.1, Step 2, Step 4 — go directly to Step 3 (HTML generation), then done
 - Audit & improve first → run Step 1.1 → Step 2 (State C) → Step 3 → Step 4 → Step 4.1
 - Audit only → run Step 1.1 → Step 2 (State C) → Step 4 → Step 4.1 (skip Step 3)
@@ -132,19 +126,18 @@ If scattered `.md` files were found in the project root (from Step 0), propose c
 
 **Common files that should move to the resolved docs directory:**
 
-| Root file         | Target in docs dir                                                                | Merge or move?             |
-| ----------------- | --------------------------------------------------------------------------------- | -------------------------- |
-| `CONTRIBUTING.md` | `<resolved docs dir>/contributing.md`                                             | Move                       |
-| `ARCHITECTURE.md` | `<resolved docs dir>/architecture.md`                                             | Move                       |
-| `DEPLOYMENT.md`   | `<resolved docs dir>/deployment.md`                                               | Move                       |
-| `SETUP.md`        | `<resolved docs dir>/getting-started.md`                                          | Merge (append to existing) |
-| `DEVELOPMENT.md`  | `<resolved docs dir>/getting-started.md` or `<resolved docs dir>/contributing.md` | Merge                      |
-| `API.md`          | `<resolved docs dir>/api.md`                                                      | Move                       |
-| `TESTING.md`      | `<resolved docs dir>/testing.md`                                                  | Move                       |
-| `SECURITY.md`     | `<resolved docs dir>/security.md`                                                 | Move                       |
+| Root file | Target in docs dir | Merge or move? |
+|-----------|-----------------|----------------|
+| `CONTRIBUTING.md` | `<resolved docs dir>/contributing.md` | Move |
+| `ARCHITECTURE.md` | `<resolved docs dir>/architecture.md` | Move |
+| `DEPLOYMENT.md` | `<resolved docs dir>/deployment.md` | Move |
+| `SETUP.md` | `<resolved docs dir>/getting-started.md` | Merge (append to existing) |
+| `DEVELOPMENT.md` | `<resolved docs dir>/getting-started.md` or `<resolved docs dir>/contributing.md` | Merge |
+| `API.md` | `<resolved docs dir>/api.md` | Move |
+| `TESTING.md` | `<resolved docs dir>/testing.md` | Move |
+| `SECURITY.md` | `<resolved docs dir>/security.md` | Move |
 
 **Files that stay in root** (standard convention):
-
 - `README.md` — always stays
 - `CHANGELOG.md` — standard root-level file, keep as-is
 - `LICENSE` / `LICENSE.md` — standard root-level file, keep as-is
@@ -175,13 +168,11 @@ Options:
 ```
 
 **Based on choice:**
-
 - Apply all suggestions → move/merge all listed files, continue to Step 2
 - Let me pick which ones → present each file individually for approval, apply selected
 - Skip → leave files where they are, continue to Step 2
 
 **When moving/merging:**
-
 1. Create the target file in the resolved docs directory with prev/next navigation header (following Documentation table order) and "See Also" footer
 2. If merging into an existing doc — append content under a new section header, avoid duplicating info that's already there
 3. **Do NOT delete originals yet** — keep them until the review step confirms everything is in place
@@ -233,7 +224,6 @@ Options:
 ```
 
 **Based on choice:**
-
 - Generate all → proceed to generate README.md and all listed doc files in the resolved docs directory
 - Let me pick → present each topic for individual approval, generate only approved
 - Add more topics → ask what additional topics to include, confirm final list, then generate
@@ -252,9 +242,7 @@ Brief 2-3 sentence description of what this project does and why it exists.
 ## Quick Start
 
 \`\`\`bash
-
 # Installation steps (1-3 commands)
-
 \`\`\`
 
 ## Key Features
@@ -266,21 +254,19 @@ Brief 2-3 sentence description of what this project does and why it exists.
 ## Example
 
 \`\`\`
-
 # Show a real usage example — this is where users decide "I want this"
-
 \`\`\`
 
 ---
 
 ## Documentation
 
-| Guide                                                      | Description                         |
-| ---------------------------------------------------------- | ----------------------------------- |
-| [Getting Started](<readme-to-docs-dir>/getting-started.md) | Installation, setup, first steps    |
-| [Architecture](<readme-to-docs-dir>/architecture.md)       | Project structure and patterns      |
-| [API Reference](<readme-to-docs-dir>/api.md)               | Endpoints, request/response formats |
-| [Configuration](<readme-to-docs-dir>/configuration.md)     | Environment variables, config files |
+| Guide | Description |
+|-------|-------------|
+| [Getting Started](<readme-to-docs-dir>/getting-started.md) | Installation, setup, first steps |
+| [Architecture](<readme-to-docs-dir>/architecture.md) | Project structure and patterns |
+| [API Reference](<readme-to-docs-dir>/api.md) | Endpoints, request/response formats |
+| [Configuration](<readme-to-docs-dir>/configuration.md) | Environment variables, config files |
 
 ## License
 
@@ -288,7 +274,6 @@ MIT (or whatever is in the project)
 ```
 
 **Key rules for README:**
-
 - Logo/badge line at the top (if project has one)
 - Tagline as blockquote
 - Quick Start with real installation commands (detect from package manager)
@@ -303,7 +288,7 @@ MIT (or whatever is in the project)
 For each approved topic, create a doc file:
 
 ```markdown
-[← Previous Topic](previous-topic.md) · [Back to README](docs-to-readme-link) · [Next Topic →](next-topic.md)
+[← Previous Topic](previous-topic.md) · [Back to README](<docs-to-readme-link>) · [Next Topic →](next-topic.md)
 
 # Topic Title
 
@@ -328,7 +313,6 @@ configuration.md:    [← API Reference](api.md) · [Back to README](../README.m
 **Content guidelines per topic:**
 
 **getting-started.md:**
-
 - Prerequisites (runtime versions, tools needed)
 - Step-by-step installation
 - First run / quick start
@@ -336,14 +320,12 @@ configuration.md:    [← API Reference](api.md) · [Back to README](../README.m
 - Next steps links
 
 **architecture.md:**
-
 - High-level overview (diagram if useful)
 - Directory structure with explanations
 - Key patterns (naming, imports, error handling)
 - Data flow
 
 **api.md:**
-
 - Base URL / configuration
 - Authentication
 - Endpoints grouped by resource
@@ -351,13 +333,11 @@ configuration.md:    [← API Reference](api.md) · [Back to README](../README.m
 - Error codes
 
 **configuration.md:**
-
 - All environment variables with descriptions and defaults
 - Config files and their purpose
 - Feature flags
 
 **deployment.md:**
-
 - Build steps
 - Environment setup
 - CI/CD pipeline description
@@ -370,12 +350,10 @@ When README.md exists but is long (150+ lines) and there's no resolved docs dire
 #### 2.1: Analyze README structure
 
 Read README.md and identify:
-
 - Which sections should stay (landing page content)
 - Which sections should move to the resolved docs directory (detailed content)
 
 **Stays in README:**
-
 - Title, tagline, badges
 - "Why?" / key features bullet list
 - Quick install (1-3 commands)
@@ -384,7 +362,6 @@ Read README.md and identify:
 - External links, license
 
 **Moves to the resolved docs directory:**
-
 - Detailed setup instructions → `getting-started.md`
 - Architecture / project structure → `architecture.md`
 - Full API reference → `api.md`
@@ -427,7 +404,6 @@ When both README.md and the resolved docs directory exist.
 #### 2.1: Audit current documentation
 
 Check for:
-
 - **README length** — is it still a landing page (<150 lines)?
 - **Missing topics** — are there aspects of the project not documented?
 - **Stale content** — do docs reference files/APIs that no longer exist?
@@ -522,13 +498,11 @@ Options:
 ```
 
 **Based on choice:**
-
 - Yes, delete all → delete all listed originals (see "When deleting" below)
 - Let me pick → present each file individually, delete only approved
 - No, keep them → leave originals in place, continue to Step 5
 
 **When deleting:**
-
 1. Verify one more time that the target docs/ file contains all content from the original
 2. Delete the root file
 3. Run `git status` to show what was deleted — user can restore with `git checkout` if needed
@@ -543,18 +517,16 @@ Read `AGENTS.md` and find the `## Documentation` section. Update it to reflect t
 
 ```markdown
 ## Documentation
-
-| Document        | Path                                     | Description                         |
-| --------------- | ---------------------------------------- | ----------------------------------- |
-| README          | README.md                                | Project landing page                |
-| Getting Started | `<resolved docs dir>/getting-started.md` | Installation, setup, first steps    |
-| Architecture    | `<resolved docs dir>/architecture.md`    | Project structure and patterns      |
-| API Reference   | `<resolved docs dir>/api.md`             | Endpoints, request/response formats |
-| Configuration   | `<resolved docs dir>/configuration.md`   | Environment variables, config files |
+| Document | Path | Description |
+|----------|------|-------------|
+| README | README.md | Project landing page |
+| Getting Started | `<resolved docs dir>/getting-started.md` | Installation, setup, first steps |
+| Architecture | `<resolved docs dir>/architecture.md` | Project structure and patterns |
+| API Reference | `<resolved docs dir>/api.md` | Endpoints, request/response formats |
+| Configuration | `<resolved docs dir>/configuration.md` | Environment variables, config files |
 ```
 
 **Rules:**
-
 - List README.md first, then all doc files in the resolved docs directory in the same order as the README Documentation table
 - If files were moved/merged from root during Step 1.1, reflect the new locations
 - If new doc pages were created, add them

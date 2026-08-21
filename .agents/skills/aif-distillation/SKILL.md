@@ -5,12 +5,12 @@ description: >-
   Use when source material should become either one reusable skill package or a
   split set of focused skills, each with a concise SKILL.md plus detailed
   references and examples.
-argument-hint: '<path|url> [path|url...] [--name <skill-name>] [--path <directory>] [--update] [--redact-source-map] [--split|--split-by <strategy>]'
+argument-hint: "<path|url> [path|url...] [--name <skill-name>] [--path <directory>] [--update] [--redact-source-map] [--split|--split-by <strategy>]"
 allowed-tools: Read Write Edit Glob Grep Bash(mkdir *) Bash(ls *) Bash(find *) Bash(wc *) Bash(python3 --version) Bash(python --version) Bash(py -3 --version) Bash(py --version) Bash(python3 *material-prep.py*) Bash(python *material-prep.py*) Bash(py -3 *material-prep.py*) Bash(py *material-prep.py*) WebFetch WebSearch AskUserQuestion
 disable-model-invocation: false
 metadata:
   author: ai-factory
-  version: '1.0'
+  version: "1.0"
   category: knowledge-management
 ---
 
@@ -21,13 +21,11 @@ Turn source material into a useful skill. The output is not a summary dump: it i
 ## Step 0: Load Config and Skill Context
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - `language.ui` for prompts, questions, progress updates, and final summaries
 - `language.artifacts` for generated skill package content (`SKILL.md`, `references/`, `examples/`)
 - `language.technical_terms` for translated artifacts; default to `keep` when absent
 
 If config.yaml doesn't exist, use defaults:
-
 - `language.ui`: `en`
 - `language.artifacts`: same as `language.ui`
 - `language.technical_terms`: `keep`
@@ -39,7 +37,6 @@ Treat skill-context rules as project-level overrides for this skill. They apply 
 ## Inputs
 
 Accept `$ARGUMENTS` as one or more:
-
 - local files
 - local directories
 - URLs
@@ -58,7 +55,6 @@ Accept `$ARGUMENTS` as one or more:
 If the target skill name is missing, derive a concise, general, lowercase-hyphenated name from the material topic or user goal, such as `clean-code-style`, `api-design-rules`, `decision-making`, `writing-feedback`, or `meeting-facilitation`.
 
 Before any write, validate the final target skill name:
-
 - It must match `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
 - Reject empty names, overlong names, `.`, `..`, dots, path separators (`/` or `\`), absolute paths, Windows drive paths, and hidden names.
 - Reject reserved `aif-*` names unless the user explicitly says they are developing AI Factory itself.
@@ -133,7 +129,6 @@ Do not save distilled skills into the package `skills/` directory unless the use
 ## Required Supporting Guidance
 
 Read these before generating or updating a distilled skill:
-
 - `references/DISTILLATION-PROTOCOL.md`
 - `references/OUTPUT-STRUCTURE.md`
 - `references/LARGE-MATERIALS.md`

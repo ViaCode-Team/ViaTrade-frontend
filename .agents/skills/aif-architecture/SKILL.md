@@ -1,7 +1,7 @@
 ---
 name: aif-architecture
 description: Generate architecture guidelines for the project. Analyzes tech stack from DESCRIPTION.md, recommends an architecture pattern, and creates .ai-factory/ARCHITECTURE.md. Use when setting up project architecture, asking "which architecture", or after $aif setup.
-argument-hint: '[microservices|layers|structured|structured-layers|structured-vertical|explicit|explicit-layers|explicit-vertical|explicit-flat] (legacy aliases: clean, ddd, monolith, vertical → mapped to explicit or structured)'
+argument-hint: "[microservices|layers|structured|structured-layers|structured-vertical|explicit|explicit-layers|explicit-vertical|explicit-flat] (legacy aliases: clean, ddd, monolith, vertical → mapped to explicit or structured)"
 allowed-tools: Read Write Glob Grep Bash(mkdir *) AskUserQuestion Questions
 disable-model-invocation: false
 ---
@@ -15,27 +15,23 @@ Generate `.ai-factory/ARCHITECTURE.md` with architecture decisions tailored to t
 ### Step 0: Load Config & Project Context
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.description` and `paths.architecture`
 - **Language:** `language.ui` for prompts and `language.artifacts` for generated architecture content
 
 When invoked by `$aif`, assume `.ai-factory/config.yaml` has already been written for the current setup run and already contains the resolved `language.ui` / `language.artifacts` values.
 
 If config.yaml doesn't exist, use defaults:
-
 - DESCRIPTION.md: `.ai-factory/DESCRIPTION.md`
 - ARCHITECTURE.md: `.ai-factory/ARCHITECTURE.md`
 - Language: `en` (English)
 
 **THEN:** Read `.ai-factory/DESCRIPTION.md` (use path from config) if it exists to understand:
-
 - Tech stack (language, framework, database, ORM)
 - Project size and complexity
 - Core features and requirements
 - Non-functional requirements
 
 **If `.ai-factory/DESCRIPTION.md` does not exist:**
-
 ```
 ⚠️  No project description found.
 
@@ -54,7 +50,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -74,7 +69,6 @@ If any rule is violated — fix the output before presenting it to the user.
 Based on project context, evaluate against the decision matrix and recommend an architecture:
 
 **If `$ARGUMENTS` specifies an architecture** (e.g., `$aif-architecture explicit`):
-
 - **Direct mapping** (no suffix needed):
   - `layers` → Layered Architecture
   - `microservices` → Microservices
@@ -97,7 +91,6 @@ Based on project context, evaluate against the decision matrix and recommend an 
 - Use the resolved architecture directly, skip the recommendation step and proceed to Step 1.5
 
 **If no specific architecture requested:**
-
 - Evaluate the project against the decision matrix (see `references/architecture.md`)
 - Consider: team size, domain complexity, scale requirements, tech stack
 - Present recommendation via `AskUserQuestion`:
@@ -116,7 +109,6 @@ Which architecture pattern should we use?
 ```
 
 Architecture options:
-
 - **Structured Modules (Technical Layer)**
 - **Structured Modules (Vertical Slices By Entity)**
 - **Explicit Architecture (Technical Layer)**
@@ -124,7 +116,7 @@ Architecture options:
 - **Explicit Architecture (Flat Vertical Slice - Simplified)**
 - **Microservices**
 - **Layered Architecture**
-  (See `references/architecture.md` for detailed descriptions of these patterns to formulate your recommendation).
+(See `references/architecture.md` for detailed descriptions of these patterns to formulate your recommendation).
 
 **CRITICAL INSTRUCTION:** You MUST read `references/architecture.md` before generating the `ARCHITECTURE.md` artifact to ensure correct terminology, dependency directions.
 
@@ -143,7 +135,6 @@ How should we generate the ARCHITECTURE.md?
 1. Adapt the guidelines to fit the existing application structure (document reality).
 2. Generate the pure, strict architecture guidelines (requires refactoring the application later to match).
 ```
-
 Wait for their decision before proceeding to Step 2.
 
 ### Step 2: Generate the Architecture Artifact
@@ -156,54 +147,43 @@ Generate the resolved architecture artifact (default: `.ai-factory/ARCHITECTURE.
 # Architecture: [Pattern Name]
 
 ## Overview
-
 [1-2 paragraphs: what this architecture is and why it was chosen for THIS project]
 
 ## Decision Rationale
-
 - **Project type:** [from DESCRIPTION.md]
 - **Tech stack:** [language, framework]
 - **Key factor:** [primary reason for this choice]
 
 ## Folder Structure
-
 \`\`\`
 [folder structure adapted to the project's tech stack]
 [use actual framework conventions — e.g., Next.js app/ dir, Laravel app/ dir, Go cmd/ dir]
 \`\`\`
 
 ## Dependency Rules
-
 [What depends on what. Inner vs outer layers. Module boundaries.]
 
 - ✅ [allowed dependency direction]
 - ❌ [forbidden dependency direction]
 
 ## Layer/Module Communication
-
 [How layers or modules communicate with each other]
-
 - [pattern 1]
 - [pattern 2]
 
 ## Key Principles
-
 1. [Principle 1 — adapted to this project]
 2. [Principle 2]
 3. [Principle 3]
 
 [If the user chose Option 2 (strict architecture) in Step 1.5, add the following section:]
-
 ## Legacy vs New Code Policy
-
 - **New Features:** All new code MUST strictly follow the architecture defined in this document.
 - **Legacy Code Modification:** Do NOT automatically refactor unrelated legacy code to fit this architecture. Touch legacy code only when necessary for bug fixes, when tasked with explicit refactoring, or when adapting it to be consumed by new features.
 - **Interoperability:** When new code must call legacy code, isolate the interaction using adapters, interfaces, or facades so that legacy patterns do not pollute the new architecture.
 
 [If the user chose Option 1 (adapt to reality) in Step 1.5, add the following lighter section:]
-
 ## Code Organization Note
-
 - **New Features:** All new code should follow the architecture defined in this document where practical.
 - **Existing Code:** Document the current structure as-is. When modifying existing code, prefer following the architectural conventions in this document, but do not force a rewrite of unrelated code.
 - **Interoperability:** When new code must call existing code, prefer clean interfaces but do not refactor purely for structural alignment.
@@ -211,25 +191,21 @@ Generate the resolved architecture artifact (default: `.ai-factory/ARCHITECTURE.
 ## Code Examples
 
 ### [Example 1 title]
-
 \`\`\`[language]
 [code example in the project's language/framework]
 \`\`\`
 
 ### [Example 2 title]
-
 \`\`\`[language]
 [code example showing dependency rule]
 \`\`\`
 
 ## Anti-Patterns
-
 - ❌ [What NOT to do in this architecture]
 - ❌ [Common mistake to avoid]
 ```
 
 **Rules for generation:**
-
 - Adapt ALL examples to the project's language and framework (don't use TypeScript examples for a Go project)
 - Use the project's actual conventions (import paths, naming, etc.)
 - Keep it practical — focus on rules that affect day-to-day development
@@ -242,7 +218,6 @@ Use the resolved architecture path from config, not the default path literal.
 
 ```markdown
 ## [Localized heading: Architecture]
-
 [Localized sentence in resolved artifacts language referencing the resolved architecture artifact path for detailed architecture guidelines.]
 [Localized label: Pattern]: [chosen pattern name]
 ```

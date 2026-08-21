@@ -11,42 +11,44 @@ description: Performs comprehensive code review checking for bugs, security issu
 argument-hint: [file-or-directory]
 allowed-tools: Read Grep Glob Bash(git diff *)
 ---
+
 # Code Review
 
 Review $ARGUMENTS for:
-  ## 1. Correctness
-  - Logic errors
-  - Edge cases
-  - Null/undefined handling
-  - Type mismatches
 
-  ## 2. Security
-  - Input validation
-  - SQL injection
-  - XSS vulnerabilities
-  - Sensitive data exposure
+## 1. Correctness
+- Logic errors
+- Edge cases
+- Null/undefined handling
+- Type mismatches
 
-  ## 3. Performance
-  - N+1 queries
-  - Unnecessary loops
-  - Memory leaks
-  - Blocking operations
+## 2. Security
+- Input validation
+- SQL injection
+- XSS vulnerabilities
+- Sensitive data exposure
 
-  ## 4. Style
-  - Naming conventions
-  - Code organization
-  - Documentation
-  - Test coverage
+## 3. Performance
+- N+1 queries
+- Unnecessary loops
+- Memory leaks
+- Blocking operations
+
+## 4. Style
+- Naming conventions
+- Code organization
+- Documentation
+- Test coverage
 
 Output format:
-  - List issues by severity (Critical > High > Medium > Low)
-  - Include file:line references
-  - Suggest specific fixes
+- List issues by severity (Critical > High > Medium > Low)
+- Include file:line references
+- Suggest specific fixes
 ```
 
 ## Example 2: Deployment Skill
 
-````yaml
+```yaml
 ---
 name: deploy
 description: Deploy application to production with safety checks and rollback capability.
@@ -84,9 +86,8 @@ Deploy to $ARGUMENTS environment:
 ## Rollback (if needed)
 ```bash
 kubectl rollout undo deployment/app
-````
-
-````
+```
+```
 
 ## Example 3: Visual Report Skill
 
@@ -104,10 +105,9 @@ Generate coverage visualization:
 1. Run tests with coverage:
    ```bash
    npm test -- --coverage --coverageReporters=json
-````
+   ```
 
 2. Generate visual report:
-
    ```bash
    python ~/.agents/skills/test-coverage/scripts/visualize.py coverage/coverage-final.json
    ```
@@ -115,13 +115,11 @@ Generate coverage visualization:
 3. Opens `coverage-report.html` in browser
 
 The report shows:
-
 - Overall coverage percentage
 - File-by-file breakdown
 - Uncovered line highlighting
 - Trend over time (if history available)
-
-````
+```
 
 ## Example 4: Research Skill
 
@@ -163,7 +161,7 @@ When analyzing a codebase:
    - Architecture diagram (ASCII)
    - Layer breakdown
    - Recommendations
-````
+```
 
 ## Example 5: Dynamic Context Skill
 

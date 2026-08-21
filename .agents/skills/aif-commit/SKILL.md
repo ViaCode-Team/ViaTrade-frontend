@@ -1,7 +1,7 @@
 ---
 name: aif-commit
 description: Create conventional commit messages by analyzing staged changes. Generates semantic commit messages following the Conventional Commits specification. Use when user says "commit", "save changes", or "create commit".
-argument-hint: '[scope or context]'
+argument-hint: "[scope or context]"
 allowed-tools: Read Glob Bash(git *) AskUserQuestion Questions
 disable-model-invocation: false
 ---
@@ -13,7 +13,6 @@ Generate commit messages following the [Conventional Commits](https://www.conven
 ## Workflow
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.description`, `paths.architecture`, `paths.rules_file`, `paths.roadmap`, `paths.rules`, `paths.plan`, and `paths.plans`
 - **Language:** `language.ui` for prompts and commit message conventions
 - **Workflow:** `workflow.plan_id_format` for read-only active plan discovery (`slug` default; `sequential` uses numbered full-plan lookup)
@@ -21,7 +20,6 @@ Generate commit messages following the [Conventional Commits](https://www.conven
 - **Rules hierarchy:** `rules.base` plus any named `rules.<area>` entries
 
 If config.yaml doesn't exist, use defaults:
-
 - Paths: `.ai-factory/` for context artifacts, `.ai-factory/PLAN.md` for `paths.plan`, `.ai-factory/plans/` for `paths.plans`
 - Language: `en` (English)
 - Workflow: `workflow.plan_id_format: slug`
@@ -34,7 +32,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -56,19 +53,39 @@ If any rule is violated — fix the output before presenting it to the user.
 
 2. **Resolve Active Plan Context (Read-Only, Optional)**
    - Resolve active plan using this read-only priority:
-     1. `@<plan-file>` argument, when the argument starts with `@`
-     2. branch-based full plan in `paths.plans`
-     3. single full plan in `paths.plans`
+     1. `@<plan-file-or-directory>` argument, when the argument starts with `@`
+     2. branch-based full plan or ultra bundle in `paths.plans`
+     3. single full plan in `paths.plans`, or a single ultra bundle there
      4. fast plan at `paths.plan`
    - If the argument does not start with `@`, keep treating it as commit scope/context.
+   - Legacy `@<plan-file>` syntax remains valid; the broader form additionally
+     accepts an ultra directory or its `index.md`.
    - For branch-based full plan lookup:
      - get current branch with `git branch --show-current` when `git.enabled = true`
      - replace every `/` with `-` to get `<branch-stem>`
-     - when `workflow.plan_id_format = sequential`, use `Glob` for `paths.plans/[0-9][0-9][0-9][0-9]_<branch-stem>.md` first
-     - if multiple sequential matches exist, use the highest-numbered match and emit `WARN [aif-commit] multiple sequential plans for <branch>: <list>; using <chosen>`
-     - if no sequential match exists, fall back to `paths.plans/<branch-stem>.md`
-   - If git mode is off, branch lookup cannot resolve, or no branch-based plan exists, check whether `paths.plans` contains exactly one full-plan markdown file.
-   - If no active plan resolves or the active plan has no `## Commit Plan`, keep current staged-diff behavior unchanged.
+     - when `workflow.plan_id_format = sequential`, use `Glob` for both
+       `paths.plans/[0-9][0-9][0-9][0-9]_<branch-stem>.md` and
+       `paths.plans/[0-9][0-9][0-9][0-9]_<branch-stem>/index.md`
+     - Read every directory candidate and retain it only when `index.md`
+       contains exactly one `<!-- aif:plan-mode:ultra -->`
+     - use the highest-numbered valid artifact and emit `WARN [aif-commit]` when
+       multiple valid candidates exist; if both shapes share the highest prefix,
+       prefer ultra
+     - if no valid sequential match exists, check
+       `paths.plans/<branch-stem>/index.md` then
+       `paths.plans/<branch-stem>.md`; Read the directory entrypoint before
+       selection, ignore it unless it contains exactly one ultra marker, and
+       warn and prefer ultra if both valid shapes exist
+   - If git mode is off, branch lookup cannot resolve, or no branch-based plan
+     exists, count root `*.md` full plans plus direct child `*/index.md`
+     entrypoints containing `<!-- aif:plan-mode:ultra -->`; exclude the resolved fast-plan
+     path and do not count phase files.
+   - Before normalizing an explicit ultra directory or treating an explicit
+     `index.md` as ultra, Read it and require exactly one
+     `<!-- aif:plan-mode:ultra -->`; otherwise STOP with a plan-integrity error.
+   - An automatically discovered directory entrypoint counts only when it
+     contains `<!-- aif:plan-mode:ultra -->`; ignore unrelated `*/index.md` files.
+   - If no active plan resolves or the active plan entrypoint has no `## Commit Plan`, keep current staged-diff behavior unchanged.
    - Never modify the active plan from this command.
 
 3. **Use Commit Plan Grouping When Available**
@@ -77,6 +94,13 @@ If any rule is violated — fix the output before presenting it to the user.
      - task range, such as `after tasks 1-3` or `tasks 4-6`
      - suggested conventional commit message
    - Read the plan's `## Tasks` or `## Implementation Tasks` section to map task ranges to task descriptions and any `Files:` hints.
+   - For an ultra plan, resolve every task in the current commit group to its
+     Phase Index/details link, read each corresponding phase file, and build the
+     staged-path mapping from its `## Files to Change` table plus the complete
+     `## Task N` specifications. Reading only `index.md` is insufficient.
+   - If one phase contains tasks from multiple commit groups, use the individual
+     `## Task N` sections to distinguish file/hunk ownership; do not assign the
+     phase's entire file table to every group without task-level evidence.
    - Compare staged files/hunks with planned groups before changing staging:
      - use staged file paths from `git diff --cached --name-only`
      - use staged hunk evidence from `git diff --cached` when a file may span multiple groups
@@ -146,13 +170,11 @@ If any rule is violated — fix the output before presenting it to the user.
 ## Examples
 
 **Simple feature:**
-
 ```
 feat(auth): add password reset functionality
 ```
 
 **Bug fix with body:**
-
 ```
 fix(api): handle null response from payment gateway
 
@@ -163,7 +185,6 @@ Fixes #123
 ```
 
 **Breaking change:**
-
 ```
 feat(api)!: change response format for user endpoint
 
@@ -200,30 +221,28 @@ When invoked:
 
 9. Execute `git commit` with the confirmed message
 10. Post-commit push handling:
+   - If `git.skip_push_after_commit = true` in resolved config:
+     - Skip push prompt entirely
+     - End workflow after successful local commit
+   - Otherwise (default behavior), offer to push:
+     - Show branch/ahead status: `git status -sb`
+     - If the branch has no upstream, use: `git push -u origin <branch>`
+     - Otherwise: `git push`
 
-- If `git.skip_push_after_commit = true` in resolved config:
-  - Skip push prompt entirely
-  - End workflow after successful local commit
-- Otherwise (default behavior), offer to push:
-  - Show branch/ahead status: `git status -sb`
-  - If the branch has no upstream, use: `git push -u origin <branch>`
-  - Otherwise: `git push`
+     ```
+     AskUserQuestion: Push to remote?
 
-  ```
-  AskUserQuestion: Push to remote?
+     Options:
+     1. Push now
+     2. Skip push
+     ```
 
-  Options:
-  1. Push now
-  2. Skip push
-  ```
-
-  - **Push now** → execute push command based on upstream status:
-    - if branch has no upstream → `git push -u origin <branch>`
-    - otherwise → `git push`
-  - **Skip push** → end the workflow
+     - **Push now** → execute push command based on upstream status:
+       - if branch has no upstream → `git push -u origin <branch>`
+       - otherwise → `git push`
+     - **Skip push** → end the workflow
 
 If argument provided (e.g., `$aif-commit auth`):
-
 - Use it as the scope
 - Or as context for the commit message
 

@@ -1,12 +1,12 @@
 ---
 name: aif-rules-check
 description: Run a standalone read-only rules compliance gate against changed files or a git ref. Use when you need a dedicated project-rules check without a full review or verify pass.
-argument-hint: '[git ref | empty]'
+argument-hint: "[git ref | empty]"
 allowed-tools: Read Glob Grep Bash(git *) AskUserQuestion
 disable-model-invocation: false
 metadata:
   author: AI Factory
-  version: '1.0'
+  version: "1.0"
   category: quality
 ---
 
@@ -23,7 +23,6 @@ Run a standalone read-only rules gate for project rules. This command checks rul
 ## Step 1: Load Config
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - `paths.rules_file`
 - `paths.rules`
 - `paths.plan`
@@ -34,14 +33,12 @@ Run a standalone read-only rules gate for project rules. This command checks rul
 - `rules.base`
 - named `rules.<area>` entries
 - `workflow.plan_id_format` (default: `slug`) — used by the optional branch-based plan-context lookup in Step 2.3.
-  Active values: `slug` and `sequential`. When `sequential`, the resolver globs
-  `<paths.plans>/[0-9]{4}_<branch_stem>.md` first and falls back to
-  `<paths.plans>/<branch_stem>.md` only if no numbered match is found.
+  Active values: `slug` and `sequential`. Plan context may be a root full-plan
+  file or direct child ultra `index.md`; numbered lookup covers both shapes.
   `timestamp` and `uuid` are **reserved values** and currently behave like `slug`.
   Treat any unknown value as `slug`.
 
 If config is missing or partial, use defaults:
-
 - `paths.rules_file`: `.ai-factory/RULES.md`
 - `paths.rules`: `.ai-factory/rules/`
 - `paths.plan`: `.ai-factory/PLAN.md`
@@ -62,7 +59,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as project-level overrides for this skill's general instructions.
 - When a skill-context rule conflicts with a general rule in this file, the skill-context rule wins.
 - When there is no conflict, apply both.
@@ -129,7 +125,6 @@ Load rule sources in this order:
 3. Any named `rules.<area>` files from config that clearly match the changed scope
 
 Area rules are optional and scoped:
-
 - Use changed file paths, folder names, and optional plan context to judge relevance.
 - If relevance is ambiguous, mention the rule source as uncertain and keep the outcome at `WARN`, not `FAIL`.
 
@@ -140,30 +135,40 @@ If no rules sources resolve, return `WARN` rather than a hard failure.
 Optional plan context: use the active plan file only when it helps interpret scope or area relevance; absence of a plan is never a failure.
 
 Plan resolution order:
-
 1. Compute the **canonical branch stem** the same way as `$aif-plan`,
    `$aif-implement`, and `$aif-improve`:
    - get current branch via `git branch --show-current` (git mode only);
    - `branch_stem` = current branch with every `/` replaced by `-`
      (for example `feature/user-auth` → `feature-user-auth`).
 2. Branch-based lookup using `<branch_stem>`:
-   - when `workflow.plan_id_format = sequential`, glob first
-     `paths.plans/[0-9][0-9][0-9][0-9]_<branch_stem>.md` and pick the
-     highest-numbered match; emit a `WARN [aif-rules-check] multiple sequential
-plans for <branch>: <list>; using <chosen>` if more than one matches;
-   - otherwise (or no numbered match), fall back to `paths.plans/<branch_stem>.md`.
-3. A single named full plan in `paths.plans` (the leading `NNNN_` prefix
-   counts as a match) when no branch-based plan resolves.
+   - when `workflow.plan_id_format = sequential`, glob both
+     `paths.plans/[0-9][0-9][0-9][0-9]_<branch_stem>.md` and
+     `paths.plans/[0-9][0-9][0-9][0-9]_<branch_stem>/index.md`; Read every
+     directory candidate and retain it only when it contains exactly one
+     `<!-- aif:plan-mode:ultra -->`, then pick the highest-numbered valid
+     artifact and warn when multiple valid candidates exist; prefer ultra if
+     both shapes share the highest prefix;
+   - otherwise/fallback check `paths.plans/<branch_stem>/index.md` and
+     `paths.plans/<branch_stem>.md`; Read the directory entrypoint first, ignore
+     it unless it contains exactly one ultra marker, and warn/prefer ultra if
+     both valid shapes exist.
+3. A single named artifact in `paths.plans`: count root `*.md` full plans and
+   direct child `*/index.md` entrypoints containing
+   `<!-- aif:plan-mode:ultra -->`; exclude
+   the resolved fast-plan path and never count phase files.
 4. The fast plan at `paths.plan`.
 
-Do not fail the rules check because a plan file is missing or ambiguous.
+For ultra, read `index.md` first and only the linked phase files relevant to the
+changed area when extra scope detail is needed. Do not fail the rules check
+because a plan artifact is missing or ambiguous.
+An automatically discovered directory entrypoint counts only when it contains
+exactly one `<!-- aif:plan-mode:ultra -->`; ignore unrelated `*/index.md` files.
 
 ## Step 3: Evaluate Rules
 
 Read the changed files from the resolved scope and compare them against the resolved rules.
 
 Classification rules:
-
 - `PASS` when at least one applicable rule was checked and no clear violations were found.
 - `WARN` when no applicable rules were resolved, the evidence is ambiguous, or there are no changed files to evaluate.
 - `FAIL` when an explicit hard rule is clearly violated by the inspected diff or changed files.
@@ -171,7 +176,6 @@ Classification rules:
 Only return `FAIL` when an explicit hard rule is clearly violated by the inspected diff or changed files.
 
 Evidence rules:
-
 - Tie every blocking violation to specific rule text and at least one concrete file/path or diff hunk.
 - If a rule sounds like a preference, is too vague, or cannot be verified confidently from the diff, do not escalate it past `WARN`.
 - Missing optional files or partially configured rules hierarchy are `WARN`, not `FAIL`.
@@ -181,7 +185,6 @@ Evidence rules:
 This command is read-only: do not edit `RULES.md`, `rules/base.md`, `rules.<area>`, plan files, or source code.
 
 If rules are missing, stale, or need refinement:
-
 - Suggest `$aif-rules <rule text>` for axioms
 - Suggest `$aif-rules area:<name>` for area-specific rules
 
@@ -190,7 +193,6 @@ If rules are missing, stale, or need refinement:
 Use the exact verdict semantics and section order from `references/RULES-CHECK-CONTRACT.md`.
 
 Required content:
-
 - overall verdict
 - files checked
 - gate results
@@ -200,13 +202,11 @@ Required content:
 - final machine-readable `aif-gate-result` fenced JSON block
 
 When useful, suggest the next best workflow:
-
 - `$aif-review` for broader code review
 - `$aif-verify` for full plan-completeness verification
 - `$aif-rules` when the underlying rules need to be captured or corrected
 
 Machine-readable gate result:
-
 - Append one final fenced `aif-gate-result` JSON block after the human-readable rules report.
 - Use `"gate": "rules"`.
 - Map the human rules verdict exactly: `PASS` -> `pass`, `WARN` -> `warn`, and `FAIL` -> `fail`.

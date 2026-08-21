@@ -1,7 +1,7 @@
 ---
 name: aif-best-practices
 description: Code quality guidelines and best practices for writing clean, maintainable code. Covers naming, structure, error handling, testing, and code review standards. Use when writing code, reviewing, refactoring, or asking "how should I name this", "best practice for", "clean code".
-argument-hint: '[naming|structure|errors|testing|review]'
+argument-hint: "[naming|structure|errors|testing|review]"
 allowed-tools: Read Glob Grep
 disable-model-invocation: false
 ---
@@ -18,7 +18,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -47,7 +46,6 @@ If any rule is violated — fix the output before presenting it to the user.
 ## Naming Conventions
 
 ### Variables & Functions
-
 ```
 ✅ Good                          ❌ Bad
 ─────────────────────────────────────────────
@@ -59,7 +57,6 @@ handleSubmit                     submit
 ```
 
 **Rules:**
-
 - Use descriptive names that reveal intent
 - Avoid abbreviations (except universally known: `id`, `url`, `api`)
 - Boolean variables: `is`, `has`, `can`, `should` prefix
@@ -69,7 +66,6 @@ handleSubmit                     submit
 - Variables/functions: camelCase (JS/TS/PHP) or snake_case (Python/Rust)
 
 ### Files & Directories
-
 ```
 ✅ Good                          ❌ Bad
 ─────────────────────────────────────────────
@@ -80,7 +76,6 @@ UserRepository.ts                user_repository.ts (mixed)
 ```
 
 **Rules:**
-
 - One convention per project (kebab-case or PascalCase for files)
 - Directories: lowercase with hyphens
 - Test files: `*.test.ts` or `*.spec.ts` (consistent)
@@ -91,23 +86,22 @@ UserRepository.ts                user_repository.ts (mixed)
 ## Code Structure
 
 ### Function Design
-
 ```typescript
 // ✅ Good: Single responsibility, clear inputs/outputs
 function calculateDiscount(price: number, discountPercent: number): number {
-	if (discountPercent < 0 || discountPercent > 100) {
-		throw new Error('Discount must be between 0 and 100');
-	}
-	return price * (1 - discountPercent / 100);
+  if (discountPercent < 0 || discountPercent > 100) {
+    throw new Error('Discount must be between 0 and 100');
+  }
+  return price * (1 - discountPercent / 100);
 }
 
 // ❌ Bad: Multiple responsibilities, side effects
 function processOrder(order) {
-	validateOrder(order); // validation
-	order.discount = getDiscount(); // mutation
-	saveToDatabase(order); // persistence
-	sendEmail(order.user); // notification
-	return order;
+  validateOrder(order);           // validation
+  order.discount = getDiscount(); // mutation
+  saveToDatabase(order);          // persistence
+  sendEmail(order.user);          // notification
+  return order;
 }
 ```
 
@@ -123,7 +117,6 @@ function calculateDiscount(float $price, float $discountPercent): float
 ```
 
 **Rules:**
-
 - Single Responsibility: one function = one job
 - Max 20-30 lines per function
 - Max 3-4 parameters (use object for more)
@@ -131,7 +124,6 @@ function calculateDiscount(float $price, float $discountPercent): float
 - Early returns for guard clauses
 
 ### Module Organization
-
 ```
 feature/
 ├── index.ts          # Public exports only
@@ -144,7 +136,6 @@ feature/
 ```
 
 **Rules:**
-
 - Group by feature, not by type
 - Clear public API via index.ts
 - Internal modules prefixed with `_` or in `internal/`
@@ -155,37 +146,35 @@ feature/
 ## Error Handling
 
 ### Do's and Don'ts
-
 ```typescript
 // ✅ Good: Specific errors, meaningful messages
 class UserNotFoundError extends Error {
-	constructor(userId: string) {
-		super(`User not found: ${userId}`);
-		this.name = 'UserNotFoundError';
-	}
+  constructor(userId: string) {
+    super(`User not found: ${userId}`);
+    this.name = 'UserNotFoundError';
+  }
 }
 
 async function getUser(id: string): Promise<User> {
-	const user = await db.users.find(id);
-	if (!user) {
-		throw new UserNotFoundError(id);
-	}
-	return user;
+  const user = await db.users.find(id);
+  if (!user) {
+    throw new UserNotFoundError(id);
+  }
+  return user;
 }
 
 // ❌ Bad: Generic errors, swallowed exceptions
 async function getUser(id) {
-	try {
-		return await db.users.find(id);
-	} catch (e) {
-		console.log(e); // Swallowed!
-		return null; // Hides the problem
-	}
+  try {
+    return await db.users.find(id);
+  } catch (e) {
+    console.log(e);  // Swallowed!
+    return null;     // Hides the problem
+  }
 }
 ```
 
 **Rules:**
-
 - Create specific error classes for domain errors
 - Never swallow exceptions without logging
 - Log errors with context (user ID, request ID, etc.)
@@ -193,7 +182,6 @@ async function getUser(id) {
 - Return Result types for expected failures (optional)
 
 ### Error Messages
-
 ```
 ✅ Good: "Failed to create user: email 'test@example.com' already exists"
 ❌ Bad: "Error occurred"
@@ -205,30 +193,28 @@ async function getUser(id) {
 ## Testing Practices
 
 ### Test Structure (AAA Pattern)
-
 ```typescript
 describe('calculateDiscount', () => {
-	it('should apply percentage discount to price', () => {
-		// Arrange
-		const price = 100;
-		const discount = 20;
+  it('should apply percentage discount to price', () => {
+    // Arrange
+    const price = 100;
+    const discount = 20;
 
-		// Act
-		const result = calculateDiscount(price, discount);
+    // Act
+    const result = calculateDiscount(price, discount);
 
-		// Assert
-		expect(result).toBe(80);
-	});
+    // Assert
+    expect(result).toBe(80);
+  });
 
-	it('should throw for invalid discount percentage', () => {
-		expect(() => calculateDiscount(100, -10)).toThrow();
-		expect(() => calculateDiscount(100, 150)).toThrow();
-	});
+  it('should throw for invalid discount percentage', () => {
+    expect(() => calculateDiscount(100, -10)).toThrow();
+    expect(() => calculateDiscount(100, 150)).toThrow();
+  });
 });
 ```
 
 **Rules:**
-
 - One assertion concept per test
 - Descriptive test names: "should [expected behavior] when [condition]"
 - Test behavior, not implementation
@@ -236,7 +222,6 @@ describe('calculateDiscount', () => {
 - Avoid testing private methods directly
 
 ### Test Coverage Priorities
-
 ```
 1. Critical business logic      ████████████ Must have
 2. Edge cases and boundaries    ████████░░░░ Important
@@ -250,7 +235,6 @@ describe('calculateDiscount', () => {
 ## Code Review Checklist
 
 ### Before Requesting Review
-
 - [ ] Self-reviewed the diff
 - [ ] Tests pass locally
 - [ ] No debug code (console.log, debugger)
@@ -259,7 +243,6 @@ describe('calculateDiscount', () => {
 - [ ] Commit messages are clear
 
 ### Reviewer Checklist
-
 - [ ] **Correctness**: Does it do what it claims?
 - [ ] **Edge cases**: What could go wrong?
 - [ ] **Security**: Any vulnerabilities? (see `$aif-security-checklist`)
@@ -269,7 +252,6 @@ describe('calculateDiscount', () => {
 - [ ] **Consistency**: Follows project conventions?
 
 ### Review Comments
-
 ```
 ✅ Good feedback:
 "This could throw if `user` is null. Consider adding a null check
@@ -285,13 +267,13 @@ or using optional chaining: `user?.profile?.name`"
 
 ## Quick Rules Summary
 
-| Area      | Rule                                          |
-| --------- | --------------------------------------------- |
-| Naming    | Descriptive, consistent, reveals intent       |
-| Functions | Small, single purpose, no side effects        |
-| Errors    | Specific types, never swallow, log context    |
-| Tests     | AAA pattern, test behavior, descriptive names |
-| Reviews   | Be specific, suggest solutions, be kind       |
+| Area | Rule |
+|------|------|
+| Naming | Descriptive, consistent, reveals intent |
+| Functions | Small, single purpose, no side effects |
+| Errors | Specific types, never swallow, log context |
+| Tests | AAA pattern, test behavior, descriptive names |
+| Reviews | Be specific, suggest solutions, be kind |
 
 ## Artifact Ownership and Config Policy
 

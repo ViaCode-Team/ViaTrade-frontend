@@ -2,7 +2,7 @@
 
 Use for generating HTML reports, visualizations, diagrams.
 
-````yaml
+```yaml
 ---
 name: {{SKILL_NAME}}
 description: {{DESCRIPTION}}
@@ -20,7 +20,7 @@ Generate interactive visualization for $ARGUMENTS.
 
 ```bash
 python ~/.agents/skills/{{SKILL_NAME}}/scripts/visualize.py $ARGUMENTS
-````
+```
 
 ## Output
 
@@ -36,8 +36,7 @@ Creates `{{OUTPUT_FILE}}` in current directory and opens in browser.
 
 - Python 3.8+
 - No external dependencies (uses standard library only)
-
-````
+```
 
 ---
 
@@ -92,4 +91,4 @@ if __name__ == '__main__':
     generate_html(data, output)
     print(f'Generated {output.absolute()}')
     webbrowser.open(f'file://{output.absolute()}')
-````
+```

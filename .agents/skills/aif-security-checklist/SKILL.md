@@ -1,7 +1,7 @@
 ---
 name: aif-security-checklist
 description: Security audit checklist based on OWASP Top 10 and best practices. Covers authentication, injection, XSS, CSRF, secrets management, and more. Use when reviewing security, before deploy, asking "is this secure", "security check", "vulnerability".
-argument-hint: '[auth|injection|xss|csrf|secrets|api|infra|prompt-injection|race-condition|ignore <item>]'
+argument-hint: "[auth|injection|xss|csrf|secrets|api|infra|prompt-injection|race-condition|ignore <item>]"
 allowed-tools: Read Glob Grep Write Edit Bash(npm audit) Bash(grep *)
 disable-model-invocation: false
 ---
@@ -27,19 +27,16 @@ Comprehensive security checklist based on OWASP Top 10 (2021) and industry best 
 ## Config
 
 **FIRST:** Read `.ai-factory/config.yaml` if it exists to resolve:
-
 - **Paths:** `paths.security`
 - **Language:** `language.ui` for prompts, audit summaries, and next-step guidance; `language.artifacts` for the ignored-item state artifact; `language.technical_terms` for human-readable technical terminology in the ignored-item artifact
 
 If config.yaml doesn't exist, use defaults:
-
 - SECURITY.md: `.ai-factory/SECURITY.md`
 - `ui_language`: `en`
 - `artifact_language`: `en`
 - `technical_terms_policy`: `keep`
 
 Resolved language values:
-
 - `ui_language = language.ui || "en"`
 - `artifact_language = language.artifacts || language.ui || "en"`
 - `technical_terms_policy = language.technical_terms || "keep"`
@@ -84,14 +81,13 @@ Render this structure in `artifact_language` before saving. The headings below a
 Items below are excluded from security-checklist audits.
 Review periodically — ignored risks may become relevant.
 
-| Item          | Reason                                    | Date       | Author |
-| ------------- | ----------------------------------------- | ---------- | ------ |
-| no-csrf       | SPA with token auth, no cookies used      | 2025-03-15 | @dev   |
-| no-rate-limit | Internal microservice, behind API gateway | 2025-03-15 | @dev   |
+| Item | Reason | Date | Author |
+|------|--------|------|--------|
+| no-csrf | SPA with token auth, no cookies used | 2025-03-15 | @dev |
+| no-rate-limit | Internal microservice, behind API gateway | 2025-03-15 | @dev |
 ```
 
 **Item naming convention** — use short kebab-case IDs:
-
 - `no-csrf` — CSRF tokens not implemented
 - `no-rate-limit` — Rate limiting not configured
 - `no-https` — HTTPS not enforced
@@ -129,7 +125,6 @@ This file contains project-specific rules accumulated by `$aif-evolve` from patc
 codebase conventions, and tech-stack analysis. These rules are tailored to the current project.
 
 **How to apply skill-context rules:**
-
 - Treat them as **project-level overrides** for this skill's general instructions
 - When a skill-context rule conflicts with a general rule written in this SKILL.md,
   **the skill-context rule wins** (more specific context takes priority — same principle as nested CLAUDE.md files)
@@ -155,7 +150,6 @@ bash ~/.agents/skills/security-checklist/scripts/audit.sh
 ```
 
 This checks:
-
 - Hardcoded secrets in code
 - .env tracked in git
 - .gitignore configuration
@@ -172,13 +166,11 @@ For `$aif-security-checklist` audits (full audit or category audit), keep the hu
 Do not append this gate block for the `ignore <item>` writer flow unless that invocation also performs and reports an audit result.
 
 Status mapping:
-
 - `fail`: an unignored critical/high security issue or other explicitly production-blocking finding remains.
 - `warn`: only medium/low findings, ignored items needing review, incomplete audit evidence, or audit command limitations remain.
 - `pass`: the audit completed and no unignored findings remain.
 
 Machine-readable fields:
-
 - Use `"gate": "security"`.
 - Use `"status": "pass|warn|fail"`.
 - Use `"blocking": true|false`.
@@ -207,7 +199,6 @@ Machine-readable fields:
 ## 🔴 Critical: Pre-Deployment Checklist
 
 ### Must Fix Before Production
-
 - [ ] No secrets in code or git history
 - [ ] All user input is validated and sanitized
 - [ ] Authentication on all protected routes
@@ -228,7 +219,6 @@ Machine-readable fields:
 ## Authentication & Sessions
 
 ### Password Security
-
 ```
 ✅ Requirements:
 - [ ] Minimum 12 characters
@@ -241,7 +231,6 @@ Machine-readable fields:
 For implementation patterns (argon2, bcrypt, PHP, Laravel) → read `references/AUTH-PATTERNS.md`
 
 ### Session Management
-
 ```
 ✅ Checklist:
 - [ ] Session ID regenerated after login
@@ -254,7 +243,6 @@ For implementation patterns (argon2, bcrypt, PHP, Laravel) → read `references/
 For secure cookie settings example → read `references/AUTH-PATTERNS.md`
 
 ### JWT Security
-
 ```
 ✅ Checklist:
 - [ ] Use RS256 or ES256 (not HS256 for distributed systems)
@@ -270,7 +258,6 @@ For secure cookie settings example → read `references/AUTH-PATTERNS.md`
 ## Injection Prevention
 
 ### SQL Injection
-
 ```typescript
 // ❌ VULNERABLE: String concatenation
 const query = `SELECT * FROM users WHERE id = ${userId}`;
@@ -283,7 +270,6 @@ const user = await prisma.user.findUnique({ where: { id: userId } });
 ```
 
 ### NoSQL Injection
-
 ```typescript
 // ❌ VULNERABLE: Direct user input — attack: { "$ne": "" }
 const user = await db.users.findOne({ username: req.body.username });
@@ -293,7 +279,6 @@ const username = z.string().parse(req.body.username);
 ```
 
 ### Command Injection
-
 ```typescript
 // ❌ VULNERABLE: exec(`convert ${userFilename} output.png`);
 // ✅ SAFE: execFile('convert', [userFilename, 'output.png']);
@@ -304,7 +289,6 @@ const username = z.string().parse(req.body.username);
 ## Cross-Site Scripting (XSS)
 
 ### Prevention Checklist
-
 ```
 - [ ] All user output HTML-encoded by default
 - [ ] Content-Security-Policy header configured
@@ -314,7 +298,6 @@ const username = z.string().parse(req.body.username);
 ```
 
 ### Output Encoding
-
 ```typescript
 // ❌ VULNERABLE: element.innerHTML = userInput; / dangerouslySetInnerHTML
 // ✅ SAFE: element.textContent = userInput; / React: <div>{userInput}</div>
@@ -335,7 +318,6 @@ Set CSP header: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe
 ## CSRF Protection
 
 ### Checklist
-
 ```
 - [ ] CSRF tokens on all state-changing requests
 - [ ] SameSite=Strict or Lax on cookies
@@ -344,7 +326,6 @@ Set CSP header: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe
 ```
 
 ### Implementation
-
 - **Server-rendered**: Use `csurf` middleware, embed token in hidden form field and AJAX headers
 - **SPAs**: Double-submit cookie pattern — set readable cookie with `sameSite: 'strict'`, client sends token in header, server compares
 
@@ -353,7 +334,6 @@ Set CSP header: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe
 ## Secrets Management
 
 ### Never Do This
-
 ```
 ❌ Secrets in code
 const API_KEY = "sk_live_abc123";
@@ -369,7 +349,6 @@ throw new Error(`DB connection failed: ${connectionString}`);
 ```
 
 ### Checklist
-
 ```
 - [ ] Secrets in environment variables or vault
 - [ ] .env in .gitignore
@@ -380,7 +359,6 @@ throw new Error(`DB connection failed: ${connectionString}`);
 ```
 
 ### Git History Cleanup
-
 ```bash
 # If secrets were committed, remove from history
 git filter-branch --force --index-filter \
@@ -402,7 +380,6 @@ git push origin --force --all
 ## API Security
 
 ### Authentication
-
 ```
 - [ ] API keys not in URLs (use headers)
 - [ ] Rate limiting per user/IP
@@ -411,7 +388,6 @@ git push origin --force --all
 ```
 
 ### Client-Facing Logging & Errors
-
 ```
 - [ ] Browser/client logs are disabled in production or routed through a logger that no-ops debug output in production
 - [ ] `console.log`, `console.debug`, `console.info`, and verbose client telemetry are gated by explicit non-production checks
@@ -426,75 +402,73 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 // ✅ Client debug output is explicit and removed/no-op in production paths
 if (!isProduction) {
-	console.debug('Form validation state', formState);
+  console.debug('Form validation state', formState);
 }
 
 // ✅ Normalize unknown errors before rendering them in UI
 function toClientError(error: unknown) {
-	if (isKnownClientError(error)) {
-		return { code: error.code, message: error.publicMessage };
-	}
+  if (isKnownClientError(error)) {
+    return { code: error.code, message: error.publicMessage };
+  }
 
-	return {
-		code: 'INTERNAL_ERROR',
-		message: 'Something went wrong. Try again later.',
-	};
+  return {
+    code: 'INTERNAL_ERROR',
+    message: 'Something went wrong. Try again later.',
+  };
 }
 ```
 
 ### Input Validation
-
 ```typescript
 // ✅ Validate all input with schema
 import { z } from 'zod';
 
 const CreateUserSchema = z.object({
-	email: z.string().email().max(255),
-	name: z.string().min(1).max(100),
-	age: z.number().int().min(0).max(150).optional(),
+  email: z.string().email().max(255),
+  name: z.string().min(1).max(100),
+  age: z.number().int().min(0).max(150).optional(),
 });
 
 app.post('/users', (req, res) => {
-	const result = CreateUserSchema.safeParse(req.body);
-	if (!result.success) {
-		return res.status(400).json({
-			error: {
-				code: 'VALIDATION_FAILED',
-				message: 'Some fields are invalid.',
-				fields: result.error.issues.map((issue) => ({
-					path: issue.path.join('.'),
-					code: issue.code,
-				})),
-			},
-		});
-	}
-	// result.data is typed and validated
+  const result = CreateUserSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({
+      error: {
+        code: 'VALIDATION_FAILED',
+        message: 'Some fields are invalid.',
+        fields: result.error.issues.map((issue) => ({
+          path: issue.path.join('.'),
+          code: issue.code,
+        })),
+      },
+    });
+  }
+  // result.data is typed and validated
 });
 ```
 
 ### Response Security
-
 ```typescript
 // ✅ Don't expose internal errors
 app.use((err, req, res, next) => {
-	console.error(err); // Log full error internally
+  console.error(err); // Log full error internally
 
-	// Return generic message to client
-	res.status(500).json({
-		error: {
-			code: 'INTERNAL_ERROR',
-			message: 'Something went wrong. Try again later.',
-		},
-		requestId: req.id, // For support reference
-	});
+  // Return generic message to client
+  res.status(500).json({
+    error: {
+      code: 'INTERNAL_ERROR',
+      message: 'Something went wrong. Try again later.',
+    },
+    requestId: req.id, // For support reference
+  });
 });
 
 // ✅ Don't expose sensitive fields
 const userResponse = {
-	id: user.id,
-	name: user.name,
-	email: user.email,
-	// ❌ Never: password, passwordHash, internalId, etc.
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  // ❌ Never: password, passwordHash, internalId, etc.
 };
 ```
 
@@ -503,7 +477,6 @@ const userResponse = {
 ## Infrastructure Security
 
 ### Headers Checklist
-
 ```typescript
 app.use(helmet()); // Sets many security headers
 
@@ -511,16 +484,12 @@ app.use(helmet()); // Sets many security headers
 res.setHeader('X-Content-Type-Options', 'nosniff');
 res.setHeader('X-Frame-Options', 'DENY');
 res.setHeader('X-XSS-Protection', '0'); // Disabled, use CSP instead
-res.setHeader(
-	'Strict-Transport-Security',
-	'max-age=31536000; includeSubDomains',
-);
+res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 ```
 
 ### Dependency Security
-
 ```bash
 # Check for vulnerabilities
 npm audit
@@ -535,7 +504,6 @@ npx npm-check-updates -u
 ```
 
 ### Deployment Checklist
-
 ```
 - [ ] HTTPS only (redirect HTTP)
 - [ ] TLS 1.2+ only
@@ -556,7 +524,6 @@ npx npm-check-updates -u
 For detailed race condition patterns (double-spend, TOCTOU, optimistic locking, idempotency keys, distributed locks) → read `references/RACE-CONDITIONS.md`
 
 ### Prevention Checklist
-
 ```
 - [ ] Financial operations use database transactions with proper isolation
 - [ ] Inventory/stock checks use atomic decrement (not read-then-write)
@@ -574,7 +541,6 @@ For detailed race condition patterns (double-spend, TOCTOU, optimistic locking, 
 For detailed prompt injection patterns (direct, indirect, tool safety, output validation, RAG) → read `references/PROMPT-INJECTION.md`
 
 ### Prevention Checklist
-
 ```
 - [ ] User input never concatenated directly into system prompts
 - [ ] Input/output boundaries clearly separated (delimiters, roles)
@@ -618,21 +584,21 @@ grep -rn "innerHTML.*llm\|innerHTML.*response\|innerHTML.*completion" --include=
 
 ## Severity Reference
 
-| Issue                       | Severity    | Fix Timeline |
-| --------------------------- | ----------- | ------------ |
-| SQL Injection               | 🔴 Critical | Immediate    |
-| Auth Bypass                 | 🔴 Critical | Immediate    |
-| Secrets Exposed             | 🔴 Critical | Immediate    |
-| XSS (Stored)                | 🔴 Critical | < 24 hours   |
-| Prompt Injection (Direct)   | 🔴 Critical | Immediate    |
-| Race Condition (Financial)  | 🔴 Critical | Immediate    |
-| Prompt Injection (Indirect) | 🟠 High     | < 1 week     |
-| Race Condition (Data)       | 🟠 High     | < 1 week     |
-| CSRF                        | 🟠 High     | < 1 week     |
-| XSS (Reflected)             | 🟠 High     | < 1 week     |
-| Missing Rate Limit          | 🟡 Medium   | < 2 weeks    |
-| Verbose Errors              | 🟡 Medium   | < 2 weeks    |
-| Missing Headers             | 🟢 Low      | < 1 month    |
+| Issue | Severity | Fix Timeline |
+|-------|----------|--------------|
+| SQL Injection | 🔴 Critical | Immediate |
+| Auth Bypass | 🔴 Critical | Immediate |
+| Secrets Exposed | 🔴 Critical | Immediate |
+| XSS (Stored) | 🔴 Critical | < 24 hours |
+| Prompt Injection (Direct) | 🔴 Critical | Immediate |
+| Race Condition (Financial) | 🔴 Critical | Immediate |
+| Prompt Injection (Indirect) | 🟠 High | < 1 week |
+| Race Condition (Data) | 🟠 High | < 1 week |
+| CSRF | 🟠 High | < 1 week |
+| XSS (Reflected) | 🟠 High | < 1 week |
+| Missing Rate Limit | 🟡 Medium | < 2 weeks |
+| Verbose Errors | 🟡 Medium | < 2 weeks |
+| Missing Headers | 🟢 Low | < 1 month |
 
 > **Tip:** Context is heavy after security audit. Consider `/clear` or `/compact` before continuing with other tasks.
 

@@ -17,11 +17,11 @@ import { generatePath, Link as RouterLink } from 'react-router';
 import type { SignalDirection, TradeHistory } from '@/entities/signal';
 import type { PaginationConfig } from '@/shared/model';
 
-import { CreateTradeFromSignalButton } from '@/features/trade/create-trade-from-signal';
 import { ROUTES } from '@/shared/model';
 import { AppEmptyState } from '@/shared/ui/app-empty-state';
 import { InfoLabel } from '@/shared/ui/info-label';
 
+import { CreateTradeFromSignalButton } from './create-trade-from-signal-button';
 import cls from './history-table.module.css';
 
 const ROWS_PER_PAGE_OPTIONS = ['5', '10', '25'];

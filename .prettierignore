@@ -1,5 +1,8 @@
 dist
 build
+.agent
+.agents
+.ai-factory
 .DS_Store
 package-lock.json
 .next

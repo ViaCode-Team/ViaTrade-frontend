@@ -10,6 +10,9 @@ export default defineConfig([
 	},
 	{
 		ignores: [
+			'./.agent/**',
+			'./.agents/**',
+			'./.ai-factory/**',
 			'./src/**/gen/**',
 			'./src/shared/assets/**',
 		],

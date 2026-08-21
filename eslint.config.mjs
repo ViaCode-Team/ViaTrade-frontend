@@ -2,6 +2,12 @@ import antfu from '@antfu/eslint-config';
 
 export default antfu(
 	{
+		ignores: [
+			'.agent/**',
+			'.agents/**',
+			'.ai-factory/**',
+		],
+
 		react: true,
 
 		stylistic: {

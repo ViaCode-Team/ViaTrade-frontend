@@ -3,7 +3,6 @@ import {
 	useGetInstrumentsSuspense,
 } from '@/entities/instrument';
 import { getFilteredStocks, mapInstrumentToStock, type StockSortOption } from '@/entities/stock';
-import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 export const STOCKS_PAGE_SIZE = 12;
 
@@ -19,7 +18,6 @@ function getStocksParams(page: number, sortOption: StockSortOption) {
 export function useStocksQuerySuspense(searchQuery: string, sortOption: StockSortOption = 'name-asc', page = 1) {
 	return useGetInstrumentsSuspense(getStocksParams(page, sortOption), {
 		query: {
-			refetchInterval: QUERY_REFETCH_INTERVAL,
 			select: (data) => ({
 				...data,
 				data: {
@@ -34,7 +32,6 @@ export function useStocksQuerySuspense(searchQuery: string, sortOption: StockSor
 export function useStocksQuery(searchQuery: string, sortOption: StockSortOption = 'name-asc', page = 1) {
 	return useGetInstruments(getStocksParams(page, sortOption), {
 		query: {
-			refetchInterval: QUERY_REFETCH_INTERVAL,
 			select: (data) => ({
 				...data,
 				data: {

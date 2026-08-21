@@ -5,13 +5,15 @@
  * API для платформы инвестиционного анализа ViaTrade
  * OpenAPI spec version: v1
  */
+import type { ReminderDeliveryStatus } from './reminderDeliveryStatus';
 import type { ReminderSortField } from './reminderSortField';
 
 export type GetRemindersParams = {
-/**
- * @minimum 1
- * @maximum 21474837
- */
+	deliveryStatus?: ReminderDeliveryStatus;
+	/**
+	 * @minimum 1
+	 * @maximum 21474837
+	 */
 	page?: number;
 	/**
 	 * @minimum 1

@@ -3,8 +3,8 @@ import { IconPlus } from '@tabler/icons-react';
 
 import type { Stock } from '@/entities/stock';
 
+import { openCreateRemindModal } from '@/features/remind/create-remind';
 import { RemindsControls } from '@/features/remind/filter-reminds';
-import { useCreateRemind } from '@/features/remind/manage-reminds';
 import { brandGradient } from '@/shared/lib/theme';
 
 import { StockRemindsListBoundary } from './stock-reminds-list';
@@ -14,12 +14,6 @@ type StockRemindsProps = {
 };
 
 export function StockReminds({ stock }: StockRemindsProps) {
-	const { createRemind, isPending } = useCreateRemind();
-
-	const handleAddClick = () => {
-		createRemind(stock.instrumentId);
-	};
-
 	const actionSlot = (
 		<Tooltip label='Добавить напоминание'>
 			<ActionIcon
@@ -27,8 +21,10 @@ export function StockReminds({ stock }: StockRemindsProps) {
 				gradient={brandGradient}
 				size='input-sm'
 				aria-label='Добавить напоминание'
-				onClick={handleAddClick}
-				loading={isPending}
+				onClick={() => openCreateRemindModal({
+					id: stock.instrumentId,
+					label: `${stock.ticker} — ${stock.name}`,
+				})}
 			>
 				<IconPlus size={18} />
 			</ActionIcon>
@@ -37,7 +33,7 @@ export function StockReminds({ stock }: StockRemindsProps) {
 
 	return (
 		<Stack>
-			<RemindsControls actionSlot={actionSlot} instrumentId={stock.instrumentId} />
+			<RemindsControls actionSlot={actionSlot} />
 			<StockRemindsListBoundary instrumentId={stock.instrumentId} />
 		</Stack>
 	);

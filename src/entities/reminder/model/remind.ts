@@ -11,6 +11,7 @@ export type RemindItem = {
 	text: string;
 	date: string;
 	time: string;
+	deliveredAt?: string;
 	source?: RemindSource;
 };
 
@@ -26,6 +27,7 @@ export function mapTradeRemindToRemindItem(tradeRemind: ReminderResponse): Remin
 		text: tradeRemind.text,
 		date,
 		time,
+		deliveredAt: tradeRemind.deliveredAt,
 		source: tradeRemind.instrument
 			? {
 					type: 'stock',

@@ -1,15 +1,19 @@
 import type { ReactNode } from 'react';
 
-import { Group, Select } from '@mantine/core';
+import { Group, SegmentedControl, Select } from '@mantine/core';
 
-import { remindFiltersSchema, remindSortOptions } from '@/entities/reminder';
+import {
+	type ReminderDeliveryStatus,
+	reminderDeliveryStatusOptions,
+	remindFiltersSchema,
+	remindSortOptions,
+} from '@/entities/reminder';
 import { useUrlFilters } from '@/shared/lib/url-filters';
 import { ControlsGroup } from '@/shared/ui/filters-group';
 import { SearchInput } from '@/shared/ui/search-input';
 
 type RemindsControlsProps = {
 	actionSlot?: ReactNode;
-	instrumentId?: number;
 };
 
 export function RemindsControls({ actionSlot }: RemindsControlsProps = {}) {
@@ -28,6 +32,16 @@ export function RemindsControls({ actionSlot }: RemindsControlsProps = {}) {
 				value={filters.listSort}
 				onChange={(value) => setFilters({ listSort: value, page: '1' })}
 				w={{ base: '100%', sm: 220 }}
+			/>
+
+			<SegmentedControl
+				data={reminderDeliveryStatusOptions}
+				value={filters.deliveryStatus}
+				onChange={(value) => setFilters({
+					deliveryStatus: value as ReminderDeliveryStatus,
+					page: '1',
+				})}
+				size='sm'
 			/>
 			{actionSlot && <Group ml='auto'>{actionSlot}</Group>}
 		</ControlsGroup>

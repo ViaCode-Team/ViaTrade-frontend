@@ -6,7 +6,6 @@ import {
 	mapStrategyResponseToStrategy,
 	useGetStrategiesSuspense,
 } from '@/entities/strategy';
-import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 export const STRATEGIES_PAGE_SIZE = 15;
 
@@ -30,7 +29,7 @@ export function getStrategiesRequestParams(filters: {
 }
 
 export function useStrategiesData(params: GetStrategiesParams = getStrategiesRequestParams({ page: 1, sortOption: 'name-asc', statusFilter: 'all' })) {
-	const strategiesQuery = useGetStrategiesSuspense(params, { query: { refetchInterval: QUERY_REFETCH_INTERVAL } });
+	const strategiesQuery = useGetStrategiesSuspense(params);
 
 	const strategies = useMemo(
 		() => {

@@ -50,6 +50,7 @@ function ProfitChartData({ settings }: { settings: ProfitChartSettings }) {
 							dataKey='date'
 							series={[{ name: 'Сумма', color: 'indigo.6' }]}
 							curveType='monotone'
+							withBrush
 							valueFormatter={formatProfitChartPercentage}
 						/>
 					)

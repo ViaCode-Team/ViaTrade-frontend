@@ -5,7 +5,6 @@ import {
 } from '@/entities/note';
 import { useNotesControls } from '@/features/note/filter-notes';
 import { mergeApiNotesWithDrafts, useStoredPersonalNotesQuery } from '@/features/note/manage-note';
-import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 
 import { getApiPersonalNotes } from '../../model/api-notes';
 
@@ -14,10 +13,7 @@ export const NOTES_PAGE_SIZE = 15;
 export function usePersonalNotes() {
 	const storedNotesQuery = useStoredPersonalNotesQuery();
 	const { filters, setFilters } = useNotesControls();
-	const notesQuery = useGetNotesSuspense(
-		{ page: filters.page, pageSize: NOTES_PAGE_SIZE },
-		{ query: { refetchInterval: QUERY_REFETCH_INTERVAL } },
-	);
+	const notesQuery = useGetNotesSuspense({ page: filters.page, pageSize: NOTES_PAGE_SIZE });
 
 	const apiNotes = useMemo(
 		() => getApiPersonalNotes({

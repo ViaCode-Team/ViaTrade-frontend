@@ -12,5 +12,5 @@ export type ReminderResponse = {
 	text: string;
 	remindAt: string;
 	instrument?: InstrumentBriefResponse;
-	userId: number;
+	deliveredAt?: string;
 };

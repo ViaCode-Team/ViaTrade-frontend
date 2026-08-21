@@ -1,10 +1,10 @@
 import { ActionIcon, Stack, Tooltip } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 
+import { openCreateRemindModal } from '@/features/remind/create-remind';
 import { RemindsControls } from '@/features/remind/filter-reminds';
 import { brandGradient } from '@/shared/lib/theme';
 
-import { openAddRemindModal } from '../add-remind';
 import { RemindsOverviewListBoundary } from './reminds-overview-list';
 
 const actionSlot = (
@@ -14,7 +14,7 @@ const actionSlot = (
 			gradient={brandGradient}
 			size='input-sm'
 			aria-label='Добавить напоминание'
-			onClick={openAddRemindModal}
+			onClick={() => openCreateRemindModal()}
 		>
 			<IconPlus size={18} />
 		</ActionIcon>

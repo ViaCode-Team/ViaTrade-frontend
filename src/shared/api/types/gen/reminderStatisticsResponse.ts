@@ -8,4 +8,6 @@
 
 export type ReminderStatisticsResponse = {
 	totalReminders: number;
+	maximumReminders: number;
+	remainingReminders: number;
 };

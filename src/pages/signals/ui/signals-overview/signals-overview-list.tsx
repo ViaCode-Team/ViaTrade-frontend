@@ -11,7 +11,6 @@ import {
 	SignalsListSkeleton,
 	useGetLatestSignalsSuspense,
 } from '@/entities/signal';
-import { QUERY_REFETCH_INTERVAL } from '@/shared/model';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -32,10 +31,6 @@ function SignalsOverviewList({ filters, onPageChange, onResetFilters, onSignalSe
 		sortBy: [getSignalSortField(filters.sortOption)],
 		page: filters.page,
 		pageSize: SIGNALS_PAGE_SIZE,
-	}, {
-		query: {
-			refetchInterval: QUERY_REFETCH_INTERVAL,
-		},
 	});
 
 	const signals = useMemo(

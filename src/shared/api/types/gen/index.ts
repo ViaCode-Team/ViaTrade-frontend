@@ -38,6 +38,7 @@ export * from './problemDetailsErrors';
 export * from './profitChartBucketResponse';
 export * from './profitChartGranularity';
 export * from './registerRequest';
+export * from './reminderDeliveryStatus';
 export * from './reminderResponse';
 export * from './reminderResponsePageResult';
 export * from './reminderSortField';

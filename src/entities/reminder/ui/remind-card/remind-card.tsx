@@ -13,6 +13,7 @@ import '@mantine/dates/styles.css';
 import { DateTimePicker } from '@mantine/dates';
 import { IconArrowBackUp } from '@tabler/icons-react';
 import { IconCalendarTime } from '@tabler/icons-react';
+import { IconCircleCheck } from '@tabler/icons-react';
 import { IconDeviceFloppy } from '@tabler/icons-react';
 import { useState } from 'react';
 import { generatePath, Link as RouterLink } from 'react-router';
@@ -24,6 +25,7 @@ import {
 
 import type { RemindItem } from '../../model';
 
+import { getReminderDateTimePickerValue } from '../../lib/remind-date-time';
 import { useRemindDraft } from '../../lib/use-remind-draft';
 import cls from './remind-card.module.css';
 
@@ -64,20 +66,28 @@ export function RemindCard({
 			className={cls.card}
 		>
 			<Stack gap='xs'>
-				{!hideSourceBadge && remind.source?.label && (
-					<Group mb={-4}>
-						<Badge
-							variant='default'
-							size='sm'
-							autoContrast
-							component={RouterLink}
-							to={generatePath(ROUTES.STOCK, { stockId: remind.source.id })}
-							style={{ cursor: 'pointer', textDecoration: 'none' }}
-						>
-							Акция:
-							{' '}
-							{remind.source.label}
-						</Badge>
+				{((!hideSourceBadge && remind.source?.label) || remind.deliveredAt) && (
+					<Group mb={-4} gap='xs'>
+						{!hideSourceBadge && remind.source?.label && (
+							<Badge
+								variant='default'
+								size='sm'
+								autoContrast
+								component={RouterLink}
+								to={generatePath(ROUTES.STOCK, { stockId: remind.source.id })}
+								style={{ cursor: 'pointer', textDecoration: 'none' }}
+							>
+								Акция:
+								{' '}
+								{remind.source.label}
+							</Badge>
+						)}
+
+						{remind.deliveredAt && (
+							<Badge variant='light' color='teal' size='sm' leftSection={<IconCircleCheck size={12} />}>
+								Доставлено
+							</Badge>
+						)}
 					</Group>
 				)}
 
@@ -131,7 +141,7 @@ export function RemindCard({
 					<DateTimePicker
 						style={{ flex: 1 }}
 						placeholder='Дата и время'
-						value={getDateTimePickerValue(localDraft)}
+						value={getReminderDateTimePickerValue(localDraft)}
 						onChange={handleDateTimeChange}
 						valueFormat={DATE_TIME_DISPLAY_FORMAT}
 						defaultTimeValue={localDraft.time || '09:00'}
@@ -144,12 +154,4 @@ export function RemindCard({
 			</Stack>
 		</Card>
 	);
-}
-
-function getDateTimePickerValue(draft: { date: string; time: string }) {
-	if (!draft.date || !draft.time) {
-		return null;
-	}
-
-	return `${draft.date} ${draft.time}:00`;
 }

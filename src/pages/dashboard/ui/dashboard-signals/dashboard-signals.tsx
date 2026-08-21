@@ -8,10 +8,7 @@ import {
 	SignalsListSkeleton,
 	useGetLatestSignalsSuspense,
 } from '@/entities/signal';
-import {
-	QUERY_REFETCH_INTERVAL,
-	STATIC_QUERY_STALE_TIME,
-} from '@/shared/model';
+import { STATIC_QUERY_STALE_TIME } from '@/shared/model';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
@@ -19,7 +16,6 @@ export function DashboardSignals({ onSignalSelect }: { onSignalSelect: (signal: 
 	const { data: signalsData } = useGetLatestSignalsSuspense(undefined, {
 		query: {
 			staleTime: STATIC_QUERY_STALE_TIME,
-			refetchInterval: QUERY_REFETCH_INTERVAL,
 		},
 	});
 	const signals = useMemo(

@@ -6,7 +6,6 @@ import {
 	getGetInstrumentsByStrategyQueryKey,
 	getInstrumentsByStrategy,
 } from '@/entities/strategy';
-import { isApiErrorWithStatus } from '@/shared/api';
 
 const linkedStocksQueryParams = {
 	page: 1,
@@ -23,22 +22,11 @@ export function useStrategyLinkedStockIds(strategyId: number) {
 }
 
 async function getAllStrategyLinkedStockIds(strategyId: number, signal: AbortSignal) {
-	let firstPage: Awaited<ReturnType<typeof getInstrumentsByStrategy>>;
-
-	try {
-		firstPage = await getInstrumentsByStrategy(
-			strategyId,
-			linkedStocksQueryParams,
-			{ signal },
-		);
-	}
-	catch (error) {
-		if (isApiErrorWithStatus(error, 404)) {
-			return [];
-		}
-
-		throw error;
-	}
+	const firstPage = await getInstrumentsByStrategy(
+		strategyId,
+		linkedStocksQueryParams,
+		{ signal },
+	);
 
 	const remainingPageNumbers = Array.from(
 		{ length: firstPage.data.totalPages - 1 },

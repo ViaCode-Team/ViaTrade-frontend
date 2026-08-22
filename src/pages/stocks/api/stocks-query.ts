@@ -2,7 +2,7 @@ import {
 	useGetInstruments,
 	useGetInstrumentsSuspense,
 } from '@/entities/instrument';
-import { getFilteredStocks, mapInstrumentToStock, type StockSortOption } from '@/entities/stock';
+import { mapInstrumentToStock, type StockSortOption } from '@/entities/stock';
 
 export const STOCKS_PAGE_SIZE = 12;
 
@@ -11,18 +11,23 @@ const sortBy = {
 	'name-desc': 'symbolDesc',
 } as const;
 
-function getStocksParams(page: number, sortOption: StockSortOption) {
-	return { page, pageSize: STOCKS_PAGE_SIZE, sortBy: [sortBy[sortOption]] };
+function getStocksParams(searchQuery: string, page: number, sortOption: StockSortOption) {
+	return {
+		page,
+		pageSize: STOCKS_PAGE_SIZE,
+		searchText: searchQuery.trim() || undefined,
+		sortBy: [sortBy[sortOption]],
+	};
 }
 
 export function useStocksQuerySuspense(searchQuery: string, sortOption: StockSortOption = 'name-asc', page = 1) {
-	return useGetInstrumentsSuspense(getStocksParams(page, sortOption), {
+	return useGetInstrumentsSuspense(getStocksParams(searchQuery, page, sortOption), {
 		query: {
 			select: (data) => ({
 				...data,
 				data: {
 					...data.data,
-					items: getFilteredStocks({ stocks: data.data.items.map(mapInstrumentToStock), searchQuery }),
+					items: data.data.items.map(mapInstrumentToStock),
 				},
 			}),
 		},
@@ -30,13 +35,13 @@ export function useStocksQuerySuspense(searchQuery: string, sortOption: StockSor
 }
 
 export function useStocksQuery(searchQuery: string, sortOption: StockSortOption = 'name-asc', page = 1) {
-	return useGetInstruments(getStocksParams(page, sortOption), {
+	return useGetInstruments(getStocksParams(searchQuery, page, sortOption), {
 		query: {
 			select: (data) => ({
 				...data,
 				data: {
 					...data.data,
-					items: getFilteredStocks({ stocks: data.data.items.map(mapInstrumentToStock), searchQuery }),
+					items: data.data.items.map(mapInstrumentToStock),
 				},
 			}),
 		},

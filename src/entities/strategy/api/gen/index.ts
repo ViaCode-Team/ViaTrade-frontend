@@ -873,7 +873,7 @@ export function getGetInstrumentsByStrategyUrl(strategyId: number, params?: GetI
 	const normalizedParams = new URLSearchParams();
 
 	Object.entries(params || {}).forEach(([key, value]) => {
-		const explodeParameters = ['sortBy'];
+		const explodeParameters = ['instrumentIds', 'sortBy'];
 
 		if (Array.isArray(value) && explodeParameters.includes(key)) {
 			value.forEach((v) => {

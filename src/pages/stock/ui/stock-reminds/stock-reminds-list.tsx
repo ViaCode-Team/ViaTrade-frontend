@@ -3,7 +3,6 @@ import { Stack } from '@mantine/core';
 import { RemindList, RemindListSkeleton } from '@/entities/reminder';
 import {
 	DeleteRemindButton,
-	filterReminds,
 	REMINDERS_PAGE_SIZE,
 	useInstrumentReminds,
 	useRemindListFilters,
@@ -23,36 +22,32 @@ function StockRemindsList({ instrumentId }: StockRemindsListProps) {
 		params,
 		page,
 		setPage,
-		hasSearchQuery,
 		hasActiveFilters,
 		resetFilters,
-		searchQuery,
 	} = useRemindListFilters();
-	const { reminds, totalPages } = useInstrumentReminds(instrumentId, params);
+	const { reminds, totalCount, totalPages } = useInstrumentReminds(instrumentId, params);
 	const { updateRemind } = useUpdateRemind(instrumentId);
-	const filteredReminds = filterReminds(reminds, searchQuery);
 
 	return (
 		<DataState
-			hasData={!!reminds.length || hasActiveFilters}
-			hasResults={!!filteredReminds.length}
+			hasData={!!totalCount || hasActiveFilters}
+			hasResults={!!reminds.length}
 			onResetFilters={resetFilters}
 		>
 			<Stack gap='md'>
 				<StockRemindsStatusBar
-					totalCount={reminds.length}
-					filteredCount={filteredReminds.length}
+					totalCount={totalCount}
+					filteredCount={reminds.length}
 					pagination={{
 						page,
 						pageSize: REMINDERS_PAGE_SIZE,
 						totalPages,
 						onPageChange: setPage,
-						showRange: !hasSearchQuery,
 					}}
 				/>
 
 				<RemindList
-					reminds={filteredReminds}
+					reminds={reminds}
 					hideSourceBadge
 					onRemindChange={updateRemind}
 					renderAction={(remind) => <DeleteRemindButton id={remind.id} instrumentId={instrumentId} />}

@@ -24,7 +24,7 @@ function StocksOverviewList({ onLinkedStrategiesClick }: StocksListViewProps) {
 
 	return (
 		<DataState
-			hasData={!!stocksResponse.data.totalCount}
+			hasData={!!stocksResponse.data.totalCount || Boolean(filters.searchQuery.trim())}
 			hasResults={!!stocksResponse.data.items.length}
 			onResetFilters={resetFilters}
 		>
@@ -37,7 +37,6 @@ function StocksOverviewList({ onLinkedStrategiesClick }: StocksListViewProps) {
 						pageSize: STOCKS_PAGE_SIZE,
 						totalPages: stocksResponse.data.totalPages,
 						onPageChange: (page) => setFilters({ page: String(page) }),
-						showRange: !filters.searchQuery.trim(),
 					}}
 				/>
 

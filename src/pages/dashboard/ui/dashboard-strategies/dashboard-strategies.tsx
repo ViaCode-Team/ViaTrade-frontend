@@ -2,13 +2,11 @@ import { StrategiesList, StrategiesListSkeleton } from '@/entities/strategy';
 import { NoDataState } from '@/shared/ui/app-empty-state';
 import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
-import { useFilteredStrategies, useStrategiesData } from '@/widgets/strategies-overview';
+import { useStrategiesData } from '@/widgets/strategies-overview';
 
 function DashboardStrategies() {
 	const { strategies } = useStrategiesData();
-	const allFilteredStrategies = useFilteredStrategies(strategies);
-
-	const filteredStrategies = allFilteredStrategies
+	const filteredStrategies = strategies
 		.filter((strategy) => strategy.isSubscribed)
 		.slice(0, 4);
 

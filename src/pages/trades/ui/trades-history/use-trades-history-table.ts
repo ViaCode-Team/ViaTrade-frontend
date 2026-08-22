@@ -27,6 +27,7 @@ export function useTradesHistoryTable() {
 	const tradeParams = {
 		page,
 		pageSize: 10,
+		searchText: q.trim() || undefined,
 		status: statusFilter === 'all' ? undefined : statusFilter,
 		signal: (typeFilter === 'all' ? undefined : typeFilter === 'long' ? 1 : -1) as TradeSignal | undefined,
 	};
@@ -37,8 +38,8 @@ export function useTradesHistoryTable() {
 	const trades = tradesPage.items;
 
 	const processedTrades = useMemo(
-		() => processTrades(trades, { q, fieldSort, directionSort }),
-		[trades, q, fieldSort, directionSort],
+		() => processTrades(trades, { fieldSort, directionSort }),
+		[trades, fieldSort, directionSort],
 	);
 
 	const setSorting = (field: TradeFilters['fieldSort']) => {
@@ -57,6 +58,7 @@ export function useTradesHistoryTable() {
 
 	return {
 		trades,
+		hasData: !!tradesPage.totalCount || Boolean(q.trim()) || typeFilter !== 'all' || statusFilter !== 'all',
 		paginatedTrades: processedTrades,
 		totalPages: tradesPage.totalPages,
 		fieldSort,

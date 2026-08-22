@@ -14,23 +14,6 @@ type ToggleVisibleStockSelectionParams = {
 	allChecked: boolean;
 };
 
-export function getNormalizedStockSearchQuery(searchQuery: string) {
-	return searchQuery.trim().toLowerCase();
-}
-
-export function getFilteredStocks(stocks: Stock[], searchQuery: string) {
-	const normalizedSearchQuery = getNormalizedStockSearchQuery(searchQuery);
-
-	if (!normalizedSearchQuery) {
-		return stocks;
-	}
-
-	return stocks.filter((stock) =>
-		stock.ticker.toLowerCase().includes(normalizedSearchQuery)
-		|| stock.name.toLowerCase().includes(normalizedSearchQuery),
-	);
-}
-
 export function getStockSelectionState(
 	stocks: Stock[],
 	visibleStocks: Stock[],

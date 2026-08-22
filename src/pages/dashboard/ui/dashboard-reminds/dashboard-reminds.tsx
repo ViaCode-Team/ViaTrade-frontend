@@ -6,7 +6,6 @@ import {
 } from '@/entities/reminder';
 import {
 	DeleteRemindButton,
-	filterReminds,
 	useRemindListFilters,
 	useUpdateRemind,
 } from '@/features/remind/manage-reminds';
@@ -14,15 +13,14 @@ import { DataState } from '@/shared/ui/data-state';
 import { withQueryBoundary } from '@/shared/ui/queryBoundary';
 
 function DashboardReminds() {
-	const { params, searchQuery } = useRemindListFilters();
+	const { params } = useRemindListFilters();
 	const { data: response } = useGetRemindersSuspense(params);
 	const reminds = response.data.items.map(mapTradeRemindToRemindItem);
 	const { updateRemind } = useUpdateRemind();
-	const allFilteredReminds = filterReminds(reminds, searchQuery);
-	const filteredReminds = allFilteredReminds.slice(0, 4);
+	const filteredReminds = reminds.slice(0, 4);
 
 	return (
-		<DataState hasData={!!allFilteredReminds.length}>
+		<DataState hasData={!!reminds.length}>
 			<RemindList
 				reminds={filteredReminds}
 				onRemindChange={updateRemind}

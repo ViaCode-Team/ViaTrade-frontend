@@ -8,6 +8,11 @@
 import type { InstrumentSortField } from './instrumentSortField';
 
 export type GetInstrumentsByStrategyParams = {
+/**
+ * @maxItems 100
+ * @items.minimum 1
+ */
+	instrumentIds?: number[];
 	sortBy?: InstrumentSortField[];
 	/**
 	 * @minimum 1

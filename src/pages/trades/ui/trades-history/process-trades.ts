@@ -2,18 +2,16 @@ import dayjs from 'dayjs';
 
 import type { TradeResponse } from '@/shared/api';
 
-import { DATE_TIME_DISPLAY_FORMAT } from '@/shared/model';
-
 import type { TradeFilters } from '../filter-trades';
 import type { ProcessedTrade } from './use-trades-history-table';
 
 export function processTrades(
 	trades: TradeResponse[],
-	filters: Pick<TradeFilters, 'q' | 'fieldSort' | 'directionSort'>,
+	filters: Pick<TradeFilters, 'fieldSort' | 'directionSort'>,
 ): ProcessedTrade[] {
-	const { q, fieldSort, directionSort } = filters;
+	const { fieldSort, directionSort } = filters;
 
-	let result = trades.map((trade) => {
+	const result = trades.map((trade) => {
 		const normalizedTrade = {
 			...trade,
 			openPrice: toNumber(trade.openPrice),
@@ -27,33 +25,6 @@ export function processTrades(
 			isLong: trade.signal !== -1,
 		};
 	});
-
-	if (q) {
-		const lowerSearch = q.toLowerCase();
-		result = result.filter((t) => {
-			const openedAtStr = dayjs(t.openedAt).format(DATE_TIME_DISPLAY_FORMAT);
-			const closedAtStr = t.closedAt ? dayjs(t.closedAt).format(DATE_TIME_DISPLAY_FORMAT) : '—';
-			const openPriceStr = `${t.openPrice.toFixed(2)} ₽`;
-			const closePriceStr = t.closePrice !== undefined ? `${t.closePrice.toFixed(2)} ₽` : '—';
-			const totalPriceStr = `${t.totalPrice.toFixed(2)} ₽`;
-			const netIncomeStr = t.netIncome !== undefined ? (t.netIncome > 0 ? `+${t.netIncome.toFixed(2)}` : t.netIncome.toFixed(2)) : '—';
-			const typeStr = t.isLong ? 'Long' : 'Short';
-
-			const searchableString = [
-				t.ticker,
-				typeStr,
-				openedAtStr,
-				closedAtStr,
-				openPriceStr,
-				closePriceStr,
-				String(t.quantity),
-				totalPriceStr,
-				netIncomeStr,
-			].join(' ').toLowerCase();
-
-			return searchableString.includes(lowerSearch);
-		});
-	}
 
 	result.sort((a, b) => {
 		let aVal: string | number;

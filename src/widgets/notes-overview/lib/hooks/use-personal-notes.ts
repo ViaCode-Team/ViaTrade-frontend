@@ -13,7 +13,16 @@ export const NOTES_PAGE_SIZE = 15;
 export function usePersonalNotes() {
 	const storedNotesQuery = useStoredPersonalNotesQuery();
 	const { filters, setFilters } = useNotesControls();
-	const notesQuery = useGetNotesSuspense({ page: filters.page, pageSize: NOTES_PAGE_SIZE });
+	const notesQuery = useGetNotesSuspense({
+		page: filters.page,
+		pageSize: NOTES_PAGE_SIZE,
+		searchText: filters.searchQuery.trim() || undefined,
+		target: filters.sourceFilter === 'all'
+			? undefined
+			: filters.sourceFilter === 'stock'
+				? 'instrumentNote'
+				: 'strategyNote',
+	});
 
 	const apiNotes = useMemo(
 		() => getApiPersonalNotes({

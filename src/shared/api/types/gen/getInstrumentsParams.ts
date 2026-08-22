@@ -10,6 +10,11 @@ import type { InstrumentSortField } from './instrumentSortField';
 export type GetInstrumentsParams = {
 	symbol?: string;
 	/**
+	 * @minLength 0
+	 * @maxLength 100
+	 */
+	searchText?: string;
+	/**
 	 * @minimum 1
 	 * @maximum 21474837
 	 */

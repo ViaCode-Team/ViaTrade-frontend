@@ -9,6 +9,11 @@ import type { StrategySortField } from './strategySortField';
 
 export type GetStrategiesParams = {
 	name?: string;
+	/**
+	 * @minLength 0
+	 * @maxLength 100
+	 */
+	searchText?: string;
 	sortBy?: StrategySortField[];
 	/**
 	 * @minimum 1

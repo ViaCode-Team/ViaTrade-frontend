@@ -5,8 +5,13 @@ import { mapInstrumentToStock } from '@/entities/stock';
 
 export const ITEMS_PER_PAGE = 12;
 
-export function useStrategyStockBindingData(page = 1) {
-	const { data: stocksResponse } = useGetInstrumentsSuspense({ page, pageSize: ITEMS_PER_PAGE, sortBy: ['symbolAsc'] });
+export function useStrategyStockBindingData(searchQuery: string, page = 1) {
+	const { data: stocksResponse } = useGetInstrumentsSuspense({
+		page,
+		pageSize: ITEMS_PER_PAGE,
+		searchText: searchQuery.trim() || undefined,
+		sortBy: ['symbolAsc'],
+	});
 	const stocks = useMemo(() => stocksResponse.data.items.map(mapInstrumentToStock), [stocksResponse.data.items]);
 
 	return {

@@ -7,6 +7,7 @@ import { useTradesHistoryTable } from './use-trades-history-table';
 function TradesHistoryTable() {
 	const table = useTradesHistoryTable();
 	const {
+		hasData,
 		trades,
 		page,
 		totalPages,
@@ -16,7 +17,7 @@ function TradesHistoryTable() {
 
 	return (
 		<TradesHistoryTableView
-			hasData={!!trades.length}
+			hasData={hasData}
 			pagination={{ page, totalPages, onPageChange: setPage }}
 			{...viewProps}
 		/>

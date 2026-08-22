@@ -10,6 +10,11 @@ import type { NoteType } from './noteType';
 export type GetNotesParams = {
 	target?: NoteType;
 	/**
+	 * @minLength 0
+	 * @maxLength 100
+	 */
+	searchText?: string;
+	/**
 	 * @minimum 1
 	 * @maximum 21474837
 	 */

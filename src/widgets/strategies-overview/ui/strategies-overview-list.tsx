@@ -25,7 +25,7 @@ function StrategiesOverviewList() {
 
 	return (
 		<DataState
-			hasData={!!totalCount}
+			hasData={!!totalCount || Boolean(filters.q.trim()) || filters.statusFilter !== 'all'}
 			hasResults={!!filteredStrategies.length}
 			onResetFilters={resetFilters}
 		>
@@ -38,7 +38,7 @@ function StrategiesOverviewList() {
 						pageSize: STRATEGIES_PAGE_SIZE,
 						totalPages,
 						onPageChange: setPage,
-						showRange: !filters.q.trim(),
+						showRange: filters.statusFilter === 'all',
 					}}
 					showSubscriptionBadges={filters.statusFilter === 'all'}
 					subscribedCount={subscribedCount}

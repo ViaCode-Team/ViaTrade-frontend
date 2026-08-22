@@ -9,7 +9,7 @@ export function useRemindListFilters() {
 	const { filters, setFilter, resetFilters } = useUrlFilters(remindFiltersSchema);
 
 	const page = Math.max(Number(filters.page) || 1, 1);
-	const searchQuery = filters.q.trim().toLowerCase();
+	const searchText = filters.q.trim();
 	const sortBy: ReminderSortField[] = [filters.listSort === 'date-asc' ? 'remindAtAsc' : 'remindAtDesc'];
 
 	return {
@@ -17,12 +17,11 @@ export function useRemindListFilters() {
 			deliveryStatus: filters.deliveryStatus,
 			page,
 			pageSize: REMINDERS_PAGE_SIZE,
+			searchText: searchText || undefined,
 			sortBy,
 		},
 		page,
-		searchQuery,
-		hasSearchQuery: Boolean(searchQuery),
-		hasActiveFilters: Boolean(searchQuery) || filters.deliveryStatus !== 'undelivered',
+		hasActiveFilters: Boolean(searchText) || filters.deliveryStatus !== 'undelivered',
 		setPage: (nextPage: number) => setFilter('page', String(nextPage)),
 		resetFilters,
 	};

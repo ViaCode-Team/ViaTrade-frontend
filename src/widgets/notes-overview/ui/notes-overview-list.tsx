@@ -38,7 +38,7 @@ function NotesOverviewList({ searchQuery, sourceFilter, onResetFilters }: NotesO
 
 	return (
 		<DataState
-			hasData={!!allNotes.length}
+			hasData={!!allNotes.length || Boolean(searchQuery.trim()) || sourceFilter !== 'all'}
 			hasResults={!!resultNotes.length}
 			onResetFilters={onResetFilters}
 		>

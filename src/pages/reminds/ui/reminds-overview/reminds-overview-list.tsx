@@ -8,7 +8,6 @@ import {
 } from '@/entities/reminder';
 import {
 	DeleteRemindButton,
-	filterReminds,
 	REMINDERS_PAGE_SIZE,
 	useRemindListFilters,
 	useUpdateRemind,
@@ -23,10 +22,8 @@ function RemindsOverviewList() {
 		params,
 		page,
 		setPage,
-		hasSearchQuery,
 		hasActiveFilters,
 		resetFilters,
-		searchQuery,
 	} = useRemindListFilters();
 
 	const { data: response } = useGetRemindersSuspense(params);
@@ -35,29 +32,27 @@ function RemindsOverviewList() {
 	const { updateRemind } = useUpdateRemind();
 
 	const reminds = response.data.items.map(mapTradeRemindToRemindItem);
-	const filteredReminds = filterReminds(reminds, searchQuery);
 
 	return (
 		<DataState
-			hasData={!!reminds.length || hasActiveFilters}
-			hasResults={!!filteredReminds.length}
+			hasData={!!totalCount || hasActiveFilters}
+			hasResults={!!reminds.length}
 			onResetFilters={resetFilters}
 		>
 			<Stack gap='md'>
 				<RemindsOverviewStatusBar
 					totalCount={totalCount}
-					filteredCount={filteredReminds.length}
+					filteredCount={reminds.length}
 					pagination={{
 						page,
 						pageSize: REMINDERS_PAGE_SIZE,
 						totalPages,
 						onPageChange: setPage,
-						showRange: !hasSearchQuery,
 					}}
 				/>
 
 				<RemindList
-					reminds={filteredReminds}
+					reminds={reminds}
 					onRemindChange={updateRemind}
 					renderAction={(remind) => <DeleteRemindButton id={remind.id} instrumentId={remind.source ? Number(remind.source.id) : undefined} />}
 					pagination={{ page, totalPages, onPageChange: setPage }}

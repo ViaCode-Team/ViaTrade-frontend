@@ -1,4 +1,4 @@
-export { getFilteredStocks, stockSortOptions } from './lib/stock-filters';
+export { stockSortOptions } from './lib/stock-filters';
 export type { StockSortOption } from './lib/stock-filters';
 export {
 	mapInstrumentToStock,
